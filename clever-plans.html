@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Planos CleverTap - Visão Geral</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      /* CORES DEFINIDAS */
+      --bg-page: #133B58;
+      --card-bg: #FFFFFF;
+      --text-on-bg: #FFFFFF;
+      --text-on-card: #133B58;
+      --accent: #F04444; /* CleverTap Red */
+
+      --border-card: #D0D7DF;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.25);
+      --radius-card: 18px;
+      --transition-fast: 0.22s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(
+        180deg,
+        #133B58 0%,
+        #0D2A40 100%
+      );
+      color: var(--text-on-bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding: 32px 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page-wrapper {
+      max-width: 1120px;
+      width: 100%;
+      position: relative;
+    }
+
+    /* LANG SWITCHER */
+    .lang-switcher {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 20;
+    }
+
+    .lang-toggle {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      background: rgba(0, 0, 0, 0.15);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      transition: background var(--transition-fast), transform 0.15s, border-color 0.15s;
+    }
+
+    .lang-toggle:hover {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .lang-menu {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background: #FFFFFF;
+      color: #111827;
+      border-radius: 10px;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+      padding: 6px;
+      display: none;
+      min-width: 130px;
+      z-index: 30;
+    }
+
+    .lang-switcher.open .lang-menu {
+      display: block;
+    }
+
+    .lang-menu button {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 8px;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .lang-menu button:hover {
+      background: #F3F4F6;
+    }
+
+    .lang-menu button.active-lang {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      font-weight: 600;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-top: 8px;
+    }
+
+    .title {
+      font-size: clamp(26px, 4vw, 32px);
+      font-weight: 650;
+      color: var(--text-on-bg);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-on-bg);
+      opacity: 0.85;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    /* SEÇÃO PLANOS */
+    .plans-section {
+      margin-bottom: 32px;
+    }
+
+    /* TOGGLE DIFERENÇAS */
+    .diff-toggle {
+      margin: 14px auto 16px;
+      max-width: 560px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-on-bg);
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .diff-toggle-label {
+      cursor: pointer;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 22px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255,255,255,0.4);
+      transition: .2s;
+      border-radius: 999px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+
+    .switch input:checked + .slider {
+      background-color: #F04444;
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+
+    /* BOTÃO COMPARATIVO */
+    .compare-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .compare-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.6);
+      background: rgba(0,0,0,0.18);
+      color: #fff;
+      font-size: 13px;
+      padding: 8px 18px;
+      cursor: pointer;
+      backdrop-filter: blur(3px);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast), transform 0.15s, box-shadow var(--transition-fast);
+    }
+
+    .compare-btn span {
+      font-size: 14px;
+    }
+
+    .compare-btn:hover {
+      background: rgba(0,0,0,0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    .plans-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    /* --- CARDS PLANOS --- */
+    .plan-card {
+      background: var(--card-bg);
+      color: var(--text-on-card);
+      flex: 1 1 260px;
+      max-width: 340px;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-card);
+      padding: 18px 18px 20px;
+      box-shadow: var(--shadow-soft);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .plan-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .plan-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .plan-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .plan-label {
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .plan-name {
+      font-size: 20px;
+      font-weight: 650;
+      color: var(--text-on-card);
+    }
+
+    .expand-btn {
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      padding: 0;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background var(--transition-fast), color var(--transition-fast), transform 0.15s;
+    }
+
+    .expand-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .plan-tagline {
+      font-size: 13px;
+      color: var(--text-on-card);
+      opacity: 0.8;
+      margin-bottom: 12px;
+    }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: #D8DEE5;
+      margin: 8px 0 12px;
+    }
+
+    .plan-meta {
+      font-size: 11px;
+      color: var(--text-on-card);
+      opacity: 0.75;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .plan-meta-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(19, 59, 88, 0.08);
+      border: 1px solid rgba(19, 59, 88, 0.25);
+      white-space: nowrap;
+    }
+
+    /* --- ACCORDIONS --- */
+    .feature-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    details.feature-group {
+      border: 1px solid #D0D7DF;
+      border-radius: 12px;
+      background: #FAFAFA;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    details.feature-group[open] {
+      border-color: var(--accent);
+    }
+
+    summary.feature-summary {
+      cursor: pointer;
+      padding: 10px 12px;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--text-on-card);
+    }
+
+    summary.feature-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .feature-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .feature-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--text-on-card);
+      opacity: 0.5;
+    }
+
+    details[open] .feature-dot {
+      background: var(--accent);
+    }
+
+    .feature-arrow {
+      font-size: 12px;
+      color: var(--text-on-card);
+      opacity: 0.65;
+      transition: transform 0.22s;
+    }
+
+    details[open] .feature-arrow {
+      transform: rotate(90deg);
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    .feature-body {
+      padding: 10px 14px 14px;
+      color: var(--text-on-card);
+      font-size: 13px;
+      line-height: 1.45;
+      border-top: 1px solid #E2E8F0;
+    }
+
+    .feature-section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-on-card);
+      opacity: 0.65;
+      margin-bottom: 2px;
+    }
+
+    .feature-list {
+      padding-left: 18px;
+      margin-top: 4px;
+    }
+
+    .feature-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-check-new {
+      color: #F04444;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* MODAL COMPARATIVO */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #FFFFFF;
+      color: #111827;
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+      max-width: 860px;
+      width: 100%;
+      padding: 20px 22px 18px;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 650;
+      color: #0F172A;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: #4B5563;
+      margin-bottom: 12px;
+    }
+
+    .modal-close-btn {
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #F9FAFB;
+      color: #374151;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.15s;
+    }
+
+    .modal-close-btn:hover {
+      background: #E5E7EB;
+      transform: translateY(-1px);
+    }
+
+    .comparison-table-wrapper {
+      max-height: 360px;
+      overflow: auto;
+      border-radius: 12px;
+      border: 1px solid #E5E7EB;
+    }
+
+    table.comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 640px;
+    }
+
+    .comparison-table thead {
+      background: #F9FAFB;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #E5E7EB;
+      text-align: left;
+    }
+
+    .comparison-table th {
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+    }
+
+    .comparison-table td {
+      color: #374151;
+    }
+
+    .comparison-table tbody tr:nth-child(even) {
+      background: #F9FAFB;
+    }
+
+    .col-plan {
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .check-yes {
+      color: #16A34A;
+      font-weight: 700;
+    }
+
+    .check-partial {
+      color: #F59E0B;
+      font-weight: 700;
+    }
+
+    .feature-label-strong {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    /* SEÇÃO ADD-ONS */
+    .addons-section {
+      margin-top: 40px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 20px 18px 22px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    .addons-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .addons-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .addons-title {
+      font-size: 18px;
+      font-weight: 650;
+      color: #FFFFFF;
+    }
+
+    .addons-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      max-width: 520px;
+    }
+
+    .addons-badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.65);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #FFFFFF;
+      background: rgba(0,0,0,0.18);
+      white-space: nowrap;
+    }
+
+    .addons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+
+    .addon-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 14px 14px 13px;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .addon-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(240,68,68,0.12), transparent 55%);
+      pointer-events: none;
+    }
+
+    .addon-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 36px rgba(0,0,0,0.35);
+    }
+
+    .addon-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .addon-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      background: rgba(19,59,88,0.08);
+      color: #133B58;
+      border: 1px solid rgba(19,59,88,0.35);
+      flex-shrink: 0;
+    }
+
+    .addon-icon.red {
+      background: rgba(240,68,68,0.06);
+      color: #F04444;
+      border-color: rgba(240,68,68,0.6);
+    }
+
+    /* WhatsApp "logo" com contorno vermelho */
+    .addon-icon.whatsapp-icon {
+      border-radius: 50%;
+      border: 2px solid #F04444;
+      background: transparent;
+      color: #F04444;
+      font-size: 17px;
+    }
+
+    .addon-title {
+      font-size: 14px;
+      font-weight: 650;
+      color: #111827;
+    }
+
+    .addon-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6B7280;
+    }
+
+    .addon-body {
+      font-size: 12px;
+      color: #4B5563;
+      line-height: 1.45;
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 24px 12px;
+      }
+      .plans-grid {
+        flex-direction: column;
+      }
+      .lang-switcher {
+        top: 4px;
+        right: 4px;
+      }
+      .diff-toggle {
+        padding-inline: 8px;
+      }
+      .modal {
+        padding: 16px 14px 14px;
+      }
+      .addons-section {
+        margin-top: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-wrapper">
+    <!-- Seletor de idioma -->
+    <div class="lang-switcher">
+      <button class="lang-toggle" type="button" aria-label="Selecionar idioma">🌐</button>
+      <div class="lang-menu">
+        <button type="button" data-lang="pt" data-i18n="lang.pt" class="active-lang">Português</button>
+        <button type="button" data-lang="en" data-i18n="lang.en">English</button>
+        <button type="button" data-lang="es" data-i18n="lang.es">Español</button>
+      </div>
+    </div>
+
+    <!-- SEÇÃO PRINCIPAL: PLANOS -->
+    <section id="plansSection" class="plans-section">
+      <header class="header">
+        <h1 class="title" data-i18n="header.title">
+          Escolha o plano ideal para sua estratégia de engajamento
+        </h1>
+        <p class="subtitle" data-i18n="header.subtitle">
+          Compare rapidamente o que cada plano CleverTap oferece em dados, orquestração e canais.
+        </p>
+      </header>
+
+      <!-- Toggle: mostrar apenas diferenças -->
+      <div class="diff-toggle">
+        <label class="switch">
+          <input type="checkbox" id="diffOnlyToggle" />
+          <span class="slider"></span>
+        </label>
+        <span class="diff-toggle-label" data-i18n="diff.only.label">
+          Mostrar apenas diferenças entre planos
+        </span>
+      </div>
+
+      <!-- BOTÃO PARA ABRIR COMPARATIVO -->
+      <div class="compare-wrapper">
+        <button type="button" class="compare-btn" id="openCompare">
+          <span data-i18n="compare.button">Ver comparativo completo de planos</span>
+        </button>
+      </div>
+
+      <section class="plans-grid">
+        <!-- ESSENTIALS (nível 1 - base) -->
+        <article class="plan-card" data-plan-level="1">
+          <div class="plan-card-header">
+            <div class="plan-header-text">
+              <div class="plan-label" data-i18n="plan.label">Plano</div>
+              <h2 class="plan-name">Essentials</h2>
+            </div>
+            <button class="expand-btn" type="button"></button>
+          </div>
+
+          <p class="plan-tagline" data-i18n="plan.essentials.tagline">
+            Fundamentos para começar com jornadas digitais e engajamento multicanal.
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="feature-accordion">
+            <!-- Behavioral Analytics -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Behavioral Analytics
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>Funnels</li>
+                  <li>Cohorts</li>
+                  <li>Events</li>
+                  <li>Trends</li>
+                  <li>Session Analytics</li>
+                  <li>Uninstall Tracking</li>
+                  <li>Unified User Profile</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Messaging Channels -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Messaging Channels
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>Push notifications</li>
+                  <li>In-app Messages</li>
+                  <li>App Inbox</li>
+                  <li>Web push</li>
+                  <li>Web pop-up</li>
+                  <li>Web Inbox</li>
+                  <li>Webhooks</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Data Management -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Data Management
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>Schema Design</li>
+                  <li>API Access</li>
+                  <li>CSV Download</li>
+                  <li>CSV Upload</li>
+                  <li>Localized AWS Instances</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Access & Workflows -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Access &amp; Workflows
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>2-Factor Authentication</li>
+                  <li>Single Sign-on</li>
+                  <li>Role-based Access</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Segmentation -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Segmentation
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>Psychographic</li>
+                  <li>Behavioral</li>
+                  <li>Live user</li>
+                  <li>Email Subscription groups</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Campaign Optimization -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Campaign Optimization
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>Message A/B Test</li>
+                  <li>Send to All Devices</li>
+                  <li>Email Editor</li>
+                  <li>Enhanced Push Delivery</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Orchestration -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Orchestration
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>Journeys</li>
+                  <li>Basic Templates</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Integration -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Integration
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label" data-i18n="label.features.this-plan">Funcionalidades neste plano:</div>
+                <ul class="feature-list">
+                  <li>API</li>
+                  <li>SDK</li>
+                  <li>Attribution Platforms</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="plan-meta">
+            <span class="plan-meta-pill" data-i18n="plan.essentials.meta.pill">Ideal para: times em fase inicial</span>
+            <span data-i18n="plan.essentials.meta.text">Visão por pilar</span>
+          </div>
+        </article>
+
+        <!-- ADVANCED (nível 2) -->
+        <article class="plan-card" data-plan-level="2">
+          <div class="plan-card-header">
+            <div class="plan-header-text">
+              <div class="plan-label" data-i18n="plan.label">Plano</div>
+              <h2 class="plan-name">Advanced</h2>
+            </div>
+            <button class="expand-btn" type="button"></button>
+          </div>
+
+          <p class="plan-tagline" data-i18n="plan.advanced.tagline">
+            Inclui tudo do Essentials e adiciona recursos avançados de dados, canais e personalização.
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="feature-accordion">
+            <!-- Behavioral Analytics (com extras vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Behavioral Analytics
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>Funnels</span></li>
+                  <li class="feature-item feature-base"><span>Cohorts</span></li>
+                  <li class="feature-item feature-base"><span>Events</span></li>
+                  <li class="feature-item feature-base"><span>Trends</span></li>
+                  <li class="feature-item feature-base"><span>Session Analytics</span></li>
+                  <li class="feature-item feature-base"><span>Uninstall Tracking</span></li>
+                  <li class="feature-item feature-base"><span>Unified User Profile</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>Pivots</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Flows</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Advanced cohorts with retention mode</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Aggregated Event Properties</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Composite Events</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Segments Comparison</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Functions &amp; Formulas</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Event Comparison</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Messaging Channels (com extras vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Messaging Channels
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>Push notifications</span></li>
+                  <li class="feature-item feature-base"><span>In-app Messages</span></li>
+                  <li class="feature-item feature-base"><span>App Inbox</span></li>
+                  <li class="feature-item feature-base"><span>Web push</span></li>
+                  <li class="feature-item feature-base"><span>Web pop-up</span></li>
+                  <li class="feature-item feature-base"><span>Web Inbox</span></li>
+                  <li class="feature-item feature-base"><span>Webhooks</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>Web native Display</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>App Native Display</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Google Ads</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Facebook Audience</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Data Management (com extras vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Data Management
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>Schema Design</span></li>
+                  <li class="feature-item feature-base"><span>API Access</span></li>
+                  <li class="feature-item feature-base"><span>CSV Download</span></li>
+                  <li class="feature-item feature-base"><span>CSV Upload</span></li>
+                  <li class="feature-item feature-base"><span>Localized AWS Instances</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>GCP Export</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>SFTP Data Imports</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Batch Data Export to AWS S3</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>AWS EventBridge</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Bulk export to Mixpanel</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Bulk export to mParticle</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Bulk export to Amplitude</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Bulk export to Segment</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Access & Workflows (com extras vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Access &amp; Workflows
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>2-Factor Authentication</span></li>
+                  <li class="feature-item feature-base"><span>Single Sign-on</span></li>
+                  <li class="feature-item feature-base"><span>Role-based Access</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>Advanced Role-based Access</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Campaign Approval Workflows</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Integrations (sem novidades) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Integrations
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.same-as-essentials">
+                  Mesmos recursos do Essentials:
+                </div>
+                <ul class="feature-list">
+                  <li>API</li>
+                  <li>SDK</li>
+                  <li>Attribution Platforms</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Individualization (tudo novo vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Individualization
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-diff">
+                    <span>Bulletins</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Linked Contents</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Liquid tags</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Geofencing</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Catalog Send-Time Personalization</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Constant Property Campaigns</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Segmentation (com extras vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Segmentation
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>Psychographic</span></li>
+                  <li class="feature-item feature-base"><span>Behavioral</span></li>
+                  <li class="feature-item feature-base"><span>Live user</span></li>
+                  <li class="feature-item feature-base"><span>Email Subscription groups</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>Recency Frequency Monetary (RFM)</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Custom List</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Campaign Optimization (com extra vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Campaign Optimization
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>Message A/B Test</span></li>
+                  <li class="feature-item feature-base"><span>Send to All Devices</span></li>
+                  <li class="feature-item feature-base"><span>Email Editor</span></li>
+                  <li class="feature-item feature-base"><span>Enhanced Push Delivery</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>Best Time to Deliver</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Orchestration (com extra vs Essentials) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Orchestration
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>Journeys</span></li>
+                  <li class="feature-item feature-base"><span>Basic Templates</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>Scribe</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="plan-meta">
+            <span class="plan-meta-pill" data-i18n="plan.advanced.meta.pill">Mais escolhido</span>
+            <span data-i18n="plan.advanced.meta.text">Inclui Essentials + upgrades</span>
+          </div>
+        </article>
+
+        <!-- CUTTING EDGE (nível 3) -->
+        <article class="plan-card" data-plan-level="3">
+          <div class="plan-card-header">
+            <div class="plan-header-text">
+              <div class="plan-label" data-i18n="plan.label">Plano</div>
+              <h2 class="plan-name">Cutting Edge</h2>
+            </div>
+            <button class="expand-btn" type="button"></button>
+          </div>
+
+          <p class="plan-tagline" data-i18n="plan.cutting.tagline">
+            Inclui tudo do Advanced e adiciona capacidades de IA, personalização dinâmica e otimização inteligente.
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="feature-accordion">
+            <!-- Behavioral Analytics -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Behavioral Analytics
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.includes-advanced">
+                  Inclui tudo do Advanced:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>Funnels</li>
+                  <li>Cohorts</li>
+                  <li>Events</li>
+                  <li>Trends</li>
+                  <li>Session Analytics</li>
+                  <li>Uninstall Tracking</li>
+                  <li>Unified User Profile</li>
+                  <li>Pivots</li>
+                  <li>Flows</li>
+                  <li>Advanced cohorts with retention mode</li>
+                  <li>Aggregated Event Properties</li>
+                  <li>Composite Events</li>
+                  <li>Segments Comparison</li>
+                  <li>Functions &amp; Formulas</li>
+                  <li>Event Comparison</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Messaging Channels -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Messaging Channels
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.includes-advanced">
+                  Inclui tudo do Advanced:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>Push notifications</li>
+                  <li>In-app Messages</li>
+                  <li>App Inbox</li>
+                  <li>Web push</li>
+                  <li>Web pop-up</li>
+                  <li>Web Inbox</li>
+                  <li>Webhooks</li>
+                  <li>Web native Display</li>
+                  <li>App Native Display</li>
+                  <li>Google Ads</li>
+                  <li>Facebook Audience</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Data Management -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Data Management
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.includes-advanced">
+                  Inclui tudo do Advanced:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>Schema Design</li>
+                  <li>API Access</li>
+                  <li>CSV Download</li>
+                  <li>CSV Upload</li>
+                  <li>Localized AWS Instances</li>
+                  <li>GCP Export</li>
+                  <li>SFTP Data Imports</li>
+                  <li>Batch Data Export to AWS S3</li>
+                  <li>AWS EventBridge</li>
+                  <li>Bulk export to Mixpanel</li>
+                  <li>Bulk export to mParticle</li>
+                  <li>Bulk export to Amplitude</li>
+                  <li>Bulk export to Segment</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Access & Workflows -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Access &amp; Workflows
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.includes-advanced">
+                  Inclui tudo do Advanced:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>2-Factor Authentication</li>
+                  <li>Single Sign-on</li>
+                  <li>Role-based Access</li>
+                  <li>Advanced Role-based Access</li>
+                  <li>Campaign Approval Workflows</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Integrations -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Integrations
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.same-as-others">
+                  Mesmos recursos dos outros planos:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>API</li>
+                  <li>SDK</li>
+                  <li>Attribution Platforms</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Individualization (novas features vs Advanced) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Individualization
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.includes-advanced">
+                  Inclui tudo do Advanced:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>Bulletins</li>
+                  <li>Linked Contents</li>
+                  <li>Liquid tags</li>
+                  <li>Geofencing</li>
+                  <li>Catalog Send-Time Personalization</li>
+                  <li>Constant Property Campaigns</li>
+                </ul>
+
+                <div class="feature-section-label diff-label" style="margin-top:8px;" data-i18n="label.features.new">
+                  Novas funcionalidades:
+                </div>
+                <ul class="feature-list feature-diff-block" style="list-style:none; padding-left:0;">
+                  <li class="feature-item feature-diff">
+                    <span>Product Recommendations</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Segmentation (novas features vs Advanced) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Segmentation
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.includes-advanced">
+                  Inclui tudo do Advanced:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>Psychographic</li>
+                  <li>Behavioral</li>
+                  <li>Live user</li>
+                  <li>Email Subscription groups</li>
+                  <li>Recency Frequency Monetary (RFM)</li>
+                  <li>Custom List</li>
+                </ul>
+
+                <div class="feature-section-label diff-label" style="margin-top:8px;" data-i18n="label.features.new">
+                  Novas funcionalidades:
+                </div>
+                <ul class="feature-list feature-diff-block" style="list-style:none; padding-left:0;">
+                  <li class="feature-item feature-diff">
+                    <span>Intent-based</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Campaign Optimization -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Campaign Optimization
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <ul class="feature-list">
+                  <li class="feature-item feature-base"><span>Message A/B Test</span></li>
+                  <li class="feature-item feature-base"><span>Send to All Devices</span></li>
+                  <li class="feature-item feature-base"><span>Email Editor</span></li>
+                  <li class="feature-item feature-base"><span>Enhanced Push Delivery</span></li>
+
+                  <li class="feature-item feature-diff">
+                    <span>Best Time to Deliver</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Orchestration (novas features vs Advanced) -->
+            <details class="feature-group">
+              <summary class="feature-summary">
+                <span class="feature-title">
+                  <span class="feature-dot"></span>
+                  Orchestration
+                </span>
+                <span class="feature-arrow">▶</span>
+              </summary>
+              <div class="feature-body">
+                <div class="feature-section-label base-label" data-i18n="label.features.includes-advanced">
+                  Inclui tudo do Advanced:
+                </div>
+                <ul class="feature-list feature-base-block">
+                  <li>Journeys</li>
+                  <li>Basic Templates</li>
+                  <li>Scribe</li>
+                </ul>
+
+                <div class="feature-section-label diff-label" style="margin-top:8px;" data-i18n="label.features.new">
+                  Novas funcionalidades:
+                </div>
+                <ul class="feature-list feature-diff-block" style="list-style:none; padding-left:0%;">
+                  <li class="feature-item feature-diff">
+                    <span>IntelliNODE</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                  <li class="feature-item feature-diff">
+                    <span>Lifecycle Optimizer</span>
+                    <span class="feature-check-new">✔</span>
+                  </li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="plan-meta">
+            <span class="plan-meta-pill" data-i18n="plan.cutting.meta.pill">Enterprise / inovação</span>
+            <span data-i18n="plan.cutting.meta.text">Essentials + Advanced + IA</span>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <!-- SEÇÃO ADD-ONS -->
+    <section id="addonsSection" class="addons-section">
+      <div class="addons-header">
+        <div class="addons-title-block">
+          <h2 class="addons-title" data-i18n="addons.title">Add-ons CleverTap</h2>
+          <p class="addons-subtitle" data-i18n="addons.subtitle">
+            Expanda suas capacidades conectando canais e experiências premium pagos à parte: ideais para
+            escalar campanhas multicanal com alto volume e personalização avançada.
+          </p>
+        </div>
+        <span class="addons-badge" data-i18n="addons.badge">Serviços adicionais (add-ons)</span>
+      </div>
+
+      <div class="addons-grid">
+        <!-- Email -->
+        <article class="addon-card">
+          <div class="addon-header">
+            <div class="addon-icon red">📧</div>
+            <div>
+              <div class="addon-title" data-i18n="addons.email.title">Email</div>
+              <div class="addon-tag" data-i18n="addons.email.tag">Canais tradicionais</div>
+            </div>
+          </div>
+          <p class="addon-body" data-i18n="addons.email.body">
+            Envio de campanhas transacionais e promocionais por email com editor avançado,
+            templates personalizados e métricas de entrega, clique e conversão diretamente no painel CleverTap.
+          </p>
+        </article>
+
+        <!-- SMS -->
+        <article class="addon-card">
+          <div class="addon-header">
+            <div class="addon-icon">✉️</div>
+            <div>
+              <div class="addon-title" data-i18n="addons.sms.title">SMS</div>
+              <div class="addon-tag" data-i18n="addons.sms.tag">Canais tradicionais</div>
+            </div>
+          </div>
+          <p class="addon-body" data-i18n="addons.sms.body">
+            Mensagens de texto para comunicações urgentes ou de alta penetração, integradas com jornadas,
+            segmentação e regras de frequência, garantindo governança por país e operadora.
+          </p>
+        </article>
+
+        <!-- WhatsApp -->
+        <article class="addon-card">
+          <div class="addon-header">
+            <div class="addon-icon whatsapp-icon"></div>
+            <div>
+              <div class="addon-title" data-i18n="addons.whatsapp.title">WhatsApp</div>
+              <div class="addon-tag" data-i18n="addons.whatsapp.tag">Canais tradicionais</div>
+            </div>
+          </div>
+          <p class="addon-body" data-i18n="addons.whatsapp.body">
+            Conecte seu provedor oficial de WhatsApp Business à CleverTap para disparos de campanhas,
+            jornadas automatizadas e experiências conversacionais com alta taxa de leitura e resposta.
+          </p>
+        </article>
+
+        <!-- Signed Calls -->
+        <article class="addon-card">
+          <div class="addon-header">
+            <div class="addon-icon red">📞</div>
+            <div>
+              <div class="addon-title" data-i18n="addons.signed_calls.title">Signed Calls</div>
+              <div class="addon-tag" data-i18n="addons.signed_calls.tag">Canais tradicionais</div>
+            </div>
+          </div>
+          <p class="addon-body" data-i18n="addons.signed_calls.body">
+            Identificação de chamadas com marca, motivo da ligação e contexto da jornada, reduzindo recusas
+            e melhorando a confiança do usuário em campanhas de outbound ou ações de retenção.
+          </p>
+        </article>
+
+        <!-- Product Experience -->
+        <article class="addon-card">
+          <div class="addon-header">
+            <div class="addon-icon">📱</div>
+            <div>
+              <div class="addon-title" data-i18n="addons.px.title">Product Experience</div>
+              <div class="addon-tag" data-i18n="addons.px.tag">Individualization</div>
+            </div>
+          </div>
+          <p class="addon-body" data-i18n="addons.px.body">
+            Add-on focado em otimizar a experiência dentro do app ou web: experimentos de UX, guias
+            contextuais, mensagens in-product e testes para acelerar adoção de features críticas.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL COMPARATIVO -->
+  <div class="modal-overlay" id="compareModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="compareTitle">
+      <div class="modal-header">
+        <h2 class="modal-title" id="compareTitle" data-i18n="compare.title">
+          Comparativo de funcionalidades por plano
+        </h2>
+        <button type="button" class="modal-close-btn" id="closeCompare" aria-label="Fechar comparativo">×</button>
+      </div>
+      <p class="modal-subtitle" data-i18n="compare.subtitle">
+        Veja rapidamente quais capacidades da CleverTap estão inclusas em cada plano.
+      </p>
+      <div class="comparison-table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th data-i18n="compare.feature">Funcionalidade</th>
+              <th class="col-plan">Essentials</th>
+              <th class="col-plan">Advanced</th>
+              <th class="col-plan">Cutting Edge</th>
+            </tr>
+          </thead>
+            <tbody>
+            <tr>
+                <td class="feature-label-strong" data-i18n="compare.row.behavioral">
+                Behavioral Analytics (funnels, cohorts, trends)
+                </td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.adv_analytics">
+                Analytics avançadas (Pivots, Flows, funções, comparação de eventos)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-label-strong" data-i18n="compare.row.channels">
+                Canais messaging (push, in-app, inbox, web)
+                </td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.display_paid">
+                Display nativo (app/web) &amp; paid media (Google Ads, Facebook Audience)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-label-strong" data-i18n="compare.row.data_basic">
+                Gestão de dados básica (schema, API, CSV, instâncias AWS)
+                </td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.data_adv">
+                Exportações e integrações avançadas (GCP, S3, EventBridge, CDPs)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-label-strong" data-i18n="compare.row.security">
+                Segurança &amp; acesso (2FA, SSO, RBAC)
+                </td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.workflows">
+                Workflows de aprovação &amp; RBAC avançado
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-label-strong" data-i18n="compare.row.individualization">
+                Individualização (tags, conteúdos dinâmicos, geofencing)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.product_rec">
+                Recomendações de produto com IA
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-label-strong" data-i18n="compare.row.segmentation_adv">
+                Segmentação avançada (RFM, listas customizadas)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.intent">
+                Segmentação por intenção (Intent-based)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td class="feature-label-strong" data-i18n="compare.row.orchestration">
+                Orquestração (Journeys, templates)
+                </td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.orchestration_extra">
+                Recursos adicionais de orquestração (Scribe)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            <tr>
+                <td data-i18n="compare.row.ai_opt">
+                Otimização com IA (IntelliNODE, Lifecycle Optimizer)
+                </td>
+                <td class="col-plan">—</td>
+                <td class="col-plan">—</td>
+                <td class="col-plan"><span class="check-yes">✔</span></td>
+            </tr>
+            </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Traduções ---
+    const translations = {
+      pt: {
+        'header.title': 'Escolha o plano ideal para sua estratégia de engajamento',
+        'header.subtitle': 'Compare rapidamente o que cada plano CleverTap oferece em dados, orquestração e canais.',
+
+        'plan.label': 'Plano',
+
+        'plan.essentials.tagline': 'Fundamentos para começar com jornadas digitais e engajamento multicanal.',
+        'plan.advanced.tagline': 'Inclui tudo do Essentials e adiciona recursos avançados de dados, canais e personalização.',
+        'plan.cutting.tagline': 'Inclui tudo do Advanced e adiciona capacidades de IA, personalização dinâmica e otimização inteligente.',
+
+        'plan.essentials.meta.pill': 'Ideal para: times em fase inicial',
+        'plan.essentials.meta.text': 'Visão por pilar',
+
+        'plan.advanced.meta.pill': 'Mais escolhido',
+        'plan.advanced.meta.text': 'Inclui Essentials + upgrades',
+
+        'plan.cutting.meta.pill': 'Enterprise / inovação',
+        'plan.cutting.meta.text': 'Essentials + Advanced + IA',
+
+        'label.features.this-plan': 'Funcionalidades neste plano:',
+        'label.features.same-as-essentials': 'Mesmos recursos do Essentials:',
+        'label.features.includes-advanced': 'Inclui tudo do Advanced:',
+        'label.features.same-as-others': 'Mesmos recursos dos outros planos:',
+        'label.features.new': 'Novas funcionalidades:',
+
+        'cta.essentials': 'Explorar Essentials',
+        'cta.advanced': 'Mapear necessidades',
+        'cta.cutting': 'Explorar capacidades',
+
+        'lang.pt': 'Português',
+        'lang.en': 'English',
+        'lang.es': 'Español',
+
+        'expandAll': 'Expandir todas as seções',
+        'collapseAll': 'Recolher todas as seções',
+
+        'diff.only.label': 'Mostrar apenas diferenças entre planos',
+
+        'compare.button': 'Ver comparativo completo de planos',
+        'compare.title': 'Comparativo de funcionalidades por plano',
+        'compare.subtitle': 'Veja rapidamente quais capacidades da CleverTap estão inclusas em cada plano.',
+        'compare.feature': 'Funcionalidade',
+        "compare.row.behavioral": "Behavioral Analytics (funnels, cohorts, trends)",
+        "compare.row.adv_analytics": "Analytics avançadas (Pivots, Flows, funções, comparação de eventos)",
+        "compare.row.channels": "Canais messaging (push, in-app, inbox, web)",
+        "compare.row.display_paid": "Display nativo (app/web) & paid media (Google Ads, Facebook Audience)",
+        "compare.row.data_basic": "Gestão de dados básica (schema, API, CSV, instâncias AWS)",
+        "compare.row.data_adv": "Exportações e integrações avançadas (GCP, S3, EventBridge, CDPs)",
+        "compare.row.security": "Segurança & acesso (2FA, SSO, RBAC)",
+        "compare.row.workflows": "Workflows de aprovação & RBAC avançado",
+        "compare.row.individualization": "Individualização (tags, conteúdos dinâmicos, geofencing)",
+        "compare.row.product_rec": "Recomendações de produto com IA",
+        "compare.row.segmentation_adv": "Segmentação avançada (RFM, listas customizadas)",
+        "compare.row.intent": "Segmentação por intenção (Intent-based)",
+        "compare.row.orchestration": "Orquestração (Journeys, templates)",
+        "compare.row.orchestration_extra": "Recursos adicionais de orquestração (Scribe)",
+        "compare.row.ai_opt": "Otimização com IA (IntelliNODE, Lifecycle Optimizer)",
+
+
+        /* ADD-ONS */
+        'addons.title': 'Add-ons CleverTap',
+        'addons.subtitle': 'Expanda suas capacidades conectando canais e experiências premium pagos à parte: ideais para escalar campanhas multicanal com alto volume e personalização avançada.',
+        'addons.badge': 'Serviços adicionais',
+
+        'addons.email.title': 'Email',
+        'addons.email.tag': 'Canal de Mensageria',
+        'addons.email.body': 'Envie campanhas de email diretamente pela CleverTap usando nosso provedor integrado, ou utilize seu provedor atual conectando via SMTP. Suporte total a templates, personalização avançada, métricas e otimização nativa.',
+
+        'addons.sms.title': 'SMS',
+        'addons.sms.tag': 'Canal de Mensageria',
+        'addons.sms.body': 'Conecte seu provedor de SMS atual ou utilize um dos parceiros homologados pela CleverTap. Gerencie envios, segmentações, personalização e acompanhe métricas em um único painel.',
+
+        'addons.whatsapp.title': 'WhatsApp',
+        'addons.whatsapp.tag': 'Canal de mensageria',
+        'addons.whatsapp.body': 'Use WhatsApp via CleverTap com integração direta (WhatsApp Direct) ou conecte seu provedor externo.',
+
+        'addons.signed_calls.title': 'Signed Calls',
+        'addons.signed_calls.tag': 'Experiência de Chamada',
+        'addons.signed_calls.body': 'Identificação de chamadas com marca, motivo da ligação e contexto da jornada, reduzindo recusas e melhorando a confiança do usuário em campanhas de outbound ou ações de retenção.',
+
+        'addons.px.title': 'Product Experience',
+        'addons.px.tag': 'Individualização',
+        'addons.px.body': 'Crie experiências no app sem precisar de desenvolvimento: banners, tooltips, nudges, walkthroughs e layouts dinâmicos. Personalização avançada e segmentação nativa via CleverTap.'
+      },
+      en: {
+        'header.title': 'Choose the ideal plan for your engagement strategy',
+        'header.subtitle': 'Quickly compare what each CleverTap plan offers in data, orchestration, and channels.',
+
+        'plan.label': 'Plan',
+
+        'plan.essentials.tagline': 'Foundations to get started with digital journeys and multichannel engagement.',
+        'plan.advanced.tagline': 'Includes everything in Essentials and adds advanced data, channels, and personalization capabilities.',
+        'plan.cutting.tagline': 'Includes everything in Advanced and adds AI, dynamic personalization, and intelligent optimization.',
+
+        'plan.essentials.meta.pill': 'Ideal for: teams getting started',
+        'plan.essentials.meta.text': 'Pillar-based view',
+
+        'plan.advanced.meta.pill': 'Most popular',
+        'plan.advanced.meta.text': 'Includes Essentials + upgrades',
+
+        'plan.cutting.meta.pill': 'Enterprise / innovation',
+        'plan.cutting.meta.text': 'Essentials + Advanced + AI',
+
+        'label.features.this-plan': 'Features in this plan:',
+        'label.features.same-as-essentials': 'Same as Essentials:',
+        'label.features.includes-advanced': 'Includes everything in Advanced:',
+        'label.features.same-as-others': 'Same as the other plans:',
+        'label.features.new': 'New in this plan:',
+
+        'cta.essentials': 'Explore Essentials',
+        'cta.advanced': 'Map needs',
+        'cta.cutting': 'Explore capabilities',
+
+        'lang.pt': 'Português',
+        'lang.en': 'English',
+        'lang.es': 'Español',
+
+        'expandAll': 'Expand all sections',
+        'collapseAll': 'Collapse all sections',
+
+        'diff.only.label': 'Show only differences between plans',
+
+        'compare.button': 'View full plan comparison',
+        'compare.title': 'Feature comparison by plan',
+        'compare.subtitle': 'Quickly see which CleverTap capabilities are included in each plan.',
+        'compare.feature': 'Feature',
+        "compare.row.behavioral": "Behavioral Analytics (funnels, cohorts, trends)",
+        "compare.row.adv_analytics": "Advanced analytics (Pivots, Flows, functions, event comparison)",
+        "compare.row.channels": "Messaging channels (push, in-app, inbox, web)",
+        "compare.row.display_paid": "Native display (app/web) & paid media (Google Ads, Facebook Audience)",
+        "compare.row.data_basic": "Core data management (schema, API, CSV, AWS instances)",
+        "compare.row.data_adv": "Advanced exports & integrations (GCP, S3, EventBridge, CDPs)",
+        "compare.row.security": "Security & access (2FA, SSO, RBAC)",
+        "compare.row.workflows": "Approval workflows & advanced RBAC",
+        "compare.row.individualization": "Individualization (tags, dynamic content, geofencing)",
+        "compare.row.product_rec": "AI-powered product recommendations",
+        "compare.row.segmentation_adv": "Advanced segmentation (RFM, custom lists)",
+        "compare.row.intent": "Intent-based segmentation",
+        "compare.row.orchestration": "Orchestration (Journeys, templates)",
+        "compare.row.orchestration_extra": "Additional orchestration features (Scribe)",
+        "compare.row.ai_opt": "AI optimization (IntelliNODE, Lifecycle Optimizer)",
+
+
+        /* ADD-ONS */
+        'addons.title': 'CleverTap Add-ons',
+        'addons.subtitle': 'Expand your capabilities by connecting premium, separately priced channels and experiences – ideal to scale multichannel campaigns with high volume and advanced personalization.',
+        'addons.badge': 'Additional services',
+
+        'addons.email.title': 'Email',
+        'addons.email.tag': 'Messaging Channel',
+        'addons.email.body': 'Send email campaigns directly through CleverTap using our integrated provider, or connect your existing SMTP provider. Full support for templates, advanced personalization, analytics, and native optimization.',
+
+        'addons.sms.title': 'SMS',
+        'addons.sms.tag': 'Messaging Channel',
+        'addons.sms.body': 'Connect your current SMS provider or use one of CleverTaps certified partners. Manage deliveries, segmentation, personalization, and performance analytics from a single dashboard.',
+
+        'addons.whatsapp.title': 'WhatsApp',
+        'addons.whatsapp.tag': 'Messaging Channel',
+        'addons.whatsapp.body': 'Use WhatsApp through CleverTap with direct integration (WhatsApp Direct) or connect your external provider.',
+
+        'addons.signed_calls.title': 'Signed Calls',
+        'addons.signed_calls.tag': 'Call Experience',
+        'addons.signed_calls.body': 'Branded caller ID with call reason and journey context, reducing declined calls and increasing trust in outbound campaigns and retention initiatives.',
+
+        'addons.px.title': 'Product Experience',
+        'addons.px.tag': 'Individualization',
+        'addons.px.body': 'Create in-app experiences without development: banners, tooltips, nudges, walkthroughs, and dynamic layouts. Advanced personalization and native segmentation powered by CleverTap.'
+      },
+      es: {
+        'header.title': 'Elige el plan ideal para tu estrategia de engagement',
+        'header.subtitle': 'Compara rápidamente lo que ofrece cada plan de CleverTap en datos, orquestación y canales.',
+
+        'plan.label': 'Plan',
+
+        'plan.essentials.tagline': 'Fundamentos para comenzar con journeys digitales y engagement multicanal.',
+        'plan.advanced.tagline': 'Incluye todo lo de Essentials y suma capacidades avanzadas de datos, canales y personalización.',
+        'plan.cutting.tagline': 'Incluye todo lo de Advanced y agrega IA, personalización dinámica y optimización inteligente.',
+
+        'plan.essentials.meta.pill': 'Ideal para: equipos en etapa inicial',
+        'plan.essentials.meta.text': 'Vista por pilar',
+
+        'plan.advanced.meta.pill': 'Más elegido',
+        'plan.advanced.meta.text': 'Incluye Essentials + upgrades',
+
+        'plan.cutting.meta.pill': 'Enterprise / innovación',
+        'plan.cutting.meta.text': 'Essentials + Advanced + IA',
+
+        'label.features.this-plan': 'Funcionalidades en este plan:',
+        'label.features.same-as-essentials': 'Mismas que Essentials:',
+        'label.features.includes-advanced': 'Incluye todo lo de Advanced:',
+        'label.features.same-as-others': 'Mismas que los otros planes:',
+        'label.features.new': 'Nuevas en este plan:',
+
+        'cta.essentials': 'Explorar Essentials',
+        'cta.advanced': 'Mapear necesidades',
+        'cta.cutting': 'Explorar capacidades',
+
+        'lang.pt': 'Portugués',
+        'lang.en': 'Inglés',
+        'lang.es': 'Español',
+
+        'expandAll': 'Expandir todas las secciones',
+        'collapseAll': 'Contraer todas las secciones',
+
+        'diff.only.label': 'Mostrar solo diferencias entre planes',
+
+        'compare.button': 'Ver comparativo completo de planes',
+        'compare.title': 'Comparativo de funcionalidades por plan',
+        'compare.subtitle': 'Visualiza rápidamente qué capacidades de CleverTap están incluidas en cada plan.',
+        'compare.feature': 'Funcionalidad',
+        "compare.row.behavioral": "Behavioral Analytics (funnels, cohorts, trends)",
+        "compare.row.adv_analytics": "Analytics avanzadas (Pivots, Flows, funciones, comparación de eventos)",
+        "compare.row.channels": "Canales de mensajería (push, in-app, inbox, web)",
+        "compare.row.display_paid": "Display nativo (app/web) y paid media (Google Ads, Facebook Audience)",
+        "compare.row.data_basic": "Gestión básica de datos (schema, API, CSV, instancias AWS)",
+        "compare.row.data_adv": "Exportaciones e integraciones avanzadas (GCP, S3, EventBridge, CDPs)",
+        "compare.row.security": "Seguridad y acceso (2FA, SSO, RBAC)",
+        "compare.row.workflows": "Workflows de aprobación y RBAC avanzado",
+        "compare.row.individualization": "Individualización (tags, contenidos dinámicos, geofencing)",
+        "compare.row.product_rec": "Recomendaciones de producto con IA",
+        "compare.row.segmentation_adv": "Segmentación avanzada (RFM, listas personalizadas)",
+        "compare.row.intent": "Segmentación por intención (Intent-based)",
+        "compare.row.orchestration": "Orquestación (Journeys, templates)",
+        "compare.row.orchestration_extra": "Recursos adicionales de orquestación (Scribe)",
+        "compare.row.ai_opt": "Optimización con IA (IntelliNODE, Lifecycle Optimizer)",
+
+
+        /* ADD-ONS */
+        'addons.title': 'Add-ons de CleverTap',
+        'addons.subtitle': 'Expande tus capacidades conectando canales y experiencias premium contratadas aparte: ideales para escalar campañas multicanal con alto volumen y personalización avanzada.',
+        'addons.badge': 'Servicios adicionales',
+
+        'addons.email.title': 'Email',
+        'addons.email.tag': 'Canal de mensajería',
+        'addons.email.body': 'Envía campañas de correo electrónico directamente con CleverTap usando nuestro proveedor integrado, o conecta tu proveedor actual mediante SMTP.',
+
+        'addons.sms.title': 'SMS',
+        'addons.sms.tag': 'Canal de mensajería',
+        'addons.sms.body': 'Conecta tu proveedor de SMS actual o utiliza uno de los socios certificados por CleverTap. Gestiona envíos, segmentación, personalización y métricas desde un único panel.',
+
+        'addons.whatsapp.title': 'WhatsApp',
+        'addons.whatsapp.tag': 'Canal de mensajería',
+        'addons.whatsapp.body': 'Usa WhatsApp a través de CleverTap con integración directa (WhatsApp Direct) o conecta tu proveedor externo.',
+
+        'addons.signed_calls.title': 'Signed Calls',
+        'addons.signed_calls.tag': 'Experiencia de llamada',
+        'addons.signed_calls.body': 'Identificación de llamadas con marca, motivo de la llamada y contexto del journey, reduciendo rechazos y aumentando la confianza del usuario en campañas de outbound o acciones de retención.',
+
+        'addons.px.title': 'Product Experience',
+        'addons.px.tag': 'Individualizacion',
+        'addons.px.body': 'Crea experiencias dentro de la app sin necesidad de desarrollo: banners, tooltips, nudges, walkthroughs y diseños dinámicos. Personalización avanzada y segmentación nativa con CleverTap.'
+      }
+    };
+
+    let currentLang = 'pt';
+    const expandUpdateFns = [];
+
+    const diffToggle = document.getElementById('diffOnlyToggle');
+
+    function applyTranslations() {
+      const dict = translations[currentLang];
+      if (!dict) return;
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+
+      const langAttr = currentLang === 'pt' ? 'pt-BR' : (currentLang === 'en' ? 'en' : 'es');
+      document.documentElement.setAttribute('lang', langAttr);
+
+      document.querySelectorAll('.lang-menu button').forEach(btn => {
+        btn.classList.toggle('active-lang', btn.dataset.lang === currentLang);
+      });
+
+      expandUpdateFns.forEach(fn => fn());
+    }
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+      applyTranslations();
+    }
+
+    function updateDiffVisibility() {
+      const diffOn = diffToggle.checked;
+
+      document.querySelectorAll('.plan-card').forEach(card => {
+        const level = parseInt(card.dataset.planLevel || '1', 10);
+
+        const groups = card.querySelectorAll('details.feature-group');
+
+        groups.forEach(group => {
+          const hasDiff = group.querySelector('.feature-diff, .feature-diff-block');
+          if (diffOn && level > 1) {
+            if (!hasDiff) {
+              group.style.display = 'none';
+            } else {
+              group.style.display = '';
+            }
+          } else {
+            group.style.display = '';
+          }
+        });
+
+        if (diffOn && level > 1) {
+          card.querySelectorAll('.feature-item.feature-base').forEach(li => {
+            li.style.display = 'none';
+          });
+          card.querySelectorAll('.feature-base-block').forEach(block => {
+            block.style.display = 'none';
+          });
+          card.querySelectorAll('.feature-section-label.base-label').forEach(label => {
+            label.style.display = 'none';
+          });
+          card.querySelectorAll('.feature-item.feature-diff').forEach(li => {
+            li.style.display = 'flex';
+          });
+          card.querySelectorAll('.feature-diff-block').forEach(block => {
+            block.style.display = '';
+          });
+          card.querySelectorAll('.feature-section-label.diff-label').forEach(label => {
+            label.style.display = 'block';
+          });
+        } else {
+          card.querySelectorAll('.feature-item.feature-base').forEach(li => {
+            li.style.display = 'flex';
+          });
+          card.querySelectorAll('.feature-base-block').forEach(block => {
+            block.style.display = '';
+          });
+          card.querySelectorAll('.feature-section-label.base-label').forEach(label => {
+            label.style.display = 'block';
+          });
+          card.querySelectorAll('.feature-diff-block').forEach(block => {
+            block.style.display = '';
+          });
+          card.querySelectorAll('.feature-section-label.diff-label').forEach(label => {
+            label.style.display = 'block';
+          });
+        }
+      });
+    }
+
+    // --- Expand / Collapse por card ---
+    document.querySelectorAll('.plan-card').forEach(function(card) {
+      const btn = card.querySelector('.expand-btn');
+      if (!btn) return;
+      const detailsList = card.querySelectorAll('details.feature-group');
+
+      function allOpen() {
+        return Array.from(detailsList).every(d => d.open);
+      }
+
+      function updateButton() {
+        const isAllOpen = allOpen();
+        const dict = translations[currentLang] || translations.pt;
+        btn.textContent = isAllOpen ? '−' : '+';
+        const label = isAllOpen ? dict.collapseAll : dict.expandAll;
+        btn.title = label;
+        btn.setAttribute('aria-label', label);
+      }
+
+      btn.addEventListener('click', function() {
+        const isAllOpen = allOpen();
+        detailsList.forEach(d => {
+          d.open = !isAllOpen;
+        });
+        updateButton();
+      });
+
+      detailsList.forEach(d => {
+        d.addEventListener('toggle', updateButton);
+      });
+
+      expandUpdateFns.push(updateButton);
+      updateButton();
+    });
+
+    // --- Seletor de idioma ---
+    const langSwitcher = document.querySelector('.lang-switcher');
+    const langToggle = langSwitcher.querySelector('.lang-toggle');
+    const langButtons = langSwitcher.querySelectorAll('.lang-menu button');
+
+    langToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langSwitcher.classList.toggle('open');
+    });
+
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const lang = btn.dataset.lang;
+        updateLanguage(lang);
+        langSwitcher.classList.remove('open');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!langSwitcher.contains(e.target)) {
+        langSwitcher.classList.remove('open');
+      }
+    });
+
+    // --- Toggle diferenças ---
+    diffToggle.addEventListener('change', updateDiffVisibility);
+
+    // --- Modal comparativo ---
+    const openCompareBtn = document.getElementById('openCompare');
+    const compareModal = document.getElementById('compareModal');
+    const closeCompareBtn = document.getElementById('closeCompare');
+
+    function openModal() {
+      compareModal.classList.add('open');
+      compareModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      compareModal.classList.remove('open');
+      compareModal.setAttribute('aria-hidden', 'true');
+    }
+
+    openCompareBtn.addEventListener('click', openModal);
+    closeCompareBtn.addEventListener('click', closeModal);
+
+    compareModal.addEventListener('click', (e) => {
+      if (e.target === compareModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    // Inicialização
+    applyTranslations();
+    updateDiffVisibility();
+  </script>
+</body>
+</html>
