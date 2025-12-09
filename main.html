@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main - Sales Support Portal</title>
+
+  <!-- Fonte / Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-page: #FFFFFF;      /* fundo branco */
+      --card-bg: #FFFFFF;
+      --text-on-bg: #133B58;   /* azul CleverTap */
+      --text-on-card: #133B58;
+      --accent: #F04444;       /* vermelho CleverTap */
+
+      --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.15);
+      --radius-lg: 18px;
+      --transition-fast: 0.25s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #FFFFFF;
+      color: #133B58;
+    }
+
+    /* Header */
+    header {
+      background: #102C45;
+      height: 60px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .logo img {
+      height: 40px;
+      max-height: 40px;
+      width: auto;
+    }
+
+    nav a {
+      color: #ffffff;
+      margin-left: 24px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color var(--transition-fast);
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: #F04444;
+      transition: width var(--transition-fast);
+    }
+
+    nav a:hover {
+      color: #ffffff;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Language switcher */
+    .lang-switcher {
+      position: relative;
+      margin-left: 20px;
+    }
+
+    #lang-toggle {
+      background: transparent;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      color: #ffffff;
+      font-size: 12px;
+      padding: 6px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #lang-toggle:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .lang-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      background: #0b1726;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 6px;
+      display: none;
+      min-width: 80px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+      z-index: 30;
+    }
+
+    .lang-menu button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 12px;
+      padding: 6px 10px;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .lang-menu button:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 70px 20px 50px;
+    }
+
+    .hero-inner {
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(240, 68, 68, 0.06);
+      border: 1px solid rgba(240, 68, 68, 0.5);
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .hero-badge span {
+      color: #133B58;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .hero h1 {
+        font-size: 44px;
+      }
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: rgba(19, 59, 88, 0.8);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    /* Quick Actions */
+    .quick-actions {
+      padding: 10px 20px 0;
+    }
+
+    .quick-actions-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .quick-action-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid rgba(19, 59, 88, 0.12);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-on-card);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .quick-action-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
+      border-color: rgba(240, 68, 68, 0.45);
+      background: #F9FAFB;
+    }
+
+    .quick-action-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(19, 59, 88, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .quick-action-icon img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .quick-action-text h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #133B58;
+    }
+
+    .quick-action-text p {
+      font-size: 12px;
+      color: rgba(19, 59, 88, 0.75);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 640px) {
+      .quick-actions {
+        padding: 10px 16px 0;
+      }
+    }
+
+    .cta-button {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .cta-button a.primary {
+      background: var(--accent);
+      color: white;
+      padding: 12px 26px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 16px 30px rgba(240, 68, 68, 0.55);
+      border: none;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+    }
+
+    .cta-button a.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 50px rgba(240, 68, 68, 0.75);
+      opacity: 0.96;
+    }
+
+    .cta-button a.secondary {
+      border-radius: 999px;
+      border: 1px solid rgba(19, 59, 88, 0.4);
+      padding: 12px 22px;
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--text-on-bg);
+      background: rgba(19, 59, 88, 0.04);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .cta-button a.secondary:hover {
+      background: rgba(19, 59, 88, 0.08);
+      border-color: rgba(19, 59, 88, 0.7);
+      transform: translateY(-1px);
+    }
+
+    /* Section */
+    .section {
+      padding: 100px 20px 80px;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .section-inner {
+      max-width: 3000px;
+      margin: auto;
+      width: 100%;
+    }
+
+    .section h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: rgba(19, 59, 88, 0.7);
+      margin-bottom: 40px;
+    }
+
+    /* Carousel wrapper */
+    .cards-carousel-wrapper {
+      margin-top: 40px;
+      overflow-x: hidden;
+      overflow-y: visible;
+      padding: 20px 0;
+      position: relative;
+    }
+
+    .cards-carousel {
+      display: flex;
+      gap: 22px;
+      will-change: transform;
+    }
+
+    .card {
+      min-width: 260px;
+      max-width: 280px;
+      flex: 0 0 auto;
+      background: var(--card-bg);
+      color: var(--text-on-card);
+      padding: 22px 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transition:
+        transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+        border-color 0.35s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(240, 68, 68, 0.12), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 45px rgba(0, 0, 0, 0.35);
+      border-color: rgba(240, 68, 68, 0.55);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(19, 59, 88, 0.06);
+      border: 1px solid rgba(19, 59, 88, 0.25);
+      overflow: hidden;
+    }
+
+    .card-icon img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #133B58;
+    }
+
+    .card p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: rgba(19, 59, 88, 0.85);
+      line-height: 1.45;
+    }
+
+    .card-tag {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(240, 68, 68, 0.35);
+      color: var(--accent);
+      background: rgba(240, 68, 68, 0.06);
+    }
+
+    /* Footer */
+    footer {
+      background: #102C45;
+      color: white;
+      padding: 44px 24px 26px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto 24px auto;
+    }
+
+    .footer-links strong {
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .footer-links a {
+      color: #f9fafb;
+      text-decoration: none;
+      font-size: 13px;
+      display: block;
+      margin-top: 6px;
+      opacity: 0.85;
+      transition: opacity var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      transform: translateX(2px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Responsivo */
+    @media (max-width: 640px) {
+      header {
+        padding: 14px 16px;
+      }
+
+      nav a {
+        margin-left: 14px;
+        font-size: 13px;
+      }
+
+      .lang-switcher {
+        margin-left: 10px;
+      }
+
+      .card {
+        min-width: 80%;
+        max-width: 80%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
+      <span>Sales Support Portal</span>
+    </div>
+    <nav>
+      <a href="email-generator.html">
+        <span data-lang="en">Email Generator</span>
+        <span data-lang="pt">Gerador de e-mails</span>
+        <span data-lang="es">Generador de emails</span>
+      </a>
+      <a href="product-plan.html">
+        <span data-lang="en">Plan Comparison</span>
+        <span data-lang="pt">Planos CleverTap</span>
+        <span data-lang="es">Planes CleverTap</span>
+      </a>
+
+      <div class="lang-switcher">
+        <button id="lang-toggle" type="button">🌐 EN</button>
+        <div class="lang-menu" id="lang-menu">
+          <button type="button" data-lang-select="en">EN</button>
+          <button type="button" data-lang-select="pt">PT</button>
+          <button type="button" data-lang-select="es">ES</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span data-lang="en">CleverTap LATAM</span>
+        <span data-lang="pt">CleverTap Latam</span>
+        <span data-lang="es">CleverTap LATAM</span>
+        <span data-lang="en">| Smart internal toolkit</span>
+        <span data-lang="pt">| Ferramenta interna inteligente</span>
+        <span data-lang="es">| Herramienta interna inteligente</span>
+      </div>
+
+      <h1>
+        <span data-lang="en">Intelligent support to elevate the quality of every customer interaction.</span>
+        <span data-lang="pt">Suporte inteligente para elevar a qualidade de cada interação com o cliente.</span>
+        <span data-lang="es">Soporte inteligente para elevar la calidad de cada interacción con el cliente.</span>
+      </h1>
+      <p>
+        <span data-lang="en">
+          Content, plan comparisons and generators in one place to help the sales team work more efficiently.
+        </span>
+        <span data-lang="pt">
+          Materiais, comparativos e geradores reunidos em um só lugar para apoiar um trabalho comercial mais eficiente.
+        </span>
+        <span data-lang="es">
+          Materiales, comparativos y generadores reunidos en un solo lugar para apoyar un trabajo comercial más eficiente.
+        </span>
+      </p>
+
+      <div class="cta-button">
+        <a href="#about" class="primary">
+          <span data-lang="en">Explore resources</span>
+          <span data-lang="pt">Explorar recursos</span>
+          <span data-lang="es">Explorar recursos</span>
+        </a>
+        <a href="product-plan.html" class="secondary">
+          <span data-lang="en">View plan comparison</span>
+          <span data-lang="pt">Ver comparativo de planos</span>
+          <span data-lang="es">Ver comparativo de planes</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+    <!-- Quick Actions -->
+  <section class="quick-actions">
+    <div class="quick-actions-inner">
+      <div class="quick-actions-grid">
+
+        <!-- Criar e-mail / Create email / Crear email -->
+        <a href="email-generator.html" class="quick-action-card">
+          <div class="quick-action-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/2989/2989993.png" alt="Email icon">
+          </div>
+          <div class="quick-action-text">
+            <h3>
+              <span data-lang="en">Create email</span>
+              <span data-lang="pt">Criar e-mail</span>
+              <span data-lang="es">Crear email</span>
+            </h3>
+            <p>
+              <span data-lang="en">Start a new commercial email using the standard structure and links.</span>
+              <span data-lang="pt">Comece um novo e-mail comercial usando a estrutura e links padronizados.</span>
+              <span data-lang="es">Inicia un nuevo email comercial usando la estructura y enlaces estándar.</span>
+            </p>
+          </div>
+        </a>
+
+        <!-- Comparar planos / Compare plans / Comparar planes -->
+        <a href="product-plan.html" class="quick-action-card">
+          <div class="quick-action-icon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Planning_icon_from_Noun_Project.png" alt="Plans icon">
+          </div>
+          <div class="quick-action-text">
+            <h3>
+              <span data-lang="en">Compare plans</span>
+              <span data-lang="pt">Comparar planos</span>
+              <span data-lang="es">Comparar planes</span>
+            </h3>
+            <p>
+              <span data-lang="en">Open the CleverTap plans comparison to support your live conversations.</span>
+              <span data-lang="pt">Abra o comparativo de planos CleverTap para apoiar suas conversas ao vivo.</span>
+              <span data-lang="es">Abre el comparativo de planes de CleverTap para apoyar tus conversaciones en vivo.</span>
+            </p>
+          </div>
+        </a>
+
+        <!-- Ver documentação / View docs / Ver documentación -->
+        <a href="https://docs.clevertap.com/docs/getting-started" target="_blank" class="quick-action-card">
+          <div class="quick-action-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/35/35920.png" alt="Documentation icon">
+          </div>
+          <div class="quick-action-text">
+            <h3>
+              <span data-lang="en">View documentation</span>
+              <span data-lang="pt">Ver documentação</span>
+              <span data-lang="es">Ver documentación</span>
+            </h3>
+            <p>
+              <span data-lang="en">Access CleverTap official docs for deeper technical details.</span>
+              <span data-lang="pt">Acesse a documentação oficial da CleverTap para detalhes técnicos.</span>
+              <span data-lang="es">Accede a la documentación oficial de CleverTap para más detalles técnicos.</span>
+            </p>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- About / Cards Section -->
+  <section class="section" id="about">
+    <div class="section-inner">
+      <h2>
+        <span data-lang="en">How this portal supports the sales team</span>
+        <span data-lang="pt">Como este portal ajuda o time de vendas</span>
+        <span data-lang="es">Cómo este portal apoya al equipo de ventas</span>
+      </h2>
+      <p class="section-subtitle">
+        <span data-lang="en">
+          Resources designed to speed up proposals, standardize communications and add more value to every meeting.
+        </span>
+        <span data-lang="pt">
+          Recursos criados para acelerar propostas, padronizar comunicações e gerar ainda mais valor em cada reunião.
+        </span>
+        <span data-lang="es">
+          Recursos creados para acelerar propuestas, estandarizar comunicaciones y generar aún más valor en cada reunión.
+        </span>
+      </p>
+
+      <!-- Carrossel -->
+      <div class="cards-carousel-wrapper">
+        <div class="cards-carousel">
+          <!-- BLOCO 1 -->
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://www.avantia.com.br/wp-content/uploads/2020/04/Segmentos_Financeiro_Reaja_com_Agilidade.png" alt="Agility icon">
+              </div>
+              <h3>
+                <span data-lang="en">Faster proposal creation</span>
+                <span data-lang="pt">Agilidade na criação de propostas</span>
+                <span data-lang="es">Agilidad en la creación de propuestas</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Build commercial emails and messages in a few clicks, keeping tone, structure and links aligned.
+              </span>
+              <span data-lang="pt">
+                Construa mensagens e e-mails comerciais em poucos cliques, mantendo o tom, a estrutura e os links sempre padronizados.
+              </span>
+              <span data-lang="es">
+                Construye mensajes y correos comerciales en pocos clics, manteniendo el tono, la estructura y los enlaces siempre alineados.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Productivity focused</span>
+              <span data-lang="pt">Focado em produtividade</span>
+              <span data-lang="es">Enfoque en productividad</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/181/181357.png" alt="Comparison icon">
+              </div>
+              <h3>
+                <span data-lang="en">CleverTap plans comparison</span>
+                <span data-lang="pt">Comparativo de planos CleverTap</span>
+                <span data-lang="es">Comparativo de planes CleverTap</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Quickly access the plans page to explain Essentials, Advanced and Cutting Edge in real time during calls.
+              </span>
+              <span data-lang="pt">
+                Acesse rapidamente a página de planos para explicar benefícios do Essentials, Advanced e Cutting Edge em tempo real na call.
+              </span>
+              <span data-lang="es">
+                Accede rápidamente a la página de planes para explicar los beneficios de Essentials, Advanced y Cutting Edge en tiempo real durante la llamada.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Meeting support</span>
+              <span data-lang="pt">Suporte em reunião</span>
+              <span data-lang="es">Soporte en reuniones</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149334.png" alt="Resources icon">
+              </div>
+              <h3>
+                <span data-lang="en">Centralized resources</span>
+                <span data-lang="pt">Centralização de recursos</span>
+                <span data-lang="es">Centralización de recursos</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Documentation, technical links, use cases and sales materials organized in a single, easy-to-access hub.
+              </span>
+              <span data-lang="pt">
+                Documentação, links técnicos, cases de uso e materiais de apoio organizados em um único lugar, fácil de lembrar e compartilhar.
+              </span>
+              <span data-lang="es">
+                Documentación, enlaces técnicos, casos de uso y materiales de apoyo organizados en un único lugar, fácil de encontrar y compartir.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Single source of truth</span>
+              <span data-lang="pt">Tudo em um único hub</span>
+              <span data-lang="es">Un solo hub</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://static.thenounproject.com/png/1326786-200.png" alt="Customer experience icon">
+              </div>
+              <h3>
+                <span data-lang="en">Better customer experience</span>
+                <span data-lang="pt">Melhor experiência para o cliente</span>
+                <span data-lang="es">Mejor experiencia para el cliente</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Helps you deliver clearer and more visual communication, increasing the perceived value of the solution.
+              </span>
+              <span data-lang="pt">
+                Ajuda a entregar comunicações mais claras, personalizadas e visuais, elevando a percepção de valor da solução apresentada.
+              </span>
+              <span data-lang="es">
+                Ayuda a entregar comunicaciones más claras, personalizadas y visuales, elevando la percepción de valor de la solución presentada.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Clarity driven</span>
+              <span data-lang="pt">Foco em clareza</span>
+              <span data-lang="es">Enfoque en claridad</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://icons.iconarchive.com/icons/icons8/ios7/512/Very-Basic-Update-icon.png" alt="Modules icon">
+              </div>
+              <h3>
+                <span data-lang="en">Ready for new modules</span>
+                <span data-lang="pt">Base para novos módulos</span>
+                <span data-lang="es">Base para nuevos módulos</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                A portal built to receive new generators, checklists, scripts and flows as the team’s needs evolve.
+              </span>
+              <span data-lang="pt">
+                Portal preparado para receber novos geradores, checklists, scripts e fluxos — evoluindo junto com as necessidades do time.
+              </span>
+              <span data-lang="es">
+                Portal preparado para recibir nuevos generadores, checklists, guiones y flujos — evolucionando junto con las necesidades del equipo.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Scalable and evolving</span>
+              <span data-lang="pt">Escalável e em evolução</span>
+              <span data-lang="es">Escalable y en evolución</span>
+            </div>
+          </article>
+
+          <!-- BLOCO 2 (duplicado para loop contínuo) -->
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://www.avantia.com.br/wp-content/uploads/2020/04/Segmentos_Financeiro_Reaja_com_Agilidade.png" alt="Agility icon">
+              </div>
+              <h3>
+                <span data-lang="en">Faster proposal creation</span>
+                <span data-lang="pt">Agilidade na criação de propostas</span>
+                <span data-lang="es">Agilidad en la creación de propuestas</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Build commercial emails and messages in a few clicks, keeping tone, structure and links aligned.
+              </span>
+              <span data-lang="pt">
+                Construa mensagens e e-mails comerciais em poucos cliques, mantendo o tom, a estrutura e os links sempre padronizados.
+              </span>
+              <span data-lang="es">
+                Construye mensajes y correos comerciales en pocos clics, manteniendo el tono, la estructura y los enlaces siempre alineados.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Productivity focused</span>
+              <span data-lang="pt">Focado em produtividade</span>
+              <span data-lang="es">Enfoque en productividad</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/181/181357.png" alt="Comparison icon">
+              </div>
+              <h3>
+                <span data-lang="en">CleverTap plans comparison</span>
+                <span data-lang="pt">Comparativo de planos CleverTap</span>
+                <span data-lang="es">Comparativo de planes CleverTap</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Quickly access the plans page to explain Essentials, Advanced and Cutting Edge in real time during calls.
+              </span>
+              <span data-lang="pt">
+                Acesse rapidamente a página de planos para explicar benefícios do Essentials, Advanced e Cutting Edge em tempo real na call.
+              </span>
+              <span data-lang="es">
+                Accede rápidamente a la página de planes para explicar los beneficios de Essentials, Advanced y Cutting Edge en tiempo real durante la llamada.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Meeting support</span>
+              <span data-lang="pt">Suporte em reunião</span>
+              <span data-lang="es">Soporte en reuniones</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149334.png" alt="Resources icon">
+              </div>
+              <h3>
+                <span data-lang="en">Centralized resources</span>
+                <span data-lang="pt">Centralização de recursos</span>
+                <span data-lang="es">Centralización de recursos</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Documentation, technical links, use cases and sales materials organized in a single, easy-to-access hub.
+              </span>
+              <span data-lang="pt">
+                Documentação, links técnicos, cases de uso e materiais de apoio organizados em um único lugar, fácil de lembrar e compartilhar.
+              </span>
+              <span data-lang="es">
+                Documentación, enlaces técnicos, casos de uso y materiales de apoyo organizados en un único lugar, fácil de encontrar y compartir.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Single source of truth</span>
+              <span data-lang="pt">Tudo em um único hub</span>
+              <span data-lang="es">Un solo hub</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://static.thenounproject.com/png/1326786-200.png" alt="Customer experience icon">
+              </div>
+              <h3>
+                <span data-lang="en">Better customer experience</span>
+                <span data-lang="pt">Melhor experiência para o cliente</span>
+                <span data-lang="es">Mejor experiencia para el cliente</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                Helps you deliver clearer and more visual communication, increasing the perceived value of the solution.
+              </span>
+              <span data-lang="pt">
+                Ajuda a entregar comunicações mais claras, personalizadas e visuais, elevando a percepção de valor da solução apresentada.
+              </span>
+              <span data-lang="es">
+                Ayuda a entregar comunicaciones más claras, personalizadas y visuales, elevando la percepción de valor de la solución presentada.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Clarity driven</span>
+              <span data-lang="pt">Foco em clareza</span>
+              <span data-lang="es">Enfoque en claridad</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/155/155968.png" alt="Modules icon">
+              </div>
+              <h3>
+                <span data-lang="en">Ready for new modules</span>
+                <span data-lang="pt">Base para novos módulos</span>
+                <span data-lang="es">Base para nuevos módulos</span>
+              </h3>
+            </div>
+            <p>
+              <span data-lang="en">
+                A portal built to receive new generators, checklists, scripts and flows as the team’s needs evolve.
+              </span>
+              <span data-lang="pt">
+                Portal preparado para receber novos geradores, checklists, scripts e fluxos — evoluindo junto com as necessidades do time.
+              </span>
+              <span data-lang="es">
+                Portal preparado para recibir nuevos generadores, checklists, guiones y flujos — evolucionando junto con las necesidades del equipo.
+              </span>
+            </p>
+            <div class="card-tag">
+              <span data-lang="en">Scalable and evolving</span>
+              <span data-lang="pt">Escalável e em evolução</span>
+              <span data-lang="es">Escalable y en evolución</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <div>
+        <strong>
+          <span data-lang="en">Documentation</span>
+          <span data-lang="pt">Documentação</span>
+          <span data-lang="es">Documentación</span>
+        </strong><br><br>
+        <a href="https://docs.clevertap.com/docs/getting-started" target="_blank">
+          <span data-lang="en">User Docs</span>
+          <span data-lang="pt">Documentação do usuário</span>
+          <span data-lang="es">Documentación de usuario</span>
+        </a>
+        <a href="https://developer.clevertap.com/docs/getting-started" target="_blank">
+          <span data-lang="en">Developer Docs</span>
+          <span data-lang="pt">Documentação técnica</span>
+          <span data-lang="es">Documentación técnica</span>
+        </a>
+        <a href="https://clevertap.com/resources/?ct_resources_category=Case%20Study" target="_blank">
+          <span data-lang="en">Use Cases</span>
+          <span data-lang="pt">Casos de uso</span>
+          <span data-lang="es">Casos de uso</span>
+        </a>
+      </div>
+
+      <div>
+        <strong>
+          <span data-lang="en">Platform</span>
+          <span data-lang="pt">Plataforma</span>
+          <span data-lang="es">Plataforma</span>
+        </strong><br><br>
+        <a href="https://clevertap.com/" target="_blank">
+          <span data-lang="en">Official Website</span>
+          <span data-lang="pt">Site oficial</span>
+          <span data-lang="es">Sitio oficial</span>
+        </a>
+        <a href="https://trust.clevertap.com/" target="_blank">
+          <span data-lang="en">Trust Portal</span>
+          <span data-lang="pt">Trusted Portal</span>
+          <span data-lang="es">Trust Portal</span>
+        </a>
+      </div>
+
+      <div>
+        <strong>
+          <span data-lang="en">Partners</span>
+          <span data-lang="pt">Parceiros</span>
+          <span data-lang="es">Partners</span>
+        </strong><br><br>
+        <a href="https://docs.clevertap.com/docs/technology-partners" target="_blank">
+          <span data-lang="en">Technology Partners</span>
+          <span data-lang="pt">Technology Partners</span>
+          <span data-lang="es">Technology Partners</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span data-lang="en">© 2025 Sales Support Portal - Internal project</span>
+      <span data-lang="pt">© 2025 Sales Support Portal - Projeto interno</span>
+      <span data-lang="es">© 2025 Sales Support Portal - Proyecto interno</span>
+    </div>
+  </footer>
+
+  <script>
+    // Carrossel em loop suave
+    (function () {
+      const carousel = document.querySelector('.cards-carousel');
+      if (!carousel) return;
+
+      let position = 0;
+      let halfWidth = 0;
+      const speed = 0.4;
+
+      function calculateHalfWidth() {
+        const totalWidth = carousel.scrollWidth;
+        halfWidth = totalWidth / 2;
+      }
+
+      function step() {
+        position -= speed;
+
+        if (Math.abs(position) >= halfWidth) {
+          position = 0;
+        }
+
+        carousel.style.transform = `translateX(${position}px)`;
+        requestAnimationFrame(step);
+      }
+
+      window.addEventListener('load', () => {
+        calculateHalfWidth();
+        requestAnimationFrame(step);
+      });
+
+      window.addEventListener('resize', () => {
+        const currentRatio = position / halfWidth || 0;
+        calculateHalfWidth();
+        position = currentRatio * halfWidth;
+      });
+    })();
+
+    // Controle de idioma
+    (function () {
+      const defaultLang = 'en';
+      const toggleBtn = document.getElementById('lang-toggle');
+      const menu = document.getElementById('lang-menu');
+      const htmlLangMap = { en: 'en', pt: 'pt-BR', es: 'es' };
+
+      function setLanguage(lang) {
+        document.querySelectorAll('[data-lang]').forEach(el => {
+          const value = el.getAttribute('data-lang');
+          el.style.display = (value === lang) ? '' : 'none';
+        });
+
+        if (toggleBtn) {
+          toggleBtn.textContent = `🌐 ${lang.toUpperCase()}`;
+        }
+
+        document.documentElement.lang = htmlLangMap[lang] || 'en';
+      }
+
+      // Inicializa idioma padrão
+      setLanguage(defaultLang);
+
+      // Toggle do menu
+      if (toggleBtn && menu) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('[data-lang-select]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const lang = e.currentTarget.getAttribute('data-lang-select');
+            setLanguage(lang);
+            menu.style.display = 'none';
+          });
+        });
+
+        document.addEventListener('click', () => {
+          menu.style.display = 'none';
+        });
+
+        menu.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>
