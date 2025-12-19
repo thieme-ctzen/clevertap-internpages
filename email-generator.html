@@ -3,132 +3,273 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gerador de E-mails CleverTap</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <title>Email Generator - Sales Support Portal</title>
+
+  <!-- Fonte / Font: Inter (igual main.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-  --primary: #ED686A;
-  --primary-dark: #355568;
-  --secondary: #A2B5C1;
-  --bg: #EFEEE9;
-  --bg-card: #DBE5EC;
-  --border: #EAE6DF;
-  --highlight: #B2CDDD;
-  --text: #2A2A2A;
-}
+    :root {
+      /* Mesmo padrão do main.html */
+      --bg-page: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --text-on-bg: #133B58;
+      --text-on-card: #133B58;
+      --accent: #F04444;
 
+      --header-bg: #102C45;
+      --header-border: rgba(255, 255, 255, 0.08);
+
+      --border-soft: rgba(19, 59, 88, 0.12);
+      --muted: rgba(19, 59, 88, 0.75);
+      --muted-2: rgba(19, 59, 88, 0.60);
+
+      --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.15);
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.08);
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+
+      --transition-fast: 0.25s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #fafafa 0%, #f2f2f2 100%);
-      color: #1c1c1c;
-      display: flex;
+      background: var(--bg-page);
+      color: var(--text-on-bg);
       height: 100vh;
       overflow: hidden;
     }
-    
-    .sidebar-title {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    color: #f24849;
-    font-size: 1.05em;
-    font-weight: 600;
-    border-left: 4px solid #f24849;
-    padding-left: 8px;
-    }
 
+    /* HEADER (mesmo padrão do main) */
     header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background-color: var(--primary-dark);
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-      font-size: 1.6em;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      z-index: 1000;
-      animation: fadeInDown 0.8s ease forwards;
+      background: var(--header-bg);
+      height: 60px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--header-border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .logo img {
+      height: 40px;
+      max-height: 40px;
+      width: auto;
+      display: block;
+    }
+
+    header nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 4px;
+      opacity: 0.92;
+      transition: opacity var(--transition-fast);
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--accent);
+      transition: width var(--transition-fast);
+    }
+
+    nav a:hover {
+      opacity: 1;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Layout geral */
+    .app {
+      display: flex;
+      height: calc(100vh - 60px);
+      overflow: hidden;
+    }
+
+    /* SIDEBAR */
     .sidebar {
-      width: 30%;
-      max-width: 380px;
-      background-color: var(--border);
-      padding: 160px 20px 60px;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+      width: 360px;
+      max-width: 42vw;
+      background: #FFFFFF;
+      border-right: 1px solid var(--border-soft);
+      padding: 18px 18px 18px;
       overflow-y: auto;
-      animation: slideInLeft 0.8s ease forwards;
     }
 
+    .sidebar-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-title h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-on-bg);
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar-title .pill {
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(240, 68, 68, 0.35);
+      color: var(--accent);
+      background: rgba(240, 68, 68, 0.06);
+      white-space: nowrap;
+    }
+
+    /* Search sticky (fica fixa no topo da sidebar ao scroll) */
     .search-box {
       position: sticky;
-      top: 80px;
-      background: var(--border);
-      padding: 10px 0 25px;
+      top: 0;
       z-index: 10;
-      margin-bottom: 40px;
+      background: #fff;
+      padding: 8px 0 12px;
+      border-bottom: 1px solid rgba(19, 59, 88, 0.08);
+      margin-bottom: 12px;
     }
 
     .search-box input {
       width: 100%;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(19, 59, 88, 0.18);
       outline: none;
-      font-size: 0.95em;
-      transition: box-shadow 0.2s ease;
+      font-size: 13px;
+      color: var(--text-on-bg);
+      background: #fff;
+      transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
     }
 
     .search-box input:focus {
-      box-shadow: 0 0 0 2px rgba(242,72,73,0.25);
-      border-color: #f24849;
+      border-color: rgba(240, 68, 68, 0.6);
+      box-shadow: 0 0 0 3px rgba(240, 68, 68, 0.18);
     }
 
+    /* Switch (padrão pill do main) */
+    .topic-switch {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 12px 0 10px;
+    }
+
+    .topic-btn {
+      flex: 1 1 auto;
+      background: #ffffff;
+      border: 1px solid rgba(19, 59, 88, 0.22);
+      border-radius: var(--radius-pill);
+      padding: 7px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      color: rgba(19, 59, 88, 0.85);
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .topic-btn:hover {
+      box-shadow: 0 0 0 2px rgba(240, 68, 68, 0.12);
+      border-color: rgba(240, 68, 68, 0.35);
+    }
+
+    .topic-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: rgba(240, 68, 68, 0.8);
+      box-shadow: 0 10px 18px rgba(240, 68, 68, 0.22);
+    }
+
+    /* Sections (cards no padrão do main) */
     .section {
-      background-color: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      padding: 15px;
-      margin-top: 18px;
-      transition: transform 0.2s ease-in-out, box-shadow 0.3s ease;
+      background: var(--card-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      padding: 14px;
+      margin-top: 14px;
     }
 
-    h2 {
-      color: #f24849;
-      font-size: 1.15em;
-      font-weight: 600;
+    .section h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-on-bg);
+      margin-bottom: 6px;
     }
 
     details {
       margin-top: 10px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(19, 59, 88, 0.10);
+      background: #fff;
     }
 
     summary {
       cursor: pointer;
-      font-weight: 500;
-      padding: 10px;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      transition: background 0.3s ease;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 10px 12px;
+      background: rgba(19, 59, 88, 0.04);
       list-style: none;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      transition: background var(--transition-fast);
     }
 
     summary:hover {
-      background-color: #fdeaea;
+      background: rgba(240, 68, 68, 0.06);
     }
 
     summary::after {
       content: "▾";
-      font-size: 0.9em;
-      color: #f24849;
-      transition: transform 0.3s ease;
+      font-size: 12px;
+      color: var(--accent);
+      transition: transform var(--transition-fast);
+      margin-left: 10px;
     }
 
     details[open] summary::after {
@@ -136,188 +277,253 @@
     }
 
     .subtopics {
-      margin-left: 10px;
-      padding: 8px;
+      padding: 10px 12px 12px;
     }
 
     .subtopics label {
-      display: block;
-      margin: 6px 0;
-      font-size: 0.93em;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 8px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: rgba(19, 59, 88, 0.92);
       cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+
+    .subtopics label:hover {
+      background: rgba(19, 59, 88, 0.04);
     }
 
     input[type="checkbox"] {
-      accent-color: #f24849;
+      margin-top: 2px;
+      accent-color: var(--accent);
+      cursor: pointer;
     }
 
+    /* MAIN */
     .main {
       flex: 1;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 60px 60px;
-      position: relative;
+      padding: 18px 22px;
+      gap: 14px;
     }
 
-    .email-output {
-      width: 80%;
-      background-color: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-      padding: 25px 35px;
-      min-height: 260px;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.8s ease;
-      position: relative;
-    }
-
-    .email-output.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-        .lang-toggle {
+    .main-top {
       display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
       flex-wrap: wrap;
     }
-    .selected-count {
-    text-align: center;
-    font-size: 0.85em;
-    color: #666;
-    margin-top: 12px;
-    } 
 
+    .page-title {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .page-title h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: var(--text-on-bg);
+    }
+
+    .page-title p {
+      font-size: 12.5px;
+      color: rgba(19, 59, 88, 0.70);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
     .lang-btn {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      padding: 4px 10px;
-      font-size: 0.8em;
+      background: #fff;
+      border: 1px solid rgba(19, 59, 88, 0.22);
+      border-radius: var(--radius-pill);
+      padding: 7px 10px;
+      font-size: 12px;
       cursor: pointer;
+      color: rgba(19, 59, 88, 0.85);
+      transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .lang-btn:hover {
+      border-color: rgba(240, 68, 68, 0.35);
+      box-shadow: 0 0 0 2px rgba(240, 68, 68, 0.12);
     }
 
     .lang-btn.active {
-      background-color: var(--primary-light);
-      border-color: var(--primary);
-      color: var(--primary);
-      font-weight: 600;
+      background: rgba(240, 68, 68, 0.10);
+      border-color: rgba(240, 68, 68, 0.45);
+      color: var(--accent);
+      font-weight: 700;
     }
 
-    .style-btn.active {
-      background-color: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-    }
-
-    .copy-btn {
-      position: absolute;
-      top: 18px;
-      right: 20px;
-      background: none;
+    .generate-btn {
+      background: var(--accent);
+      color: #ffffff;
       border: none;
+      padding: 10px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      box-shadow: 0 16px 30px rgba(240, 68, 68, 0.35);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+      white-space: nowrap;
     }
 
-    .copy-btn img {
-      width: 22px;
-      filter: invert(36%) sepia(81%) saturate(530%) hue-rotate(340deg) brightness(94%) contrast(93%);
+    .generate-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 24px 50px rgba(240, 68, 68, 0.45);
+      opacity: 0.97;
     }
 
-    .copy-btn:hover {
-      transform: scale(1.1);
+    .generate-btn:active {
+      transform: translateY(0);
     }
 
-    .copied-popup {
-  position: absolute;
-  top: -35px;
-  right: 15px;
-  background: var(--primary);
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.85em;
-  opacity: 0;
-}
-
-@keyframes fadeSlideUp {
-  0% { opacity: 0; transform: translateY(10px); }
-  20% { opacity: 1; transform: translateY(0); }
-  80% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-10px); }
-}
-
-.copied-popup.show {
-  animation: fadeSlideUp 1.5s ease forwards;
-}
-
-
-    .copied-popup.show {
-      opacity: 1;
-    }
-/* PopUp ao selecionar tipo de layout*/
-    .style-popup {
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary);
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.9em;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 100;
+    /* Output card */
+    .email-output {
+      flex: 1;
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-card);
+      padding: 18px 18px 16px;
+      position: relative;
+      overflow: auto;
+      min-height: 260px;
     }
 
-    .style-popup.show {
-      opacity: 1;
+    #emptyState {
+      display: grid;
+      place-items: center;
+      height: 100%;
+      text-align: center;
+      color: rgba(19, 59, 88, 0.70);
+      padding: 20px;
+    }
+
+    #emptyState.hidden {
+      display: none;
+    }
+
+    .email-meta {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    #selectedTopics {
+      font-size: 12.5px;
+      color: rgba(19, 59, 88, 0.78);
+    }
+
+    #emailSubject {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text-on-bg);
+      display: none;
     }
 
     pre {
       white-space: pre-wrap;
-      font-size: 0.95em;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(19, 59, 88, 0.92);
+      padding-top: 8px;
+      border-top: 1px solid rgba(19, 59, 88, 0.10);
     }
 
-/* Botão de gerar email*/
-    .generate-btn {
-    position: fixed;
-    bottom: 30px;
-    left: 40px;
-    background: linear-gradient(190deg, var(--primary), var(--primary));
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    border-radius: 10px;
-    font-size: 1em;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.25s ease-in-out;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-    animation: pulse 2s infinite;
+    /* Copy button */
+    .copy-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(19, 59, 88, 0.04);
+      border: 1px solid rgba(19, 59, 88, 0.18);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
     }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(242,72,73, 0.4); }
-  50% { box-shadow: 0 0 0 10px rgba(242,72,73, 0); }
-}
-
-
-    .generate-btn:hover {
-      transform: scale(1.04);
+    .copy-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(240, 68, 68, 0.35);
+      background: rgba(240, 68, 68, 0.06);
     }
 
+    .copy-btn img {
+      width: 18px;
+      height: 18px;
+      display: block;
+      filter: invert(15%) sepia(18%) saturate(1094%) hue-rotate(166deg) brightness(92%) contrast(95%);
+    }
+
+    /* Popups */
+    .copied-popup,
+    .style-popup {
+      position: absolute;
+      top: 14px;
+      right: 62px;
+      background: #0b1726;
+      color: #fff;
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .style-popup {
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes toast {
+      0% { opacity: 0; transform: translateY(6px); }
+      15% { opacity: 1; transform: translateY(0); }
+      85% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-6px); }
+    }
+
+    .copied-popup.show,
+    .style-popup.show {
+      animation: toast 1.6s ease forwards;
+    }
+
+    /* Style buttons */
     .email-styles {
-      margin-top: 20px;
       display: none;
-      gap: 12px;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
     }
 
     .email-styles.show {
@@ -325,579 +531,548 @@
     }
 
     .style-btn {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid rgba(19, 59, 88, 0.22);
+      border-radius: var(--radius-pill);
       padding: 8px 12px;
       cursor: pointer;
-      font-size: 0.9em;
-      transition: all 0.2s ease;
+      font-size: 12.5px;
+      color: rgba(19, 59, 88, 0.85);
+      transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
     }
 
     .style-btn:hover {
-      background-color: #f24849;
+      border-color: rgba(240, 68, 68, 0.35);
+      box-shadow: 0 0 0 2px rgba(240, 68, 68, 0.12);
+      background: rgba(240, 68, 68, 0.06);
+    }
+
+    .style-btn.active {
+      background: var(--accent);
+      border-color: rgba(240, 68, 68, 0.8);
       color: #fff;
-      border-color: #f24849;
+      box-shadow: 0 10px 18px rgba(240, 68, 68, 0.22);
+      font-weight: 800;
     }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Contador */
+    .selected-count {
+      font-size: 12px;
+      color: rgba(19, 59, 88, 0.72);
+      margin-left: auto;
     }
 
-    @keyframes slideInLeft {
-      from { transform: translateX(-80px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    #emptyState {
-    text-align: center;
-    opacity: 0.7;
-    transition: opacity 0.4s ease;
-    }
-
-    #emptyState.hidden {
-    opacity: 0;
-    pointer-events: none;
-    }
+    /* Responsivo */
     @media (max-width: 900px) {
-    body { flex-direction: column; height: auto; }
-    .sidebar { width: 100%; max-width: none; padding-top: 100px; }
-    .main { padding: 20px; }
-    .email-output { width: 100%; }x
-    .generate-btn { position: relative; left: auto; bottom: auto; margin-top: 20px; }
+      header { padding: 0 16px; }
+      .app { flex-direction: column; height: calc(100vh - 60px); }
+      .sidebar { width: 100%; max-width: none; height: 44vh; border-right: none; border-bottom: 1px solid var(--border-soft); }
+      .main { height: 56vh; }
     }
 
-    .app-header {
-      background: linear-gradient(90deg, var(--primary-dark), var(--primary-dark)); 
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    .home-btn{
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
     }
 
-    .header-logo {
-      max-height: 70px;     /* ajuste fino */
-      width: auto;
-      display: block;
+    .home-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(240, 68, 68, 0.18);
+      border-color: rgba(240, 68, 68, 0.45);
     }
 
-
-  .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  .header-subtitle {
-    font-size: 0.9em;
-    opacity: 0.9;
-    margin-top: 4px;
-  }
-
-  .header-badge {
-    font-size: 0.75em;
-    background-color: rgba(255,255,255,0.15);
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.5);
-    white-space: nowrap;
-  }
-.topic-switch {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.topic-btn {
-  flex: 1 1 auto;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.8em;
-  cursor: pointer;
-  color: #555;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-  /* nada de mudar font-weight aqui pra não "pular" */
-}
-
-.topic-btn:hover {
-  box-shadow: 0 0 0 1px var(--primary);
-}
-
-.topic-btn.active {
-  background-color: var(--primary);
-  color: #fff;
-  /* mesma borda, mesmo padding → sem reposicionamento */
-  box-shadow: 0 0 0 1px var(--primary);
-}
-
-
-
+    .home-btn svg{
+      width: 18px;
+      height: 18px;
+      fill: #ffffff;
+    }
 
   </style>
 </head>
 
 <body>
-<header class="app-header">
-  <img 
-    src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" 
-    alt="CleverTap Logo" 
-    class="header-logo"
-  >
-</header>
-
-
-  <div class="sidebar">
-    <h2 class="sidebar-title">Tópicos disponíveis</h2>
-
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="🔍 Buscar tópico..." onkeyup="filterTopics()">
-    </div>
-    
-
-    <div class="topic-switch">
-      <button class="topic-btn active" data-topic="user-docs">
-        Documentação do usuário
-      </button>
-      <button class="topic-btn" data-topic="tech-docs">
-        Documentação técnica
-      </button>
-      <button class="topic-btn" data-topic="partners">
-        Parceiros integrados
-      </button>
+  <header>
+    <div class="logo">
+      <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
+      <span>Email Generator</span>
     </div>
 
+    <nav>
+      <!-- ajuste os hrefs conforme seus nomes reais -->
+      <a href="index.html">Home</a>
+      <a href="product-plan.html">Plan Comparison</a>
+      <a class="home-btn" href="main.html" aria-label="Voltar para o Home (main)">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3l9 8h-3v10h-5v-6H11v6H6V11H3l9-8z"></path>
+      </svg>
+</a>
 
-  <div class="section topic-section" data-topic="user-docs">
-      <h2>📄 Documentação do Usuário</h2>
-      <details>
-        <summary>Getting Started</summary>
-        <div class="subtopics">
-          <label><input type="checkbox" value="CleverTap Overview https://docs.clevertap.com/docs/getting-started"> CleverTap Overview</label>
-          <label><input type="checkbox" value="Set Up Dashboard https://docs.clevertap.com/docs/getting-started#setup-dashboard"> Set Up Dashboard</label>
-          <label><input type="checkbox" value="Onboarding Glossary https://docs.clevertap.com/docs/glossary-2"> Onboarding Glossary</label>
-          <label><input type="checkbox" value="Project Setup https://docs.clevertap.com/docs/project-setup"> Project Setup</label>
-          <label><input type="checkbox" value="Events https://docs.clevertap.com/docs/events"> Events</label>
-          <label><input type="checkbox" value="User Profiles https://docs.clevertap.com/docs/user-profiles"> User Profiles</label>
-          <label><input type="checkbox" value="How Profiles merge https://docs.clevertap.com/docs/how-profiles-merge"> How Profiles merge</label>
-          <label><input type="checkbox" value="Upload past User Profiles https://docs.clevertap.com/docs/upload-past-user-profiles"> Upload past User Profiles</label>
-          <label><input type="checkbox" value="Delete User Profiles https://docs.clevertap.com/docs/delete-user-profile"> Delete User Profiles</label>
-          <label><input type="checkbox" value="Schema https://docs.clevertap.com/docs/schema"> Schema</label>
-          <label><input type="checkbox" value="Composite Events https://docs.clevertap.com/docs/composite-events"> Composite Events</label>
-          <label><input type="checkbox" value="Sample Events by Business https://docs.clevertap.com/docs/sample-events-by-business-verticals"> Sample Events by Business</label>
-          <label><input type="checkbox" value="Event Design https://docs.clevertap.com/docs/event-design"> Event Design</label>
-          <label><input type="checkbox" value="Nested Objects https://docs.clevertap.com/docs/nested-objects"> Nested Objects</label>
-          <label><input type="checkbox" value="Manage Users https://docs.clevertap.com/docs/manage-users"> Manage Users</label>
-          <label><input type="checkbox" value="Role Based Access Control https://docs.clevertap.com/docs/role-based-access-control"> Role Based Access Control</label>
-          <label><input type="checkbox" value="Security & Data Governance https://docs.clevertap.com/docs/security-overview"> Security & Data Governance</label>
-          <label><input type="checkbox" value="Session analytics https://docs.clevertap.com/docs/session-analytics"> Session analytics</label>
-          <label><input type="checkbox" value="Go Live Checklist https://docs.clevertap.com/docs/go-live-checklist"> Go Live Checklist</label>
-          <label><input type="checkbox" value="Calendar Widgets https://docs.clevertap.com/docs/calendar-widgets"> Calendar Widgets</label>
-          <label><input type="checkbox" value="Accessibility in CleverTap Messaging https://docs.clevertap.com/docs/creating-accessible-messaging-with-clevertap"> Accessibility in CleverTap Messaging</label>
+    </nav>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-title">
+        <h2>Tópicos disponíveis</h2>
+        <span class="pill" id="selectedCountPill">0 selecionados</span>
+      </div>
+
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar tópico..." onkeyup="filterTopics()">
+      </div>
+
+      <div class="topic-switch">
+        <button class="topic-btn active" data-topic="user-docs">Documentação do usuário</button>
+        <button class="topic-btn" data-topic="tech-docs">Documentação técnica</button>
+        <button class="topic-btn" data-topic="partners">Parceiros integrados</button>
+      </div>
+
+      <!-- USER DOCS -->
+      <div class="section topic-section" data-topic="user-docs">
+        <h3>📄 Documentação do Usuário</h3>
+
+        <details>
+          <summary>Getting Started</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="CleverTap Overview https://docs.clevertap.com/docs/getting-started"> CleverTap Overview</label>
+            <label><input type="checkbox" value="Set Up Dashboard https://docs.clevertap.com/docs/getting-started#setup-dashboard"> Set Up Dashboard</label>
+            <label><input type="checkbox" value="Onboarding Glossary https://docs.clevertap.com/docs/glossary-2"> Onboarding Glossary</label>
+            <label><input type="checkbox" value="Project Setup https://docs.clevertap.com/docs/project-setup"> Project Setup</label>
+            <label><input type="checkbox" value="Events https://docs.clevertap.com/docs/events"> Events</label>
+            <label><input type="checkbox" value="User Profiles https://docs.clevertap.com/docs/user-profiles"> User Profiles</label>
+            <label><input type="checkbox" value="How Profiles merge https://docs.clevertap.com/docs/how-profiles-merge"> How Profiles merge</label>
+            <label><input type="checkbox" value="Upload past User Profiles https://docs.clevertap.com/docs/upload-past-user-profiles"> Upload past User Profiles</label>
+            <label><input type="checkbox" value="Delete User Profiles https://docs.clevertap.com/docs/delete-user-profile"> Delete User Profiles</label>
+            <label><input type="checkbox" value="Schema https://docs.clevertap.com/docs/schema"> Schema</label>
+            <label><input type="checkbox" value="Composite Events https://docs.clevertap.com/docs/composite-events"> Composite Events</label>
+            <label><input type="checkbox" value="Sample Events by Business https://docs.clevertap.com/docs/sample-events-by-business-verticals"> Sample Events by Business</label>
+            <label><input type="checkbox" value="Event Design https://docs.clevertap.com/docs/event-design"> Event Design</label>
+            <label><input type="checkbox" value="Nested Objects https://docs.clevertap.com/docs/nested-objects"> Nested Objects</label>
+            <label><input type="checkbox" value="Manage Users https://docs.clevertap.com/docs/manage-users"> Manage Users</label>
+            <label><input type="checkbox" value="Role Based Access Control https://docs.clevertap.com/docs/role-based-access-control"> Role Based Access Control</label>
+            <label><input type="checkbox" value="Security & Data Governance https://docs.clevertap.com/docs/security-overview"> Security & Data Governance</label>
+            <label><input type="checkbox" value="Session analytics https://docs.clevertap.com/docs/session-analytics"> Session analytics</label>
+            <label><input type="checkbox" value="Go Live Checklist https://docs.clevertap.com/docs/go-live-checklist"> Go Live Checklist</label>
+            <label><input type="checkbox" value="Calendar Widgets https://docs.clevertap.com/docs/calendar-widgets"> Calendar Widgets</label>
+            <label><input type="checkbox" value="Accessibility in CleverTap Messaging https://docs.clevertap.com/docs/creating-accessible-messaging-with-clevertap"> Accessibility in CleverTap Messaging</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Clever.AI</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Ask https://docs.clevertap.com/docs/clever-ai#ask"> Ask</label>
+            <label><input type="checkbox" value="Scribe https://docs.clevertap.com/docs/clever-ai#scribe"> Scribe</label>
+            <label><input type="checkbox" value="Generate message copy with Scribe https://docs.clevertap.com/docs/generate-message-copy-with-scribe"> Generate message copy with Scribe</label>
+            <label><input type="checkbox" value="Scribe FAQs https://docs.clevertap.com/docs/scribe-faqs"> Scribe FAQs</label>
+            <label><input type="checkbox" value="IntelliNode https://docs.clevertap.com/docs/intellinode"> IntelliNode</label>
+            <label><input type="checkbox" value="Recommendations https://docs.clevertap.com/docs/recommendations"> Recommendations</label>
+            <label><input type="checkbox" value="Preferred Channel https://docs.clevertap.com/docs/preferred-channel"> Preferred Channel</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Segmentation</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Find People https://docs.clevertap.com/docs/find-people"> Find People</label>
+            <label><input type="checkbox" value="NextGen Segment Builder https://docs.clevertap.com/docs/segmentation"> NextGen Segment Builder</label>
+            <label><input type="checkbox" value="Types of Segments https://docs.clevertap.com/docs/types-of-segments"> Types of Segments</label>
+            <label><input type="checkbox" value="Segmentation Rules https://docs.clevertap.com/docs/segmentation-rules"> Segmentation Rules</label>
+            <label><input type="checkbox" value="Create Segments https://docs.clevertap.com/docs/create-segments"> Create Segments</label>
+            <label><input type="checkbox" value="View Segments https://docs.clevertap.com/docs/view-segments"> View Segments</label>
+            <label><input type="checkbox" value="Segments Operations https://docs.clevertap.com/docs/segments-operations"> Segments Operations</label>
+            <label><input type="checkbox" value="API Segments https://docs.clevertap.com/docs/api-segments"> API Segments</label>
+            <label><input type="checkbox" value="RFM Analysis https://docs.clevertap.com/docs/rfm"> RFM Analysis</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Behavioral Analytics</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Boards https://docs.clevertap.com/docs/simple-reports"> Boards</label>
+            <label><input type="checkbox" value="Analyze events https://docs.clevertap.com/docs/events-analytics"> Analyze events</label>
+            <label><input type="checkbox" value="Cohorts https://docs.clevertap.com/docs/cohorts"> Cohorts</label>
+            <label><input type="checkbox" value="Funnels https://docs.clevertap.com/docs/funnels"> Funnels</label>
+            <label><input type="checkbox" value="Trends https://docs.clevertap.com/docs/trends"> Trends</label>
+            <label><input type="checkbox" value="Pivots https://docs.clevertap.com/docs/pivots"> Pivots</label>
+            <label><input type="checkbox" value="Flows https://docs.clevertap.com/docs/flows"> Flows</label>
+            <label><input type="checkbox" value="Real Impact https://docs.clevertap.com/docs/real-impact"> Real Impact</label>
+            <label><input type="checkbox" value="Use cases https://docs.clevertap.com/docs/exporting-clevertap-data-for-risk-ratio-analysis"> Use cases</label>
+          </div>
+        </details>
+      </div>
+
+      <!-- TECH DOCS -->
+      <div class="section topic-section" data-topic="tech-docs" style="display:none;">
+        <h3>🛠️ Documentação Técnica</h3>
+
+        <details>
+          <summary>APIs e SDKs</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="REST API Overview https://docs.clevertap.com/docs/rest-api"> REST API Overview</label>
+            <label><input type="checkbox" value="Android SDK https://docs.clevertap.com/docs/android"> Android SDK</label>
+            <label><input type="checkbox" value="iOS SDK https://docs.clevertap.com/docs/ios"> iOS SDK</label>
+            <label><input type="checkbox" value="Web SDK https://docs.clevertap.com/docs/web"> Web SDK</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Data Pipelines & Export</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Data Export https://docs.clevertap.com/docs/data-exports"> Data Export</label>
+            <label><input type="checkbox" value="S3 / BigQuery / Snowflake https://docs.clevertap.com/docs/integrations"> Cloud Storage Integrations</label>
+          </div>
+        </details>
+      </div>
+
+      <!-- PARTNERS -->
+      <div class="section topic-section" data-topic="partners" style="display:none;">
+        <h3>🤝 Parceiros integrados</h3>
+
+        <details>
+          <summary>CDPs & Dados</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Segment Integration https://docs.clevertap.com/docs/segment"> Segment</label>
+            <label><input type="checkbox" value="mParticle Integration https://docs.clevertap.com/docs/mparticle"> mParticle</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Canal & Mensageria</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="WhatsApp BSP Partners https://docs.clevertap.com/docs/whatsapp"> WhatsApp BSPs</label>
+            <label><input type="checkbox" value="Email Providers https://docs.clevertap.com/docs/email"> Email Providers</label>
+          </div>
+        </details>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="main-top">
+        <div class="page-title">
+          <h1>Gerador de e-mails</h1>
+          <p>Selecione tópicos à esquerda e gere um e-mail padronizado em segundos.</p>
         </div>
-      </details>
-      <details>
-        <summary>Clever.AI</summary>
-        <div class="subtopics">
-          <label><input type="checkbox" value="Ask https://docs.clevertap.com/docs/clever-ai#ask"> Ask</label>
-          <label><input type="checkbox" value="Scribe https://docs.clevertap.com/docs/clever-ai#scribe"> Scribe</label>
-          <label><input type="checkbox" value="Generate message copy with Scribe https://docs.clevertap.com/docs/generate-message-copy-with-scribe"> Generate message copy with Scribe</label>
-          <label><input type="checkbox" value="Scribe FAQs https://docs.clevertap.com/docs/scribe-faqs"> Scribe FAQs</label>
-          <label><input type="checkbox" value="IntelliNode https://docs.clevertap.com/docs/intellinode"> IntelliNode</label>
-          <label><input type="checkbox" value="Recommendations https://docs.clevertap.com/docs/recommendations"> Recommendations</label>
-          <label><input type="checkbox" value="Preferred Channel https://docs.clevertap.com/docs/preferred-channel"> Preferred Channel</label>
+
+        <div class="actions">
+          <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')">PT-BR</button>
+            <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+            <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">ES</button>
+          </div>
+
+          <button class="generate-btn" type="button" onclick="generateEmail()">Gerar e-mail</button>
         </div>
-      </details>
-      <details>
-        <summary>Segmentation</summary>
-        <div class="subtopics">
-          <label><input type="checkbox" value="Find People https://docs.clevertap.com/docs/find-people"> Find People</label>
-          <label><input type="checkbox" value="NextGen Segment Builder https://docs.clevertap.com/docs/segmentation"> NextGen Segment Builder</label>
-          <label><input type="checkbox" value="Types of Segments https://docs.clevertap.com/docs/types-of-segments"> Types of Segments</label>
-          <label><input type="checkbox" value="Segmentation Rules https://docs.clevertap.com/docs/segmentation-rules"> Segmentation Rules</label>
-          <label><input type="checkbox" value="Create Segments https://docs.clevertap.com/docs/create-segments"> Create Segments</label>
-          <label><input type="checkbox" value="View Segments https://docs.clevertap.com/docs/view-segments"> View Segments</label>
-          <label><input type="checkbox" value="Segments Operations https://docs.clevertap.com/docs/segments-operations"> Segments Operations</label>
-          <label><input type="checkbox" value="API Segments https://docs.clevertap.com/docs/api-segments"> API Segments</label>
-          <label><input type="checkbox" value="RFM Analysis https://docs.clevertap.com/docs/rfm"> RFM Analysis</label>
+      </div>
+
+      <section class="email-output" id="emailOutput" aria-live="polite">
+        <div class="copied-popup" id="copiedPopup">Copiado!</div>
+        <div class="style-popup" id="stylePopup">Modelo aplicado</div>
+
+        <button class="copy-btn" type="button" onclick="copyEmail()" aria-label="Copiar texto do e-mail">
+          <img src="https://cdn-icons-png.flaticon.com/512/4837/4837299.png" alt="">
+        </button>
+
+        <div id="emptyState">
+          <div>
+            <div style="font-weight:800; font-size:14px; color:#133B58;">Sem e-mail gerado ainda</div>
+            <div style="margin-top:6px; font-size:12.5px;">Selecione tópicos e clique em <b>Gerar e-mail</b>.</div>
+          </div>
         </div>
-      </details>
-      <details>
-        <summary>Behavioral Analytics</summary>
-        <div class="subtopics">
-          <label><input type="checkbox" value="Boards https://docs.clevertap.com/docs/simple-reports"> Boards</label>
-          <label><input type="checkbox" value="Analyze events https://docs.clevertap.com/docs/events-analytics"> Analyze events</label>
-          <label><input type="checkbox" value="Cohorts https://docs.clevertap.com/docs/cohorts"> Cohorts</label>
-          <label><input type="checkbox" value="Funnels https://docs.clevertap.com/docs/funnels"> Funnels</label>
-          <label><input type="checkbox" value="Trends https://docs.clevertap.com/docs/trends"> Trends</label>
-          <label><input type="checkbox" value="Pivots https://docs.clevertap.com/docs/pivots"> Pivots</label>
-          <label><input type="checkbox" value="Flows https://docs.clevertap.com/docs/flows"> Flows</label>
-          <label><input type="checkbox" value="Real Impact https://docs.clevertap.com/docs/real-impact"> Real Impact</label>
-          <label><input type="checkbox" value="Use cases https://docs.clevertap.com/docs/exporting-clevertap-data-for-risk-ratio-analysis"> Use cases</label>
+
+        <div class="email-meta">
+          <div>
+            <div id="selectedTopics"></div>
+            <div id="emailSubject"></div>
+          </div>
         </div>
-      </details>
-    </div>
 
+        <pre id="emailText"></pre>
 
-    <div class="section topic-section" data-topic="tech-docs" style="display:none;">
-      <h2>🛠️ Documentação Técnica</h2>
-      <details>
-        <summary>APIs e SDKs</summary>
-        <div class="subtopics">
-          <label><input type="checkbox" value="REST API Overview https://docs.clevertap.com/docs/rest-api"> REST API Overview</label>
-          <label><input type="checkbox" value="Android SDK https://docs.clevertap.com/docs/android"> Android SDK</label>
-          <label><input type="checkbox" value="iOS SDK https://docs.clevertap.com/docs/ios"> iOS SDK</label>
-          <label><input type="checkbox" value="Web SDK https://docs.clevertap.com/docs/web"> Web SDK</label>
+        <div class="email-styles" id="styleButtons">
+          <button class="style-btn" onclick="applyStyle('Técnico')">Técnico</button>
+          <button class="style-btn" onclick="applyStyle('Casual')">Casual</button>
+          <button class="style-btn" onclick="applyStyle('Criativo')">Criativo</button>
+          <button class="style-btn" onclick="applyStyle('Profissional')">Profissional</button>
         </div>
-  </details>
-
-  <details>
-    <summary>Data Pipelines & Export</summary>
-    <div class="subtopics">
-      <label><input type="checkbox" value="Data Export https://docs.clevertap.com/docs/data-exports"> Data Export</label>
-      <label><input type="checkbox" value="S3 / BigQuery / Snowflake https://docs.clevertap.com/docs/integrations"> Cloud Storage Integrations</label>
-    </div>
-  </details>
-    </div>
-
-    <!-- Seção: Parceiros integrados -->
-    <div class="section topic-section" data-topic="partners" style="display:none;">
-      <h2>🤝 Parceiros integrados</h2>
-
-      <details>
-        <summary>CDPs & Dados</summary>
-        <div class="subtopics">
-          <label><input type="checkbox" value="Segment Integration https://docs.clevertap.com/docs/segment"> Segment</label>
-          <label><input type="checkbox" value="mParticle Integration https://docs.clevertap.com/docs/mparticle"> mParticle</label>
-        </div>
-      </details>
-
-      <details>
-        <summary>Canal & Mensageria</summary>
-        <div class="subtopics">
-          <label><input type="checkbox" value="WhatsApp BSP Partners https://docs.clevertap.com/docs/whatsapp"> WhatsApp BSPs</label>
-          <label><input type="checkbox" value="Email Providers https://docs.clevertap.com/docs/email"> Email Providers</label>
-        </div>
-      </details>
-
-  <!-- Aqui você adiciona todos os parceiros que quiser, sempre no mesmo padrão -->
-</div>
-
-
+      </section>
+    </main>
   </div>
 
-  <main class="main">
-    <div id="emptyState">
-    <p style="margin-top:12px; color:#555;">Selecione tópicos na barra lateral e clique em “Gerar E-mail”.</p>
-    </div>
-    <div class="email-output" id="emailOutput">
-      <div class="copied-popup" id="copiedPopup">Copiado!</div>
-      <div class="style-popup" id="stylePopup">Modelo aplicado</div>
+  <script>
+    // Estado global
+    let selectedTopicsData = [];
+    let currentStyle = "default"; // default, technical, casual, creative, professional
+    let currentLang = "pt";       // pt, en, es
 
-    <button class="copy-btn" type="button" onclick="copyEmail()" aria-label="Copiar texto do e-mail">
-      <img src="https://cdn-icons-png.flaticon.com/512/4837/4837299.png" alt="">
-    </button>
-
-
-<div class="lang-toggle">
-  <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')">PT-BR</button>
-  <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
-  <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">ES</button>
-</div>
-
-<div id="selectedTopics" style="font-size:0.9em; color:#666; margin-bottom:10px;"></div>
-<div id="emailSubject" style="font-weight:600; margin-bottom:10px; display:none;"></div>
-<pre id="emailText"></pre>
-
-
-
-      <div class="email-styles" id="styleButtons">
-        <button class="style-btn" onclick="applyStyle('Técnico')">Técnico</button>
-        <button class="style-btn" onclick="applyStyle('Casual')">Casual</button>
-        <button class="style-btn" onclick="applyStyle('Criativo')">Criativo</button>
-        <button class="style-btn" onclick="applyStyle('Profissional')">Profissional</button>
-      </div>
-    </div>
-  </main>
-  <p id="selectedCount" class="selected-count">Nenhum tópico selecionado</p>
-  <button class="generate-btn" type="button" onclick="generateEmail()">Gerar E-mail</button>
-
-<script>
-  // Estado global
-  let selectedTopicsData = [];
-  let currentStyle = "default"; // default, technical, casual, creative, professional
-  let currentLang = "pt";       // pt, en, es
-
-  const emailTexts = {
-    pt: {
-      selectedLabel: "Tópicos incluídos",
-      intros: {
-        default: "Olá,\n\nConforme comentei anteriormente, segue a documentação referente aos tópicos selecionados:\n",
-        technical: "Olá,\n\nConforme alinhamos, abaixo envio a documentação técnica referente aos pontos discutidos:\n",
-        casual: "Oi,\n\nComo combinado, aqui vão os links que comentei sobre a CleverTap:\n",
-        creative: "Olá,\n\nPreparei um compilado de materiais para explorar melhor a CleverTap. Seguem os principais:\n",
-        professional: "Prezados,\n\nConforme alinhado, encaminho abaixo a documentação referente aos tópicos discutidos:\n"
+    const emailTexts = {
+      pt: {
+        selectedLabel: "Tópicos incluídos",
+        intros: {
+          default: "Olá,\n\nConforme comentei anteriormente, segue a documentação referente aos tópicos selecionados:\n",
+          technical: "Olá,\n\nConforme alinhamos, abaixo envio a documentação técnica referente aos pontos discutidos:\n",
+          casual: "Oi,\n\nComo combinado, aqui vão os links que comentei sobre a CleverTap:\n",
+          creative: "Olá,\n\nPreparei um compilado de materiais para explorar melhor a CleverTap. Seguem os principais:\n",
+          professional: "Prezados,\n\nConforme alinhado, encaminho abaixo a documentação referente aos tópicos discutidos:\n"
+        },
+        closings: {
+          default: "\n\nObrigado e que tenha um excelente dia.",
+          technical: "\n\nQualquer dúvida mais técnica ou necessidade de aprofundar em algum tópico, fico à disposição.",
+          casual: "\n\nSe surgir qualquer dúvida ou quiser ver isso na prática, é só me chamar 😊",
+          creative: "\n\nFico à disposição para explorarmos juntos novos casos de uso e ideias.",
+          professional: "\n\nPermaneço à disposição para quaisquer esclarecimentos adicionais."
+        },
+        subjects: {
+          default: "Documentação CleverTap – tópicos combinados",
+          technical: "Documentação técnica CleverTap – materiais de referência",
+          casual: "Links da documentação CleverTap que combinamos",
+          creative: "Material para explorar melhor a CleverTap",
+          professional: "Documentação CleverTap – resumo dos tópicos discutidos"
+        }
       },
-      closings: {
-        default: "\n\nObrigado e que tenha um excelente dia.",
-        technical: "\n\nQualquer dúvida mais técnica ou necessidade de aprofundar em algum tópico, fico à disposição.",
-        casual: "\n\nSe surgir qualquer dúvida ou quiser ver isso na prática, é só me chamar 😊",
-        creative: "\n\nFico à disposição para explorarmos juntos novos casos de uso e ideias.",
-        professional: "\n\nPermaneço à disposição para quaisquer esclarecimentos adicionais."
+      en: {
+        selectedLabel: "Included topics",
+        intros: {
+          default: "Hi,\n\nAs mentioned earlier, I’m sharing the documentation for the topics we discussed:\n",
+          technical: "Hi,\n\nAs agreed, please find below the technical documentation related to the points we covered:\n",
+          casual: "Hey,\n\nAs promised, here are the links I mentioned about CleverTap:\n",
+          creative: "Hi,\n\nI’ve put together a curated list of resources so you can explore CleverTap in more detail. Here are the main ones:\n",
+          professional: "Dear all,\n\nAs discussed, please find below the documentation for the topics we covered:\n"
+        },
+        closings: {
+          default: "\n\nThank you and have a great day.",
+          technical: "\n\nIf you need to go deeper into any of these topics, I’ll be happy to help.",
+          casual: "\n\nIf you have any questions or want to see this in action, just ping me 😊",
+          creative: "\n\nI’m available if you’d like to explore new use cases and ideas together.",
+          professional: "\n\nPlease let me know if you need any additional clarification."
+        },
+        subjects: {
+          default: "CleverTap documentation – agreed topics",
+          technical: "CleverTap technical documentation – reference materials",
+          casual: "CleverTap docs links we talked about",
+          creative: "Resources to better explore CleverTap",
+          professional: "CleverTap documentation – summary of discussed topics"
+        }
       },
-      subjects: {
-        default: "Documentação CleverTap – tópicos combinados",
-        technical: "Documentação técnica CleverTap – materiais de referência",
-        casual: "Links da documentação CleverTap que combinamos",
-        creative: "Material para explorar melhor a CleverTap",
-        professional: "Documentação CleverTap – resumo dos tópicos discutidos"
+      es: {
+        selectedLabel: "Tópicos incluidos",
+        intros: {
+          default: "Hola,\n\nComo comenté anteriormente, comparto la documentación relacionada con los temas que revisamos:\n",
+          technical: "Hola,\n\nSegún lo acordado, a continuación envío la documentación técnica relacionada con los puntos tratados:\n",
+          casual: "Hola,\n\nComo prometí, aquí van los enlaces que mencioné sobre CleverTap:\n",
+          creative: "Hola,\n\nPreparé un conjunto de recursos para que puedas explorar mejor CleverTap. Estos son los principales:\n",
+          professional: "Estimados,\n\nTal como conversamos, a continuación comparto la documentación de los temas tratados:\n"
+        },
+        closings: {
+          default: "\n\nMuchas gracias y que tengas un excelente día.",
+          technical: "\n\nSi necesitan profundizar en alguno de estos puntos, quedo a su disposición.",
+          casual: "\n\nSi tienes alguna duda o quieres verlo en vivo, solo avísame 😊",
+          creative: "\n\nQuedo atento para que podamos explorar juntos nuevos casos de uso e ideas.",
+          professional: "\n\nQuedo a disposición para cualquier aclaración adicional."
+        },
+        subjects: {
+          default: "Documentación de CleverTap – temas acordados",
+          technical: "Documentación técnica de CleverTap – materiales de referencia",
+          casual: "Enlaces de documentación de CleverTap que comentamos",
+          creative: "Material para explorar mejor CleverTap",
+          professional: "Documentación de CleverTap – resumen de los temas tratados"
+        }
       }
-    },
-    en: {
-      selectedLabel: "Included topics",
-      intros: {
-        default: "Hi,\n\nAs mentioned earlier, I’m sharing the documentation for the topics we discussed:\n",
-        technical: "Hi,\n\nAs agreed, please find below the technical documentation related to the points we covered:\n",
-        casual: "Hey,\n\nAs promised, here are the links I mentioned about CleverTap:\n",
-        creative: "Hi,\n\nI’ve put together a curated list of resources so you can explore CleverTap in more detail. Here are the main ones:\n",
-        professional: "Dear all,\n\nAs discussed, please find below the documentation for the topics we covered:\n"
-      },
-      closings: {
-        default: "\n\nThank you and have a great day.",
-        technical: "\n\nIf you need to go deeper into any of these topics, I’ll be happy to help.",
-        casual: "\n\nIf you have any questions or want to see this in action, just ping me 😊",
-        creative: "\n\nI’m available if you’d like to explore new use cases and ideas together.",
-        professional: "\n\nPlease let me know if you need any additional clarification."
-      },
-      subjects: {
-        default: "CleverTap documentation – agreed topics",
-        technical: "CleverTap technical documentation – reference materials",
-        casual: "CleverTap docs links we talked about",
-        creative: "Resources to better explore CleverTap",
-        professional: "CleverTap documentation – summary of discussed topics"
-      }
-    },
-    es: {
-      selectedLabel: "Tópicos incluidos",
-      intros: {
-        default: "Hola,\n\nComo comenté anteriormente, comparto la documentación relacionada con los temas que revisamos:\n",
-        technical: "Hola,\n\nSegún lo acordado, a continuación envío la documentación técnica relacionada con los puntos tratados:\n",
-        casual: "Hola,\n\nComo prometí, aquí van los enlaces que mencioné sobre CleverTap:\n",
-        creative: "Hola,\n\nPreparé un conjunto de recursos para que puedas explorar mejor CleverTap. Estos son los principales:\n",
-        professional: "Estimados,\n\nTal como conversamos, a continuación comparto la documentación de los temas tratados:\n"
-      },
-      closings: {
-        default: "\n\nMuchas gracias y que tengas un excelente día.",
-        technical: "\n\nSi necesitan profundizar en alguno de estos puntos, quedo a su disposición.",
-        casual: "\n\nSi tienes alguna duda o quieres verlo en vivo, solo avísame 😊",
-        creative: "\n\nQuedo atento para que podamos explorar juntos nuevos casos de uso e ideas.",
-        professional: "\n\nQuedo a disposición para cualquier aclaración adicional."
-      },
-      subjects: {
-        default: "Documentación de CleverTap – temas acordados",
-        technical: "Documentación técnica de CleverTap – materiales de referencia",
-        casual: "Enlaces de documentación de CleverTap que comentamos",
-        creative: "Material para explorar mejor CleverTap",
-        professional: "Documentación de CleverTap – resumen de los temas tratados"
-      }
-    }
-  };
-
-  function filterTopics() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const details = document.querySelectorAll("details");
-    details.forEach(section => {
-      let match = false;
-      const labels = section.querySelectorAll("label");
-      labels.forEach(label => {
-        const text = label.textContent.toLowerCase();
-        label.style.display = text.includes(input) ? "block" : "none";
-        if (text.includes(input)) match = true;
-      });
-      const summaryText = section.querySelector("summary").textContent.toLowerCase();
-      section.style.display = match || summaryText.includes(input) ? "block" : "none";
-    });
-  }
-
-  function generateEmail() {
-    const selectedCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
-    if (selectedCheckboxes.length === 0) {
-      alert("Selecione ao menos um tópico.");
-      return;
-    }
-
-    document.getElementById('emptyState').classList.add('hidden');
-
-    selectedTopicsData = selectedCheckboxes.map(item => {
-  const labelText = item.parentElement.textContent.trim();
-  const raw = item.value || "";
-
-  let title;
-  let url;
-
-  // Tenta achar o começo do link (http ou https)
-  const httpIndex = raw.indexOf("http");
-
-  if (httpIndex !== -1) {
-    title = raw.slice(0, httpIndex).replace(/[:\-–]+$/,'').trim(); // remove : ou - do final
-    url = raw.slice(httpIndex).trim();
-  } else {
-    // fallback: não tem http no value, tenta usar o primeiro ":"
-    const parts = raw.split(':');
-    title = (parts.shift() || labelText).trim();
-    url = parts.join(':').trim();
-  }
-
-  return { label: labelText, title, url };
-});
-
-
-    currentStyle = "default";
-
-    const output = document.getElementById('emailOutput');
-    const styles = document.getElementById('styleButtons');
-    output.classList.add('show');
-    styles.classList.add('show');
-
-    updateSelectedTopicsLabel();
-    renderEmail();
-  }
-
-  function updateSelectedTopicsLabel() {
-    if (!selectedTopicsData.length) return;
-    const texts = emailTexts[currentLang];
-    const label = texts.selectedLabel;
-    const selectedNames = selectedTopicsData.map(t => t.label).join(', ');
-    const el = document.getElementById('selectedTopics');
-    el.textContent = label + ": " + selectedNames;
-  }
-
-  function renderEmail() {
-    if (!selectedTopicsData.length) return;
-    const body = buildEmailBody();
-    const subject = buildEmailSubject();
-
-    const textEl = document.getElementById('emailText');
-    const subjectEl = document.getElementById('emailSubject');
-
-    textEl.textContent = body;
-
-    if (subject) {
-      if (currentLang === "en") {
-        subjectEl.textContent = "Subject: " + subject;
-      } else if (currentLang === "es") {
-        subjectEl.textContent = "Asunto: " + subject;
-      } else {
-        subjectEl.textContent = "Assunto: " + subject;
-      }
-      subjectEl.style.display = 'block';
-    } else {
-      subjectEl.style.display = 'none';
-    }
-  }
-
-  function buildEmailBody() {
-    const langBlock = emailTexts[currentLang] || emailTexts.pt;
-    const intros = langBlock.intros;
-    const closings = langBlock.closings;
-
-    const intro = intros[currentStyle] || intros.default;
-    const closing = closings[currentStyle] || closings.default;
-
-    const lines = selectedTopicsData
-      .map(t => t.url ? `• ${t.title}: ${t.url}` : `• ${t.title}`)
-      .join('\n');
-
-    return intro + "\n" + lines + closing;
-  }
-
-  function buildEmailSubject() {
-    const langBlock = emailTexts[currentLang] || emailTexts.pt;
-    const subjects = langBlock.subjects;
-    return subjects[currentStyle] || subjects.default;
-  }
-
-  function copyEmail() {
-    const text = document.getElementById('emailText').textContent;
-    if (!text) return;
-
-    navigator.clipboard.writeText(text);
-
-    const popup = document.getElementById('copiedPopup');
-    popup.classList.add('show');
-    setTimeout(() => popup.classList.remove('show'), 1500);
-  }
-
-  function applyStyle(type) {
-    if (!selectedTopicsData.length) return;
-
-    const map = {
-      "Técnico": "technical",
-      "Casual": "casual",
-      "Criativo": "creative",
-      "Profissional": "professional"
     };
 
-    currentStyle = map[type] || "default";
-    renderEmail();
+    function updateSelectedCount() {
+      const count = document.querySelectorAll('input[type="checkbox"]:checked').length;
+      const pill = document.getElementById('selectedCountPill');
+      const txt = document.getElementById('selectedCountText');
+      if (pill) pill.textContent = `${count} selecionados`;
+      if (txt) txt.textContent = `${count} selecionados`;
+    }
 
-    const buttons = document.querySelectorAll('.style-btn');
-    buttons.forEach(btn => {
-      btn.classList.toggle('active', btn.textContent === type);
+    document.addEventListener('change', (e) => {
+      if (e.target && e.target.matches('input[type="checkbox"]')) updateSelectedCount();
     });
 
-    const popup = document.getElementById('stylePopup');
-    popup.textContent = `Modelo ${type} selecionado`;
-    popup.classList.add('show');
-    setTimeout(() => popup.classList.remove('show'), 2000);
-  }
+    function filterTopics() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const details = document.querySelectorAll("details");
 
-  function setLanguage(lang) {
-    currentLang = lang;
+      details.forEach(section => {
+        let match = false;
+        const labels = section.querySelectorAll("label");
 
-    const buttons = document.querySelectorAll('.lang-btn');
-    buttons.forEach(btn => {
-      const btnLang = btn.dataset.lang;
-      btn.classList.toggle('active', btnLang === lang);
-    });
+        labels.forEach(label => {
+          const text = label.textContent.toLowerCase();
+          label.style.display = text.includes(input) ? "flex" : "none";
+          if (text.includes(input)) match = true;
+        });
 
-    if (selectedTopicsData.length) {
+        const summaryText = section.querySelector("summary").textContent.toLowerCase();
+        section.style.display = (match || summaryText.includes(input)) ? "block" : "none";
+      });
+    }
+
+    function generateEmail() {
+      const selectedCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
+      if (selectedCheckboxes.length === 0) {
+        alert("Selecione ao menos um tópico.");
+        return;
+      }
+
+      const empty = document.getElementById('emptyState');
+      if (empty) empty.classList.add('hidden');
+
+      selectedTopicsData = selectedCheckboxes.map(item => {
+        const labelText = item.parentElement.textContent.trim();
+        const raw = item.value || "";
+
+        let title;
+        let url;
+
+        const httpIndex = raw.indexOf("http");
+        if (httpIndex !== -1) {
+          title = raw.slice(0, httpIndex).replace(/[:\-–]+$/,'').trim();
+          url = raw.slice(httpIndex).trim();
+        } else {
+          const parts = raw.split(':');
+          title = (parts.shift() || labelText).trim();
+          url = parts.join(':').trim();
+        }
+
+        return { label: labelText, title, url };
+      });
+
+      currentStyle = "default";
+
+      const styles = document.getElementById('styleButtons');
+      styles.classList.add('show');
+
+      // Reset active style buttons
+      document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+
       updateSelectedTopicsLabel();
       renderEmail();
     }
-  }
-  // Alternar entre Documentação do usuário / técnica / parceiros
-document.querySelectorAll('.topic-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const topic = btn.dataset.topic;
 
-    // destaque visual no botão ativo
-    document.querySelectorAll('.topic-btn').forEach(b => {
-      b.classList.toggle('active', b === btn);
-    });
-
-    // mostra só a seção do tópico selecionado
-    document.querySelectorAll('.topic-section').forEach(section => {
-      section.style.display = section.dataset.topic === topic ? 'block' : 'none';
-    });
-
-    // opcional: limpar busca e reaplicar filtro
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-      searchInput.value = '';
-      filterTopics();
+    function updateSelectedTopicsLabel() {
+      if (!selectedTopicsData.length) return;
+      const texts = emailTexts[currentLang];
+      const label = texts.selectedLabel;
+      const selectedNames = selectedTopicsData.map(t => t.label).join(', ');
+      const el = document.getElementById('selectedTopics');
+      el.textContent = label + ": " + selectedNames;
     }
-  });
-});
 
-</script>
+    function renderEmail() {
+      if (!selectedTopicsData.length) return;
+      const body = buildEmailBody();
+      const subject = buildEmailSubject();
 
+      const textEl = document.getElementById('emailText');
+      const subjectEl = document.getElementById('emailSubject');
 
+      textEl.textContent = body;
+
+      if (subject) {
+        if (currentLang === "en") subjectEl.textContent = "Subject: " + subject;
+        else if (currentLang === "es") subjectEl.textContent = "Asunto: " + subject;
+        else subjectEl.textContent = "Assunto: " + subject;
+        subjectEl.style.display = 'block';
+      } else {
+        subjectEl.style.display = 'none';
+      }
+    }
+
+    function buildEmailBody() {
+      const langBlock = emailTexts[currentLang] || emailTexts.pt;
+      const intro = (langBlock.intros[currentStyle] || langBlock.intros.default);
+      const closing = (langBlock.closings[currentStyle] || langBlock.closings.default);
+
+      const lines = selectedTopicsData
+        .map(t => t.url ? `• ${t.title}: ${t.url}` : `• ${t.title}`)
+        .join('\n');
+
+      return intro + "\n" + lines + closing;
+    }
+
+    function buildEmailSubject() {
+      const langBlock = emailTexts[currentLang] || emailTexts.pt;
+      return (langBlock.subjects[currentStyle] || langBlock.subjects.default);
+    }
+
+    function copyEmail() {
+      const text = document.getElementById('emailText').textContent;
+      if (!text) return;
+
+      navigator.clipboard.writeText(text);
+
+      const popup = document.getElementById('copiedPopup');
+      popup.classList.add('show');
+      setTimeout(() => popup.classList.remove('show'), 1600);
+    }
+
+    function applyStyle(type) {
+      if (!selectedTopicsData.length) return;
+
+      const map = {
+        "Técnico": "technical",
+        "Casual": "casual",
+        "Criativo": "creative",
+        "Profissional": "professional"
+      };
+
+      currentStyle = map[type] || "default";
+      renderEmail();
+
+      document.querySelectorAll('.style-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === type);
+      });
+
+      const popup = document.getElementById('stylePopup');
+      popup.textContent = `Modelo ${type} selecionado`;
+      popup.classList.add('show');
+      setTimeout(() => popup.classList.remove('show'), 1600);
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      if (selectedTopicsData.length) {
+        updateSelectedTopicsLabel();
+        renderEmail();
+      }
+    }
+
+    // Alternar entre Documentação do usuário / técnica / parceiros
+    document.querySelectorAll('.topic-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const topic = btn.dataset.topic;
+
+        document.querySelectorAll('.topic-btn').forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.topic-section').forEach(section => {
+          section.style.display = (section.dataset.topic === topic) ? 'block' : 'none';
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.value = '';
+          filterTopics();
+        }
+      });
+    });
+
+    // init count
+    updateSelectedCount();
+  </script>
 </body>
 </html>
