@@ -139,39 +139,116 @@
 
     .results-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
     .result-card{
-      background: var(--card-bg); color: var(--text-on-card);
-      border: 1px solid var(--border-card); border-radius: var(--radius-card);
-      box-shadow: var(--shadow-soft); padding: 16px; position: relative; overflow: hidden;
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-    }
-    .result-card::before{
-      content:""; position:absolute; inset:0;
-      background: radial-gradient(circle at top left, rgba(240,68,68,0.08), transparent 60%);
-      pointer-events:none;
-    }
-    .result-card:hover{ transform: translateY(-8px); box-shadow: 0 22px 38px rgba(0,0,0,0.35); }
+  background: var(--card-bg);
+  color: var(--text-on-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.result-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at top left, rgba(240,68,68,0.08), transparent 60%);
+  pointer-events:none;
+}
+.result-card:hover{
+  transform: translateY(-8px);
+  box-shadow: 0 22px 38px rgba(0,0,0,0.35);
+}
 
-    .result-top{ display:flex; justify-content: space-between; align-items:center; gap:12px; position: relative; z-index: 1; margin-bottom: 10px; }
-    .client{ display:flex; align-items:center; gap:10px; min-width:0; }
-    .logo{
-      width: 40px; height: 40px; border-radius: 12px;
-      border: 1px solid rgba(19,59,88,0.20); background: rgba(19,59,88,0.06);
-      display:flex; align-items:center; justify-content:center;
-      overflow:hidden; flex-shrink:0; font-weight: 800; color:#133B58;
-    }
-    .logo img{ width:100%; height:100%; object-fit: contain; background:#fff; }
-    .proj{ min-width:0; }
-    .proj-name{ font-weight:800; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow: ellipsis; }
-    .client-name{ font-size:12px; opacity:0.8; white-space:nowrap; overflow:hidden; text-overflow: ellipsis; }
-    .score{
-      border-radius: 999px; padding: 6px 10px; font-size: 12px;
-      border: 1px solid rgba(240,68,68,0.55); background: rgba(240,68,68,0.08);
-      color: #0F172A; font-weight: 650; flex-shrink:0;
-    }
-    .section{ position: relative; z-index: 1; margin-top: 10px; }
-    .section h4{ font-size:11px; text-transform: uppercase; letter-spacing:0.05em; opacity:0.7; margin-bottom:4px; }
-    .section p, .section ul{ font-size: 12.5px; line-height: 1.55; opacity:0.92; }
-    .section ul{ padding-left: 18px; }
+/* Top header becomes vertical so logo can be larger */
+.result-top{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 10px;
+}
+
+/* Bigger logo area */
+.logo{
+  width: 100%;
+  height: 90px;                /* bigger */
+  border-radius: 14px;
+  border: 1px solid rgba(19,59,88,0.14);
+  background: rgba(19,59,88,0.03); /* subtle frame; works with transparent png */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;          /* preserve transparency */
+  background: transparent;      /* important */
+  padding: 10px;                /* keeps nice margins inside logo area */
+}
+
+/* Text block below logo */
+.client{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+.proj{
+  min-width: 0;
+  flex: 1;
+}
+
+/* Bigger titles */
+.proj-name{
+  font-weight: 900;
+  font-size: 17px;             /* bigger */
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.client-name{
+  font-size: 13.5px;           /* bigger */
+  opacity: 0.82;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Score pill aligned to the right */
+.score{
+  align-self: flex-end;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  border: 1px solid rgba(240,68,68,0.55);
+  background: rgba(240,68,68,0.08);
+  color: #0F172A;
+  font-weight: 700;
+}
+
+/* Sections text slightly larger overall */
+.section p, .section ul{
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+.section h4{
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
 
     .mini-tags{ display:flex; flex-wrap: wrap; gap:8px; margin-top: 10px; }
     .mini-tag{ border-radius: 999px; padding: 5px 9px; font-size: 11px; border: 1px solid rgba(19,59,88,0.22); background: rgba(19,59,88,0.06); opacity:0.95; }
@@ -181,6 +258,33 @@
       .header { padding-top: 78px; }
       .shell { padding: 16px; }
     }
+
+    /* Rich results list */
+.kpi-list{
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.kpi-item{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;     /* bigger */
+  font-weight: 650;
+  line-height: 1.35;
+}
+.kpi-arrow{
+  color: #16A34A;        /* green */
+  font-weight: 900;
+  line-height: 1;
+  transform: translateY(1px);
+}
+.kpi-text{
+  opacity: 0.95;
+}
+
   </style>
 </head>
 <body>
@@ -475,40 +579,55 @@
 
         const card = document.createElement('article');
         card.className = 'result-card';
-        card.innerHTML = `
-          <div class="result-top">
-            <div class="client">
-              <div class="logo">${logoHtml}</div>
-              <div class="proj">
-                <div class="proj-name" title="${escapeHtml(projectName)}">${escapeHtml(projectName)}</div>
-                <div class="client-name" title="${escapeHtml(clientName)}">${escapeHtml(clientName)}</div>
-              </div>
-            </div>
-            <div class="score" title="${escapeHtml(t('label.scoreTitle'))}">${escapeHtml(t('label.score'))}: ${escapeHtml(String(item._score.toFixed(1)))}</div>
-          </div>
+card.innerHTML = `
+  <div class="result-top">
+    <div class="logo">${logoHtml}</div>
 
-          <div class="section">
-            <h4>${escapeHtml(t('sec.description'))}</h4>
-            <p>${escapeHtml(description)}</p>
-          </div>
+    <div class="client">
+      <div class="proj">
+        <div class="proj-name" title="${escapeHtml(projectName)}">${escapeHtml(projectName)}</div>
+        <div class="client-name" title="${escapeHtml(clientName)}">${escapeHtml(clientName)}</div>
+      </div>
+      <div class="score" title="${escapeHtml(t('label.scoreTitle'))}">
+        ${escapeHtml(t('label.score'))}: ${escapeHtml(String(item._score.toFixed(1)))}
+      </div>
+    </div>
+  </div>
 
-          <div class="section">
-            <h4>${escapeHtml(t('sec.pains'))}</h4>
-            ${pains.length ? `<ul>${pains.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>` : `<p>—</p>`}
-          </div>
+  <div class="section">
+    <h4>${escapeHtml(t('sec.description'))}</h4>
+    <p>${escapeHtml(description)}</p>
+  </div>
 
-          <div class="section">
-            <h4>${escapeHtml(t('sec.value'))}</h4>
-            <p>${escapeHtml(value)}</p>
-          </div>
+  <div class="section">
+    <h4>${escapeHtml(t('sec.pains'))}</h4>
+    ${pains.length ? `<ul>${pains.map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>` : `<p>—</p>`}
+  </div>
 
-          <div class="section">
-            <h4>${escapeHtml(t('sec.results'))}</h4>
-            ${results.length ? `<ul>${results.map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>` : `<p>—</p>`}
-          </div>
+  <div class="section">
+    <h4>${escapeHtml(t('sec.value'))}</h4>
+    <p>${escapeHtml(value)}</p>
+  </div>
 
-          ${tags.length ? `<div class="mini-tags">${tags.map(tg => `<span class="mini-tag">${escapeHtml(tg)}</span>`).join('')}</div>` : ``}
-        `;
+  <div class="section">
+    <h4>${escapeHtml(t('sec.results'))}</h4>
+    ${
+      results.length
+        ? `<ul class="kpi-list">
+            ${results.map(r => `
+              <li class="kpi-item">
+                <span class="kpi-arrow">→</span>
+                <span class="kpi-text">${escapeHtml(r)}</span>
+              </li>
+            `).join('')}
+          </ul>`
+        : `<p>—</p>`
+    }
+  </div>
+
+  ${tags.length ? `<div class="mini-tags">${tags.map(tg => `<span class="mini-tag">${escapeHtml(tg)}</span>`).join('')}</div>` : ``}
+`;
+
         resultsGrid.appendChild(card);
       });
     }
