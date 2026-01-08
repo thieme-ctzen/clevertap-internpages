@@ -1,0 +1,120 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-01-08",
+  "items": [
+    {
+      "id": "uc_0001",
+      "industry": "fintech",
+      "region": "LATAM",
+      "country": "BR",
+      "projectName": {
+        "pt": "Onboarding e Ativação",
+        "en": "Onboarding & Activation",
+        "es": "Onboarding y Activación"
+      },
+      "clientName": {
+        "pt": "Cliente Fintech X",
+        "en": "Fintech Client X",
+        "es": "Cliente Fintech X"
+      },
+      "clientLogoUrl": "",
+      "description": {
+        "pt": "Jornada de onboarding com mensagens personalizadas para acelerar ativação e reduzir churn nos primeiros dias.",
+        "en": "Onboarding journey with personalized messages to accelerate activation and reduce early churn.",
+        "es": "Journey de onboarding con mensajes personalizados para acelerar la activación y reducir el churn temprano."
+      },
+      "pains": {
+        "pt": ["Baixa conversão no KYC", "Churn D0–D7", "Baixo engajamento no 1º depósito"],
+        "en": ["Low KYC conversion", "D0–D7 churn", "Low engagement on first deposit"],
+        "es": ["Baja conversión en KYC", "Churn D0–D7", "Bajo engagement en el primer depósito"]
+      },
+      "clevertapValue": {
+        "pt": "Segmentação comportamental, Journeys e testes A/B para personalizar mensagens por estágio do onboarding.",
+        "en": "Behavioral segmentation, Journeys, and A/B testing to personalize messages by onboarding stage.",
+        "es": "Segmentación por comportamiento, Journeys y pruebas A/B para personalizar mensajes por etapa."
+      },
+      "results": {
+        "pt": ["+18% ativação", "-12% churn D7", "+9% conversão KYC"],
+        "en": ["+18% activation", "-12% D7 churn", "+9% KYC conversion"],
+        "es": ["+18% activación", "-12% churn D7", "+9% conversión KYC"]
+      },
+      "tags": ["#fintech", "#onboarding", "#kyc", "#push", "#whatsapp", "#inapp"]
+    },
+    {
+      "id": "uc_0002",
+      "industry": "retail",
+      "region": "GLOBAL",
+      "country": "",
+      "projectName": {
+        "pt": "Carrinho Abandonado Multicanal",
+        "en": "Multichannel Abandoned Cart",
+        "es": "Carrito Abandonado Multicanal"
+      },
+      "clientName": {
+        "pt": "E-commerce Retail Y",
+        "en": "Retail E-commerce Y",
+        "es": "E-commerce Retail Y"
+      },
+      "clientLogoUrl": "",
+      "description": {
+        "pt": "Recuperação de carrinho com mensagens por intenção e recomendações personalizadas.",
+        "en": "Cart recovery using intent signals and personalized recommendations.",
+        "es": "Recuperación de carrito usando señales de intención y recomendaciones personalizadas."
+      },
+      "pains": {
+        "pt": ["Perda de receita", "Baixa taxa de recuperação", "Mensagens genéricas"],
+        "en": ["Revenue loss", "Low recovery rate", "Generic messaging"],
+        "es": ["Pérdida de ingresos", "Baja tasa de recuperación", "Mensajes genéricos"]
+      },
+      "clevertapValue": {
+        "pt": "Segmentos por comportamento, Journey com cadência e testes A/B para otimizar conversão.",
+        "en": "Behavioral segments, journey orchestration, and A/B testing to optimize conversion.",
+        "es": "Segmentos por comportamiento, orquestación de journeys y pruebas A/B para optimizar conversión."
+      },
+      "results": {
+        "pt": ["+14% recuperação de carrinho", "+8% conversão", "CTR +20%"],
+        "en": ["+14% cart recovery", "+8% conversion", "CTR +20%"],
+        "es": ["+14% recuperación de carrito", "+8% conversión", "CTR +20%"]
+      },
+      "tags": ["#retail", "#ecommerce", "#abandonedcart", "#email", "#push", "#recommendations"]
+    },
+    {
+      "id": "uc_0003",
+      "industry": "food",
+      "region": "LATAM",
+      "country": "MX",
+      "projectName": {
+        "pt": "Reativação com Promoções",
+        "en": "Reactivation with Promotions",
+        "es": "Reactivación con Promociones"
+      },
+      "clientName": {
+        "pt": "Food Delivery Z",
+        "en": "Food Delivery Z",
+        "es": "Food Delivery Z"
+      },
+      "clientLogoUrl": "",
+      "description": {
+        "pt": "Campanhas de reativação com ofertas personalizadas para usuários inativos.",
+        "en": "Reactivation campaigns with personalized offers for inactive users.",
+        "es": "Campañas de reactivación con ofertas personalizadas para usuarios inactivos."
+      },
+      "pains": {
+        "pt": ["Queda de pedidos", "Usuários inativos", "Promoções pouco segmentadas"],
+        "en": ["Order drop", "Inactive users", "Poorly targeted promotions"],
+        "es": ["Caída de pedidos", "Usuarios inactivos", "Promociones poco segmentadas"]
+      },
+      "clevertapValue": {
+        "pt": "Cohorts + RFM + promo segmentada e Journey multicanal com personalização.",
+        "en": "Cohorts + RFM + targeted promos and multichannel journeys with personalization.",
+        "es": "Cohorts + RFM + promos segmentadas y journeys multicanal con personalización."
+      },
+      "results": {
+        "pt": ["+11% reativação", "+7% recorrência", "CTR +22%"],
+        "en": ["+11% reactivation", "+7% repeat usage", "CTR +22%"],
+        "es": ["+11% reactivación", "+7% recurrencia", "CTR +22%"]
+      },
+      "tags": ["#food", "#reactivation", "#promotions", "#email", "#push"]
+    }
+  ]
+}
