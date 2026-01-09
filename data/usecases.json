@@ -1,120 +1,632 @@
-{
-  "version": "1.0",
-  "updated_at": "2026-01-08",
-  "items": [
-    {
-      "id": "uc_0001",
-      "industry": "fintech",
-      "region": "LATAM",
-      "country": "BR",
-      "projectName": {
-        "pt": "Onboarding e Ativação",
-        "en": "Onboarding & Activation",
-        "es": "Onboarding y Activación"
-      },
-      "clientName": {
-        "pt": "Cliente Fintech X",
-        "en": "Fintech Client X",
-        "es": "Cliente Fintech X"
-      },
-      "clientLogoUrl": "",
-      "description": {
-        "pt": "Jornada de onboarding com mensagens personalizadas para acelerar ativação e reduzir churn nos primeiros dias.",
-        "en": "Onboarding journey with personalized messages to accelerate activation and reduce early churn.",
-        "es": "Journey de onboarding con mensajes personalizados para acelerar la activación y reducir el churn temprano."
-      },
-      "pains": {
-        "pt": ["Baixa conversão no KYC", "Churn D0–D7", "Baixo engajamento no 1º depósito"],
-        "en": ["Low KYC conversion", "D0–D7 churn", "Low engagement on first deposit"],
-        "es": ["Baja conversión en KYC", "Churn D0–D7", "Bajo engagement en el primer depósito"]
-      },
-      "clevertapValue": {
-        "pt": "Segmentação comportamental, Journeys e testes A/B para personalizar mensagens por estágio do onboarding.",
-        "en": "Behavioral segmentation, Journeys, and A/B testing to personalize messages by onboarding stage.",
-        "es": "Segmentación por comportamiento, Journeys y pruebas A/B para personalizar mensajes por etapa."
-      },
-      "results": {
-        "pt": ["+18% ativação", "-12% churn D7", "+9% conversão KYC"],
-        "en": ["+18% activation", "-12% D7 churn", "+9% KYC conversion"],
-        "es": ["+18% activación", "-12% churn D7", "+9% conversión KYC"]
-      },
-      "tags": ["#fintech", "#onboarding", "#kyc", "#push", "#whatsapp", "#inapp"]
+[
+  {
+    "id": "uc_0001",
+    "projectName": { "pt": "Personalização em escala com CleverAI", "en": "Personalization at scale with CleverAI", "es": "Personalización a escala con CleverAI" },
+    "clientName": { "pt": "City Club by Soriana", "en": "City Club by Soriana", "es": "City Club by Soriana" },
+    "clientLogoUrl": "",
+    "industry": "retail",
+    "description": {
+      "pt": "O City Club México (Soriana) evoluiu o engajamento digital com segmentação automatizada e recursos de IA para personalizar comunicações e otimizar jornadas.",
+      "en": "City Club Mexico (Soriana) improved digital engagement using automated segmentation and AI to personalize communications and optimize journeys.",
+      "es": "City Club México (Soriana) mejoró el engagement digital usando segmentación automatizada e IA para personalizar comunicaciones y optimizar journeys."
     },
-    {
-      "id": "uc_0002",
-      "industry": "retail",
-      "region": "GLOBAL",
-      "country": "",
-      "projectName": {
-        "pt": "Carrinho Abandonado Multicanal",
-        "en": "Multichannel Abandoned Cart",
-        "es": "Carrito Abandonado Multicanal"
-      },
-      "clientName": {
-        "pt": "E-commerce Retail Y",
-        "en": "Retail E-commerce Y",
-        "es": "E-commerce Retail Y"
-      },
-      "clientLogoUrl": "",
-      "description": {
-        "pt": "Recuperação de carrinho com mensagens por intenção e recomendações personalizadas.",
-        "en": "Cart recovery using intent signals and personalized recommendations.",
-        "es": "Recuperación de carrito usando señales de intención y recomendaciones personalizadas."
-      },
-      "pains": {
-        "pt": ["Perda de receita", "Baixa taxa de recuperação", "Mensagens genéricas"],
-        "en": ["Revenue loss", "Low recovery rate", "Generic messaging"],
-        "es": ["Pérdida de ingresos", "Baja tasa de recuperación", "Mensajes genéricos"]
-      },
-      "clevertapValue": {
-        "pt": "Segmentos por comportamento, Journey com cadência e testes A/B para otimizar conversão.",
-        "en": "Behavioral segments, journey orchestration, and A/B testing to optimize conversion.",
-        "es": "Segmentos por comportamiento, orquestación de journeys y pruebas A/B para optimizar conversión."
-      },
-      "results": {
-        "pt": ["+14% recuperação de carrinho", "+8% conversão", "CTR +20%"],
-        "en": ["+14% cart recovery", "+8% conversion", "CTR +20%"],
-        "es": ["+14% recuperación de carrito", "+8% conversión", "CTR +20%"]
-      },
-      "tags": ["#retail", "#ecommerce", "#abandonedcart", "#email", "#push", "#recommendations"]
+    "pains": {
+      "pt": ["Comunicação genérica e pouco personalizada", "Execução manual e demorada de campanhas", "Baixa visibilidade/insights sobre performance e parceiros"],
+      "en": ["Generic, impersonal communication", "Manual and time-consuming campaign execution", "Limited insights/reporting on performance and partners"],
+      "es": ["Comunicación genérica e impersonal", "Ejecución manual y lenta de campañas", "Insights/reporting limitados sobre performance y socios"]
     },
-    {
-      "id": "uc_0003",
-      "industry": "food",
-      "region": "LATAM",
-      "country": "MX",
-      "projectName": {
-        "pt": "Reativação com Promoções",
-        "en": "Reactivation with Promotions",
-        "es": "Reactivación con Promociones"
-      },
-      "clientName": {
-        "pt": "Food Delivery Z",
-        "en": "Food Delivery Z",
-        "es": "Food Delivery Z"
-      },
-      "clientLogoUrl": "",
-      "description": {
-        "pt": "Campanhas de reativação com ofertas personalizadas para usuários inativos.",
-        "en": "Reactivation campaigns with personalized offers for inactive users.",
-        "es": "Campañas de reactivación con ofertas personalizadas para usuarios inactivos."
-      },
-      "pains": {
-        "pt": ["Queda de pedidos", "Usuários inativos", "Promoções pouco segmentadas"],
-        "en": ["Order drop", "Inactive users", "Poorly targeted promotions"],
-        "es": ["Caída de pedidos", "Usuarios inactivos", "Promociones poco segmentadas"]
-      },
-      "clevertapValue": {
-        "pt": "Cohorts + RFM + promo segmentada e Journey multicanal com personalização.",
-        "en": "Cohorts + RFM + targeted promos and multichannel journeys with personalization.",
-        "es": "Cohorts + RFM + promos segmentadas y journeys multicanal con personalización."
-      },
-      "results": {
-        "pt": ["+11% reativação", "+7% recorrência", "CTR +22%"],
-        "en": ["+11% reactivation", "+7% repeat usage", "CTR +22%"],
-        "es": ["+11% reactivación", "+7% recurrencia", "CTR +22%"]
-      },
-      "tags": ["#food", "#reactivation", "#promotions", "#email", "#push"]
+    "clevertapValue": {
+      "pt": "Segmentação automatizada, CleverAI (Scribe) para criação de conteúdo, testes multivariados com IntelliNODE e analytics para otimizar conversão e retenção.",
+      "en": "Automated segmentation, CleverAI (Scribe) for content creation, multivariate testing with IntelliNODE, and analytics to optimize conversion and retention.",
+      "es": "Segmentación automatizada, CleverAI (Scribe) para creación de contenido, tests multivariados con IntelliNODE y analytics para optimizar conversión y retención."
+    },
+    "results": {
+      "pt": ["19x aumento de usuários ativos no canal de push", "+93,71% incremento na taxa de abertura", "+5–7% recuperação de carrinho abandonado"],
+      "en": ["19x increase in active users on push channel", "+93.71% lift in open rates", "+5–7% lift in abandoned cart recovery"],
+      "es": ["19x incremento de usuarios activos en push", "+93,71% aumento en open rate", "+5–7% recuperación de carrito abandonado"]
+    },
+    "tags": ["#retail", "#personalization", "#cleverai", "#push", "#journeys", "#intellinode"],
+    "channels": ["push", "email", "whatsapp"],
+    "products": ["CleverAI (Scribe)", "IntelliNODE", "Segmentation", "Journeys", "Analytics"],
+    "region": "LATAM",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/wp-content/uploads/2025/08/City-Club-Soriana-CleverTap-Case-Study-2025.pdf",
+      "internalDocUrl": ""
     }
-  ]
-}
+  },
+  {
+    "id": "uc_0002",
+    "projectName": { "pt": "Reativação de usuários com personalização", "en": "User reactivation with personalization", "es": "Reactivación de usuarios con personalización" },
+    "clientName": { "pt": "Swan", "en": "Swan", "es": "Swan" },
+    "clientLogoUrl": "",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "O Swan (UAE) orquestrou campanhas de reativação para usuários dormentes com segmentação inteligente, testes de criativos e comunicação multicanal.",
+      "en": "Swan (UAE) orchestrated reactivation campaigns for dormant users using smart segmentation, creative testing, and multi-channel messaging.",
+      "es": "Swan (EAU) orquestó campañas de reactivación para usuarios inactivos usando segmentación inteligente, test de creatividades y comunicación multicanal."
+    },
+    "pains": {
+      "pt": ["Reativar usuários dormentes de forma consistente", "Definir segmento, incentivo, copy, timing e canal ideais", "Mensurar eficácia por mensagem/canal/horário"],
+      "en": ["Consistently reactivating dormant users", "Choosing the best segment, incentive, copy, timing and channel", "Measuring efficacy by message/channel/timing"],
+      "es": ["Reactivar usuarios inactivos de forma consistente", "Elegir segmento, incentivo, copy, timing y canal ideales", "Medir eficacia por mensaje/canal/horario"]
+    },
+    "clevertapValue": {
+      "pt": "Criação de cohorts/segmentos por recência de compra, A/B tests de conteúdo e criativos, e analytics para medir impacto e otimizar continuamente.",
+      "en": "Cohort/segment creation by inactivity windows, A/B testing of content and creatives, and analytics to measure impact and optimize continuously.",
+      "es": "Creación de cohorts/segmentos por ventanas de inactividad, A/B tests de contenido y creatividades, y analytics para medir impacto y optimizar continuamente."
+    },
+    "results": {
+      "pt": ["+40% em view rate de campanhas de email", "3% taxa de ativação em usuários dormentes", "15% dos pedidos incrementais atribuídos à reativação"],
+      "en": ["+40% boost in email campaign view rates", "3% activation rate of targeted dormant users", "15% share of incremental orders from reactivation"],
+      "es": ["+40% aumento en view rate de email", "3% tasa de activación de usuarios inactivos", "15% de pedidos incrementales por reactivación"]
+    },
+    "tags": ["#reactivation", "#email", "#push", "#segmentation", "#abtesting"],
+    "channels": ["email", "push"],
+    "products": ["Segmentation", "A/B Testing", "Cohorts", "Analytics", "Journeys"],
+    "region": "MEA",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/wp-content/uploads/2024/02/swan-user-reactivation-personalization-clevertap-case-study.pdf",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0003",
+    "projectName": { "pt": "Personalização para aumentar conversões (marca UAE)", "en": "Personalization to boost conversions (UAE brand)", "es": "Personalización para aumentar conversiones (marca EAU)" },
+    "clientName": { "pt": "Leading UAE eCommerce Brand", "en": "Leading UAE eCommerce Brand", "es": "Marca líder de eCommerce en EAU" },
+    "clientLogoUrl": "",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "Uma marca líder de e-commerce nos Emirados usou personalização e automação para impulsionar conversões e receita via campanhas contextuais.",
+      "en": "A leading UAE eCommerce brand used personalization and automation to drive higher conversions and revenue with contextual campaigns.",
+      "es": "Una marca líder de eCommerce en EAU usó personalización y automatización para aumentar conversiones e ingresos con campañas contextuales."
+    },
+    "pains": {
+      "pt": ["Baixa conversão sem personalização contextual", "Necessidade de otimizar tráfego in-app e receita", "Ajustar campanhas rapidamente com base em comportamento"],
+      "en": ["Lower conversions without contextual personalization", "Need to improve in-app traffic and revenue", "Optimize campaigns quickly based on behavior"],
+      "es": ["Menores conversiones sin personalización contextual", "Necesidad de mejorar tráfico in-app e ingresos", "Optimizar campañas rápido según comportamiento"]
+    },
+    "clevertapValue": {
+      "pt": "Personalização em tempo real + orquestração para impactar usuários no contexto certo e melhorar a eficiência do funil.",
+      "en": "Real-time personalization + orchestration to reach users in the right context and improve funnel efficiency.",
+      "es": "Personalización en tiempo real + orquestación para impactar usuarios en el contexto correcto y mejorar el embudo."
+    },
+    "results": {
+      "pt": ["+400% em conversões (boost)", "+300% em receita YoY", "+228% em conversões YoY", "+68% em tráfego in-app"],
+      "en": ["+400% boost in conversions", "+300% YoY revenue increase", "+228% YoY conversions increase", "+68% increase in in-app traffic"],
+      "es": ["+400% aumento en conversiones", "+300% aumento YoY en ingresos", "+228% aumento YoY en conversiones", "+68% aumento en tráfico in-app"]
+    },
+    "tags": ["#ecommerce", "#personalization", "#conversion", "#automation"],
+    "channels": ["push", "inapp", "email"],
+    "products": ["Personalization", "Segmentation", "Journeys", "Analytics"],
+    "region": "MEA",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/leading-uae-ecommerce-brand-leverages-personalization-boost-conversions-400/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0004",
+    "projectName": { "pt": "Engajamento multicanal para aumentar receita", "en": "Multi-channel engagement to boost revenue", "es": "Engagement multicanal para aumentar ingresos" },
+    "clientName": { "pt": "Tata CLiQ Luxury", "en": "Tata CLiQ Luxury", "es": "Tata CLiQ Luxury" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2020/04/tata-cliq-luxury.png",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A Tata CLiQ Luxury usou personalização e orquestração multicanal para aumentar receita e eficiência de conversão com comunicações em tempo real.",
+      "en": "Tata CLiQ Luxury used personalization and multi-channel orchestration to grow revenue and conversion efficiency with real-time messaging.",
+      "es": "Tata CLiQ Luxury usó personalización y orquestación multicanal para aumentar ingresos y eficiencia de conversión con mensajes en tiempo real."
+    },
+    "pains": {
+      "pt": ["Comunicação pouco contextual em escala", "Otimizar conversão e transações", "Aumentar resposta a campanhas em múltiplos canais"],
+      "en": ["Scaling contextual communication", "Improving conversions and transactions", "Increasing campaign response across channels"],
+      "es": ["Escalar comunicación contextual", "Mejorar conversiones y transacciones", "Aumentar respuesta en múltiples canales"]
+    },
+    "clevertapValue": {
+      "pt": "Personalização, automações e orquestração multicanal para atingir usuários com mensagens relevantes, no timing ideal.",
+      "en": "Personalization, automations, and omnichannel orchestration to deliver relevant messages at the right time.",
+      "es": "Personalización, automatizaciones y orquestación omnicanal para entregar mensajes relevantes en el momento correcto."
+    },
+    "results": {
+      "pt": ["+159% boost em receita", "+30% aumento na taxa de conclusão de transações", "4,9x maior click-to-open rate", "+29% aumento em aberturas do app"],
+      "en": ["+159% boost in revenue", "+30% increase in transaction completion rate", "4.9x higher click-to-open rate", "+29% increase in app opens"],
+      "es": ["+159% aumento en ingresos", "+30% aumento en finalización de transacciones", "4,9x mayor click-to-open", "+29% aumento en aperturas de app"]
+    },
+    "tags": ["#ecommerce", "#luxury", "#omnichannel", "#personalization"],
+    "channels": ["push", "email", "sms", "webpush", "inapp"],
+    "products": ["Personalization", "Segmentation", "Journeys", "Analytics"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/how-tata-cliq-luxury-bags-a-massive-159-boost-in-revenue-via-multi-channel-engagement/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0005",
+    "projectName": { "pt": "Campanhas por inação em tempo real (CTR 4x)", "en": "Real-time inaction campaigns (4x CTR)", "es": "Campañas por inacción en tiempo real (CTR 4x)" },
+    "clientName": { "pt": "Tata CLiQ", "en": "Tata CLiQ", "es": "Tata CLiQ" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2020/04/tata-cliq.png",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A Tata CLiQ ativou campanhas em tempo real baseadas em comportamento/inação para reduzir abandono e aumentar CTR com personalização (incluindo HTML custom).",
+      "en": "Tata CLiQ ran real-time behavior/inaction campaigns to reduce abandonment and increase CTR with personalization (including custom HTML).",
+      "es": "Tata CLiQ ejecutó campañas en tiempo real basadas en comportamiento/inacción para reducir abandono y aumentar CTR con personalización (incluyendo HTML custom)."
+    },
+    "pains": {
+      "pt": ["Baixa agilidade para criar campanhas", "Recomendações pouco relevantes por usuário", "Necessidade de personalização em tempo real para reduzir abandono"],
+      "en": ["Low agility to launch campaigns", "Irrelevant recommendations", "Need real-time personalization to reduce abandonment"],
+      "es": ["Baja agilidad para lanzar campañas", "Recomendaciones poco relevantes", "Necesidad de personalización en tiempo real para reducir abandono"]
+    },
+    "clevertapValue": {
+      "pt": "Analytics em tempo real, segmentação automatizada e campanhas por inação com personalização e páginas/creative dinâmicos.",
+      "en": "Real-time analytics, automated segmentation, and personalized inaction campaigns with dynamic creatives and landing pages.",
+      "es": "Analytics en tiempo real, segmentación automatizada y campañas por inacción con creatividades y landings dinámicas."
+    },
+    "results": {
+      "pt": ["4x crescimento em CTR com campanhas por inação", "1,5x boost de CTR com in-app personalizado via HTML custom"],
+      "en": ["4x growth in CTR with inaction campaigns", "1.5x CTR boost with personalized in-app via custom HTML"],
+      "es": ["4x crecimiento en CTR con campañas por inacción", "1,5x aumento de CTR con in-app personalizado via HTML"]
+    },
+    "tags": ["#ecommerce", "#real-time", "#abandonment", "#personalization", "#inapp"],
+    "channels": ["push", "webpush", "inapp", "sms", "email"],
+    "products": ["Segmentation", "Personalization", "Journeys", "Cohorts", "Analytics"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/how-tata-cliq-relies-on-personalization-and-real-time-communication-for-a-4x-boost-in-ctr/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0006",
+    "projectName": { "pt": "Engajamento e analytics para dobrar o negócio (B2B)", "en": "Engagement & analytics to double business (B2B)", "es": "Engagement y analytics para duplicar negocio (B2B)" },
+    "clientName": { "pt": "Leading B2B eCommerce Platform", "en": "Leading B2B eCommerce Platform", "es": "Plataforma líder de eCommerce B2B" },
+    "clientLogoUrl": "",
+    "industry": "b2b_ecommerce",
+    "description": {
+      "pt": "Uma plataforma B2B adotou analytics e campanhas direcionadas para aumentar conversão, retenção e receita, com impacto no crescimento do negócio.",
+      "en": "A B2B platform adopted analytics and targeted campaigns to improve conversion, retention, and revenue, doubling overall business.",
+      "es": "Una plataforma B2B adoptó analytics y campañas dirigidas para mejorar conversión, retención e ingresos, duplicando el negocio."
+    },
+    "pains": {
+      "pt": ["Baixo engajamento e retenção", "Pouca visibilidade de jornada e comportamento", "Necessidade de campanhas personalizadas por segmento"],
+      "en": ["Low engagement and retention", "Limited visibility into journey and behavior", "Need segmented, personalized campaigns"],
+      "es": ["Bajo engagement y retención", "Visibilidad limitada del journey", "Necesidad de campañas personalizadas por segmento"]
+    },
+    "clevertapValue": {
+      "pt": "Uso de analytics (funnels, cohorts), segmentação e campanhas para impactar usuários no momento certo e aumentar receita.",
+      "en": "Use of analytics (funnels, cohorts), segmentation, and campaigns to reach users at the right moment and grow revenue.",
+      "es": "Uso de analytics (funnels, cohorts), segmentación y campañas para impactar usuarios en el momento correcto y aumentar ingresos."
+    },
+    "results": {
+      "pt": ["2x crescimento do negócio (overall business doubled)", "Aumento de métricas de engajamento e conversão via campanhas segmentadas"],
+      "en": ["Overall business doubled (2x)", "Improved engagement and conversion via segmented campaigns"],
+      "es": ["Negocio duplicado (2x)", "Mejora de engagement y conversión con campañas segmentadas"]
+    },
+    "tags": ["#b2b", "#analytics", "#segmentation", "#retention"],
+    "channels": ["push", "email", "sms"],
+    "products": ["Analytics", "Funnels", "Cohorts", "Segmentation", "Journeys"],
+    "region": "APAC",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/leading-b2b-ecommerce-platform-doubled-its-overall-business-with-engagement-analytics/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0007",
+    "projectName": { "pt": "Onboarding automatizado e recuperação de carrinho", "en": "Automated onboarding & cart recovery", "es": "Onboarding automatizado y recuperación de carrito" },
+    "clientName": { "pt": "Blinkit", "en": "Blinkit", "es": "Blinkit" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2023/08/blinkit-logo_casestudy.png",
+    "industry": "grocery",
+    "description": {
+      "pt": "A Blinkit melhorou CX e retenção com jornadas automatizadas de onboarding e campanhas em tempo real para abandono de carrinho.",
+      "en": "Blinkit improved CX and retention using automated onboarding journeys and real-time cart abandonment campaigns.",
+      "es": "Blinkit mejoró CX y retención con journeys automatizados de onboarding y campañas en tiempo real para abandono de carrito."
+    },
+    "pains": {
+      "pt": ["Necessidade de solução integrada de engajamento + analytics", "Acesso a insights em tempo real", "Aumentar retenção via melhor CX"],
+      "en": ["Need integrated engagement + analytics", "Access to real-time insights", "Improve retention through better CX"],
+      "es": ["Necesidad de engagement + analytics integrados", "Acceso a insights en tiempo real", "Mejorar retención con mejor CX"]
+    },
+    "clevertapValue": {
+      "pt": "Journeys automatizados, segmentação preditiva e relatórios para otimizar campanhas e conversão.",
+      "en": "Automated journeys, predictive segmentation, and reporting to optimize campaigns and conversion.",
+      "es": "Journeys automatizados, segmentación predictiva y reporting para optimizar campañas y conversión."
+    },
+    "results": {
+      "pt": ["+6% retenção", "+53% logins de novos usuários na semana 1", "+2,64% boost na conversão com jornadas de abandono"],
+      "en": ["+6% retention", "+53% Week 1 new user login rate", "+2.64% conversion boost via cart abandonment journeys"],
+      "es": ["+6% retención", "+53% logins de nuevos usuarios en semana 1", "+2,64% aumento de conversión con journeys de abandono"]
+    },
+    "tags": ["#grocery", "#onboarding", "#cart-abandonment", "#journeys", "#cx"],
+    "channels": ["push", "sms", "email", "inapp"],
+    "products": ["Journeys", "Segmentation", "Analytics", "Funnels"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/blinkit-drove-surge-in-new-user-logins-with-clevertap/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0008",
+    "projectName": { "pt": "Segmentação automatizada para ciclo de vida", "en": "Automated segmentation for lifecycle", "es": "Segmentación automatizada para ciclo de vida" },
+    "clientName": { "pt": "StarQuik", "en": "StarQuik", "es": "StarQuik" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2020/02/starquik.png",
+    "industry": "grocery",
+    "description": {
+      "pt": "A StarQuik otimizou o ciclo de vida com RFM, micro-segmentos e orquestração de campanhas em canais como SMS, email e push.",
+      "en": "StarQuik optimized lifecycle using RFM, micro-segmentation, and campaign orchestration across SMS, email, and push.",
+      "es": "StarQuik optimizó el ciclo de vida con RFM, microsegmentación y orquestación de campañas en SMS, email y push."
+    },
+    "pains": {
+      "pt": ["Dificuldade em visualizar jornada end-to-end", "Dependência de múltiplas ferramentas", "Pouca flexibilidade e visibilidade de performance"],
+      "en": ["Hard to visualize end-to-end journey", "Reliance on multiple tools", "Limited flexibility and performance visibility"],
+      "es": ["Difícil visualizar journey end-to-end", "Dependencia de múltiples herramientas", "Flexibilidad y visibilidad limitadas"]
+    },
+    "clevertapValue": {
+      "pt": "RFM e micro-segmentos por categoria/cidade, bulletins para segmentos ao vivo e integração com remarketing.",
+      "en": "RFM and micro-segments by category/city, Bulletins for live segments, plus remarketing integrations.",
+      "es": "RFM y microsegmentos por categoría/ciudad, Bulletins para segmentos en vivo e integraciones de remarketing."
+    },
+    "results": {
+      "pt": ["-39% desinstalações", "+37,5% conversões mais rápidas que a média do setor"],
+      "en": ["-39% reduction in uninstalls", "+37.5% faster conversions than industry average"],
+      "es": ["-39% reducción de desinstalaciones", "+37,5% conversiones más rápidas que el promedio"]
+    },
+    "tags": ["#grocery", "#rfm", "#segmentation", "#lifecycle"],
+    "channels": ["push", "sms", "email"],
+    "products": ["RFM", "Segmentation", "Bulletins", "Analytics"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/tata-starquik-customer-lifecycle-automated-segmentation/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0009",
+    "projectName": { "pt": "Recomendações personalizadas (CTR 2x)", "en": "Personalized recommendations (2x CTR)", "es": "Recomendaciones personalizadas (CTR 2x)" },
+    "clientName": { "pt": "Bulbul", "en": "Bulbul", "es": "Bulbul" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2019/10/bulbul.png",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A Bulbul dobrou CTR com recomendações personalizadas baseadas em comportamento e fortaleceu métricas de receita e retenção com analytics.",
+      "en": "Bulbul doubled CTR with behavior-based personalized recommendations and improved revenue/retention using analytics.",
+      "es": "Bulbul duplicó CTR con recomendaciones personalizadas basadas en comportamiento y mejoró ingresos/retención con analytics."
+    },
+    "pains": {
+      "pt": ["Entender performance de features", "Aumentar engajamento e conversões", "Manter descoberta e relevância do catálogo"],
+      "en": ["Understand feature performance", "Increase engagement and conversions", "Maintain discovery and catalog relevance"],
+      "es": ["Entender performance de features", "Aumentar engagement y conversiones", "Mantener discovery y relevancia del catálogo"]
+    },
+    "clevertapValue": {
+      "pt": "RFM, funis/flows para mapear jornada e recomendações personalizadas por interesse recente.",
+      "en": "RFM, funnels/flows to map journeys, and personalized recommendations based on recent interests.",
+      "es": "RFM, funnels/flows para mapear journeys y recomendaciones personalizadas según intereses recientes."
+    },
+    "results": {
+      "pt": ["2x aumento em CTR", "+7% aumento em valor diário de pedidos"],
+      "en": ["2x increase in CTR", "+7% increase in daily order value"],
+      "es": ["2x aumento de CTR", "+7% aumento en valor diario de pedidos"]
+    },
+    "tags": ["#recommendations", "#rfm", "#funnels", "#personalization"],
+    "channels": ["push", "inapp"],
+    "products": ["Recommendations", "RFM", "Funnels", "Flows", "Analytics"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/bulbul-doubled-ctr-personalized-recommendations/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0010",
+    "projectName": { "pt": "Retenção e personalização para marketplace", "en": "Retention & personalization for marketplace", "es": "Retención y personalización para marketplace" },
+    "clientName": { "pt": "Carousell", "en": "Carousell", "es": "Carousell" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2020/03/logo-1.png",
+    "industry": "marketplace",
+    "description": {
+      "pt": "A Carousell aumentou retenção e CTR com push personalizado e recomendações em tempo real baseadas em likes e navegação.",
+      "en": "Carousell improved retention and CTR with personalized push and real-time recommendations based on likes and browsing.",
+      "es": "Carousell aumentó retención y CTR con push personalizado y recomendaciones en tiempo real basadas en likes y navegación."
+    },
+    "pains": {
+      "pt": ["Maximizar retenção", "Aumentar CLTV", "Personalizar recomendações e experiência de compra/venda"],
+      "en": ["Maximize retention", "Increase CLTV", "Personalize recommendations and buyer/seller experience"],
+      "es": ["Maximizar retención", "Aumentar CLTV", "Personalizar recomendaciones y experiencia de compra/venta"]
+    },
+    "clevertapValue": {
+      "pt": "Push personalizado com itens de interesse, analytics (funis/quick analysis) e recomendações recorrentes por usuário.",
+      "en": "Personalized push with items of interest, analytics (funnels/quick analysis), and recurring user-level recommendations.",
+      "es": "Push personalizado con ítems de interés, analytics (funnels/quick analysis) y recomendaciones recurrentes por usuario."
+    },
+    "results": {
+      "pt": ["+71% aumento na retenção da semana 3", "+73% melhora em CTR médio com personalização"],
+      "en": ["+71% increase in week 3 retention", "+73% improvement in average CTRs with personalization"],
+      "es": ["+71% aumento en retención semana 3", "+73% mejora en CTR promedio con personalización"]
+    },
+    "tags": ["#marketplace", "#retention", "#push", "#recommendations"],
+    "channels": ["push", "inapp"],
+    "products": ["Personalization", "Recommendations", "Funnels", "Analytics"],
+    "region": "APAC",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/how-carousell-increased-week-3-retention/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0011",
+    "projectName": { "pt": "Redução de churn e aumento de recompra", "en": "Churn reduction and repeat purchase growth", "es": "Reducción de churn y aumento de recompra" },
+    "clientName": { "pt": "GlowRoad", "en": "GlowRoad", "es": "GlowRoad" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2019/10/glowroad.png",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A GlowRoad melhorou retenção e recompra com analytics, RFM/cohorts e segmentação por intenção para ativar comunicações relevantes.",
+      "en": "GlowRoad improved retention and repeat purchases with analytics, RFM/cohorts, and intent-based segmentation for relevant communications.",
+      "es": "GlowRoad mejoró retención y recompra con analytics, RFM/cohorts y segmentación por intención para comunicaciones relevantes."
+    },
+    "pains": {
+      "pt": ["Pouco user data para segmentar", "Engajamento focado só em aquisição/1ª transação", "Dificuldade em aumentar transações recorrentes"],
+      "en": ["Limited user data for segmentation", "Engagement focused on acquisition/first transaction", "Hard to increase repeat transactions"],
+      "es": ["Datos limitados para segmentar", "Engagement enfocado en adquisición/1ª compra", "Dificultad para aumentar transacciones recurrentes"]
+    },
+    "clevertapValue": {
+      "pt": "Analytics (funis), RFM, cohorts e intent-based segmentation para disparos mais precisos e redução de churn.",
+      "en": "Analytics (funnels), RFM, cohorts, and intent-based segmentation to drive precise messaging and reduce churn.",
+      "es": "Analytics (funnels), RFM, cohorts y segmentación por intención para mensajes precisos y reducir churn."
+    },
+    "results": {
+      "pt": ["4x transações recorrentes", "+100% aumento em retenção M1 (usuários que transacionam)", "-10% desinstalações D0–D7 (mesmo com 17x crescimento em aquisição)"],
+      "en": ["4x repeat transactions", "+100% increase in M1 retention (transacting users)", "-10% D0–D7 uninstall rates (despite 17x growth in acquisition)"],
+      "es": ["4x transacciones recurrentes", "+100% aumento en retención M1 (usuarios que transaccionan)", "-10% desinstalaciones D0–D7 (con 17x crecimiento en adquisición)"]
+    },
+    "tags": ["#churn", "#rfm", "#cohorts", "#intent", "#retention"],
+    "channels": ["push", "inapp", "sms", "email"],
+    "products": ["Funnels", "RFM", "Cohorts", "Segmentation", "Analytics"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/how-glowroad-minimized-churn/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0012",
+    "projectName": { "pt": "Retenção e redução de uninstalls", "en": "Retention and uninstall reduction", "es": "Retención y reducción de desinstalaciones" },
+    "clientName": { "pt": "DealsPlus", "en": "DealsPlus", "es": "DealsPlus" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2019/09/dealsplus.png",
+    "industry": "media",
+    "description": {
+      "pt": "A DealsPlus usou campanhas direcionadas e jornada para melhorar retenção e reduzir desinstalações com base em comportamento.",
+      "en": "DealsPlus used targeted campaigns and journeys to improve retention and reduce uninstalls based on behavior.",
+      "es": "DealsPlus usó campañas dirigidas y journeys para mejorar retención y reducir desinstalaciones según comportamiento."
+    },
+    "pains": {
+      "pt": ["Baixa retenção e engajamento", "Desinstalações acima do desejado", "Necessidade de personalizar comunicações por interesse"],
+      "en": ["Low retention and engagement", "Uninstalls above target", "Need to personalize messages by interest"],
+      "es": ["Baja retención y engagement", "Desinstalaciones por encima del objetivo", "Necesidad de personalizar mensajes por interés"]
+    },
+    "clevertapValue": {
+      "pt": "Segmentação e campanhas automatizadas para impactar usuários com ofertas/relevância no momento ideal.",
+      "en": "Segmentation and automated campaigns to reach users with relevant offers at the right time.",
+      "es": "Segmentación y campañas automatizadas para impactar usuarios con ofertas relevantes en el momento correcto."
+    },
+    "results": {
+      "pt": ["Melhora de retenção com campanhas personalizadas (case study)", "Redução de desinstalações via mensagens mais relevantes"],
+      "en": ["Improved retention via personalized campaigns (case study)", "Reduced uninstalls via more relevant messaging"],
+      "es": ["Mejora de retención con campañas personalizadas (case study)", "Reducción de desinstalaciones con mensajes más relevantes"]
+    },
+    "tags": ["#retention", "#uninstalls", "#segmentation", "#push"],
+    "channels": ["push", "inapp", "email"],
+    "products": ["Segmentation", "Journeys", "Analytics"],
+    "region": "USA",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/dealsplus-phenomenal-user-retention-with-clevertap/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0013",
+    "projectName": { "pt": "Engajamento e conversão para joalheria", "en": "Engagement and conversion for jewelry", "es": "Engagement y conversión para joyería" },
+    "clientName": { "pt": "BlueStone", "en": "BlueStone", "es": "BlueStone" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2019/10/bluestone-logo.png",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A BlueStone utilizou segmentação e comunicação contextual para melhorar conversões e engajamento ao longo do funil.",
+      "en": "BlueStone used segmentation and contextual communication to improve conversions and engagement across the funnel.",
+      "es": "BlueStone usó segmentación y comunicación contextual para mejorar conversiones y engagement a lo largo del embudo."
+    },
+    "pains": {
+      "pt": ["Melhorar performance de funil", "Aumentar engajamento em jornadas críticas", "Personalizar comunicações por comportamento"],
+      "en": ["Improve funnel performance", "Increase engagement in critical journeys", "Personalize messages by behavior"],
+      "es": ["Mejorar embudo", "Aumentar engagement en journeys críticos", "Personalizar mensajes por comportamiento"]
+    },
+    "clevertapValue": {
+      "pt": "Analytics + segmentação + campanhas para acompanhar usuários em diferentes estágios e aumentar conversão.",
+      "en": "Analytics + segmentation + campaigns to reach users across lifecycle stages and increase conversion.",
+      "es": "Analytics + segmentación + campañas para impactar usuarios por etapa del ciclo de vida y aumentar conversión."
+    },
+    "results": {
+      "pt": ["Case study (detalhes no link)", "Engajamento e conversão impulsionados por campanhas segmentadas"],
+      "en": ["Case study (details in link)", "Engagement and conversion improved via segmented campaigns"],
+      "es": ["Caso de estudio (detalles en el link)", "Mejora de engagement y conversión con campañas segmentadas"]
+    },
+    "tags": ["#jewelry", "#ecommerce", "#segmentation", "#conversion"],
+    "channels": ["push", "email", "inapp"],
+    "products": ["Segmentation", "Journeys", "Analytics"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/bluestone/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0014",
+    "projectName": { "pt": "Automação omnichannel em escala", "en": "Omnichannel automation at scale", "es": "Automatización omnicanal a escala" },
+    "clientName": { "pt": "Lenskart", "en": "Lenskart", "es": "Lenskart" },
+    "clientLogoUrl": "https://clevertap.com/wp-content/uploads/2023/08/lenskart-logo_casestudy-1.png",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A Lenskart escalou automação de marketing omnichannel combinando segmentação e orquestração para atingir usuários com mensagens relevantes.",
+      "en": "Lenskart scaled omnichannel marketing automation using segmentation and orchestration to reach users with relevant messages.",
+      "es": "Lenskart escaló automatización de marketing omnicanal usando segmentación y orquestación para mensajes relevantes."
+    },
+    "pains": {
+      "pt": ["Escalar campanhas com consistência omnichannel", "Aumentar eficiência operacional do time", "Personalização por comportamento e contexto"],
+      "en": ["Scaling campaigns consistently across channels", "Improving team operational efficiency", "Behavioral and contextual personalization"],
+      "es": ["Escalar campañas omnicanal", "Mejorar eficiencia operativa", "Personalización por comportamiento y contexto"]
+    },
+    "clevertapValue": {
+      "pt": "Segmentação + automação + analytics para orquestrar jornadas e mensurar impacto em múltiplos canais.",
+      "en": "Segmentation + automation + analytics to orchestrate journeys and measure impact across channels.",
+      "es": "Segmentación + automatización + analytics para orquestar journeys y medir impacto en múltiples canales."
+    },
+    "results": {
+      "pt": ["Case study (detalhes no link)", "Orquestração e personalização em escala para aumento de performance"],
+      "en": ["Case study (details in link)", "Scaled orchestration and personalization to improve performance"],
+      "es": ["Caso de estudio (detalles en el link)", "Orquestación y personalización a escala para mejorar performance"]
+    },
+    "tags": ["#omnichannel", "#automation", "#segmentation", "#journeys"],
+    "channels": ["push", "email", "sms", "whatsapp", "inapp"],
+    "products": ["Journeys", "Segmentation", "Analytics", "Personalization"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/case-study/lenskart-scaled-omnichannel-marketing-automation/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0015",
+    "projectName": { "pt": "Aumento de receita via aplicativo (4x)", "en": "4x app revenue growth", "es": "Crecimiento 4x de ingresos en app" },
+    "clientName": { "pt": "Wine", "en": "Wine", "es": "Wine" },
+    "clientLogoUrl": "",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A Wine aumentou vendas no app e melhorou entendimento do funil com mapeamento de jornada, comunicação por etapa e personalização por comportamento.",
+      "en": "Wine increased app sales and improved funnel understanding by mapping journeys, stage-based communication, and behavior-driven personalization.",
+      "es": "Wine aumentó ventas en app y mejoró el embudo mapeando journeys, comunicación por etapa y personalización por comportamiento."
+    },
+    "pains": {
+      "pt": ["Baixo engajamento em campanhas", "Omnichannel comprometido", "Falta de visibilidade do funil (download → compra → recompra)"],
+      "en": ["Low campaign engagement", "Broken omnichannel experience", "Lack of funnel visibility (download → purchase → repeat)"],
+      "es": ["Bajo engagement en campañas", "Experiencia omnicanal comprometida", "Falta de visibilidad del embudo (descarga → compra → recompra)"]
+    },
+    "clevertapValue": {
+      "pt": "Mapeamento do ciclo de vida, funis e jornadas personalizadas por fase para aumentar retenção, LTV e faturamento.",
+      "en": "Lifecycle mapping, funnels, and phase-based personalized journeys to increase retention, LTV, and revenue.",
+      "es": "Mapeo del ciclo de vida, funnels y journeys personalizadas por fase para aumentar retención, LTV e ingresos."
+    },
+    "results": {
+      "pt": ["4x mais vendas no aplicativo", "Base de 366 mil assinantes ativos (contexto do case)", "Faturamento de R$ 730 milhões (contexto do case)"],
+      "en": ["4x more app sales", "366k active subscribers (case context)", "R$730M revenue (case context)"],
+      "es": ["4x más ventas en la app", "366k suscriptores activos (contexto)", "R$730M de facturación (contexto)"]
+    },
+    "tags": ["#ecommerce", "#subscriptions", "#funnels", "#journeys", "#retention"],
+    "channels": ["push", "email", "inapp", "sms"],
+    "products": ["Funnels", "Journeys", "Segmentation", "Analytics", "Personalization"],
+    "region": "LATAM",
+    "links": {
+      "caseStudyUrl": "https://clevertap.com/pt/estudos-de-caso-como-clevertap-ajudou-wine-quadruplicar-receita-do-aplicativo/",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0016",
+    "projectName": { "pt": "Segmentação avançada para Black Friday", "en": "Advanced segmentation for Black Friday", "es": "Segmentación avanzada para Black Friday" },
+    "clientName": { "pt": "Black Friday (Holiday Deals App)", "en": "Black Friday (Holiday Deals App)", "es": "Black Friday (App de ofertas)" },
+    "clientLogoUrl": "",
+    "industry": "media",
+    "description": {
+      "pt": "O app Black Friday FM usou segmentação e push automatizado acionado por atividade em tempo real para aumentar engajamento na temporada.",
+      "en": "Black Friday FM used segmentation and automated push triggered by real-time activity to increase engagement during the season.",
+      "es": "Black Friday FM usó segmentación y push automatizado por actividad en tiempo real para aumentar engagement en la temporada."
+    },
+    "pains": {
+      "pt": ["Personalização em escala para 11M+ usuários", "Mensagens por histórico de navegação", "Timing perfeito para ofertas por categoria"],
+      "en": ["Personalization at scale for 11M+ users", "Messaging based on browsing history", "Perfect timing for category-based offers"],
+      "es": ["Personalización a escala para 11M+ usuarios", "Mensajes por historial de navegación", "Timing perfecto para ofertas por categoría"]
+    },
+    "clevertapValue": {
+      "pt": "Segmentação com insights de comportamento e automação de push para enviar ofertas personalizadas no momento mais propenso a engajamento.",
+      "en": "Behavior-based segmentation and push automation to send personalized offers when users are most likely to engage.",
+      "es": "Segmentación por comportamiento y automatización de push para enviar ofertas personalizadas cuando hay mayor probabilidad de engagement."
+    },
+    "results": {
+      "pt": ["+10% engajamento no app"],
+      "en": ["+10% app engagement"],
+      "es": ["+10% engagement en la app"]
+    },
+    "tags": ["#blackfriday", "#segmentation", "#push", "#real-time"],
+    "channels": ["push"],
+    "products": ["Segmentation", "Analytics"],
+    "region": "USA",
+    "links": {
+      "caseStudyUrl": "https://info.clevertap.com/hubfs/Case-studies/Black_Friday_Case_Study.pdf",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0017",
+    "projectName": { "pt": "Redução de custo por transação via Facebook Audiences", "en": "Reduce cost per transaction via Facebook Audiences", "es": "Reducir costo por transacción con Facebook Audiences" },
+    "clientName": { "pt": "Flyrobe", "en": "Flyrobe", "es": "Flyrobe" },
+    "clientLogoUrl": "",
+    "industry": "ecommerce",
+    "description": {
+      "pt": "A Flyrobe segmentou usuários por comportamento no app e ativou retargeting com Facebook Audiences para reduzir custo por transação.",
+      "en": "Flyrobe segmented users by in-app behavior and used Facebook Audiences retargeting to reduce cost per transaction.",
+      "es": "Flyrobe segmentó usuarios por comportamiento in-app y usó retargeting con Facebook Audiences para reducir costo por transacción."
+    },
+    "pains": {
+      "pt": ["Educar usuários sobre a categoria (aluguel de moda)", "Personalizar anúncios por comportamento", "Reduzir custo por transação no Facebook"],
+      "en": ["Educate users about the category (fashion rental)", "Personalize ads based on behavior", "Reduce Facebook cost per transaction"],
+      "es": ["Educar usuarios sobre la categoría (renta de moda)", "Personalizar anuncios por comportamiento", "Reducir costo por transacción en Facebook"]
+    },
+    "clevertapValue": {
+      "pt": "Captura de eventos/propriedades, segmentação e exportação de audiência para campanhas hiper-segmentadas.",
+      "en": "Event/property capture, segmentation, and audience export for hyper-targeted campaigns.",
+      "es": "Captura de eventos/propiedades, segmentación y exportación de audiencias para campañas hipersegmentadas."
+    },
+    "results": {
+      "pt": ["-10x custo por transação (CPT) em campanha de Facebook Custom Audience", "-5x CPT overall"],
+      "en": ["10x reduction in cost per transaction (CPT) on Facebook Custom Audience campaign", "5x CPT reduction overall"],
+      "es": ["-10x costo por transacción (CPT) en campaña de Facebook Custom Audience", "-5x CPT overall"]
+    },
+    "tags": ["#facebookaudiences", "#segmentation", "#retargeting", "#paidmedia"],
+    "channels": ["paid_media"],
+    "products": ["Segmentation", "Facebook Audiences"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://info.clevertap.com/hubfs/Case-studies/How-flyrobe-reduced-its-fb-cost-per-transaction-by-10x.pdf",
+      "internalDocUrl": ""
+    }
+  },
+  {
+    "id": "uc_0018",
+    "projectName": { "pt": "Welcome + redução de uninstalls (CTR +200%)", "en": "Welcome + uninstall reduction (CTR +200%)", "es": "Welcome + reducción de desinstalaciones (CTR +200%)" },
+    "clientName": { "pt": "Styl", "en": "Styl", "es": "Styl" },
+    "clientLogoUrl": "",
+    "industry": "marketplace",
+    "description": {
+      "pt": "A Styl aumentou CTR e conversões usando campanhas pré-construídas (Welcome User e Tackle the uninstall) com emails e push em timing ideal.",
+      "en": "Styl increased CTR and conversions using pre-built campaigns (Welcome User and Tackle the uninstall) with emails and push at optimal timing.",
+      "es": "Styl aumentó CTR y conversiones usando campañas prearmadas (Welcome User y Tackle the uninstall) con email y push en el timing ideal."
+    },
+    "pains": {
+      "pt": ["Aumentar CTR e conversões", "Diminuir desinstalações", "Definir CTA/oferta que maximiza conversão"],
+      "en": ["Increase CTR and conversions", "Minimize uninstalls", "Find the CTA/offer that maximizes conversion"],
+      "es": ["Aumentar CTR y conversiones", "Minimizar desinstalaciones", "Definir CTA/oferta que maximiza conversión"]
+    },
+    "clevertapValue": {
+      "pt": "Analytics para identificar melhor timing, campanhas pré-construídas para onboarding e anti-uninstall, e testes de oferta/CTA.",
+      "en": "Analytics to find best timing, pre-built campaigns for onboarding and uninstall prevention, and offer/CTA experimentation.",
+      "es": "Analytics para identificar el mejor timing, campañas prearmadas para onboarding y anti-uninstall, y experimentación de oferta/CTA."
+    },
+    "results": {
+      "pt": ["+200% CTR", "34% CTR e 46% conversão em repeat bookings via push reminders", "81% de open rate em email (anti-uninstall)"],
+      "en": ["+200% CTR", "34% CTR and 46% conversion on repeat bookings via push reminders", "81% open rate on uninstall email"],
+      "es": ["+200% CTR", "34% CTR y 46% conversión en reservas repetidas vía push", "81% open rate en email anti-uninstall"]
+    },
+    "tags": ["#onboarding", "#uninstalls", "#email", "#push", "#clevercampaigns"],
+    "channels": ["email", "push"],
+    "products": ["Clever Campaigns", "Analytics", "Segmentation"],
+    "region": "IN",
+    "links": {
+      "caseStudyUrl": "https://info.clevertap.com/hubfs/Case-studies/How-Styl-increased-CTR-by-200-percent.pdf",
+      "internalDocUrl": ""
+    }
+  }
+]
