@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>Planos CleverTap - Visão Geral</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       /* CORES DEFINIDAS */
@@ -21,7 +24,12 @@
       --focus-ring: 0 0 0 3px rgba(240, 68, 68, 0.35);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
     html:focus-within { scroll-behavior: smooth; }
 
@@ -29,10 +37,7 @@
       min-height: 100vh;
       background: linear-gradient(180deg, #133B58 0%, #0D2A40 100%);
       color: var(--text-on-bg);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      padding: 32px 16px;
-      display: flex;
-      justify-content: center;
+      padding: 0 0 32px;
     }
 
     body.modal-open { overflow: hidden; }
@@ -41,129 +46,143 @@
       max-width: 1120px;
       width: 100%;
       position: relative;
-      padding-top: 8px;
+      padding: 28px 16px 0;
+      margin: 0 auto;
     }
 
-    /* TOP ACTIONS */
-    .top-actions {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+    /* Header */
+    .site-header {
+      background: #102C45;
+      height: 60px;
+      padding: 0 40px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .site-header nav {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 25;
-      pointer-events: none;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
     }
 
-    .top-actions > * { pointer-events: auto; }
+    .logo img {
+      height: 40px;
+      max-height: 40px;
+      width: auto;
+    }
 
-    .home-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      background: rgba(0, 0, 0, 0.15);
-      color: #fff;
-      height: 34px;
-      padding: 0 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      cursor: pointer;
+    nav a {
+      color: #ffffff;
+      margin-left: 24px;
       text-decoration: none;
-      backdrop-filter: blur(4px);
-      transition: background var(--transition-fast), transform 0.15s, border-color 0.15s, box-shadow 0.18s;
+      font-size: 14px;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color var(--transition-fast);
     }
 
-    .home-btn:hover {
-      background: rgba(0, 0, 0, 0.3);
-      border-color: #fff;
-      transform: translateY(-1px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: #F04444;
+      transition: width var(--transition-fast);
     }
 
-    .home-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    nav a:hover::after { width: 100%; }
 
-    /* LANG SWITCHER */
-    .lang-switcher {
+    .top-nav {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Dropdown idiomas */
+    .lang-dd {
+      margin-left: 22px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,0.14);
       position: relative;
     }
 
-    .lang-toggle {
+    .lang-dd-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.06);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      background: rgba(0, 0, 0, 0.15);
-      color: #fff;
-      width: 34px;
-      height: 34px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
       cursor: pointer;
-      backdrop-filter: blur(4px);
-      transition: background var(--transition-fast), transform 0.15s, border-color 0.15s, box-shadow 0.18s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
     }
 
-    .lang-toggle:hover {
-      background: rgba(0, 0, 0, 0.3);
-      border-color: #fff;
+    .lang-dd-btn:hover {
       transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.10);
     }
 
-    .lang-toggle:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-
-    .lang-menu {
+    .lang-dd-menu {
       position: absolute;
-      top: 40px;
       right: 0;
-      background: #FFFFFF;
-      color: #111827;
-      border-radius: 10px;
-      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
-      padding: 6px;
+      top: calc(100% + 10px);
+      min-width: 120px;
+      background: #0E263B;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
       display: none;
-      min-width: 150px;
-      z-index: 30;
+      z-index: 999;
     }
 
-    .lang-switcher.open .lang-menu { display: block; }
+    .lang-dd.open .lang-dd-menu { display: block; }
 
-    .lang-menu button {
+    .lang-dd-item {
       width: 100%;
       text-align: left;
+      padding: 10px 10px;
+      border: 0;
       background: transparent;
-      border: none;
-      padding: 8px 10px;
+      color: #ffffff;
       font-size: 13px;
-      cursor: pointer;
-      border-radius: 8px;
-      color: #111827;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .lang-menu button:hover { background: #F3F4F6; }
-
-    .lang-menu button:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.25);
-    }
-
-    .lang-menu button.active-lang {
-      background: #EFF6FF;
-      color: #1D4ED8;
       font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .lang-dd-item:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateX(2px);
     }
 
     .header {
       text-align: center;
       margin-bottom: 20px;
-      padding-top: 36px; /* para não bater nos botões topo */
     }
 
     .title {
@@ -608,40 +627,65 @@
       z-index: 1;
     }
 
+    .addon-link {
+      display: inline-flex;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #F04444;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .addon-link:hover { text-decoration: underline; }
+
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; scroll-behavior: auto !important; }
     }
 
     @media (max-width: 768px) {
-      body { padding: 24px 12px; }
+      body { padding-bottom: 24px; }
       .plans-grid { flex-direction: column; }
-      .header { padding-top: 44px; }
+      .header { padding-top: 0; }
       .modal { padding: 16px 14px 14px; }
       .addons-section { margin-top: 28px; }
-      .top-actions { top: 4px; }
+      .page-wrapper { padding: 24px 12px 0; }
+    }
+
+    @media (max-width: 640px) {
+      .site-header { padding: 14px 16px; }
+      nav a { margin-left: 14px; font-size: 13px; }
+      .lang-dd { margin-left: 12px; padding-left: 12px; }
     }
   </style>
 </head>
 <body>
-  <main class="page-wrapper">
-    <!-- TOP ACTIONS: Home + Idioma -->
-    <div class="top-actions">
-      <!-- Ajuste aqui o destino (index.html / main.html) conforme seu GitHub Pages -->
-      <a class="home-btn" href="index.html" aria-label="Voltar para a página principal">
-        <span aria-hidden="true"></span>
-        <span data-i18n="nav.home">Home</span>
-      </a>
-
-      <div class="lang-switcher">
-        <button class="lang-toggle" type="button" aria-label="Selecionar idioma" aria-haspopup="menu" aria-expanded="false">🌐</button>
-        <div class="lang-menu" role="menu" aria-label="Idiomas">
-          <button type="button" role="menuitem" data-lang="pt" data-i18n="lang.pt" class="active-lang">Português</button>
-          <button type="button" role="menuitem" data-lang="en" data-i18n="lang.en">English</button>
-          <button type="button" role="menuitem" data-lang="es" data-i18n="lang.es">Español</button>
-        </div>
-      </div>
+  <header class="site-header">
+    <div class="logo">
+      <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
+      <span>Sales Support Portal</span>
     </div>
 
+    <nav class="top-nav">
+      <a href="main.html" data-i18n="nav.home">Home</a>
+      <a href="email-generator.html" data-i18n="nav.email">Email Generator</a>
+      <a href="use-cases.html" data-i18n="nav.usecases">Use Cases</a>
+
+      <div class="lang-dd" id="langDD">
+        <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
+          <span id="langDDLabel">ENG</span>
+          <span class="lang-dd-caret">▾</span>
+        </button>
+
+        <div class="lang-dd-menu" id="langDDMenu" role="menu" aria-label="Select language">
+          <button type="button" class="lang-dd-item" data-lang-select="pt" role="menuitem">PT</button>
+          <button type="button" class="lang-dd-item" data-lang-select="en" role="menuitem">ENG</button>
+          <button type="button" class="lang-dd-item" data-lang-select="es" role="menuitem">ESP</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-wrapper">
     <!-- SEÇÃO PRINCIPAL: PLANOS -->
     <section id="plansSection" class="plans-section">
       <header class="header">
@@ -1255,6 +1299,22 @@
   </p>
 </article>
 
+        <article class="addon-card">
+          <div class="addon-header">
+            <div class="addon-icon red">🔔</div>
+            <div>
+              <div class="addon-title" data-i18n="addons.reminder.title">Reminder</div>
+              <div class="addon-tag" data-i18n="addons.reminder.tag">Engagement</div>
+            </div>
+          </div>
+          <p class="addon-body">
+            <span data-i18n="addons.reminder.body">
+              Dispare lembretes inteligentes para reduzir churn e aumentar recorrencia em momentos chave.
+            </span>
+            <a class="addon-link" href="https://docs.clevertap.com/docs/reminders" target="_blank" rel="noopener" data-i18n="addons.reminder.link">Ver docs</a>
+          </p>
+        </article>
+
 
         <article class="addon-card">
           <div class="addon-header">
@@ -1394,6 +1454,8 @@
     const translations = {
       pt: {
         'nav.home': 'Home',
+        'nav.email': 'Email Generator',
+        'nav.usecases': 'Use Cases',
 
         'header.title': 'Escolha o plano ideal para sua estratégia de engajamento',
         'header.subtitle': 'Compare rapidamente o que cada plano CleverTap oferece em dados, orquestração e canais.',
@@ -1476,6 +1538,10 @@
         'addons.ai_agents.tag': 'IA Agentic',
         'addons.ai_agents.body': 'Agentes de IA para acelerar execução de marketing: ajudam a criar/otimizar segmentos, jornadas e conteúdo, com abordagem human-in-the-loop (revisão e aprovação) e governança dentro dos fluxos da CleverTap.',
 
+        'addons.reminder.title': 'Reminder',
+        'addons.reminder.tag': 'Engajamento',
+        'addons.reminder.body': 'Dispare lembretes inteligentes para reduzir churn e aumentar recorrencia em momentos chave.',
+        'addons.reminder.link': 'Ver docs',
 
         'addons.px.title': 'Product Experience',
         'addons.px.tag': 'Individualização',
@@ -1483,6 +1549,8 @@
       },
       en: {
         'nav.home': 'Home',
+        'nav.email': 'Email Generator',
+        'nav.usecases': 'Use Cases',
 
         'header.title': 'Choose the ideal plan for your engagement strategy',
         'header.subtitle': 'Quickly compare what each CleverTap plan offers in data, orchestration, and channels.',
@@ -1565,12 +1633,19 @@
         'addons.ai_agents.tag': 'Agentic AI',
         'addons.ai_agents.body': 'AI agents that speed up marketing execution: help build/optimize segments, journeys, and content, with a human-in-the-loop review/approval model and governance inside CleverTap workflows.',
 
+        'addons.reminder.title': 'Reminders',
+        'addons.reminder.tag': 'Engagement',
+        'addons.reminder.body': 'Send smart reminders to reduce churn and boost repeat usage at key moments.',
+        'addons.reminder.link': 'View docs',
+
         'addons.px.title': 'Product Experience',
         'addons.px.tag': 'Individualization',
         'addons.px.body': 'Create in-app experiences without development: banners, tooltips, nudges, walkthroughs, and dynamic layouts. Advanced personalization and native segmentation powered by CleverTap.'
       },
       es: {
         'nav.home': 'Inicio',
+        'nav.email': 'Email Generator',
+        'nav.usecases': 'Use Cases',
 
         'header.title': 'Elige el plan ideal para tu estrategia de engagement',
         'header.subtitle': 'Compara rápidamente lo que ofrece cada plan de CleverTap en datos, orquestación y canales.',
@@ -1653,13 +1728,18 @@
         'addons.ai_agents.tag': 'IA Agéntica',
         'addons.ai_agents.body': 'Agentes de IA para acelerar la ejecución: ayudan a crear/optimizar segmentos, journeys y contenido, con modelo human-in-the-loop (revisión y aprobación) y gobernanza dentro de los flujos de CleverTap.',
 
+        'addons.reminder.title': 'Reminder',
+        'addons.reminder.tag': 'Engagement',
+        'addons.reminder.body': 'Envia recordatorios inteligentes para reducir churn y aumentar recurrencia en momentos clave.',
+        'addons.reminder.link': 'Ver docs',
+
         'addons.px.title': 'Product Experience',
         'addons.px.tag': 'Individualización',
         'addons.px.body': 'Crea experiencias dentro de la app sin necesidad de desarrollo: banners, tooltips, nudges, walkthroughs y diseños dinámicos. Personalización avanzada y segmentación nativa con CleverTap.'
       }
     };
 
-    let currentLang = 'pt';
+    let currentLang = 'en';
     const expandUpdateFns = [];
     const diffToggle = document.getElementById('diffOnlyToggle');
     const diffLabel = document.getElementById('diffLabel');
@@ -1685,10 +1765,9 @@
 
       const langAttr = currentLang === 'pt' ? 'pt-BR' : (currentLang === 'en' ? 'en' : 'es');
       document.documentElement.setAttribute('lang', langAttr);
-
-      document.querySelectorAll('.lang-menu button').forEach(btn => {
-        btn.classList.toggle('active-lang', btn.dataset.lang === currentLang);
-      });
+      const langLabel = document.getElementById('langDDLabel');
+      const langLabelMap = { pt: 'PT', en: 'ENG', es: 'ESP' };
+      if (langLabel) langLabel.textContent = langLabelMap[currentLang] || 'ENG';
 
       expandUpdateFns.forEach(fn => fn());
     }
@@ -1765,40 +1844,40 @@
     });
 
     // --- Seletor de idioma ---
-    const langSwitcher = document.querySelector('.lang-switcher');
-    const langToggle = langSwitcher.querySelector('.lang-toggle');
-    const langButtons = langSwitcher.querySelectorAll('.lang-menu button');
+    const langDD = document.getElementById('langDD');
+    const langDDBtn = document.getElementById('langDDBtn');
+    const langDDMenu = document.getElementById('langDDMenu');
 
     function closeLangMenu() {
-      langSwitcher.classList.remove('open');
-      langToggle.setAttribute('aria-expanded', 'false');
+      if (!langDD) return;
+      langDD.classList.remove('open');
+      langDDBtn.setAttribute('aria-expanded', 'false');
     }
+
     function openLangMenu() {
-      langSwitcher.classList.add('open');
-      langToggle.setAttribute('aria-expanded', 'true');
-      const first = langSwitcher.querySelector('.lang-menu button');
+      if (!langDD) return;
+      langDD.classList.add('open');
+      langDDBtn.setAttribute('aria-expanded', 'true');
+      const first = langDD.querySelector('.lang-dd-item');
       if (first) first.focus();
     }
 
-    langToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = langSwitcher.classList.contains('open');
-      if (isOpen) closeLangMenu();
-      else openLangMenu();
-    });
-
-    langButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    if (langDD && langDDBtn && langDDMenu) {
+      langDDBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        updateLanguage(btn.dataset.lang);
-        closeLangMenu();
-        langToggle.focus();
+        langDD.classList.contains('open') ? closeLangMenu() : openLangMenu();
       });
-    });
 
-    document.addEventListener('click', (e) => {
-      if (!langSwitcher.contains(e.target)) closeLangMenu();
-    });
+      langDDMenu.addEventListener('click', (e) => {
+        const item = e.target.closest('.lang-dd-item');
+        if (!item) return;
+        updateLanguage(item.getAttribute('data-lang-select'));
+        closeLangMenu();
+        langDDBtn.focus();
+      });
+
+      document.addEventListener('click', () => closeLangMenu());
+    }
 
     // --- Toggle diferenças ---
     diffToggle.addEventListener('change', updateDiffVisibility);
