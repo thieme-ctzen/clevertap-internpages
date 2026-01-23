@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -69,7 +69,7 @@
       align-items: center;
       gap: 10px;
       color: #ffffff;
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 700;
       letter-spacing: 0.04em;
       white-space: nowrap;
@@ -85,11 +85,11 @@
     header nav {
       display: flex;
       align-items: center;
-      gap: 18px;
     }
 
     nav a {
       color: #ffffff;
+      margin-left: 24px;
       text-decoration: none;
       font-size: 14px;
       font-weight: 500;
@@ -117,6 +117,76 @@
 
     nav a:hover::after {
       width: 100%;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Dropdown idiomas */
+    .lang-dd {
+      margin-left: 22px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,0.14);
+      position: relative;
+    }
+
+    .lang-dd-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.06);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .lang-dd-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.10);
+    }
+
+    .lang-dd-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      min-width: 120px;
+      background: #0E263B;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      display: none;
+      z-index: 999;
+    }
+
+    .lang-dd.open .lang-dd-menu { display: block; }
+
+    .lang-dd-item {
+      width: 100%;
+      text-align: left;
+      padding: 10px 10px;
+      border: 0;
+      background: transparent;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .lang-dd-item:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateX(2px);
     }
 
     /* Layout geral */
@@ -239,6 +309,30 @@
       margin-bottom: 6px;
     }
 
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(19, 59, 88, 0.08);
+      border: 1px solid rgba(19, 59, 88, 0.18);
+      flex-shrink: 0;
+    }
+
+    .section-icon svg {
+      width: 12px;
+      height: 12px;
+      fill: #133B58;
+    }
+
     details {
       margin-top: 10px;
       border-radius: 12px;
@@ -343,35 +437,6 @@
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-    }
-
-    .lang-toggle {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .lang-btn {
-      background: #fff;
-      border: 1px solid rgba(19, 59, 88, 0.22);
-      border-radius: var(--radius-pill);
-      padding: 7px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      color: rgba(19, 59, 88, 0.85);
-      transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
-    }
-
-    .lang-btn:hover {
-      border-color: rgba(240, 68, 68, 0.35);
-      box-shadow: 0 0 0 2px rgba(240, 68, 68, 0.12);
-    }
-
-    .lang-btn.active {
-      background: rgba(240, 68, 68, 0.10);
-      border-color: rgba(240, 68, 68, 0.45);
-      color: var(--accent);
-      font-weight: 700;
     }
 
     .generate-btn {
@@ -569,31 +634,11 @@
       .sidebar { width: 100%; max-width: none; height: 44vh; border-right: none; border-bottom: 1px solid var(--border-soft); }
       .main { height: 56vh; }
     }
-
-    .home-btn{
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    text-decoration: none;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.18);
-    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    @media (max-width: 640px) {
+      header { padding: 14px 16px; }
+      nav a { margin-left: 14px; font-size: 13px; }
+      .lang-dd { margin-left: 12px; padding-left: 12px; }
     }
-
-    .home-btn:hover{
-      transform: translateY(-1px);
-      background: rgba(240, 68, 68, 0.18);
-      border-color: rgba(240, 68, 68, 0.45);
-    }
-
-    .home-btn svg{
-      width: 18px;
-      height: 18px;
-      fill: #ffffff;
-    }
-
   </style>
 </head>
 
@@ -601,42 +646,56 @@
   <header>
     <div class="logo">
       <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
-      <span>Email Generator</span>
+      <span>Sales Support Portal</span>
     </div>
 
-    <nav>
-      <!-- ajuste os hrefs conforme seus nomes reais -->
-      <a href="index.html">Home</a>
-      <a href="clever-plans.html">Plan Comparison</a>
-      <a class="home-btn" href="main.html" aria-label="Voltar para o Home (main)">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3l9 8h-3v10h-5v-6H11v6H6V11H3l9-8z"></path>
-      </svg>
-</a>
+    <nav class="top-nav">
+      <a href="main.html" data-i18n="nav.home">Home</a>
+      <a href="clever-plans.html" data-i18n="nav.plans">Plan Comparison</a>
+      <a href="usecases.html" data-i18n="nav.usecases">Use Cases</a>
 
+      <div class="lang-dd" id="langDD">
+        <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
+          <span id="langDDLabel">ENG</span>
+          <span class="lang-dd-caret">▾</span>
+        </button>
+
+        <div class="lang-dd-menu" id="langDDMenu" role="menu" aria-label="Select language">
+          <button type="button" class="lang-dd-item" data-lang-select="pt" role="menuitem">PT</button>
+          <button type="button" class="lang-dd-item" data-lang-select="en" role="menuitem">ENG</button>
+          <button type="button" class="lang-dd-item" data-lang-select="es" role="menuitem">ESP</button>
+        </div>
+      </div>
     </nav>
   </header>
 
   <div class="app">
     <aside class="sidebar">
       <div class="sidebar-title">
-        <h2>Tópicos disponíveis</h2>
+        <h2 data-i18n="sidebar.title">Tópicos disponíveis</h2>
         <span class="pill" id="selectedCountPill">0 selecionados</span>
       </div>
 
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 Buscar tópico..." onkeyup="filterTopics()">
+        <input type="text" id="searchInput" placeholder="🔍 Buscar tópico..." data-i18n-placeholder="search.placeholder" onkeyup="filterTopics()">
       </div>
 
       <div class="topic-switch">
-        <button class="topic-btn active" data-topic="user-docs">Documentação do usuário</button>
-        <button class="topic-btn" data-topic="tech-docs">Documentação técnica</button>
-        <button class="topic-btn" data-topic="partners">Parceiros integrados</button>
+        <button class="topic-btn active" data-topic="user-docs" data-i18n="topics.user">Documentação do usuário</button>
+        <button class="topic-btn" data-topic="tech-docs" data-i18n="topics.tech">Documentação técnica</button>
+        <button class="topic-btn" data-topic="partners" data-i18n="topics.partners">Parceiros integrados</button>
       </div>
 
       <!-- USER DOCS -->
       <div class="section topic-section" data-topic="user-docs">
-        <h3>📄 Documentação do Usuário</h3>
+        <h3 class="section-title" data-i18n="sections.user">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm8 1v4h4"></path>
+            </svg>
+          </span>
+          Documentação do Usuário
+        </h3>
 
         <details>
           <summary>Getting Started</summary>
@@ -707,11 +766,80 @@
             <label><input type="checkbox" value="Use cases https://docs.clevertap.com/docs/exporting-clevertap-data-for-risk-ratio-analysis"> Use cases</label>
           </div>
         </details>
+
+        <details>
+          <summary>Engagement Channels</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Push notification https://docs.clevertap.com/docs/push"> Push notification</label>
+            <label><input type="checkbox" value="In-app https://docs.clevertap.com/docs/in-app"> In-app</label>
+            <label><input type="checkbox" value="Email https://docs.clevertap.com/docs/email"> Email</label>
+            <label><input type="checkbox" value="Web Push https://docs.clevertap.com/docs/web-push"> Web Push</label>
+            <label><input type="checkbox" value="Web Pop-up https://docs.clevertap.com/docs/web-pop-up"> Web Pop-up</label>
+            <label><input type="checkbox" value="Web Exit Intent https://docs.clevertap.com/docs/web-exit-intent-overview"> Web Exit Intent</label>
+            <label><input type="checkbox" value="Web native display https://docs.clevertap.com/docs/web-native-display"> Web native display</label>
+            <label><input type="checkbox" value="Web inbox https://docs.clevertap.com/docs/web-inbox"> Web inbox</label>
+            <label><input type="checkbox" value="App inbox https://docs.clevertap.com/docs/app-inbox"> App inbox</label>
+            <label><input type="checkbox" value="Native display https://docs.clevertap.com/docs/native-display"> Native display</label>
+            <label><input type="checkbox" value="WhatsApp https://docs.clevertap.com/docs/whatsapp"> WhatsApp</label>
+            <label><input type="checkbox" value="SMS https://docs.clevertap.com/docs/sms"> SMS</label>
+            <label><input type="checkbox" value="RCS https://docs.clevertap.com/docs/rcs-messages"> RCS</label>
+            <label><input type="checkbox" value="Webhooks https://docs.clevertap.com/docs/webhooks-overview"> Webhooks</label>
+            <label><input type="checkbox" value="Google Ads https://docs.clevertap.com/docs/google-adwords"> Google Ads</label>
+            <label><input type="checkbox" value="Facebook Audience https://docs.clevertap.com/docs/facebook-audiences"> Facebook Audience</label>
+            <label><input type="checkbox" value="Tiktok Remarketing https://docs.clevertap.com/docs/tiktok-remarketing"> Tiktok Remarketing</label>
+            <label><input type="checkbox" value="Amazon EventBridge https://docs.clevertap.com/docs/amazon-eventbridge-overview"> Amazon EventBridge</label>
+            <label><input type="checkbox" value="Segment https://docs.clevertap.com/docs/segment-overview"> Segment</label>
+            <label><input type="checkbox" value="mParticle https://docs.clevertap.com/docs/mparticle"> mParticle</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Content Manager</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Content Manager https://docs.clevertap.com/docs/content-manager"> Content Manager</label>
+            <label><input type="checkbox" value="Content Manager Files https://docs.clevertap.com/docs/content-manager-files"> Content Manager Files</label>
+            <label><input type="checkbox" value="Image specifications https://docs.clevertap.com/docs/image-specifications"> Image specifications</label>
+            <label><input type="checkbox" value="Content Manager templates https://docs.clevertap.com/docs/content-manager-templates"> Content Manager templates</label>
+            <label><input type="checkbox" value="Content blocks - Standardize messaging https://docs.clevertap.com/docs/content-blocks"> Content blocks - Standardize messaging</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Hyper Personalization</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Personalize Message https://docs.clevertap.com/docs/personalize-message-all"> Personalize Message</label>
+            <label><input type="checkbox" value="Recommendations https://docs.clevertap.com/docs/recommendations"> Recommendations</label>
+            <label><input type="checkbox" value="Catalogs https://docs.clevertap.com/docs/catalog"> Catalogs</label>
+            <label><input type="checkbox" value="Bulletins https://docs.clevertap.com/docs/bulletins"> Bulletins</label>
+            <label><input type="checkbox" value="External Trigger https://docs.clevertap.com/docs/external-trigger"> External Trigger</label>
+            <label><input type="checkbox" value="Comprehensive guide to engage with users https://docs.clevertap.com/docs/comprehensive-guide-to-engage-with-users"> Comprehensive guide to engage with users</label>
+            <label><input type="checkbox" value="Reminders https://docs.clevertap.com/docs/reminders"> Reminders</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Campaigns</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Campaigns Overview https://docs.clevertap.com/docs/intro-to-campaigns"> Campaigns Overview</label>
+            <label><input type="checkbox" value="Notification Delivery Options https://docs.clevertap.com/docs/notification-delivery-options"> Notification Delivery Options</label>
+            <label><input type="checkbox" value="Campaign approval Workflow https://docs.clevertap.com/docs/campaign-approval-workflow"> Campaign approval Workflow</label>
+            <label><input type="checkbox" value="Campaign Reports https://docs.clevertap.com/docs/campaign-reports"> Campaign Reports</label>
+            <label><input type="checkbox" value="Control Groups https://docs.clevertap.com/docs/control-groups"> Control Groups</label>
+            <label><input type="checkbox" value="Advanced Capabilities https://docs.clevertap.com/docs/ab-multivariate-testing"> Advanced Capabilities</label>
+          </div>
+        </details>
       </div>
 
       <!-- TECH DOCS -->
       <div class="section topic-section" data-topic="tech-docs" style="display:none;">
-        <h3>🛠️ Documentação Técnica</h3>
+        <h3 class="section-title" data-i18n="sections.tech">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M14.7 6.3a5 5 0 0 0 3.9 7.4l-2.1 2.1a3 3 0 0 1-4.2 0l-4.8 4.8a2 2 0 0 1-2.8-2.8l4.8-4.8a3 3 0 0 1 0-4.2l2.1-2.1a5 5 0 0 0 3.1-.4z"></path>
+            </svg>
+          </span>
+          Documentação Técnica
+        </h3>
 
         <details>
           <summary>APIs e SDKs</summary>
@@ -734,7 +862,14 @@
 
       <!-- PARTNERS -->
       <div class="section topic-section" data-topic="partners" style="display:none;">
-        <h3>🤝 Parceiros integrados</h3>
+        <h3 class="section-title" data-i18n="sections.partners">
+          <span class="section-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M8.5 12.5l2 2 3-3 4 4-2 2-2-2-3 3-4-4-2 2-2-2 4-4z"></path>
+            </svg>
+          </span>
+          Parceiros integrados
+        </h3>
 
         <details>
           <summary>CDPs & Dados</summary>
@@ -757,24 +892,18 @@
     <main class="main">
       <div class="main-top">
         <div class="page-title">
-          <h1>Gerador de e-mails</h1>
-          <p>Selecione tópicos à esquerda e gere um e-mail padronizado em segundos.</p>
+          <h1 data-i18n="page.title">Gerador de e-mails</h1>
+          <p data-i18n="page.subtitle">Selecione tópicos à esquerda e gere um e-mail padronizado em segundos.</p>
         </div>
 
         <div class="actions">
-          <div class="lang-toggle">
-            <button class="lang-btn active" data-lang="pt" onclick="setLanguage('pt')">PT-BR</button>
-            <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
-            <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">ES</button>
-          </div>
-
-          <button class="generate-btn" type="button" onclick="generateEmail()">Gerar e-mail</button>
+          <button class="generate-btn" type="button" data-i18n="actions.generate" onclick="generateEmail()">Gerar e-mail</button>
         </div>
       </div>
 
       <section class="email-output" id="emailOutput" aria-live="polite">
-        <div class="copied-popup" id="copiedPopup">Copiado!</div>
-        <div class="style-popup" id="stylePopup">Modelo aplicado</div>
+        <div class="copied-popup" id="copiedPopup" data-i18n="toast.copied">Copiado!</div>
+        <div class="style-popup" id="stylePopup" data-i18n="toast.styleApplied">Modelo aplicado</div>
 
         <button class="copy-btn" type="button" onclick="copyEmail()" aria-label="Copiar texto do e-mail">
           <img src="https://cdn-icons-png.flaticon.com/512/4837/4837299.png" alt="">
@@ -782,8 +911,8 @@
 
         <div id="emptyState">
           <div>
-            <div style="font-weight:800; font-size:14px; color:#133B58;">Sem e-mail gerado ainda</div>
-            <div style="margin-top:6px; font-size:12.5px;">Selecione tópicos e clique em <b>Gerar e-mail</b>.</div>
+            <div style="font-weight:800; font-size:14px; color:#133B58;" data-i18n="empty.title">Sem e-mail gerado ainda</div>
+            <div style="margin-top:6px; font-size:12.5px;" data-i18n="empty.subtitle">Selecione tópicos e clique em <b>Gerar e-mail</b>.</div>
           </div>
         </div>
 
@@ -797,10 +926,10 @@
         <pre id="emailText"></pre>
 
         <div class="email-styles" id="styleButtons">
-          <button class="style-btn" onclick="applyStyle('Técnico')">Técnico</button>
-          <button class="style-btn" onclick="applyStyle('Casual')">Casual</button>
-          <button class="style-btn" onclick="applyStyle('Criativo')">Criativo</button>
-          <button class="style-btn" onclick="applyStyle('Profissional')">Profissional</button>
+          <button class="style-btn" data-style="technical" data-i18n="styles.technical" onclick="applyStyle('technical')">Técnico</button>
+          <button class="style-btn" data-style="casual" data-i18n="styles.casual" onclick="applyStyle('casual')">Casual</button>
+          <button class="style-btn" data-style="creative" data-i18n="styles.creative" onclick="applyStyle('creative')">Criativo</button>
+          <button class="style-btn" data-style="professional" data-i18n="styles.professional" onclick="applyStyle('professional')">Profissional</button>
         </div>
       </section>
     </main>
@@ -810,7 +939,7 @@
     // Estado global
     let selectedTopicsData = [];
     let currentStyle = "default"; // default, technical, casual, creative, professional
-    let currentLang = "pt";       // pt, en, es
+    let currentLang = "en";       // pt, en, es
 
     const emailTexts = {
       pt: {
@@ -887,12 +1016,115 @@
       }
     };
 
+    const uiTexts = {
+      pt: {
+        'nav.home': 'Home',
+        'nav.plans': 'Comparativo de planos',
+        'nav.usecases': 'Use Cases',
+        'sidebar.title': 'Tópicos disponíveis',
+        'search.placeholder': '🔍 Buscar tópico...',
+        'topics.user': 'Documentação do usuário',
+        'topics.tech': 'Documentação técnica',
+        'topics.partners': 'Parceiros integrados',
+        'sections.user': '📄 Documentação do Usuário',
+        'sections.tech': '🛠️ Documentação Técnica',
+        'sections.partners': '🤝 Parceiros integrados',
+        'page.title': 'Gerador de e-mails',
+        'page.subtitle': 'Selecione tópicos à esquerda e gere um e-mail padronizado em segundos.',
+        'actions.generate': 'Gerar e-mail',
+        'toast.copied': 'Copiado!',
+        'toast.styleApplied': 'Modelo aplicado',
+        'empty.title': 'Sem e-mail gerado ainda',
+        'empty.subtitle': 'Selecione tópicos e clique em <b>Gerar e-mail</b>.',
+        'styles.technical': 'Técnico',
+        'styles.casual': 'Casual',
+        'styles.creative': 'Criativo',
+        'styles.professional': 'Profissional',
+        'selected.count': '{count} selecionados',
+        'alert.selectTopic': 'Selecione ao menos um tópico.',
+        'popup.styleSelected': 'Modelo {style} selecionado',
+        'subject.label': 'Assunto: '
+      },
+      en: {
+        'nav.home': 'Home',
+        'nav.plans': 'Plan Comparison',
+        'nav.usecases': 'Use Cases',
+        'sidebar.title': 'Available topics',
+        'search.placeholder': '🔍 Search topic...',
+        'topics.user': 'User documentation',
+        'topics.tech': 'Technical documentation',
+        'topics.partners': 'Integrated partners',
+        'sections.user': '📄 User Documentation',
+        'sections.tech': '🛠️ Technical Documentation',
+        'sections.partners': '🤝 Integrated partners',
+        'page.title': 'Email generator',
+        'page.subtitle': 'Select topics on the left and generate a standardized email in seconds.',
+        'actions.generate': 'Generate email',
+        'toast.copied': 'Copied!',
+        'toast.styleApplied': 'Style applied',
+        'empty.title': 'No email generated yet',
+        'empty.subtitle': 'Select topics and click <b>Generate email</b>.',
+        'styles.technical': 'Technical',
+        'styles.casual': 'Casual',
+        'styles.creative': 'Creative',
+        'styles.professional': 'Professional',
+        'selected.count': '{count} selected',
+        'alert.selectTopic': 'Select at least one topic.',
+        'popup.styleSelected': '{style} style selected',
+        'subject.label': 'Subject: '
+      },
+      es: {
+        'nav.home': 'Inicio',
+        'nav.plans': 'Comparativo de planes',
+        'nav.usecases': 'Use Cases',
+        'sidebar.title': 'Temas disponibles',
+        'search.placeholder': '🔍 Buscar tema...',
+        'topics.user': 'Documentación de usuario',
+        'topics.tech': 'Documentación técnica',
+        'topics.partners': 'Socios integrados',
+        'sections.user': '📄 Documentación de Usuario',
+        'sections.tech': '🛠️ Documentación Técnica',
+        'sections.partners': '🤝 Socios integrados',
+        'page.title': 'Generador de emails',
+        'page.subtitle': 'Selecciona temas a la izquierda y genera un email estandarizado en segundos.',
+        'actions.generate': 'Generar email',
+        'toast.copied': 'Copiado!',
+        'toast.styleApplied': 'Modelo aplicado',
+        'empty.title': 'Aun no se generó un email',
+        'empty.subtitle': 'Selecciona temas y haz clic en <b>Generar email</b>.',
+        'styles.technical': 'Tecnico',
+        'styles.casual': 'Casual',
+        'styles.creative': 'Creativo',
+        'styles.professional': 'Profesional',
+        'selected.count': '{count} seleccionados',
+        'alert.selectTopic': 'Selecciona al menos un tema.',
+        'popup.styleSelected': 'Modelo {style} seleccionado',
+        'subject.label': 'Asunto: '
+      }
+    };
+
+    function applyTranslations() {
+      const dict = uiTexts[currentLang] || uiTexts.en;
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.innerHTML = dict[key];
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) el.setAttribute('placeholder', dict[key]);
+      });
+    }
+
     function updateSelectedCount() {
       const count = document.querySelectorAll('input[type="checkbox"]:checked').length;
       const pill = document.getElementById('selectedCountPill');
       const txt = document.getElementById('selectedCountText');
-      if (pill) pill.textContent = `${count} selecionados`;
-      if (txt) txt.textContent = `${count} selecionados`;
+      const dict = uiTexts[currentLang] || uiTexts.en;
+      const label = (dict['selected.count'] || '{count} selected').replace('{count}', count);
+      if (pill) pill.textContent = label;
+      if (txt) txt.textContent = label;
     }
 
     document.addEventListener('change', (e) => {
@@ -921,7 +1153,8 @@
     function generateEmail() {
       const selectedCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
       if (selectedCheckboxes.length === 0) {
-        alert("Selecione ao menos um tópico.");
+        const dict = uiTexts[currentLang] || uiTexts.en;
+        alert(dict['alert.selectTopic'] || 'Select at least one topic.');
         return;
       }
 
@@ -980,9 +1213,8 @@
       textEl.textContent = body;
 
       if (subject) {
-        if (currentLang === "en") subjectEl.textContent = "Subject: " + subject;
-        else if (currentLang === "es") subjectEl.textContent = "Asunto: " + subject;
-        else subjectEl.textContent = "Assunto: " + subject;
+        const dict = uiTexts[currentLang] || uiTexts.en;
+        subjectEl.textContent = (dict['subject.label'] || 'Subject: ') + subject;
         subjectEl.style.display = 'block';
       } else {
         subjectEl.style.display = 'none';
@@ -1020,32 +1252,32 @@
     function applyStyle(type) {
       if (!selectedTopicsData.length) return;
 
-      const map = {
-        "Técnico": "technical",
-        "Casual": "casual",
-        "Criativo": "creative",
-        "Profissional": "professional"
-      };
-
-      currentStyle = map[type] || "default";
+      currentStyle = type || "default";
       renderEmail();
 
       document.querySelectorAll('.style-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent === type);
+        btn.classList.toggle('active', btn.dataset.style === type);
       });
 
       const popup = document.getElementById('stylePopup');
-      popup.textContent = `Modelo ${type} selecionado`;
+      const dict = uiTexts[currentLang] || uiTexts.en;
+      const styleLabel = dict[`styles.${type}`] || type;
+      popup.textContent = (dict['popup.styleSelected'] || 'Style {style} selected').replace('{style}', styleLabel);
       popup.classList.add('show');
       setTimeout(() => popup.classList.remove('show'), 1600);
     }
 
     function setLanguage(lang) {
       currentLang = lang;
+      const langLabelMap = { pt: 'PT', en: 'ENG', es: 'ESP' };
+      const label = document.getElementById('langDDLabel');
+      if (label) label.textContent = langLabelMap[lang] || 'ENG';
 
-      document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
+      const langAttr = lang === 'pt' ? 'pt-BR' : (lang === 'en' ? 'en' : 'es');
+      document.documentElement.setAttribute('lang', langAttr);
+
+      applyTranslations();
+      updateSelectedCount();
 
       if (selectedTopicsData.length) {
         updateSelectedTopicsLabel();
@@ -1073,6 +1305,45 @@
 
     // init count
     updateSelectedCount();
+
+    // Dropdown idiomas
+    const langDD = document.getElementById('langDD');
+    const langDDBtn = document.getElementById('langDDBtn');
+    const langDDMenu = document.getElementById('langDDMenu');
+
+    function closeLangMenu() {
+      if (!langDD) return;
+      langDD.classList.remove('open');
+      langDDBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    function openLangMenu() {
+      if (!langDD) return;
+      langDD.classList.add('open');
+      langDDBtn.setAttribute('aria-expanded', 'true');
+      const first = langDD.querySelector('.lang-dd-item');
+      if (first) first.focus();
+    }
+
+    if (langDD && langDDBtn && langDDMenu) {
+      langDDBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        langDD.classList.contains('open') ? closeLangMenu() : openLangMenu();
+      });
+
+      langDDMenu.addEventListener('click', (e) => {
+        const item = e.target.closest('.lang-dd-item');
+        if (!item) return;
+        setLanguage(item.getAttribute('data-lang-select'));
+        closeLangMenu();
+        langDDBtn.focus();
+      });
+
+      document.addEventListener('click', () => closeLangMenu());
+      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLangMenu(); });
+    }
+
+    setLanguage(currentLang);
   </script>
 </body>
 </html>
