@@ -12,11 +12,11 @@
 
   <style>
     :root {
-      --bg-page: #FFFFFF;      /* fundo branco */
+      --bg-page: #FFFFFF;
       --card-bg: #FFFFFF;
-      --text-on-bg: #133B58;   /* azul CleverTap */
+      --text-on-bg: #133B58;
       --text-on-card: #133B58;
-      --accent: #F04444;       /* vermelho CleverTap */
+      --accent: #F04444;
 
       --shadow-card: 0 18px 40px rgba(0, 0, 0, 0.15);
       --radius-lg: 18px;
@@ -94,65 +94,76 @@
       transition: width var(--transition-fast);
     }
 
-    nav a:hover {
-      color: #ffffff;
+    nav a:hover::after { width: 100%; }
+
+    .top-nav{
+      display: flex;
+      align-items: center;
     }
 
-    nav a:hover::after {
-      width: 100%;
-    }
-
-    /* Language switcher */
-    .lang-switcher {
+    /* Dropdown idiomas */
+    .lang-dd{
+      margin-left: 22px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,0.14);
       position: relative;
-      margin-left: 20px;
     }
 
-    #lang-toggle {
-      background: transparent;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
+    .lang-dd-btn{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.06);
       color: #ffffff;
       font-size: 12px;
-      padding: 6px 12px;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 999px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
     }
 
-    #lang-toggle:hover {
-      background: rgba(255, 255, 255, 0.08);
+    .lang-dd-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.10);
     }
 
-    .lang-menu {
+    .lang-dd-menu{
       position: absolute;
       right: 0;
-      top: calc(100% + 6px);
-      background: #0b1726;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      padding: 6px;
+      top: calc(100% + 10px);
+      min-width: 120px;
+      background: #0E263B;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
       display: none;
-      min-width: 80px;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
-      z-index: 30;
+      z-index: 999;
     }
 
-    .lang-menu button {
+    .lang-dd.open .lang-dd-menu{ display: block; }
+
+    .lang-dd-item{
       width: 100%;
-      background: transparent;
-      border: none;
-      color: #ffffff;
-      font-size: 12px;
-      padding: 6px 10px;
       text-align: left;
+      padding: 10px 10px;
+      border: 0;
+      background: transparent;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
       cursor: pointer;
-      border-radius: 6px;
+      transition: background var(--transition-fast), transform var(--transition-fast);
     }
 
-    .lang-menu button:hover {
-      background: rgba(255, 255, 255, 0.08);
+    .lang-dd-item:hover{
+      background: rgba(255,255,255,0.08);
+      transform: translateX(2px);
     }
 
     /* Hero */
@@ -165,9 +176,7 @@
       padding: 70px 20px 50px;
     }
 
-    .hero-inner {
-      max-width: 900px;
-    }
+    .hero-inner { max-width: 900px; }
 
     .hero-badge {
       display: inline-flex;
@@ -180,11 +189,11 @@
       font-size: 12px;
       color: var(--accent);
       margin-bottom: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .hero-badge span {
-      color: #133B58;
-    }
+    .hero-badge span { color: #133B58; }
 
     .hero h1 {
       font-size: 38px;
@@ -193,9 +202,7 @@
     }
 
     @media (min-width: 768px) {
-      .hero h1 {
-        font-size: 44px;
-      }
+      .hero h1 { font-size: 44px; }
     }
 
     .hero p {
@@ -203,84 +210,6 @@
       color: rgba(19, 59, 88, 0.8);
       max-width: 680px;
       margin: 0 auto;
-    }
-    /* Quick Actions */
-    .quick-actions {
-      padding: 10px 20px 0;
-    }
-
-    .quick-actions-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .quick-actions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 18px;
-    }
-
-    .quick-action-card {
-      background: #FFFFFF;
-      border-radius: 16px;
-      border: 1px solid rgba(19, 59, 88, 0.12);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--text-on-card);
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-    }
-
-    .quick-action-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
-      border-color: rgba(240, 68, 68, 0.45);
-      background: #F9FAFB;
-    }
-
-    .quick-action-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      background: rgba(19, 59, 88, 0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-
-    .quick-action-icon img {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .quick-action-text h3 {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #133B58;
-    }
-
-    .quick-action-text p {
-      font-size: 12px;
-      color: rgba(19, 59, 88, 0.75);
-      line-height: 1.4;
-    }
-
-    @media (max-width: 640px) {
-      .quick-actions {
-        padding: 10px 16px 0;
-      }
     }
 
     .cta-button {
@@ -328,6 +257,69 @@
       background: rgba(19, 59, 88, 0.08);
       border-color: rgba(19, 59, 88, 0.7);
       transform: translateY(-1px);
+    }
+
+    /* Quick Actions */
+    .quick-actions { padding: 10px 20px 0; }
+    .quick-actions-inner { max-width: 1100px; margin: 0 auto; }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .quick-action-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid rgba(19, 59, 88, 0.12);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-on-card);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .quick-action-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
+      border-color: rgba(240, 68, 68, 0.45);
+      background: #F9FAFB;
+    }
+
+    .quick-action-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(19, 59, 88, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .quick-action-icon img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .quick-action-text h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #133B58;
+    }
+
+    .quick-action-text p {
+      font-size: 12px;
+      color: rgba(19, 59, 88, 0.75);
+      line-height: 1.4;
     }
 
     /* Section */
@@ -384,10 +376,9 @@
       position: relative;
       overflow: hidden;
       cursor: default;
-      transition:
-        transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
-        box-shadow 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
-        border-color 0.35s ease;
+      transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  box-shadow 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+                  border-color 0.35s ease;
     }
 
     .card::before {
@@ -406,9 +397,7 @@
       border-color: rgba(240, 68, 68, 0.55);
     }
 
-    .card:hover::before {
-      opacity: 1;
-    }
+    .card:hover::before { opacity: 1; }
 
     .card-header {
       display: flex;
@@ -508,23 +497,10 @@
 
     /* Responsivo */
     @media (max-width: 640px) {
-      header {
-        padding: 14px 16px;
-      }
-
-      nav a {
-        margin-left: 14px;
-        font-size: 13px;
-      }
-
-      .lang-switcher {
-        margin-left: 10px;
-      }
-
-      .card {
-        min-width: 80%;
-        max-width: 80%;
-      }
+      header { padding: 14px 16px; }
+      nav a { margin-left: 14px; font-size: 13px; }
+      .card { min-width: 80%; max-width: 80%; }
+      .lang-dd { margin-left: 12px; padding-left: 12px; }
     }
   </style>
 </head>
@@ -537,24 +513,23 @@
       <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
       <span>Sales Support Portal</span>
     </div>
-    <nav>
-      <a href="email-generator.html">
-        <span data-lang="en">Email Generator</span>
-        <span data-lang="pt">Gerador de e-mails</span>
-        <span data-lang="es">Generador de emails</span>
-      </a>
-      <a href="clever-plans.html">
-        <span data-lang="en">Plan Comparison</span>
-        <span data-lang="pt">Planos CleverTap</span>
-        <span data-lang="es">Planes CleverTap</span>
-      </a>
 
-      <div class="lang-switcher">
-        <button id="lang-toggle" type="button">🌐 EN</button>
-        <div class="lang-menu" id="lang-menu">
-          <button type="button" data-lang-select="en">EN</button>
-          <button type="button" data-lang-select="pt">PT</button>
-          <button type="button" data-lang-select="es">ES</button>
+    <nav class="top-nav">
+      <a href="email-generator.html">Email Generator</a>
+      <a href="product-plan.html">Product Plan</a>
+      <a href="use-cases.html">Use Cases</a>
+
+      <div class="lang-dd" id="langDD">
+        <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
+          <span id="langDDLabel">EN</span>
+          <span class="lang-dd-caret">▾</span>
+        </button>
+
+        <div class="lang-dd-menu" id="langDDMenu" role="menu" aria-label="Select language">
+          <button type="button" class="lang-dd-item" data-lang-select="en" role="menuitem">EN</button>
+          <button type="button" class="lang-dd-item" data-lang-select="pt" role="menuitem">PT</button>
+          <button type="button" class="lang-dd-item" data-lang-select="es" role="menuitem">ES</button>
+
         </div>
       </div>
     </nav>
@@ -567,6 +542,7 @@
         <span data-lang="en">CleverTap LATAM</span>
         <span data-lang="pt">CleverTap Latam</span>
         <span data-lang="es">CleverTap LATAM</span>
+
         <span data-lang="en">| Smart internal toolkit</span>
         <span data-lang="pt">| Ferramenta interna inteligente</span>
         <span data-lang="es">| Herramienta interna inteligente</span>
@@ -577,16 +553,11 @@
         <span data-lang="pt">Suporte inteligente para elevar a qualidade de cada interação com o cliente.</span>
         <span data-lang="es">Soporte inteligente para elevar la calidad de cada interacción con el cliente.</span>
       </h1>
+
       <p>
-        <span data-lang="en">
-          Content, plan comparisons and generators in one place to help the sales team work more efficiently.
-        </span>
-        <span data-lang="pt">
-          Materiais, comparativos e geradores reunidos em um só lugar para apoiar um trabalho comercial mais eficiente.
-        </span>
-        <span data-lang="es">
-          Materiales, comparativos y generadores reunidos en un solo lugar para apoyar un trabajo comercial más eficiente.
-        </span>
+        <span data-lang="en">Content, plan comparisons and generators in one place to help the sales team work more efficiently.</span>
+        <span data-lang="pt">Materiais, comparativos e geradores reunidos em um só lugar para apoiar um trabalho comercial mais eficiente.</span>
+        <span data-lang="es">Materiales, comparativos y generadores reunidos en un solo lugar para apoyar un trabajo comercial más eficiente.</span>
       </p>
 
       <div class="cta-button">
@@ -595,7 +566,8 @@
           <span data-lang="pt">Explorar recursos</span>
           <span data-lang="es">Explorar recursos</span>
         </a>
-        <a href="clever-plans.html" class="secondary">
+
+        <a href="product-plan.html" class="secondary">
           <span data-lang="en">View plan comparison</span>
           <span data-lang="pt">Ver comparativo de planos</span>
           <span data-lang="es">Ver comparativo de planes</span>
@@ -605,12 +577,11 @@
     </div>
   </section>
 
-    <!-- Quick Actions -->
+  <!-- Quick Actions -->
   <section class="quick-actions">
     <div class="quick-actions-inner">
       <div class="quick-actions-grid">
 
-        <!-- Criar e-mail / Create email / Crear email -->
         <a href="email-generator.html" class="quick-action-card">
           <div class="quick-action-icon">
             <img src="https://cdn-icons-png.flaticon.com/512/2989/2989993.png" alt="Email icon">
@@ -629,8 +600,7 @@
           </div>
         </a>
 
-        <!-- Comparar planos / Compare plans / Comparar planes -->
-        <a href="clever-plans.html" class="quick-action-card">
+        <a href="product-plan.html" class="quick-action-card">
           <div class="quick-action-icon">
             <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Planning_icon_from_Noun_Project.png" alt="Plans icon">
           </div>
@@ -648,7 +618,6 @@
           </div>
         </a>
 
-        <!-- Ver documentação / View docs / Ver documentación -->
         <a href="https://docs.clevertap.com/docs/getting-started" target="_blank" class="quick-action-card">
           <div class="quick-action-icon">
             <img src="https://cdn-icons-png.flaticon.com/512/35/35920.png" alt="Documentation icon">
@@ -667,10 +636,28 @@
           </div>
         </a>
 
+        <!-- ✅ NOVO CARD: Use Cases (ao lado de View documentation) -->
+        <a href="use-cases.html" class="quick-action-card">
+          <div class="quick-action-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/1688/1688400.png" alt="Use cases icon">
+          </div>
+          <div class="quick-action-text">
+            <h3>
+              <span data-lang="en">Use Cases</span>
+              <span data-lang="pt">Casos de Uso</span>
+              <span data-lang="es">Casos de Uso</span>
+            </h3>
+            <p>
+              <span data-lang="en">Browse demos and journeys by industry, pain, channel, and objective.</span>
+              <span data-lang="pt">Navegue por demos e jornadas por indústria, dor, canal e objetivo.</span>
+              <span data-lang="es">Explora demos y journeys por industria, pain, canal y objetivo.</span>
+            </p>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>
-
 
   <!-- About / Cards Section -->
   <section class="section" id="about">
@@ -680,21 +667,16 @@
         <span data-lang="pt">Como este portal ajuda o time de vendas</span>
         <span data-lang="es">Cómo este portal apoya al equipo de ventas</span>
       </h2>
+
       <p class="section-subtitle">
-        <span data-lang="en">
-          Resources designed to speed up proposals, standardize communications and add more value to every meeting.
-        </span>
-        <span data-lang="pt">
-          Recursos criados para acelerar propostas, padronizar comunicações e gerar ainda mais valor em cada reunião.
-        </span>
-        <span data-lang="es">
-          Recursos creados para acelerar propuestas, estandarizar comunicaciones y generar aún más valor en cada reunión.
-        </span>
+        <span data-lang="en">Resources designed to speed up proposals, standardize communications and add more value to every meeting.</span>
+        <span data-lang="pt">Recursos criados para acelerar propostas, padronizar comunicações e gerar ainda mais valor em cada reunião.</span>
+        <span data-lang="es">Recursos creados para acelerar propuestas, estandarizar comunicaciones y generar aún más valor en cada reunión.</span>
       </p>
 
-      <!-- Carrossel -->
       <div class="cards-carousel-wrapper">
         <div class="cards-carousel">
+
           <!-- BLOCO 1 -->
           <article class="card">
             <div class="card-header">
@@ -708,15 +690,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Build commercial emails and messages in a few clicks, keeping tone, structure and links aligned.
-              </span>
-              <span data-lang="pt">
-                Construa mensagens e e-mails comerciais em poucos cliques, mantendo o tom, a estrutura e os links sempre padronizados.
-              </span>
-              <span data-lang="es">
-                Construye mensajes y correos comerciales en pocos clics, manteniendo el tono, la estructura y los enlaces siempre alineados.
-              </span>
+              <span data-lang="en">Build commercial emails and messages in a few clicks, keeping tone, structure and links aligned.</span>
+              <span data-lang="pt">Construa mensagens e e-mails comerciais em poucos cliques, mantendo o tom, a estrutura e os links sempre padronizados.</span>
+              <span data-lang="es">Construye mensajes y correos comerciales en pocos clics, manteniendo el tono, la estructura y los enlaces siempre alineados.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Productivity focused</span>
@@ -737,15 +713,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Quickly access the plans page to explain Essentials, Advanced and Cutting Edge in real time during calls.
-              </span>
-              <span data-lang="pt">
-                Acesse rapidamente a página de planos para explicar benefícios do Essentials, Advanced e Cutting Edge em tempo real na call.
-              </span>
-              <span data-lang="es">
-                Accede rápidamente a la página de planes para explicar los beneficios de Essentials, Advanced y Cutting Edge en tiempo real durante la llamada.
-              </span>
+              <span data-lang="en">Quickly access the plans page to explain Essentials, Advanced and Cutting Edge in real time during calls.</span>
+              <span data-lang="pt">Acesse rapidamente a página de planos para explicar benefícios do Essentials, Advanced e Cutting Edge em tempo real na call.</span>
+              <span data-lang="es">Accede rápidamente a la página de planes para explicar los beneficios de Essentials, Advanced y Cutting Edge en tiempo real durante la llamada.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Meeting support</span>
@@ -766,15 +736,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Documentation, technical links, use cases and sales materials organized in a single, easy-to-access hub.
-              </span>
-              <span data-lang="pt">
-                Documentação, links técnicos, cases de uso e materiais de apoio organizados em um único lugar, fácil de lembrar e compartilhar.
-              </span>
-              <span data-lang="es">
-                Documentación, enlaces técnicos, casos de uso y materiales de apoyo organizados en un único lugar, fácil de encontrar y compartir.
-              </span>
+              <span data-lang="en">Documentation, technical links, use cases and sales materials organized in a single, easy-to-access hub.</span>
+              <span data-lang="pt">Documentação, links técnicos, cases de uso e materiais de apoio organizados em um único lugar, fácil de lembrar e compartilhar.</span>
+              <span data-lang="es">Documentación, enlaces técnicos, casos de uso y materiales de apoyo organizados en un único lugar, fácil de encontrar y compartir.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Single source of truth</span>
@@ -795,15 +759,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Helps you deliver clearer and more visual communication, increasing the perceived value of the solution.
-              </span>
-              <span data-lang="pt">
-                Ajuda a entregar comunicações mais claras, personalizadas e visuais, elevando a percepção de valor da solução apresentada.
-              </span>
-              <span data-lang="es">
-                Ayuda a entregar comunicaciones más claras, personalizadas y visuales, elevando la percepción de valor de la solución presentada.
-              </span>
+              <span data-lang="en">Helps you deliver clearer and more visual communication, increasing the perceived value of the solution.</span>
+              <span data-lang="pt">Ajuda a entregar comunicações mais claras, personalizadas e visuais, elevando a percepção de valor da solução apresentada.</span>
+              <span data-lang="es">Ayuda a entregar comunicaciones más claras, personalizadas y visuales, elevando la percepción de valor de la solución presentada.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Clarity driven</span>
@@ -824,15 +782,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                A portal built to receive new generators, checklists, scripts and flows as the team’s needs evolve.
-              </span>
-              <span data-lang="pt">
-                Portal preparado para receber novos geradores, checklists, scripts e fluxos — evoluindo junto com as necessidades do time.
-              </span>
-              <span data-lang="es">
-                Portal preparado para recibir nuevos generadores, checklists, guiones y flujos — evolucionando junto con las necesidades del equipo.
-              </span>
+              <span data-lang="en">A portal built to receive new generators, checklists, scripts and flows as the team’s needs evolve.</span>
+              <span data-lang="pt">Portal preparado para receber novos geradores, checklists, scripts e fluxos — evoluindo junto com as necessidades do time.</span>
+              <span data-lang="es">Portal preparado para recibir nuevos generadores, checklists, guiones y flujos — evolucionando junto con las necesidades del equipo.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Scalable and evolving</span>
@@ -841,7 +793,8 @@
             </div>
           </article>
 
-          <!-- BLOCO 2 (duplicado para loop contínuo) -->
+          <!-- BLOCO 2 (duplicado) -->
+          <!-- Duplico o conteúdo para manter o loop perfeito -->
           <article class="card">
             <div class="card-header">
               <div class="card-icon">
@@ -854,15 +807,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Build commercial emails and messages in a few clicks, keeping tone, structure and links aligned.
-              </span>
-              <span data-lang="pt">
-                Construa mensagens e e-mails comerciais em poucos cliques, mantendo o tom, a estrutura e os links sempre padronizados.
-              </span>
-              <span data-lang="es">
-                Construye mensajes y correos comerciales en pocos clics, manteniendo el tono, la estructura y los enlaces siempre alineados.
-              </span>
+              <span data-lang="en">Build commercial emails and messages in a few clicks, keeping tone, structure and links aligned.</span>
+              <span data-lang="pt">Construa mensagens e e-mails comerciais em poucos cliques, mantendo o tom, a estrutura e os links sempre padronizados.</span>
+              <span data-lang="es">Construye mensajes y correos comerciales en pocos clics, manteniendo el tono, la estructura y los enlaces siempre alineados.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Productivity focused</span>
@@ -883,15 +830,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Quickly access the plans page to explain Essentials, Advanced and Cutting Edge in real time during calls.
-              </span>
-              <span data-lang="pt">
-                Acesse rapidamente a página de planos para explicar benefícios do Essentials, Advanced e Cutting Edge em tempo real na call.
-              </span>
-              <span data-lang="es">
-                Accede rápidamente a la página de planes para explicar los beneficios de Essentials, Advanced y Cutting Edge en tiempo real durante la llamada.
-              </span>
+              <span data-lang="en">Quickly access the plans page to explain Essentials, Advanced and Cutting Edge in real time during calls.</span>
+              <span data-lang="pt">Acesse rapidamente a página de planos para explicar benefícios do Essentials, Advanced e Cutting Edge em tempo real na call.</span>
+              <span data-lang="es">Accede rápidamente a la página de planes para explicar los beneficios de Essentials, Advanced y Cutting Edge en tiempo real durante la llamada.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Meeting support</span>
@@ -912,15 +853,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Documentation, technical links, use cases and sales materials organized in a single, easy-to-access hub.
-              </span>
-              <span data-lang="pt">
-                Documentação, links técnicos, cases de uso e materiais de apoio organizados em um único lugar, fácil de lembrar e compartilhar.
-              </span>
-              <span data-lang="es">
-                Documentación, enlaces técnicos, casos de uso y materiales de apoyo organizados en un único lugar, fácil de encontrar y compartir.
-              </span>
+              <span data-lang="en">Documentation, technical links, use cases and sales materials organized in a single, easy-to-access hub.</span>
+              <span data-lang="pt">Documentação, links técnicos, cases de uso e materiais de apoio organizados em um único lugar, fácil de lembrar e compartilhar.</span>
+              <span data-lang="es">Documentación, enlaces técnicos, casos de uso y materiales de apoyo organizados en un único lugar, fácil de encontrar y compartir.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Single source of truth</span>
@@ -941,15 +876,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                Helps you deliver clearer and more visual communication, increasing the perceived value of the solution.
-              </span>
-              <span data-lang="pt">
-                Ajuda a entregar comunicações mais claras, personalizadas e visuais, elevando a percepção de valor da solução apresentada.
-              </span>
-              <span data-lang="es">
-                Ayuda a entregar comunicaciones más claras, personalizadas y visuales, elevando la percepción de valor de la solución presentada.
-              </span>
+              <span data-lang="en">Helps you deliver clearer and more visual communication, increasing the perceived value of the solution.</span>
+              <span data-lang="pt">Ajuda a entregar comunicações mais claras, personalizadas e visuais, elevando a percepção de valor da solução apresentada.</span>
+              <span data-lang="es">Ayuda a entregar comunicaciones más claras, personalizadas y visuales, elevando la percepción de valor de la solución presentada.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Clarity driven</span>
@@ -970,15 +899,9 @@
               </h3>
             </div>
             <p>
-              <span data-lang="en">
-                A portal built to receive new generators, checklists, scripts and flows as the team’s needs evolve.
-              </span>
-              <span data-lang="pt">
-                Portal preparado para receber novos geradores, checklists, scripts e fluxos — evoluindo junto com as necessidades do time.
-              </span>
-              <span data-lang="es">
-                Portal preparado para recibir nuevos generadores, checklists, guiones y flujos — evolucionando junto con las necesidades del equipo.
-              </span>
+              <span data-lang="en">A portal built to receive new generators, checklists, scripts and flows as the team’s needs evolve.</span>
+              <span data-lang="pt">Portal preparado para receber novos geradores, checklists, scripts e fluxos — evoluindo junto com as necessidades do time.</span>
+              <span data-lang="es">Portal preparado para recibir nuevos generadores, checklists, guiones y flujos — evolucionando junto con las necesidades del equipo.</span>
             </p>
             <div class="card-tag">
               <span data-lang="en">Scalable and evolving</span>
@@ -986,12 +909,12 @@
               <span data-lang="es">Escalable y en evolución</span>
             </div>
           </article>
+
         </div>
       </div>
     </div>
   </section>
 
-  
   <!-- Footer -->
   <footer>
     <div class="footer-links">
@@ -1001,16 +924,19 @@
           <span data-lang="pt">Documentação</span>
           <span data-lang="es">Documentación</span>
         </strong><br><br>
+
         <a href="https://docs.clevertap.com/docs/getting-started" target="_blank">
           <span data-lang="en">User Docs</span>
           <span data-lang="pt">Documentação do usuário</span>
           <span data-lang="es">Documentación de usuario</span>
         </a>
+
         <a href="https://developer.clevertap.com/docs/getting-started" target="_blank">
           <span data-lang="en">Developer Docs</span>
           <span data-lang="pt">Documentação técnica</span>
           <span data-lang="es">Documentación técnica</span>
         </a>
+
         <a href="https://clevertap.com/resources/?ct_resources_category=Case%20Study" target="_blank">
           <span data-lang="en">Use Cases</span>
           <span data-lang="pt">Casos de uso</span>
@@ -1024,11 +950,13 @@
           <span data-lang="pt">Plataforma</span>
           <span data-lang="es">Plataforma</span>
         </strong><br><br>
+
         <a href="https://clevertap.com/" target="_blank">
           <span data-lang="en">Official Website</span>
           <span data-lang="pt">Site oficial</span>
           <span data-lang="es">Sitio oficial</span>
         </a>
+
         <a href="https://trust.clevertap.com/" target="_blank">
           <span data-lang="en">Trust Portal</span>
           <span data-lang="pt">Trusted Portal</span>
@@ -1042,6 +970,7 @@
           <span data-lang="pt">Parceiros</span>
           <span data-lang="es">Partners</span>
         </strong><br><br>
+
         <a href="https://docs.clevertap.com/docs/technology-partners" target="_blank">
           <span data-lang="en">Technology Partners</span>
           <span data-lang="pt">Technology Partners</span>
@@ -1057,92 +986,62 @@
     </div>
   </footer>
 
-  <script>
-    // Carrossel em loop suave
-    (function () {
-      const carousel = document.querySelector('.cards-carousel');
-      if (!carousel) return;
+<script>
+  // ✅ ÚNICO controle de idioma (conteúdo = [data-lang], seletor = [data-lang-select])
+  (function(){
+    const htmlLangMap = { en: 'en', pt: 'pt-BR', es: 'es' };
+    const STORAGE_KEY = 'ssp_lang';
 
-      let position = 0;
-      let halfWidth = 0;
-      const speed = 0.4;
+    const dd = document.getElementById('langDD');
+    const btn = document.getElementById('langDDBtn');
+    const menu = document.getElementById('langDDMenu');
+    const label = document.getElementById('langDDLabel');
 
-      function calculateHalfWidth() {
-        const totalWidth = carousel.scrollWidth;
-        halfWidth = totalWidth / 2;
-      }
+    function setLanguage(lang){
+      const chosen = (lang === 'pt' || lang === 'es' || lang === 'en') ? lang : 'en';
 
-      function step() {
-        position -= speed;
-
-        if (Math.abs(position) >= halfWidth) {
-          position = 0;
-        }
-
-        carousel.style.transform = `translateX(${position}px)`;
-        requestAnimationFrame(step);
-      }
-
-      window.addEventListener('load', () => {
-        calculateHalfWidth();
-        requestAnimationFrame(step);
+      // 🔥 Só altera VISIBILIDADE do CONTEÚDO (spans/divs/p etc), não dos botões do dropdown
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        // Ignora qualquer coisa dentro do container do dropdown (segurança extra)
+        if (el.closest('#langDD')) return;
+        el.style.display = (el.getAttribute('data-lang') === chosen) ? '' : 'none';
       });
 
-      window.addEventListener('resize', () => {
-        const currentRatio = position / halfWidth || 0;
-        calculateHalfWidth();
-        position = currentRatio * halfWidth;
+      document.documentElement.lang = htmlLangMap[chosen] || 'en';
+      if (label) label.textContent = chosen.toUpperCase();
+
+      try { localStorage.setItem(STORAGE_KEY, chosen); } catch (e) {}
+    }
+
+    // init
+    let saved = 'en';
+    try { saved = localStorage.getItem(STORAGE_KEY) || 'en'; } catch (e) {}
+    setLanguage(saved);
+
+    // dropdown open/close + selection
+    if(dd && btn && menu){
+      const open = () => { dd.classList.add('open'); btn.setAttribute('aria-expanded','true'); };
+      const close = () => { dd.classList.remove('open'); btn.setAttribute('aria-expanded','false'); };
+
+      btn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        dd.classList.contains('open') ? close() : open();
       });
-    })();
 
-    // Controle de idioma
-    (function () {
-      const defaultLang = 'en';
-      const toggleBtn = document.getElementById('lang-toggle');
-      const menu = document.getElementById('lang-menu');
-      const htmlLangMap = { en: 'en', pt: 'pt-BR', es: 'es' };
+      menu.addEventListener('click', (e)=>{
+        const item = e.target.closest('.lang-dd-item');
+        if(!item) return;
+        const lang = item.getAttribute('data-lang-select');
+        setLanguage(lang);
+        close();
+      });
 
-      function setLanguage(lang) {
-        document.querySelectorAll('[data-lang]').forEach(el => {
-          const value = el.getAttribute('data-lang');
-          el.style.display = (value === lang) ? '' : 'none';
-        });
+      document.addEventListener('click', close);
+      window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') close(); });
+    }
+  })();
+</script>
 
-        if (toggleBtn) {
-          toggleBtn.textContent = `🌐 ${lang.toUpperCase()}`;
-        }
-
-        document.documentElement.lang = htmlLangMap[lang] || 'en';
-      }
-
-      // Inicializa idioma padrão
-      setLanguage(defaultLang);
-
-      // Toggle do menu
-      if (toggleBtn && menu) {
-        toggleBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        });
-
-        document.querySelectorAll('[data-lang-select]').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            const lang = e.currentTarget.getAttribute('data-lang-select');
-            setLanguage(lang);
-            menu.style.display = 'none';
-          });
-        });
-
-        document.addEventListener('click', () => {
-          menu.style.display = 'none';
-        });
-
-        menu.addEventListener('click', (e) => {
-          e.stopPropagation();
-        });
-      }
-    })();
-  </script>
 
 </body>
 </html>
