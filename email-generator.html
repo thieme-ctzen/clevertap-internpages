@@ -261,23 +261,28 @@
 
     /* Switch (padrão pill do main) */
     .topic-switch {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 8px;
-      flex-wrap: wrap;
       margin: 12px 0 10px;
     }
 
     .topic-btn {
-      flex: 1 1 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       background: #ffffff;
       border: 1px solid rgba(19, 59, 88, 0.22);
       border-radius: var(--radius-pill);
-      padding: 7px 10px;
+      padding: 8px 12px;
       font-size: 12px;
       cursor: pointer;
       color: rgba(19, 59, 88, 0.85);
+      text-align: left;
+      line-height: 1.2;
       transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
-      white-space: nowrap;
+      white-space: normal;
     }
 
     .topic-btn:hover {
@@ -290,6 +295,33 @@
       color: #fff;
       border-color: rgba(240, 68, 68, 0.8);
       box-shadow: 0 10px 18px rgba(240, 68, 68, 0.22);
+    }
+
+    .topic-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(19, 59, 88, 0.08);
+      border: 1px solid rgba(19, 59, 88, 0.18);
+      flex-shrink: 0;
+    }
+
+    .topic-icon svg {
+      width: 12px;
+      height: 12px;
+      fill: #133B58;
+    }
+
+    .topic-btn.active .topic-icon {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .topic-btn.active .topic-icon svg {
+      fill: #ffffff;
     }
 
     /* Sections (cards no padrão do main) */
@@ -313,6 +345,14 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
     }
 
     .section-icon {
@@ -548,6 +588,47 @@
       filter: invert(15%) sepia(18%) saturate(1094%) hue-rotate(166deg) brightness(92%) contrast(95%);
     }
 
+    .icon-btn {
+      background: rgba(19, 59, 88, 0.04);
+      border: 1px solid rgba(19, 59, 88, 0.18);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(240, 68, 68, 0.35);
+      background: rgba(240, 68, 68, 0.06);
+    }
+
+    .icon-btn img {
+      width: 18px;
+      height: 18px;
+      display: block;
+      filter: invert(15%) sepia(18%) saturate(1094%) hue-rotate(166deg) brightness(92%) contrast(95%);
+    }
+
+    .section-action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+    }
+
+    .section-action-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: #133B58;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     /* Popups */
     .copied-popup,
     .style-popup {
@@ -681,21 +762,64 @@
       </div>
 
       <div class="topic-switch">
-        <button class="topic-btn active" data-topic="user-docs" data-i18n="topics.user">Documentação do usuário</button>
-        <button class="topic-btn" data-topic="tech-docs" data-i18n="topics.tech">Documentação técnica</button>
-        <button class="topic-btn" data-topic="partners" data-i18n="topics.partners">Parceiros integrados</button>
-      </div>
-
-      <!-- USER DOCS -->
-      <div class="section topic-section" data-topic="user-docs">
-        <h3 class="section-title" data-i18n="sections.user">
-          <span class="section-icon" aria-hidden="true">
+        <button class="topic-btn active" data-topic="user-docs">
+          <span class="topic-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24">
               <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm8 1v4h4"></path>
             </svg>
           </span>
-          Documentação do Usuário
-        </h3>
+          <span data-i18n-text="topics.user">Documentação do usuário</span>
+        </button>
+        <button class="topic-btn" data-topic="tech-docs">
+          <span class="topic-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M14.7 6.3a5 5 0 0 0 3.9 7.4l-2.1 2.1a3 3 0 0 1-4.2 0l-4.8 4.8a2 2 0 0 1-2.8-2.8l4.8-4.8a3 3 0 0 1 0-4.2l2.1-2.1a5 5 0 0 0 3.1-.4z"></path>
+            </svg>
+          </span>
+          <span data-i18n-text="topics.tech">Documentação técnica</span>
+        </button>
+        <button class="topic-btn" data-topic="partners">
+          <span class="topic-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M8.5 12.5l2 2 3-3 4 4-2 2-2-2-3 3-4-4-2 2-2-2 4-4z"></path>
+            </svg>
+          </span>
+          <span data-i18n-text="topics.partners">Parceiros integrados</span>
+        </button>
+        <button class="topic-btn" data-topic="security-docs">
+          <span class="topic-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3l7 3v6c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-3z"></path>
+            </svg>
+          </span>
+          <span data-i18n-text="topics.security">Security Documentation</span>
+        </button>
+      </div>
+
+      <!-- USER DOCS -->
+      <div class="section topic-section" data-topic="user-docs">
+        <div class="section-header">
+          <h3 class="section-title" data-i18n="sections.user">
+            <span class="section-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm8 1v4h4"></path>
+              </svg>
+            </span>
+            Documentação do Usuário
+          </h3>
+          <button class="icon-btn section-action-btn" type="button" onclick="toggleAllDetails('user-docs', this)" data-i18n-aria="actions.expandAll" data-i18n-title="actions.expandAll" aria-label="Expandir tudo" title="Expandir tudo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12L6.5 6.5"></path>
+              <path d="M6.5 10V6.5H10"></path>
+              <path d="M12 12L17.5 6.5"></path>
+              <path d="M14 6.5H17.5V10"></path>
+              <path d="M12 12L6.5 17.5"></path>
+              <path d="M6.5 14V17.5H10"></path>
+              <path d="M12 12L17.5 17.5"></path>
+              <path d="M14 17.5H17.5V14"></path>
+            </svg>
+          </button>
+        </div>
 
         <details>
           <summary>Getting Started</summary>
@@ -828,62 +952,938 @@
             <label><input type="checkbox" value="Advanced Capabilities https://docs.clevertap.com/docs/ab-multivariate-testing"> Advanced Capabilities</label>
           </div>
         </details>
-      </div>
-
-      <!-- TECH DOCS -->
-      <div class="section topic-section" data-topic="tech-docs" style="display:none;">
-        <h3 class="section-title" data-i18n="sections.tech">
-          <span class="section-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M14.7 6.3a5 5 0 0 0 3.9 7.4l-2.1 2.1a3 3 0 0 1-4.2 0l-4.8 4.8a2 2 0 0 1-2.8-2.8l4.8-4.8a3 3 0 0 1 0-4.2l2.1-2.1a5 5 0 0 0 3.1-.4z"></path>
-            </svg>
-          </span>
-          Documentação Técnica
-        </h3>
 
         <details>
-          <summary>APIs e SDKs</summary>
+          <summary>Journeys</summary>
           <div class="subtopics">
-            <label><input type="checkbox" value="REST API Overview https://docs.clevertap.com/docs/rest-api"> REST API Overview</label>
-            <label><input type="checkbox" value="Android SDK https://docs.clevertap.com/docs/android"> Android SDK</label>
-            <label><input type="checkbox" value="iOS SDK https://docs.clevertap.com/docs/ios"> iOS SDK</label>
-            <label><input type="checkbox" value="Web SDK https://docs.clevertap.com/docs/web"> Web SDK</label>
+            <label><input type="checkbox" value="Journeys overview https://docs.clevertap.com/docs/journeys"> Journeys overview</label>
+            <label><input type="checkbox" value="Journeys list https://docs.clevertap.com/docs/journeys-list"> Journeys list</label>
+            <label><input type="checkbox" value="Journeys concept https://docs.clevertap.com/docs/journey-concepts"> Journeys concept</label>
+            <label><input type="checkbox" value="Create journey https://docs.clevertap.com/docs/create-a-journey"> Create journey</label>
+            <label><input type="checkbox" value="Edit a journey https://docs.clevertap.com/docs/edit-a-journey"> Edit a journey</label>
+            <label><input type="checkbox" value="Journey operations https://docs.clevertap.com/docs/journey-operations"> Journey operations</label>
+            <label><input type="checkbox" value="Journey Use Cases https://docs.clevertap.com/docs/journey-use-cases"> Journey Use Cases</label>
+            <label><input type="checkbox" value="IntelliNODE https://docs.clevertap.com/docs/intellinode"> IntelliNODE</label>
+            <label><input type="checkbox" value="Conditional Split node https://docs.clevertap.com/docs/conditional-split-node"> Conditional Split node</label>
+            <label><input type="checkbox" value="Journey performance https://docs.clevertap.com/docs/viewing-statistics"> Journey performance</label>
+            <label><input type="checkbox" value="View journey reports https://docs.clevertap.com/docs/viewing-journey-reports"> View journey reports</label>
+            <label><input type="checkbox" value="Journey Troubleshooting and FAQs https://docs.clevertap.com/docs/faqs"> Journey Troubleshooting and FAQs</label>
           </div>
         </details>
 
         <details>
-          <summary>Data Pipelines & Export</summary>
+          <summary>Promotion</summary>
           <div class="subtopics">
-            <label><input type="checkbox" value="Data Export https://docs.clevertap.com/docs/data-exports"> Data Export</label>
-            <label><input type="checkbox" value="S3 / BigQuery / Snowflake https://docs.clevertap.com/docs/integrations"> Cloud Storage Integrations</label>
+            <label><input type="checkbox" value="Promo Campaigns https://docs.clevertap.com/docs/promo-campaigns"> Promo Campaigns</label>
+            <label><input type="checkbox" value="Rewards https://docs.clevertap.com/docs/rewards"> Rewards</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Product Experiences</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Product Experiences Next Gen https://docs.clevertap.com/docs/product-experiences-nextgen"> Product Experiences Next Gen</label>
+            <label><input type="checkbox" value="Product Experiences (Legacy) https://docs.clevertap.com/docs/product-experiences"> Product Experiences (Legacy)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Data Management</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Imports https://docs.clevertap.com/docs/import"> Imports</label>
+            <label><input type="checkbox" value="Imports - API https://docs.clevertap.com/docs/imports-via-api"> Imports - API</label>
+            <label><input type="checkbox" value="Imports - CSV Upload https://docs.clevertap.com/docs/csv-upload"> Imports - CSV Upload</label>
+            <label><input type="checkbox" value="Imports - SFTP https://docs.clevertap.com/docs/imports-via-sftp"> Imports - SFTP</label>
+            <label><input type="checkbox" value="Exports https://docs.clevertap.com/docs/data-exports"> Exports</label>
+            <label><input type="checkbox" value="Exports - API https://docs.clevertap.com/docs/export-via-api"> Exports - API</label>
+            <label><input type="checkbox" value="Exports - Cloud Storage https://docs.clevertap.com/docs/cloud-storage"> Exports - Cloud Storage</label>
+            <label><input type="checkbox" value="Exports - Partners https://docs.clevertap.com/docs/export-partners"> Exports - Partners</label>
+          </div>
+        </details>
+      </div>
+
+      <!-- TECH DOCS -->
+      <div class="section topic-section" data-topic="tech-docs" style="display:none;">
+        <div class="section-header">
+          <h3 class="section-title" data-i18n="sections.tech.sdk">
+            <span class="section-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M14.7 6.3a5 5 0 0 0 3.9 7.4l-2.1 2.1a3 3 0 0 1-4.2 0l-4.8 4.8a2 2 0 0 1-2.8-2.8l4.8-4.8a3 3 0 0 1 0-4.2l2.1-2.1a5 5 0 0 0 3.1-.4z"></path>
+              </svg>
+            </span>
+            SDK Documentation
+          </h3>
+          <button class="icon-btn section-action-btn" type="button" onclick="toggleAllDetails('tech-docs', this)" data-i18n-aria="actions.expandAll" data-i18n-title="actions.expandAll" aria-label="Expandir tudo" title="Expandir tudo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12L6.5 6.5"></path>
+              <path d="M6.5 10V6.5H10"></path>
+              <path d="M12 12L17.5 6.5"></path>
+              <path d="M14 6.5H17.5V10"></path>
+              <path d="M12 12L6.5 17.5"></path>
+              <path d="M6.5 14V17.5H10"></path>
+              <path d="M12 12L17.5 17.5"></path>
+              <path d="M14 17.5H17.5V14"></path>
+            </svg>
+          </button>
+        </div>
+
+        <details>
+          <summary>Getting Started</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Getting Started https://developer.clevertap.com/docs/getting-started"> Getting Started</label>
+            <label><input type="checkbox" value="User Profiles https://developer.clevertap.com/docs/concepts-user-profiles"> User Profiles</label>
+            <label><input type="checkbox" value="Events https://developer.clevertap.com/docs/events"> Events</label>
+            <label><input type="checkbox" value="Campaigns https://developer.clevertap.com/docs/concepts-campaigns"> Campaigns</label>
+            <label><input type="checkbox" value="Reports https://developer.clevertap.com/docs/concepts-reports"> Reports</label>
+            <label><input type="checkbox" value="IDC https://developer.clevertap.com/docs/idc"> IDC</label>
+            <label><input type="checkbox" value="Developer Go Live Checklist https://developer.clevertap.com/docs/developer-go-live-checklist"> Developer Go Live Checklist</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="CleverTap SDKs https://developer.clevertap.com/docs/clevertap-sdks"> CleverTap SDKs</label>
+            <label><input type="checkbox" value="SDK changes for GDPR compliance https://developer.clevertap.com/docs/sdk-changes-for-gdpr-compliance"> SDK changes for GDPR compliance</label>
+            <label><input type="checkbox" value="Multi-instance SDK update https://developer.clevertap.com/docs/multi-instance-sdk-update"> Multi-instance SDK update</label>
+            <label><input type="checkbox" value="Improved in-app notifications SDK update https://developer.clevertap.com/docs/improved-inapp-notifications-sdk-update"> Improved in-app notifications SDK update</label>
+            <label><input type="checkbox" value="Set CleverTap ID https://developer.clevertap.com/docs/set-clevertap-id"> Set CleverTap ID</label>
+            <label><input type="checkbox" value="WebView https://developer.clevertap.com/docs/webview"> WebView</label>
+            <label><input type="checkbox" value="SDK endpoints https://developer.clevertap.com/docs/sdk-endpoints"> SDK endpoints</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>iOS SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="iOS https://developer.clevertap.com/docs/ios"> iOS</label>
+            <label><input type="checkbox" value="iOS Quickstart Guide https://developer.clevertap.com/docs/ios-quickstart-guide"> iOS Quickstart Guide</label>
+            <label><input type="checkbox" value="User Profiles (iOS) https://developer.clevertap.com/docs/user-profiles-ios"> User Profiles (iOS)</label>
+            <label><input type="checkbox" value="User Events (iOS) https://developer.clevertap.com/docs/user-events-ios"> User Events (iOS)</label>
+            <label><input type="checkbox" value="Push Notifications (iOS) https://developer.clevertap.com/docs/push-notifications-ios"> Push Notifications (iOS)</label>
+            <label><input type="checkbox" value="Rich Push Notifications https://developer.clevertap.com/docs/rich-push-notifications"> Rich Push Notifications</label>
+            <label><input type="checkbox" value="In-App Notifications (iOS) https://developer.clevertap.com/docs/in-app-notification-ios"> In-App Notifications (iOS)</label>
+            <label><input type="checkbox" value="App Inbox (iOS) https://developer.clevertap.com/docs/app-inbox-ios"> App Inbox (iOS)</label>
+            <label><input type="checkbox" value="Native Display (iOS) https://developer.clevertap.com/docs/native-display-ios"> Native Display (iOS)</label>
+            <label><input type="checkbox" value="iOS Remote Config https://developer.clevertap.com/docs/ios-remote-config"> iOS Remote Config</label>
+            <label><input type="checkbox" value="Product Experiences (iOS) https://developer.clevertap.com/docs/product-experiences-ios"> Product Experiences (iOS)</label>
+            <label><input type="checkbox" value="Geofence (iOS) https://developer.clevertap.com/docs/geofence-ios"> Geofence (iOS)</label>
+            <label><input type="checkbox" value="iOS Custom Proxy Domain https://developer.clevertap.com/docs/ios-custom-proxy-domain"> iOS Custom Proxy Domain</label>
+            <label><input type="checkbox" value="Advanced Options (iOS) https://developer.clevertap.com/docs/advanced-options-ios"> Advanced Options (iOS)</label>
+            <label><input type="checkbox" value="iOS Resources https://developer.clevertap.com/docs/ios-resources"> iOS Resources</label>
+            <label><input type="checkbox" value="Apple TV Integration (iOS SDK) https://developer.clevertap.com/docs/apple-tv-integration-with-clevertap-ios-sdk"> Apple TV Integration (iOS SDK)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Android SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Android https://developer.clevertap.com/docs/android"> Android</label>
+            <label><input type="checkbox" value="Android Quickstart Guide https://developer.clevertap.com/docs/android-quickstart-guide"> Android Quickstart Guide</label>
+            <label><input type="checkbox" value="User Profiles (Android) https://developer.clevertap.com/docs/user-profiles-android"> User Profiles (Android)</label>
+            <label><input type="checkbox" value="User Events (Android) https://developer.clevertap.com/docs/user-events-android"> User Events (Android)</label>
+            <label><input type="checkbox" value="Android Push https://developer.clevertap.com/docs/android-push"> Android Push</label>
+            <label><input type="checkbox" value="Enable RenderMax with Android https://developer.clevertap.com/docs/enable-rendermax-with-android"> Enable RenderMax with Android</label>
+            <label><input type="checkbox" value="Android Push Templates https://developer.clevertap.com/docs/android-push-templates"> Android Push Templates</label>
+            <label><input type="checkbox" value="Advanced Android Push Notification Options https://developer.clevertap.com/docs/advanced-android-push-notification-options"> Advanced Android Push Notification Options</label>
+            <label><input type="checkbox" value="Android 13 Updates http://developer.clevertap.com/docs/android-13-updates"> Android 13 Updates</label>
+            <label><input type="checkbox" value="Android 12 Updates https://developer.clevertap.com/docs/android-12-updates"> Android 12 Updates</label>
+            <label><input type="checkbox" value="Android O Updates https://developer.clevertap.com/docs/android-o-updates"> Android O Updates</label>
+            <label><input type="checkbox" value="Huawei Push Integration https://developer.clevertap.com/docs/clevertap-huawei-push-integration"> Huawei Push Integration</label>
+            <label><input type="checkbox" value="Baidu Push Notifications https://developer.clevertap.com/docs/baidu-push-notifications"> Baidu Push Notifications</label>
+            <label><input type="checkbox" value="Android In-App Notifications https://developer.clevertap.com/docs/android-in-app-notifications"> Android In-App Notifications</label>
+            <label><input type="checkbox" value="Android App Inbox https://developer.clevertap.com/docs/android-app-inbox"> Android App Inbox</label>
+            <label><input type="checkbox" value="Android Remote Config https://developer.clevertap.com/docs/android-remote-config"> Android Remote Config</label>
+            <label><input type="checkbox" value="Product Experiences (Android) https://developer.clevertap.com/docs/product-experiences-android"> Product Experiences (Android)</label>
+            <label><input type="checkbox" value="Android Native Display https://developer.clevertap.com/docs/android-native-display"> Android Native Display</label>
+            <label><input type="checkbox" value="Multi-instance Support (Android) https://developer.clevertap.com/docs/multi-instance-support-android"> Multi-instance Support (Android)</label>
+            <label><input type="checkbox" value="Geofence (Android) https://developer.clevertap.com/docs/geofence-android"> Geofence (Android)</label>
+            <label><input type="checkbox" value="Android Custom Proxy Domain https://developer.clevertap.com/docs/android-custom-proxy-domain"> Android Custom Proxy Domain</label>
+            <label><input type="checkbox" value="Android Advanced Features https://developer.clevertap.com/docs/android-advanced-features"> Android Advanced Features</label>
+            <label><input type="checkbox" value="Android Resources https://developer.clevertap.com/docs/android-resources"> Android Resources</label>
+            <label><input type="checkbox" value="Android TV Integration (Android SDK) https://developer.clevertap.com/docs/android-tv-integration-with-android-sdk"> Android TV Integration (Android SDK)</label>
+            <label><input type="checkbox" value="Fire TV Integration (Android SDK) https://developer.clevertap.com/docs/fire-tv-integration-with-android-sdk"> Fire TV Integration (Android SDK)</label>
+            <label><input type="checkbox" value="Jio TV STB Integration (Android SDK) https://developer.clevertap.com/docs/jio-tv-set-top-boxstb-integration-with-android-sdk"> Jio TV STB Integration (Android SDK)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Cordova SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Cordova https://developer.clevertap.com/docs/cordova"> Cordova</label>
+            <label><input type="checkbox" value="Cordova Quick Start Guide http://developer.clevertap.com/docs/cordova-quick-start-guide"> Cordova Quick Start Guide</label>
+            <label><input type="checkbox" value="User Profiles https://developer.clevertap.com/docs/user-profiles"> User Profiles</label>
+            <label><input type="checkbox" value="Cordova User Events https://developer.clevertap.com/docs/cordova-user-events"> Cordova User Events</label>
+            <label><input type="checkbox" value="Cordova Push Notification https://developer.clevertap.com/docs/cordova-push-notification"> Cordova Push Notification</label>
+            <label><input type="checkbox" value="Cordova In-App https://developer.clevertap.com/docs/cordova-in-app"> Cordova In-App</label>
+            <label><input type="checkbox" value="Cordova App Inbox https://developer.clevertap.com/docs/cordova-app-inbox"> Cordova App Inbox</label>
+            <label><input type="checkbox" value="Cordova Advance Features https://developer.clevertap.com/docs/cordova-advance-features"> Cordova Advance Features</label>
+            <label><input type="checkbox" value="Cordova Resources https://developer.clevertap.com/docs/cordova-resources"> Cordova Resources</label>
+            <label><input type="checkbox" value="Cordova Remote Config https://developer.clevertap.com/docs/cordova-remote-config"> Cordova Remote Config</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Flutter SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Flutter SDK https://developer.clevertap.com/docs/flutter-sdk"> Flutter SDK</label>
+            <label><input type="checkbox" value="Flutter Quick Start Guide https://developer.clevertap.com/docs/flutter-quick-start-guide"> Flutter Quick Start Guide</label>
+            <label><input type="checkbox" value="User Profiles (Flutter) https://developer.clevertap.com/docs/user-profiles-flutter"> User Profiles (Flutter)</label>
+            <label><input type="checkbox" value="User Events (Flutter) https://developer.clevertap.com/docs/user-events-flutter"> User Events (Flutter)</label>
+            <label><input type="checkbox" value="Flutter Push Notification https://developer.clevertap.com/docs/flutter-push-notification"> Flutter Push Notification</label>
+            <label><input type="checkbox" value="Flutter In-App https://developer.clevertap.com/docs/flutter-in-app"> Flutter In-App</label>
+            <label><input type="checkbox" value="Flutter App Inbox https://developer.clevertap.com/docs/flutter-app-inbox"> Flutter App Inbox</label>
+            <label><input type="checkbox" value="Flutter Web Inbox https://developer.clevertap.com/docs/flutter-web-inbox"> Flutter Web Inbox</label>
+            <label><input type="checkbox" value="Flutter Advanced Features https://developer.clevertap.com/docs/flutter-advanced-features"> Flutter Advanced Features</label>
+            <label><input type="checkbox" value="Flutter Resources https://developer.clevertap.com/docs/flutter-resources"> Flutter Resources</label>
+            <label><input type="checkbox" value="Flutter Remote Config https://developer.clevertap.com/docs/flutter-remote-config"> Flutter Remote Config</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>React Native SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="React Native https://developer.clevertap.com/docs/react-native"> React Native</label>
+            <label><input type="checkbox" value="React Native Quick Start Guide http://developer.clevertap.com/docs/react-native-quick-start-guide"> React Native Quick Start Guide</label>
+            <label><input type="checkbox" value="User Profiles (React Native) https://developer.clevertap.com/docs/user-profiles-react-native"> User Profiles (React Native)</label>
+            <label><input type="checkbox" value="User Events (React Native) https://developer.clevertap.com/docs/user-events-react-native"> User Events (React Native)</label>
+            <label><input type="checkbox" value="React Native Push Notification https://developer.clevertap.com/docs/react-native-push-notification"> React Native Push Notification</label>
+            <label><input type="checkbox" value="React Native In-App https://developer.clevertap.com/docs/react-native-in-app"> React Native In-App</label>
+            <label><input type="checkbox" value="React Native App Inbox https://developer.clevertap.com/docs/react-native-app-inbox"> React Native App Inbox</label>
+            <label><input type="checkbox" value="React Native Advanced Features https://developer.clevertap.com/docs/react-native-advanced-features"> React Native Advanced Features</label>
+            <label><input type="checkbox" value="React Native Resources https://developer.clevertap.com/docs/react-native-resources"> React Native Resources</label>
+            <label><input type="checkbox" value="React Native Remote Config https://developer.clevertap.com/docs/react-native-remote-config"> React Native Remote Config</label>
+            <label><input type="checkbox" value="CleverTap Expo Plugin https://developer.clevertap.com/docs/clevertap-expo-plugin"> CleverTap Expo Plugin</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Unity SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Unity https://developer.clevertap.com/docs/unity"> Unity</label>
+            <label><input type="checkbox" value="Unity SDK Quick Start Guide (SDK v3.0.0) https://developer.clevertap.com/docs/unity-sdk-quick-start-guide-sdk-v300"> Unity SDK Quick Start Guide (SDK v3.0.0)</label>
+            <label><input type="checkbox" value="Unity SDK Quick Start Guide https://developer.clevertap.com/docs/unity-sdk-quick-start-guide"> Unity SDK Quick Start Guide</label>
+            <label><input type="checkbox" value="Unity User Profiles https://developer.clevertap.com/docs/unity-user-profiles"> Unity User Profiles</label>
+            <label><input type="checkbox" value="Unity User Events https://developer.clevertap.com/docs/unity-user-events"> Unity User Events</label>
+            <label><input type="checkbox" value="Unity Push https://developer.clevertap.com/docs/unity-push"> Unity Push</label>
+            <label><input type="checkbox" value="Unity In-App https://developer.clevertap.com/docs/unity-inapp"> Unity In-App</label>
+            <label><input type="checkbox" value="Unity App Inbox https://developer.clevertap.com/docs/unity-app-inbox"> Unity App Inbox</label>
+            <label><input type="checkbox" value="Unity Advanced Features https://developer.clevertap.com/docs/unity-advanced-features"> Unity Advanced Features</label>
+            <label><input type="checkbox" value="Unity Remote Config (SDK v3.0.0) https://developer.clevertap.com/docs/unity-remote-config-sdk-v300"> Unity Remote Config (SDK v3.0.0)</label>
+            <label><input type="checkbox" value="Unity Troubleshooting and FAQs https://developer.clevertap.com/docs/unity-troubleshooting-and-faqs"> Unity Troubleshooting and FAQs</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Unity Native SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Unity Native SDK Quick Start Guide https://developer.clevertap.com/docs/unity-native-sdk-quick-start-guide"> Unity Native SDK Quick Start Guide</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Web SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Web Quickstart Guide https://developer.clevertap.com/docs/web-quickstart-guide"> Web Quickstart Guide</label>
+            <label><input type="checkbox" value="Web User Profiles https://developer.clevertap.com/docs/web-user-profiles"> Web User Profiles</label>
+            <label><input type="checkbox" value="Web Pop-up https://developer.clevertap.com/docs/web-popup"> Web Pop-up</label>
+            <label><input type="checkbox" value="Web Push https://developer.clevertap.com/docs/web-push"> Web Push</label>
+            <label><input type="checkbox" value="Web Native Display https://developer.clevertap.com/docs/web-native-display"> Web Native Display</label>
+            <label><input type="checkbox" value="Web Inbox https://developer.clevertap.com/docs/web-inbox"> Web Inbox</label>
+            <label><input type="checkbox" value="Web Custom Proxy Domain https://developer.clevertap.com/docs/web-custom-proxy-domain"> Web Custom Proxy Domain</label>
+            <label><input type="checkbox" value="Web Remote Config https://developer.clevertap.com/docs/web-remote-config"> Web Remote Config</label>
+            <label><input type="checkbox" value="Advanced Configurations https://developer.clevertap.com/docs/advanced-configurations"> Advanced Configurations</label>
+            <label><input type="checkbox" value="Web Resources https://developer.clevertap.com/docs/web-resources"> Web Resources</label>
+            <label><input type="checkbox" value="Manifest File https://developer.clevertap.com/docs/manifest-file"> Manifest File</label>
+            <label><input type="checkbox" value="Samsung Tizen TV Integration (Web SDK) https://developer.clevertap.com/docs/samsung-tizen-tv-integration-with-web-sdk"> Samsung Tizen TV Integration (Web SDK)</label>
+            <label><input type="checkbox" value="LG webOS TV Integration (Web SDK) https://developer.clevertap.com/docs/lg-webos-tv-integration-with-web-sdk"> LG webOS TV Integration (Web SDK)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>KaiOS SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="KaiOS Quickstart Guide https://developer.clevertap.com/docs/kaios-quickstart-guide"> KaiOS Quickstart Guide</label>
+            <label><input type="checkbox" value="KaiOS Identify Users https://developer.clevertap.com/docs/kaios-identify-users"> KaiOS Identify Users</label>
+            <label><input type="checkbox" value="KaiOS Track User Events https://developer.clevertap.com/docs/kaios-track-user-events"> KaiOS Track User Events</label>
+            <label><input type="checkbox" value="KaiOS Push Notification https://developer.clevertap.com/docs/kaios-push-notification"> KaiOS Push Notification</label>
+            <label><input type="checkbox" value="KaiOS Advanced Features https://developer.clevertap.com/docs/kaios-advanced-features"> KaiOS Advanced Features</label>
+            <label><input type="checkbox" value="KaiOS Resources https://developer.clevertap.com/docs/kaios-resources"> KaiOS Resources</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Geofencing</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Geofencing https://developer.clevertap.com/docs/geofencing"> Geofencing</label>
+            <label><input type="checkbox" value="Geofence (Android) https://developer.clevertap.com/docs/geofence-android"> Geofence (Android)</label>
+            <label><input type="checkbox" value="Geofence (iOS) https://developer.clevertap.com/docs/geofence-ios"> Geofence (iOS)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Google Tag Manager</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Google Tag Manager https://developer.clevertap.com/docs/google-tag-manager"> Google Tag Manager</label>
+            <label><input type="checkbox" value="GTM (Android) https://developer.clevertap.com/docs/gtm-android"> GTM (Android)</label>
+            <label><input type="checkbox" value="GTM (iOS) https://developer.clevertap.com/docs/gtm-ios"> GTM (iOS)</label>
+            <label><input type="checkbox" value="GTM (Web) https://developer.clevertap.com/docs/gtm-web"> GTM (Web)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>App Personalization</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="App Personalization https://developer.clevertap.com/docs/app-personalization"> App Personalization</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Uninstall Tracking</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Uninstall tracking using Firebase https://developer.clevertap.com/docs/uninstall-tracking-using-firebase"> Uninstall tracking using Firebase</label>
+            <label><input type="checkbox" value="Uninstall tracking using Google Analytics https://developer.clevertap.com/docs/uninstall-tracking-using-google-analytics"> Uninstall tracking using Google Analytics</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Smart TV SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Feature Matrix for Smart TV SDKs https://developer.clevertap.com/docs/feature-matrix-for-smart-tv-sdks"> Feature Matrix for Smart TV SDKs</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Unreal SDK</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Unreal SDK https://developer.clevertap.com/docs/unreal-sdk"> Unreal SDK</label>
+            <label><input type="checkbox" value="Unreal Quick Start Guide https://developer.clevertap.com/docs/unreal-quick-start-guide"> Unreal Quick Start Guide</label>
+            <label><input type="checkbox" value="Unreal User Profiles https://developer.clevertap.com/docs/unreal-user-profiles"> Unreal User Profiles</label>
+            <label><input type="checkbox" value="Unreal User Event https://developer.clevertap.com/docs/unreal-user-event"> Unreal User Event</label>
+            <label><input type="checkbox" value="Unreal Push Notifications https://developer.clevertap.com/docs/unreal-push-notifications"> Unreal Push Notifications</label>
+            <label><input type="checkbox" value="Unreal In-App https://developer.clevertap.com/docs/unreal-in-app"> Unreal In-App</label>
+            <label><input type="checkbox" value="Unreal Advanced Features https://developer.clevertap.com/docs/unreal-advanced-features"> Unreal Advanced Features</label>
+          </div>
+        </details>
+
+      </div>
+
+      <div class="section topic-section" data-topic="tech-docs" style="display:none;">
+        <div class="section-header">
+          <h3 class="section-title" data-i18n="sections.tech.platform">
+            <span class="section-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M14.7 6.3a5 5 0 0 0 3.9 7.4l-2.1 2.1a3 3 0 0 1-4.2 0l-4.8 4.8a2 2 0 0 1-2.8-2.8l4.8-4.8a3 3 0 0 1 0-4.2l2.1-2.1a5 5 0 0 0 3.1-.4z"></path>
+              </svg>
+            </span>
+            Platform
+          </h3>
+          <button class="icon-btn section-action-btn" type="button" onclick="toggleAllDetails('tech-docs', this)" data-i18n-aria="actions.expandAll" data-i18n-title="actions.expandAll" aria-label="Expandir tudo" title="Expandir tudo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12L6.5 6.5"></path>
+              <path d="M6.5 10V6.5H10"></path>
+              <path d="M12 12L17.5 6.5"></path>
+              <path d="M14 6.5H17.5V10"></path>
+              <path d="M12 12L6.5 17.5"></path>
+              <path d="M6.5 14V17.5H10"></path>
+              <path d="M12 12L17.5 17.5"></path>
+              <path d="M14 17.5H17.5V14"></path>
+            </svg>
+          </button>
+        </div>
+
+        <details>
+          <summary>Attribution Platform</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Attribution https://developer.clevertap.com/docs/attribution"> Attribution</label>
+            <label><input type="checkbox" value="Adjust https://developer.clevertap.com/docs/adjust"> Adjust</label>
+            <label><input type="checkbox" value="AppsFlyer https://developer.clevertap.com/docs/appsflyer"> AppsFlyer</label>
+            <label><input type="checkbox" value="Branch https://developer.clevertap.com/docs/branch"> Branch</label>
+            <label><input type="checkbox" value="Singular https://developer.clevertap.com/docs/singular-apsalar"> Singular</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Customer Data Platform</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Customer Data Platforms https://developer.clevertap.com/docs/customer-data-platforms"> Customer Data Platforms</label>
+            <label><input type="checkbox" value="mParticle https://developer.clevertap.com/docs/mparticle"> mParticle</label>
+            <label><input type="checkbox" value="mParticle Native Android Integration https://developer.clevertap.com/docs/mparticle-native-android-integration"> mParticle Native Android Integration</label>
+            <label><input type="checkbox" value="mParticle Native iOS Integration https://developer.clevertap.com/docs/mparticle-native-ios-integration"> mParticle Native iOS Integration</label>
+            <label><input type="checkbox" value="mParticle Web Integration https://developer.clevertap.com/docs/mparticle-web-integration"> mParticle Web Integration</label>
+            <label><input type="checkbox" value="RudderStack https://developer.clevertap.com/docs/rudderstack"> RudderStack</label>
+            <label><input type="checkbox" value="RudderStack (Android) https://developer.clevertap.com/docs/rudderstack-in-android"> RudderStack (Android)</label>
+            <label><input type="checkbox" value="RudderStack (iOS) https://developer.clevertap.com/docs/rudderstack-in-ios"> RudderStack (iOS)</label>
+            <label><input type="checkbox" value="CleverTap RudderStack React Native Integration https://developer.clevertap.com/docs/clevertap-rudderstack-react-native-integration"> CleverTap RudderStack React Native Integration</label>
+            <label><input type="checkbox" value="Segment https://developer.clevertap.com/docs/segment"> Segment</label>
+            <label><input type="checkbox" value="Segment Native Android Integration https://developer.clevertap.com/docs/segment-native-android-integration"> Segment Native Android Integration</label>
+            <label><input type="checkbox" value="Segment Analytics Kotlin Integration https://developer.clevertap.com/docs/segment-analytics-kotlin-integration"> Segment Analytics Kotlin Integration</label>
+            <label><input type="checkbox" value="Segment Native iOS Integration https://developer.clevertap.com/docs/segment-native-ios-integration"> Segment Native iOS Integration</label>
+            <label><input type="checkbox" value="Segment Analytics Swift Integration https://developer.clevertap.com/docs/segment-analytics-swift-integration"> Segment Analytics Swift Integration</label>
+            <label><input type="checkbox" value="Segment Web Integration https://developer.clevertap.com/docs/segment-web-integration"> Segment Web Integration</label>
+            <label><input type="checkbox" value="Segment React Native Integration https://developer.clevertap.com/docs/segment-react-native-integration"> Segment React Native Integration</label>
+            <label><input type="checkbox" value="Build Segment Destination https://developer.clevertap.com/docs/build-segment-destination"> Build Segment Destination</label>
+            <label><input type="checkbox" value="Ingesting Nested Objects via CleverTap APIs https://developer.clevertap.com/docs/ingesting-nested-objects-via-clevertap-apis"> Ingesting Nested Objects via CleverTap APIs</label>
+            <label><input type="checkbox" value="SCIM User Provisioning using API https://developer.clevertap.com/docs/scim-user-provisioning-using-api"> SCIM User Provisioning using API</label>
+            <label><input type="checkbox" value="Add User API https://developer.clevertap.com/docs/add-user-api"> Add User API</label>
+            <label><input type="checkbox" value="Update User API https://developer.clevertap.com/docs/update-user-api"> Update User API</label>
+            <label><input type="checkbox" value="Get User Details API https://developer.clevertap.com/docs/get-user-details-api"> Get User Details API</label>
+            <label><input type="checkbox" value="SCIM User Provisioning using IDP https://developer.clevertap.com/docs/scim-user-provisioning-using-idp"> SCIM User Provisioning using IDP</label>
+            <label><input type="checkbox" value="SCIM Provisioning without SSO https://developer.clevertap.com/docs/scim-provisioning-without-sso"> SCIM Provisioning without SSO</label>
+            <label><input type="checkbox" value="SCIM Provisioning with SSO (SAML enabled) https://developer.clevertap.com/docs/scim-provisioning-with-sso-saml-enabled"> SCIM Provisioning with SSO (SAML enabled)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Email Platform</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Email Platforms https://developer.clevertap.com/docs/email-platforms"> Email Platforms</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>SMS Platform</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="SMS Platforms https://developer.clevertap.com/docs/sms-platforms"> SMS Platforms</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Remarketing Platform</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Remarketing Platforms https://developer.clevertap.com/docs/remarketing-platforms"> Remarketing Platforms</label>
+          </div>
+        </details>
+      </div>
+
+      <div class="section topic-section" data-topic="tech-docs" style="display:none;">
+        <div class="section-header">
+          <h3 class="section-title" data-i18n="sections.tech.api">
+            <span class="section-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M14.7 6.3a5 5 0 0 0 3.9 7.4l-2.1 2.1a3 3 0 0 1-4.2 0l-4.8 4.8a2 2 0 0 1-2.8-2.8l4.8-4.8a3 3 0 0 1 0-4.2l2.1-2.1a5 5 0 0 0 3.1-.4z"></path>
+              </svg>
+            </span>
+            CleverTap API
+          </h3>
+          <button class="icon-btn section-action-btn" type="button" onclick="toggleAllDetails('tech-docs', this)" data-i18n-aria="actions.expandAll" data-i18n-title="actions.expandAll" aria-label="Expandir tudo" title="Expandir tudo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12L6.5 6.5"></path>
+              <path d="M6.5 10V6.5H10"></path>
+              <path d="M12 12L17.5 6.5"></path>
+              <path d="M14 6.5H17.5V10"></path>
+              <path d="M12 12L6.5 17.5"></path>
+              <path d="M6.5 14V17.5H10"></path>
+              <path d="M12 12L17.5 17.5"></path>
+              <path d="M14 17.5H17.5V14"></path>
+            </svg>
+          </button>
+        </div>
+
+        <details>
+          <summary>Getting Started</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Getting Started (API) https://developer.clevertap.com/docs/getting-started-1"> Getting Started (API)</label>
+            <label><input type="checkbox" value="API Overview https://developer.clevertap.com/docs/api-overview"> API Overview</label>
+            <label><input type="checkbox" value="API Quickstart Guide https://developer.clevertap.com/docs/api-quickstart-guide"> API Quickstart Guide</label>
+            <label><input type="checkbox" value="API Errors https://developer.clevertap.com/docs/api-errors"> API Errors</label>
+            <label><input type="checkbox" value="API Request Limit https://developer.clevertap.com/docs/api-request-limit"> API Request Limit</label>
+            <label><input type="checkbox" value="Authentication https://developer.clevertap.com/docs/authentication"> Authentication</label>
+            <label><input type="checkbox" value="Webhooks Overview https://docs.clevertap.com/docs/webhooks-overview"> Webhooks Overview</label>
+            <label><input type="checkbox" value="CleverTap Query Language https://developer.clevertap.com/docs/clevertap-query-language"> CleverTap Query Language</label>
+            <label><input type="checkbox" value="Common API Components https://developer.clevertap.com/docs/common-api-components"> Common API Components</label>
+            <label><input type="checkbox" value="API FAQs https://developer.clevertap.com/docs/api-faqs"> API FAQs</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>API Reference</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="API Reference https://developer.clevertap.com/docs/api-reference"> API Reference</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Bulletins API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Bulletins API https://developer.clevertap.com/docs/bulletins-api"> Bulletins API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>External Trigger</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="External Trigger API https://developer.clevertap.com/docs/external-trigger-api"> External Trigger API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Campaigns API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Campaign Object https://developer.clevertap.com/docs/campaign_object"> Campaign Object</label>
+            <label><input type="checkbox" value="Create Campaign API https://developer.clevertap.com/docs/create-campaign-api"> Create Campaign API</label>
+            <label><input type="checkbox" value="Stop Campaign API https://developer.clevertap.com/docs/stop-campaign-api"> Stop Campaign API</label>
+            <label><input type="checkbox" value="Get Campaign Report API https://developer.clevertap.com/docs/get-campaign-report-api"> Get Campaign Report API</label>
+            <label><input type="checkbox" value="Get Campaigns API https://developer.clevertap.com/docs/get-campaigns-api"> Get Campaigns API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Catalog API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Catalog API Endpoints https://developer.clevertap.com/docs/catalog-api-endpoints"> Catalog API Endpoints</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Custom List API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Custom List Endpoints https://developer.clevertap.com/docs/custom-list-endpoints"> Custom List Endpoints</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Event API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Events Object https://developer.clevertap.com/docs/events-object"> Events Object</label>
+            <label><input type="checkbox" value="Get Events API https://developer.clevertap.com/docs/get-events-api"> Get Events API</label>
+            <label><input type="checkbox" value="Upload Events API https://developer.clevertap.com/docs/upload-events-api"> Upload Events API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Profile API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="User Profile Object https://developer.clevertap.com/docs/user-profile-object"> User Profile Object</label>
+            <label><input type="checkbox" value="Get User Profiles API https://developer.clevertap.com/docs/get-user-profiles-api"> Get User Profiles API</label>
+            <label><input type="checkbox" value="Upload User Profiles API https://developer.clevertap.com/docs/upload-user-profiles-api"> Upload User Profiles API</label>
+            <label><input type="checkbox" value="Upload Device Tokens API https://developer.clevertap.com/docs/upload-device-tokens-api"> Upload Device Tokens API</label>
+            <label><input type="checkbox" value="Get Profile Count API https://developer.clevertap.com/docs/get-profile-count-api"> Get Profile Count API</label>
+            <label><input type="checkbox" value="Delete User Profile API https://developer.clevertap.com/docs/delete-user-profile-api"> Delete User Profile API</label>
+            <label><input type="checkbox" value="Demerge User Profile API https://developer.clevertap.com/docs/demerge-user-profile-api"> Demerge User Profile API</label>
+            <label><input type="checkbox" value="Subscribe API https://developer.clevertap.com/docs/subscribe-api"> Subscribe API</label>
+            <label><input type="checkbox" value="Disassociate API https://developer.clevertap.com/docs/disassociate-api"> Disassociate API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Remote Config</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Remote Config API https://developer.clevertap.com/docs/remote-config-api"> Remote Config API</label>
+            <label><input type="checkbox" value="Create Variables API https://developer.clevertap.com/docs/create-variables-api"> Create Variables API</label>
+            <label><input type="checkbox" value="Delete Variables API https://developer.clevertap.com/docs/delete-variables-api"> Delete Variables API</label>
+            <label><input type="checkbox" value="Get Variables API https://developer.clevertap.com/docs/get-variables-api"> Get Variables API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Reports API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Report Object https://developer.clevertap.com/docs/report-object"> Report Object</label>
+            <label><input type="checkbox" value="Real-time Counts API https://developer.clevertap.com/docs/real-time-counts-api"> Real-time Counts API</label>
+            <label><input type="checkbox" value="Get Message Reports API https://developer.clevertap.com/docs/get-message-reports-api"> Get Message Reports API</label>
+            <label><input type="checkbox" value="Top Property Counts API https://developer.clevertap.com/docs/top-property-counts-api"> Top Property Counts API</label>
+            <label><input type="checkbox" value="Trends API https://developer.clevertap.com/docs/trends-api"> Trends API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Settings API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Settings API Endpoints https://developer.clevertap.com/docs/settings-api-endpoints"> Settings API Endpoints</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Promos API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Wallet APIs https://developer.clevertap.com/docs/wallet-apis"> Wallet APIs</label>
+            <label><input type="checkbox" value="Get Wallet Details https://developer.clevertap.com/docs/get-wallet-details"> Get Wallet Details</label>
+            <label><input type="checkbox" value="Get Wallet Transactions https://developer.clevertap.com/docs/get-wallet-transactions"> Get Wallet Transactions</label>
+            <label><input type="checkbox" value="Debit/Credit Wallet https://developer.clevertap.com/docs/debitcredit-wallet"> Debit/Credit Wallet</label>
+            <label><input type="checkbox" value="Coupon APIs https://developer.clevertap.com/docs/coupon-apis"> Coupon APIs</label>
+            <label><input type="checkbox" value="Fetch Coupon https://developer.clevertap.com/docs/fetch-coupon"> Fetch Coupon</label>
+            <label><input type="checkbox" value="Validate Coupon https://developer.clevertap.com/docs/validate-coupon"> Validate Coupon</label>
+            <label><input type="checkbox" value="Redeem/Revert Coupon https://developer.clevertap.com/docs/redeemrevert-coupon"> Redeem/Revert Coupon</label>
+            <label><input type="checkbox" value="Partner Vouchers API https://developer.clevertap.com/docs/partner-vouchers-api"> Partner Vouchers API</label>
+            <label><input type="checkbox" value="Fetch Voucher https://developer.clevertap.com/docs/fetch-voucher"> Fetch Voucher</label>
+            <label><input type="checkbox" value="API Error Cases https://developer.clevertap.com/docs/api-error-cases"> API Error Cases</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Token Vaults API</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Token Vault APIs https://developer.clevertap.com/docs/token-vault-apis"> Token Vault APIs</label>
+            <label><input type="checkbox" value="Get Token API https://developer.clevertap.com/docs/get-token-api"> Get Token API</label>
+            <label><input type="checkbox" value="Get Value API https://developer.clevertap.com/docs/get-value-api"> Get Value API</label>
+            <label><input type="checkbox" value="Get Access Token https://developer.clevertap.com/docs/get-access-token"> Get Access Token</label>
+          </div>
+        </details>
+      </div>
+
+      <div class="section topic-section" data-topic="tech-docs" style="display:none;">
+        <div class="section-header">
+          <h3 class="section-title" data-i18n="sections.tech.resources">
+            <span class="section-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M14.7 6.3a5 5 0 0 0 3.9 7.4l-2.1 2.1a3 3 0 0 1-4.2 0l-4.8 4.8a2 2 0 0 1-2.8-2.8l4.8-4.8a3 3 0 0 1 0-4.2l2.1-2.1a5 5 0 0 0 3.1-.4z"></path>
+              </svg>
+            </span>
+            Resources
+          </h3>
+          <button class="icon-btn section-action-btn" type="button" onclick="toggleAllDetails('tech-docs', this)" data-i18n-aria="actions.expandAll" data-i18n-title="actions.expandAll" aria-label="Expandir tudo" title="Expandir tudo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12L6.5 6.5"></path>
+              <path d="M6.5 10V6.5H10"></path>
+              <path d="M12 12L17.5 6.5"></path>
+              <path d="M14 6.5H17.5V10"></path>
+              <path d="M12 12L6.5 17.5"></path>
+              <path d="M6.5 14V17.5H10"></path>
+              <path d="M12 12L17.5 17.5"></path>
+              <path d="M14 17.5H17.5V14"></path>
+            </svg>
+          </button>
+        </div>
+
+        <details>
+          <summary>Resources</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="CleverTap Postman Collection https://developer.clevertap.com/docs/clevertap-postman-collection"> CleverTap Postman Collection</label>
+            <label><input type="checkbox" value="App Store Connect App Privacy https://developer.clevertap.com/docs/app-store-connect-app-privacy"> App Store Connect App Privacy</label>
+            <label><input type="checkbox" value="Google Playstore Data Safety https://developer.clevertap.com/docs/google-playstore-data-safety"> Google Playstore Data Safety</label>
+            <label><input type="checkbox" value="Apple Privacy Manifest Update for iOS Apps https://developer.clevertap.com/docs/apple-privacy-manifest-update-for-ios-apps"> Apple Privacy Manifest Update for iOS Apps</label>
+            <label><input type="checkbox" value="Troubleshooting Push Notifications https://developer.clevertap.com/docs/troubleshooting-push-notifications"> Troubleshooting Push Notifications</label>
           </div>
         </details>
       </div>
 
       <!-- PARTNERS -->
       <div class="section topic-section" data-topic="partners" style="display:none;">
-        <h3 class="section-title" data-i18n="sections.partners">
-          <span class="section-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M8.5 12.5l2 2 3-3 4 4-2 2-2-2-3 3-4-4-2 2-2-2 4-4z"></path>
+        <div class="section-header">
+          <h3 class="section-title" data-i18n="sections.partners">
+            <span class="section-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M3 12l4-4 4 4 4-4 6 6"></path>
+                <path d="M7 8l2 2"></path>
+                <path d="M11 12l2 2"></path>
+                <path d="M15 8l2 2"></path>
+              </svg>
+            </span>
+            Parceiros integrados
+          </h3>
+          <button class="icon-btn section-action-btn" type="button" onclick="toggleAllDetails('partners', this)" data-i18n-aria="actions.expandAll" data-i18n-title="actions.expandAll" aria-label="Expandir tudo" title="Expandir tudo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12L6.5 6.5"></path>
+              <path d="M6.5 10V6.5H10"></path>
+              <path d="M12 12L17.5 6.5"></path>
+              <path d="M14 6.5H17.5V10"></path>
+              <path d="M12 12L6.5 17.5"></path>
+              <path d="M6.5 14V17.5H10"></path>
+              <path d="M12 12L17.5 17.5"></path>
+              <path d="M14 17.5H17.5V14"></path>
             </svg>
-          </span>
-          Parceiros integrados
-        </h3>
+          </button>
+        </div>
 
         <details>
-          <summary>CDPs & Dados</summary>
+          <summary>Analytics</summary>
           <div class="subtopics">
-            <label><input type="checkbox" value="Segment Integration https://docs.clevertap.com/docs/segment"> Segment</label>
-            <label><input type="checkbox" value="mParticle Integration https://docs.clevertap.com/docs/mparticle"> mParticle</label>
+            <label><input type="checkbox" value="Amplitude https://docs.clevertap.com/docs/amplitude"> Amplitude</label>
+            <label><input type="checkbox" value="Mixpanel https://docs.clevertap.com/docs/mixpanel"> Mixpanel</label>
+            <label><input type="checkbox" value="PostHog https://docs.clevertap.com/docs/posthog"> PostHog</label>
           </div>
         </details>
 
         <details>
-          <summary>Canal & Mensageria</summary>
+          <summary>Attribution</summary>
           <div class="subtopics">
-            <label><input type="checkbox" value="WhatsApp BSP Partners https://docs.clevertap.com/docs/whatsapp"> WhatsApp BSPs</label>
-            <label><input type="checkbox" value="Email Providers https://docs.clevertap.com/docs/email"> Email Providers</label>
+            <label><input type="checkbox" value="Adjust https://developer.clevertap.com/docs/adjust"> Adjust</label>
+            <label><input type="checkbox" value="Airbridge https://developer.clevertap.com/docs/airbridge"> Airbridge</label>
+            <label><input type="checkbox" value="AppsFlyer https://developer.clevertap.com/docs/appsflyer"> AppsFlyer</label>
+            <label><input type="checkbox" value="Singular https://developer.clevertap.com/docs/singular-apsalar"> Singular</label>
+            <label><input type="checkbox" value="Branch https://developer.clevertap.com/docs/branch"> Branch</label>
+            <label><input type="checkbox" value="AppTrove https://docs.clevertap.com/docs/apptrove"> AppTrove</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Context Location</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="AccuWeather https://docs.clevertap.com/docs/accuweather"> AccuWeather</label>
+            <label><input type="checkbox" value="OpenWeather https://docs.clevertap.com/docs/open-weather"> OpenWeather</label>
+            <label><input type="checkbox" value="Radar https://docs.clevertap.com/docs/radar"> Radar</label>
+            <label><input type="checkbox" value="Weather API https://docs.clevertap.com/docs/weather-api"> Weather API</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Crash Analytics</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Apteligent https://docs.clevertap.com/docs/apteligent"> Apteligent</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Customer Relationship Management</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="FormSuite https://docs.clevertap.com/docs/formsuite"> FormSuite</label>
+            <label><input type="checkbox" value="Freshsales https://docs.clevertap.com/docs/freshsales"> Freshsales</label>
+            <label><input type="checkbox" value="HubSpot (via Zapier) https://docs.clevertap.com/docs/hubspot-via-zapier"> HubSpot (via Zapier)</label>
+            <label><input type="checkbox" value="Iterate https://docs.clevertap.com/docs/iterate"> Iterate</label>
+            <label><input type="checkbox" value="Instapage (via Zapier) https://docs.clevertap.com/docs/instapage-via-zapier"> Instapage (via Zapier)</label>
+            <label><input type="checkbox" value="LeadSquared https://docs.clevertap.com/docs/leadsquared"> LeadSquared</label>
+            <label><input type="checkbox" value="Swipe Pages https://docs.clevertap.com/docs/swipe-pages"> Swipe Pages</label>
+            <label><input type="checkbox" value="Salesforce (via Zapier) https://docs.clevertap.com/docs/salesforce-via-zapier"> Salesforce (via Zapier)</label>
+            <label><input type="checkbox" value="Pipedrive (via Zapier) https://docs.clevertap.com/docs/pipedrive-via-zapier"> Pipedrive (via Zapier)</label>
+            <label><input type="checkbox" value="Zoho Form (via Zapier) https://docs.clevertap.com/docs/zoho-form-via-zapier"> Zoho Form (via Zapier)</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Customer Data Platform</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Boltic https://docs.clevertap.com/docs/boltic"> Boltic</label>
+            <label><input type="checkbox" value="Census https://docs.clevertap.com/docs/census"> Census</label>
+            <label><input type="checkbox" value="Hightouch https://docs.clevertap.com/docs/hightouch"> Hightouch</label>
+            <label><input type="checkbox" value="Segment https://developer.clevertap.com/docs/segment"> Segment</label>
+            <label><input type="checkbox" value="RudderStack https://developer.clevertap.com/docs/rudderstack"> RudderStack</label>
+            <label><input type="checkbox" value="mParticle https://docs.clevertap.com/docs/mparticle-2"> mParticle</label>
+            <label><input type="checkbox" value="Treasure Data CDP https://docs.clevertap.com/docs/treasuredata-cdp"> Treasure Data CDP</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Data Warehouse</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Amazon EventBridge https://docs.clevertap.com/docs/amazon-eventbridge"> Amazon EventBridge</label>
+            <label><input type="checkbox" value="AWS S3 https://docs.clevertap.com/docs/data-export-to-aws-s3"> AWS S3</label>
+            <label><input type="checkbox" value="BigQuery https://docs.clevertap.com/docs/bigquery"> BigQuery</label>
+            <label><input type="checkbox" value="Nexla https://docs.clevertap.com/docs/nexla"> Nexla</label>
+            <label><input type="checkbox" value="Microsoft Azure https://docs.clevertap.com/docs/microsoft-azure"> Microsoft Azure</label>
+            <label><input type="checkbox" value="Google Cloud Storage https://docs.clevertap.com/docs/data-export-to-gcp"> Google Cloud Storage</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Direct Mail</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Inkit https://docs.clevertap.com/docs/inkit"> Inkit</label>
+            <label><input type="checkbox" value="Optilyz https://docs.clevertap.com/docs/optilyz"> Optilyz</label>
+            <label><input type="checkbox" value="Poplar https://docs.clevertap.com/docs/poplar"> Poplar</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Dynamic Content</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Blayer https://docs.clevertap.com/docs/blayer"> Blayer</label>
+            <label><input type="checkbox" value="Blitzllama https://docs.clevertap.com/docs/blitzllama"> Blitzllama</label>
+            <label><input type="checkbox" value="Contentful https://docs.clevertap.com/docs/contentful"> Contentful</label>
+            <label><input type="checkbox" value="Litmus https://docs.clevertap.com/docs/litmus"> Litmus</label>
+            <label><input type="checkbox" value="Jasper AI https://docs.clevertap.com/docs/jasper-ai"> Jasper AI</label>
+            <label><input type="checkbox" value="Delighted https://docs.clevertap.com/docs/delighted"> Delighted</label>
+            <label><input type="checkbox" value="Typeform https://docs.clevertap.com/docs/typeform"> Typeform</label>
+            <label><input type="checkbox" value="Movable Ink https://docs.clevertap.com/docs/movable-ink"> Movable Ink</label>
+            <label><input type="checkbox" value="NiftyImages https://docs.clevertap.com/docs/niftyimages"> NiftyImages</label>
+            <label><input type="checkbox" value="Quickads https://docs.clevertap.com/docs/quickads"> Quickads</label>
+            <label><input type="checkbox" value="Qualtrics https://docs.clevertap.com/docs/qualtrics"> Qualtrics</label>
+            <label><input type="checkbox" value="Playable https://docs.clevertap.com/docs/playable"> Playable</label>
+            <label><input type="checkbox" value="Reignite https://docs.clevertap.com/docs/reignite"> Reignite</label>
+            <label><input type="checkbox" value="Rocketium https://docs.clevertap.com/docs/rocketium"> Rocketium</label>
+            <label><input type="checkbox" value="Sendtric https://docs.clevertap.com/docs/sendtric"> Sendtric</label>
+            <label><input type="checkbox" value="Storyly https://docs.clevertap.com/docs/storyly"> Storyly</label>
+            <label><input type="checkbox" value="Storylan https://docs.clevertap.com/docs/storylan"> Storylan</label>
+            <label><input type="checkbox" value="Squarespace https://docs.clevertap.com/docs/squarespace"> Squarespace</label>
+            <label><input type="checkbox" value="SurveyMonkey https://docs.clevertap.com/docs/surveymonkey"> SurveyMonkey</label>
+            <label><input type="checkbox" value="SurveySparrow https://docs.clevertap.com/docs/surveysparrow"> SurveySparrow</label>
+            <label><input type="checkbox" value="Wove https://docs.clevertap.com/docs/wove"> Wove</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>E-Commerce</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Shopify https://docs.clevertap.com/docs/shopify"> Shopify</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Email</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Amazon SES https://docs.clevertap.com/docs/amazon-simple-email-service"> Amazon SES</label>
+            <label><input type="checkbox" value="Mandrill https://docs.clevertap.com/docs/mandrill"> Mandrill</label>
+            <label><input type="checkbox" value="Postmark https://docs.clevertap.com/docs/postmark"> Postmark</label>
+            <label><input type="checkbox" value="Deeplinking with Branch https://docs.clevertap.com/docs/deeplinking-with-branch"> Deeplinking with Branch</label>
+            <label><input type="checkbox" value="SendGrid https://docs.clevertap.com/docs/sendgrid"> SendGrid</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Email Validator Partner</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Clearout https://docs.clevertap.com/docs/clearout"> Clearout</label>
+            <label><input type="checkbox" value="Kickbox https://docs.clevertap.com/docs/kickbox"> Kickbox</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Email Template</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Alpaco https://docs.clevertap.com/docs/alpaco"> Alpaco</label>
+            <label><input type="checkbox" value="Email Love https://docs.clevertap.com/docs/email-love"> Email Love</label>
+            <label><input type="checkbox" value="Stripo https://docs.clevertap.com/docs/stripo"> Stripo</label>
+            <label><input type="checkbox" value="Taxi for Email https://docs.clevertap.com/docs/taxi-for-email"> Taxi for Email</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Localization</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Crowdin https://docs.clevertap.com/docs/crowdin"> Crowdin</label>
+            <label><input type="checkbox" value="Lokalise https://docs.clevertap.com/docs/lokalise"> Lokalise</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Loyalty</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="LoyaltyLion https://docs.clevertap.com/docs/loyalty-lion"> LoyaltyLion</label>
+            <label><input type="checkbox" value="Talon.One https://docs.clevertap.com/docs/talonone"> Talon.One</label>
+            <label><input type="checkbox" value="Voucherify https://docs.clevertap.com/docs/voucherify"> Voucherify</label>
+            <label><input type="checkbox" value="Yotpo https://docs.clevertap.com/docs/yotpo"> Yotpo</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Messenger</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Discord https://docs.clevertap.com/docs/discord"> Discord</label>
+            <label><input type="checkbox" value="LINE Messenger https://docs.clevertap.com/docs/line-messenger"> LINE Messenger</label>
+            <label><input type="checkbox" value="Slack https://docs.clevertap.com/docs/slack"> Slack</label>
+            <label><input type="checkbox" value="Telegram Messenger https://docs.clevertap.com/docs/telegram-messenger"> Telegram Messenger</label>
+            <label><input type="checkbox" value="Sendbird Business Messaging https://docs.clevertap.com/docs/sendbird-business-messaging"> Sendbird Business Messaging</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Payments</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Purchasely https://docs.clevertap.com/docs/purchasely"> Purchasely</label>
+            <label><input type="checkbox" value="Qonversion https://docs.clevertap.com/docs/qonversion"> Qonversion</label>
+            <label><input type="checkbox" value="RevenueCat https://docs.clevertap.com/docs/revenuecat"> RevenueCat</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Remarketing</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Facebook Audience Network https://docs.clevertap.com/docs/facebook-audience-network-1"> Facebook Audience Network</label>
+            <label><input type="checkbox" value="Facebook Lead Ads (via Zapier) https://docs.clevertap.com/docs/facebook-lead-ads-via-zapier"> Facebook Lead Ads (via Zapier)</label>
+            <label><input type="checkbox" value="Google AdWords Remarketing https://docs.clevertap.com/docs/google-adwords-remarketing"> Google AdWords Remarketing</label>
+            <label><input type="checkbox" value="TikTok Remarketing https://docs.clevertap.com/docs/tiktok-remarketing-1"> TikTok Remarketing</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>SMS</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="8x8 SMS https://docs.clevertap.com/docs/generic-sms"> 8x8 SMS</label>
+            <label><input type="checkbox" value="Generic SMS https://docs.clevertap.com/docs/generic-sms"> Generic SMS</label>
+            <label><input type="checkbox" value="Exotel https://docs.clevertap.com/docs/generic-sms"> Exotel</label>
+            <label><input type="checkbox" value="Kaleyra SMS https://docs.clevertap.com/docs/generic-sms"> Kaleyra SMS</label>
+            <label><input type="checkbox" value="Infobip SMS https://docs.clevertap.com/docs/generic-sms"> Infobip SMS</label>
+            <label><input type="checkbox" value="ICS Mobile https://docs.clevertap.com/docs/generic-sms"> ICS Mobile</label>
+            <label><input type="checkbox" value="MSG91 https://docs.clevertap.com/docs/generic-sms"> MSG91</label>
+            <label><input type="checkbox" value="Netcore https://docs.clevertap.com/docs/generic-sms"> Netcore</label>
+            <label><input type="checkbox" value="Nexmo https://docs.clevertap.com/docs/generic-sms"> Nexmo</label>
+            <label><input type="checkbox" value="OneXtel SMS https://docs.clevertap.com/docs/generic-sms"> OneXtel SMS</label>
+            <label><input type="checkbox" value="Route Mobile SMS https://docs.clevertap.com/docs/generic-sms"> Route Mobile SMS</label>
+            <label><input type="checkbox" value="Sinch SMS https://docs.clevertap.com/docs/generic-sms"> Sinch SMS</label>
+            <label><input type="checkbox" value="Twilio https://docs.clevertap.com/docs/generic-sms"> Twilio</label>
+            <label><input type="checkbox" value="Times Mobile https://docs.clevertap.com/docs/generic-sms"> Times Mobile</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Support</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Zendesk https://docs.clevertap.com/docs/zendesk"> Zendesk</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>WhatsApp</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="8x8 WhatsApp https://docs.clevertap.com/docs/8x8-whatsapp"> 8x8 WhatsApp</label>
+            <label><input type="checkbox" value="AiSensy https://docs.clevertap.com/docs/aisensy"> AiSensy</label>
+            <label><input type="checkbox" value="Exotel WhatsApp https://docs.clevertap.com/docs/exotel-whatsapp"> Exotel WhatsApp</label>
+            <label><input type="checkbox" value="Infobip https://docs.clevertap.com/docs/infobip"> Infobip</label>
+            <label><input type="checkbox" value="Haptik https://docs.clevertap.com/docs/haptik"> Haptik</label>
+            <label><input type="checkbox" value="Gupshup https://docs.clevertap.com/docs/gupshup"> Gupshup</label>
+            <label><input type="checkbox" value="Interakt https://docs.clevertap.com/docs/interakt"> Interakt</label>
+            <label><input type="checkbox" value="Kaleyra https://docs.clevertap.com/docs/kaleyra"> Kaleyra</label>
+            <label><input type="checkbox" value="MSG91 WhatsApp https://docs.clevertap.com/docs/msg91-whatsapp"> MSG91 WhatsApp</label>
+            <label><input type="checkbox" value="Pingbix https://docs.clevertap.com/docs/pingbix"> Pingbix</label>
+            <label><input type="checkbox" value="OneXtel WhatsApp https://docs.clevertap.com/docs/onextel-whatsapp"> OneXtel WhatsApp</label>
+            <label><input type="checkbox" value="Nexmo WhatsApp https://docs.clevertap.com/docs/nexmo-whatsapp"> Nexmo WhatsApp</label>
+            <label><input type="checkbox" value="QuickReply https://docs.clevertap.com/docs/quickreply"> QuickReply</label>
+            <label><input type="checkbox" value="Route Mobile https://docs.clevertap.com/docs/route-mobile"> Route Mobile</label>
+            <label><input type="checkbox" value="Sinch https://docs.clevertap.com/docs/sinch"> Sinch</label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Workflow Automation</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="Airtable https://docs.clevertap.com/docs/airtable"> Airtable</label>
+            <label><input type="checkbox" value="Apxor https://docs.clevertap.com/docs/apxor"> Apxor</label>
+            <label><input type="checkbox" value="DataChannel https://docs.clevertap.com/docs/datachannel"> DataChannel</label>
+            <label><input type="checkbox" value="n8n https://docs.clevertap.com/docs/n8n"> n8n</label>
+            <label><input type="checkbox" value="Pipedream https://docs.clevertap.com/docs/pipedream"> Pipedream</label>
+            <label><input type="checkbox" value="SheetDB https://docs.clevertap.com/docs/sheetdb"> SheetDB</label>
+            <label><input type="checkbox" value="Sheetlabs https://docs.clevertap.com/docs/sheetlabs"> Sheetlabs</label>
+            <label><input type="checkbox" value="Smashpops https://docs.clevertap.com/docs/smashpops"> Smashpops</label>
+            <label><input type="checkbox" value="Zapier https://docs.clevertap.com/docs/zapier"> Zapier</label>
+          </div>
+        </details>
+      </div>
+
+      <!-- SECURITY DOCS -->
+      <div class="section topic-section" data-topic="security-docs" style="display:none;">
+        <div class="section-header">
+          <h3 class="section-title" data-i18n="sections.security">
+            <span class="section-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3l7 3v6c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-3z"></path>
+              </svg>
+            </span>
+            Security Documentation
+          </h3>
+          <button class="icon-btn section-action-btn" type="button" onclick="toggleAllDetails('security-docs', this)" data-i18n-aria="actions.expandAll" data-i18n-title="actions.expandAll" aria-label="Expandir tudo" title="Expandir tudo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12L6.5 6.5"></path>
+              <path d="M6.5 10V6.5H10"></path>
+              <path d="M12 12L17.5 6.5"></path>
+              <path d="M14 6.5H17.5V10"></path>
+              <path d="M12 12L6.5 17.5"></path>
+              <path d="M6.5 14V17.5H10"></path>
+              <path d="M12 12L17.5 17.5"></path>
+              <path d="M14 17.5H17.5V14"></path>
+            </svg>
+          </button>
+        </div>
+
+        <details>
+          <summary>Compliance</summary>
+          <div class="subtopics">
+            <label><input type="checkbox" value="AT&amp;T https://docs.clevertap.com/docs/att"> AT&amp;T</label>
+            <label><input type="checkbox" value="Compliance Certifications https://docs.clevertap.com/docs/compliance-certifications"> Compliance Certifications</label>
+            <label><input type="checkbox" value="GDPR https://docs.clevertap.com/docs/gdpr"> GDPR</label>
+            <label><input type="checkbox" value="Manage Personal Information https://docs.clevertap.com/docs/manage-personal-information"> Manage Personal Information</label>
+            <label><input type="checkbox" value="Message Archiving https://docs.clevertap.com/docs/message-archiving"> Message Archiving</label>
+            <label><input type="checkbox" value="System-triggered Alert Emails https://docs.clevertap.com/docs/system-triggered-alert-emails"> System-triggered Alert Emails</label>
+            <label><input type="checkbox" value="CleverTap Trust Center https://trust.clevertap.com/"> CleverTap Trust Center</label>
           </div>
         </details>
       </div>
@@ -898,6 +1898,9 @@
 
         <div class="actions">
           <button class="generate-btn" type="button" data-i18n="actions.generate" onclick="generateEmail()">Gerar e-mail</button>
+          <button class="icon-btn reset-btn" type="button" onclick="resetEmail()" data-i18n-aria="actions.reset" data-i18n-title="actions.reset" aria-label="Limpar e-mail gerado" title="Limpar e-mail gerado">
+            <img src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt="">
+          </button>
         </div>
       </div>
 
@@ -1026,12 +2029,21 @@
         'topics.user': 'Documentação do usuário',
         'topics.tech': 'Documentação técnica',
         'topics.partners': 'Parceiros integrados',
-        'sections.user': '📄 Documentação do Usuário',
-        'sections.tech': '🛠️ Documentação Técnica',
-        'sections.partners': '🤝 Parceiros integrados',
+        'topics.security': 'Security Documentation',
+        'sections.user': 'Documentação do Usuário',
+        'sections.tech': 'Documentação Técnica',
+        'sections.tech.sdk': 'SDK Documentation',
+        'sections.tech.platform': 'Platform',
+        'sections.tech.api': 'CleverTap API',
+        'sections.tech.resources': 'Recursos',
+        'sections.partners': 'Parceiros integrados',
+        'sections.security': 'Security Documentation',
         'page.title': 'Gerador de e-mails',
         'page.subtitle': 'Selecione tópicos à esquerda e gere um e-mail padronizado em segundos.',
         'actions.generate': 'Gerar e-mail',
+        'actions.reset': 'Limpar seleção',
+        'actions.expandAll': 'Expandir tudo',
+        'actions.collapseAll': 'Recolher tudo',
         'toast.copied': 'Copiado!',
         'toast.styleApplied': 'Modelo aplicado',
         'empty.title': 'Sem e-mail gerado ainda',
@@ -1054,12 +2066,21 @@
         'topics.user': 'User documentation',
         'topics.tech': 'Technical documentation',
         'topics.partners': 'Integrated partners',
-        'sections.user': '📄 User Documentation',
-        'sections.tech': '🛠️ Technical Documentation',
-        'sections.partners': '🤝 Integrated partners',
+        'topics.security': 'Security Documentation',
+        'sections.user': 'User Documentation',
+        'sections.tech': 'Technical Documentation',
+        'sections.tech.sdk': 'SDK Documentation',
+        'sections.tech.platform': 'Platform',
+        'sections.tech.api': 'CleverTap API',
+        'sections.tech.resources': 'Resources',
+        'sections.partners': 'Integrated partners',
+        'sections.security': 'Security Documentation',
         'page.title': 'Email generator',
         'page.subtitle': 'Select topics on the left and generate a standardized email in seconds.',
         'actions.generate': 'Generate email',
+        'actions.reset': 'Clear selection',
+        'actions.expandAll': 'Expand all',
+        'actions.collapseAll': 'Collapse all',
         'toast.copied': 'Copied!',
         'toast.styleApplied': 'Style applied',
         'empty.title': 'No email generated yet',
@@ -1082,12 +2103,21 @@
         'topics.user': 'Documentación de usuario',
         'topics.tech': 'Documentación técnica',
         'topics.partners': 'Socios integrados',
-        'sections.user': '📄 Documentación de Usuario',
-        'sections.tech': '🛠️ Documentación Técnica',
-        'sections.partners': '🤝 Socios integrados',
+        'topics.security': 'Security Documentation',
+        'sections.user': 'Documentación de Usuario',
+        'sections.tech': 'Documentación Técnica',
+        'sections.tech.sdk': 'SDK Documentation',
+        'sections.tech.platform': 'Platform',
+        'sections.tech.api': 'CleverTap API',
+        'sections.tech.resources': 'Recursos',
+        'sections.partners': 'Socios integrados',
+        'sections.security': 'Security Documentation',
         'page.title': 'Generador de emails',
         'page.subtitle': 'Selecciona temas a la izquierda y genera un email estandarizado en segundos.',
         'actions.generate': 'Generar email',
+        'actions.reset': 'Limpiar selección',
+        'actions.expandAll': 'Expandir todo',
+        'actions.collapseAll': 'Colapsar todo',
         'toast.copied': 'Copiado!',
         'toast.styleApplied': 'Modelo aplicado',
         'empty.title': 'Aun no se generó un email',
@@ -1111,9 +2141,24 @@
         if (dict[key]) el.innerHTML = dict[key];
       });
 
+      document.querySelectorAll('[data-i18n-text]').forEach(el => {
+        const key = el.getAttribute('data-i18n-text');
+        if (dict[key]) el.textContent = dict[key];
+      });
+
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
         if (dict[key]) el.setAttribute('placeholder', dict[key]);
+      });
+
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.getAttribute('data-i18n-aria');
+        if (dict[key]) el.setAttribute('aria-label', dict[key]);
+      });
+
+      document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (dict[key]) el.setAttribute('title', dict[key]);
       });
     }
 
@@ -1238,6 +2283,34 @@
       return (langBlock.subjects[currentStyle] || langBlock.subjects.default);
     }
 
+    function resetEmail() {
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+      selectedTopicsData = [];
+      currentStyle = "default";
+
+      const empty = document.getElementById('emptyState');
+      if (empty) empty.classList.remove('hidden');
+
+      const styles = document.getElementById('styleButtons');
+      if (styles) styles.classList.remove('show');
+
+      document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+
+      const topicsEl = document.getElementById('selectedTopics');
+      if (topicsEl) topicsEl.textContent = '';
+
+      const subjectEl = document.getElementById('emailSubject');
+      if (subjectEl) {
+        subjectEl.textContent = '';
+        subjectEl.style.display = 'none';
+      }
+
+      const textEl = document.getElementById('emailText');
+      if (textEl) textEl.textContent = '';
+
+      updateSelectedCount();
+    }
+
     function copyEmail() {
       const text = document.getElementById('emailText').textContent;
       if (!text) return;
@@ -1267,6 +2340,27 @@
       setTimeout(() => popup.classList.remove('show'), 1600);
     }
 
+    function setExpandAllButtonState(btn, shouldCollapse) {
+      if (!btn) return;
+      const dict = uiTexts[currentLang] || uiTexts.en;
+      const key = shouldCollapse ? 'actions.collapseAll' : 'actions.expandAll';
+      const label = dict[key] || (shouldCollapse ? 'Collapse all' : 'Expand all');
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+      btn.dataset.state = shouldCollapse ? 'collapse' : 'expand';
+    }
+
+    function toggleAllDetails(topicKey, btn) {
+      const section = (btn && btn.closest('.topic-section')) || document.querySelector(`.topic-section[data-topic="${topicKey}"]`);
+      if (!section) return;
+      const details = Array.from(section.querySelectorAll('details'));
+      if (!details.length) return;
+
+      const shouldOpen = details.some(d => !d.open);
+      details.forEach(d => { d.open = shouldOpen; });
+      setExpandAllButtonState(btn, shouldOpen);
+    }
+
     function setLanguage(lang) {
       currentLang = lang;
       const langLabelMap = { pt: 'PT', en: 'ENG', es: 'ESP' };
@@ -1278,6 +2372,7 @@
 
       applyTranslations();
       updateSelectedCount();
+      syncExpandButtons();
 
       if (selectedTopicsData.length) {
         updateSelectedTopicsLabel();
@@ -1305,6 +2400,7 @@
 
     // init count
     updateSelectedCount();
+    syncExpandButtons();
 
     // Dropdown idiomas
     const langDD = document.getElementById('langDD');
@@ -1344,6 +2440,20 @@
     }
 
     setLanguage(currentLang);
+
+    function syncExpandButtons() {
+      document.querySelectorAll('.topic-section').forEach(section => {
+        const btn = section.querySelector('.section-action-btn');
+        if (!btn) return;
+        const details = Array.from(section.querySelectorAll('details'));
+        const allOpen = details.length && details.every(d => d.open);
+        setExpandAllButtonState(btn, allOpen);
+      });
+    }
+
+    document.querySelectorAll('.topic-section details').forEach(d => {
+      d.addEventListener('toggle', () => syncExpandButtons());
+    });
   </script>
 </body>
 </html>
