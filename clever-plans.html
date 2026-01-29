@@ -358,6 +358,27 @@
       border: 1px solid rgba(19, 59, 88, 0.25);
       white-space: nowrap;
     }
+    .plan-meta-pill.featured {
+      background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      color: #166534;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-meta-pill.featured::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      opacity: 0.7;
+      animation: featuredPulse 3.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes featuredPulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.06); opacity: 0.9; }
+    }
 
     /* --- ACCORDIONS --- */
     .feature-accordion { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
@@ -435,11 +456,23 @@
       color: #111827;
       border-radius: 18px;
       box-shadow: 0 24px 60px rgba(0,0,0,0.4);
-      max-width: 860px;
-      width: 100%;
+      max-width: 1280px;
+      width: 92%;
+      max-height: 110vh;
       padding: 20px 22px 18px;
       position: relative;
       outline: none;
+      overflow: auto;
+      transition: width 0.35s ease, max-height 0.35s ease, height 0.35s ease, padding 0.35s ease, border-radius 0.35s ease;
+    }
+    .modal.fullscreen{
+      width: 100%;
+      max-width: none;
+      max-height: 100vh;
+      height: 100vh;
+      border-radius: 0;
+      padding: 24px 26px;
+      overflow: visible;
     }
 
     .modal:focus-visible { box-shadow: 0 0 0 4px rgba(240,68,68,0.25), 0 24px 60px rgba(0,0,0,0.4); }
@@ -451,6 +484,28 @@
       gap: 12px;
       margin-bottom: 12px;
     }
+    .modal-actions{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-expand-btn{
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #F9FAFB;
+      color: #374151;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+    }
+    .modal-expand-btn:hover{ background: #E5E7EB; transform: translateY(-1px); }
+    .modal-expand-btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px rgba(29,78,216,0.25); }
+    .modal-expand-btn svg{ width: 16px; height: 16px; fill: currentColor; display: block; }
+    .modal-expand-btn img{ width: 16px; height: 16px; display: block; }
 
     .modal-title { font-size: 18px; font-weight: 650; color: #0F172A; }
     .modal-subtitle { font-size: 13px; color: #4B5563; margin-bottom: 12px; }
@@ -478,6 +533,10 @@
       overflow: auto;
       border-radius: 12px;
       border: 1px solid #E5E7EB;
+    }
+    .modal.fullscreen .comparison-table-wrapper{
+      max-height: none;
+      overflow: visible;
     }
 
     table.comparison-table {
@@ -518,6 +577,10 @@
       padding: 20px 18px 22px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.35);
       backdrop-filter: blur(6px);
+      width: min(100vw, 1716px);
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .addons-header {
@@ -525,7 +588,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
@@ -534,6 +597,13 @@
     .addons-title { font-size: 18px; font-weight: 650; color: #FFFFFF; }
 
     .addons-subtitle { font-size: 13px; color: rgba(255,255,255,0.85); max-width: 520px; }
+
+    .addons-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
 
     .addons-badge {
       padding: 4px 10px;
@@ -546,24 +616,48 @@
       background: rgba(0,0,0,0.18);
       white-space: nowrap;
     }
+    .addons-toggle-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.6);
+      background: rgba(0,0,0,0.18);
+      color: #fff;
+      font-size: 12px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform 0.15s, box-shadow var(--transition-fast);
+    }
+    .addons-toggle-btn:hover {
+      background: rgba(0,0,0,0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+    .addons-toggle-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 
     .addons-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      display: flex;
       gap: 14px;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+      margin-top: 14px;
     }
 
     .addon-card {
       background: #FFFFFF;
       border-radius: 16px;
-      padding: 14px 14px 13px;
+      padding: 12px 14px;
       box-shadow: 0 14px 30px rgba(0,0,0,0.25);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 10px;
       position: relative;
       overflow: hidden;
       transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+      flex: 1 1 0;
+      min-width: 140px;
+      min-height: 64px;
+      cursor: pointer;
     }
 
     .addon-card::before {
@@ -582,7 +676,11 @@
       gap: 10px;
       position: relative;
       z-index: 1;
+      cursor: pointer;
+      list-style: none;
     }
+    .addon-header::-webkit-details-marker { display: none; }
+    .addon-header::marker { content: ""; }
 
     .addon-icon {
       width: 34px;
@@ -591,12 +689,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
-      font-weight: 700;
       background: rgba(19,59,88,0.08);
       color: #133B58;
       border: 1px solid rgba(19,59,88,0.35);
       flex-shrink: 0;
+    }
+    .addon-icon svg{
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      display: block;
+    }
+    .addon-icon img{
+      width: 18px;
+      height: 18px;
+      display: block;
+      object-fit: contain;
     }
 
     .addon-icon.red {
@@ -625,7 +733,21 @@
       margin-top: 4px;
       position: relative;
       z-index: 1;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-4px);
+      transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease, transform 0.6s ease;
+      transition-delay: 0.08s;
+      cursor: default;
     }
+    details.addon-card[open] .addon-body {
+      max-height: 140px;
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.14s;
+    }
+    details.addon-card[open] { box-shadow: 0 18px 34px rgba(0,0,0,0.3); }
 
     .addon-link {
       display: inline-flex;
@@ -1032,7 +1154,7 @@
           </div>
 
           <div class="plan-meta">
-            <span class="plan-meta-pill" data-i18n="plan.advanced.meta.pill">Mais escolhido</span>
+            <span class="plan-meta-pill featured" data-i18n="plan.advanced.meta.pill">Mais escolhido</span>
             <span data-i18n="plan.advanced.meta.text">Inclui Essentials + upgrades</span>
           </div>
         </article>
@@ -1211,123 +1333,116 @@
             escalar campanhas multicanal com alto volume e personalização avançada.
           </p>
         </div>
-        <span class="addons-badge" data-i18n="addons.badge">Serviços adicionais</span>
+        <div class="addons-meta">
+          <span class="addons-badge" data-i18n="addons.badge">Serviços adicionais</span>
+          <button type="button" class="addons-toggle-btn" id="toggleAllAddons" data-state="closed" data-i18n="addons.expandAll">Expandir todos</button>
+        </div>
       </div>
 
       <div class="addons-grid">
-        <article class="addon-card">
-          <div class="addon-header">
-            <div class="addon-icon red">📧</div>
-            <div>
-              <div class="addon-title" data-i18n="addons.email.title">Email</div>
-              <div class="addon-tag" data-i18n="addons.email.tag">Canal de Mensageria</div>
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon red" aria-hidden="true">
+              <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="">
             </div>
-          </div>
-          <p class="addon-body" data-i18n="addons.email.body">
+            <div class="addon-title" data-i18n="addons.email.title">Email</div>
+          </summary>
+          <div class="addon-body" data-i18n="addons.email.body">
             Envie campanhas de email diretamente pela CleverTap usando nosso provedor integrado, ou utilize seu provedor atual conectando via SMTP. Suporte total a templates, personalização avançada, métricas e otimização nativa.
-          </p>
-        </article>
-
-        <article class="addon-card">
-          <div class="addon-header">
-            <div class="addon-icon">✉️</div>
-            <div>
-              <div class="addon-title" data-i18n="addons.sms.title">SMS</div>
-              <div class="addon-tag" data-i18n="addons.sms.tag">Canal de Mensageria</div>
-            </div>
           </div>
-          <p class="addon-body" data-i18n="addons.sms.body">
+        </details>
+
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon" aria-hidden="true">
+              <img src="https://cdn-icons-png.flaticon.com/512/156/156931.png" alt="">
+            </div>
+            <div class="addon-title" data-i18n="addons.sms.title">SMS</div>
+          </summary>
+          <div class="addon-body" data-i18n="addons.sms.body">
             Conecte seu provedor de SMS atual ou utilize um dos parceiros homologados pela CleverTap. Gerencie envios, segmentações, personalização e acompanhe métricas em um único painel.
-          </p>
-        </article>
-
-        <article class="addon-card">
-          <div class="addon-header">
-            <div class="addon-icon whatsapp-icon" aria-label="WhatsApp">WA</div>
-            <div>
-              <div class="addon-title" data-i18n="addons.whatsapp.title">WhatsApp</div>
-              <div class="addon-tag" data-i18n="addons.whatsapp.tag">Canal de mensageria</div>
-            </div>
           </div>
-          <p class="addon-body" data-i18n="addons.whatsapp.body">
+        </details>
+
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon whatsapp-icon" aria-hidden="true">
+              <img src="https://cdn-icons-png.flaticon.com/512/154/154858.png" alt="">
+            </div>
+            <div class="addon-title" data-i18n="addons.whatsapp.title">WhatsApp</div>
+          </summary>
+          <div class="addon-body" data-i18n="addons.whatsapp.body">
             Use WhatsApp via CleverTap com integração direta (WhatsApp Direct) ou conecte seu provedor externo.
-          </p>
-        </article>
-
-        <!-- PROMOTIONS -->
-<article class="addon-card">
-  <div class="addon-header">
-    <div class="addon-icon red">🏷️</div>
-    <div>
-      <div class="addon-title" data-i18n="addons.promotions.title">Promotions</div>
-      <div class="addon-tag" data-i18n="addons.promotions.tag">Offers & Rewards</div>
-    </div>
-  </div>
-  <p class="addon-body" data-i18n="addons.promotions.body">
-    Crie e gerencie campanhas promocionais (ex.: cupons, carteira de fidelidade e vouchers) com segmentação,
-    personalização e acompanhamento de performance direto no dashboard da CleverTap.
-  </p>
-</article>
-
-<!-- RCS -->
-<article class="addon-card">
-  <div class="addon-header">
-    <div class="addon-icon">💬</div>
-    <div>
-      <div class="addon-title" data-i18n="addons.rcs.title">RCS</div>
-      <div class="addon-tag" data-i18n="addons.rcs.tag">Messaging Channel</div>
-    </div>
-  </div>
-  <p class="addon-body" data-i18n="addons.rcs.body">
-    Envie mensagens ricas e interativas (mídia, botões e templates) com targeting, agendamento, personalização
-    e métricas — com opção de fallback para SMS quando RCS não estiver disponível.
-  </p>
-</article>
-
-<!-- AI AGENTS -->
-<article class="addon-card">
-  <div class="addon-header">
-    <div class="addon-icon red">🤖</div>
-    <div>
-      <div class="addon-title" data-i18n="addons.ai_agents.title">AI Agents</div>
-      <div class="addon-tag" data-i18n="addons.ai_agents.tag">Agentic AI</div>
-    </div>
-  </div>
-  <p class="addon-body" data-i18n="addons.ai_agents.body">
-    Agentes de IA para acelerar execução de marketing: ajudam a criar/otimizar segmentos, jornadas e conteúdo,
-    com abordagem human-in-the-loop (revisão e aprovação) e governança dentro dos fluxos da CleverTap.
-  </p>
-</article>
-
-        <article class="addon-card">
-          <div class="addon-header">
-            <div class="addon-icon red">🔔</div>
-            <div>
-              <div class="addon-title" data-i18n="addons.reminder.title">Reminder</div>
-              <div class="addon-tag" data-i18n="addons.reminder.tag">Engagement</div>
-            </div>
           </div>
-          <p class="addon-body">
+        </details>
+
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon red" aria-hidden="true">
+              <img src="https://cdn-icons-png.flaticon.com/512/5679/5679034.png" alt="">
+            </div>
+            <div class="addon-title" data-i18n="addons.promotions.title">Promotions</div>
+          </summary>
+          <div class="addon-body" data-i18n="addons.promotions.body">
+            Crie e gerencie campanhas promocionais (ex.: cupons, carteira de fidelidade e vouchers) com segmentação,
+            personalização e acompanhamento de performance direto no dashboard da CleverTap.
+          </div>
+        </details>
+
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon" aria-hidden="true">
+              <img src="https://aftersalespro.gr/img/logo/channels/rcs-logo.webp" alt="">
+            </div>
+            <div class="addon-title" data-i18n="addons.rcs.title">RCS</div>
+          </summary>
+          <div class="addon-body" data-i18n="addons.rcs.body">
+            Envie mensagens ricas e interativas (mídia, botões e templates) com targeting, agendamento, personalização
+            e métricas — com opção de fallback para SMS quando RCS não estiver disponível.
+          </div>
+        </details>
+
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon red" aria-hidden="true">
+              <img src="https://static.thenounproject.com/png/ai-star-icon-6056248-512.png" alt="">
+            </div>
+            <div class="addon-title" data-i18n="addons.ai_agents.title">AI Agents</div>
+          </summary>
+          <div class="addon-body" data-i18n="addons.ai_agents.body">
+            Agentes de IA para acelerar execução de marketing: ajudam a criar/otimizar segmentos, jornadas e conteúdo,
+            com abordagem human-in-the-loop (revisão e aprovação) e governança dentro dos fluxos da CleverTap.
+          </div>
+        </details>
+
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon red" aria-hidden="true">
+              <img src="https://cdn-icons-png.flaticon.com/512/1792/1792756.png" alt="">
+            </div>
+            <div class="addon-title" data-i18n="addons.reminder.title">Reminder</div>
+          </summary>
+          <div class="addon-body">
             <span data-i18n="addons.reminder.body">
               Dispare lembretes inteligentes para reduzir churn e aumentar recorrencia em momentos chave.
             </span>
             <a class="addon-link" href="https://docs.clevertap.com/docs/reminders" target="_blank" rel="noopener" data-i18n="addons.reminder.link">Ver docs</a>
-          </p>
-        </article>
-
-
-        <article class="addon-card">
-          <div class="addon-header">
-            <div class="addon-icon">📱</div>
-            <div>
-              <div class="addon-title" data-i18n="addons.px.title">Product Experience</div>
-              <div class="addon-tag" data-i18n="addons.px.tag">Individualização</div>
-            </div>
           </div>
-          <p class="addon-body" data-i18n="addons.px.body">
+        </details>
+
+        <details class="addon-card">
+          <summary class="addon-header">
+            <div class="addon-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm5 16a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+              </svg>
+            </div>
+            <div class="addon-title" data-i18n="addons.px.title">Product Experience</div>
+          </summary>
+          <div class="addon-body" data-i18n="addons.px.body">
             Crie experiências no app sem precisar de desenvolvimento: banners, tooltips, nudges, walkthroughs e layouts dinâmicos. Personalização avançada e segmentação nativa via CleverTap.
-          </p>
-        </article>
+          </div>
+        </details>
       </div>
     </section>
   </main>
@@ -1337,7 +1452,12 @@
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="compareTitle" tabindex="-1">
       <div class="modal-header">
         <h2 class="modal-title" id="compareTitle" data-i18n="compare.title">Comparativo de funcionalidades por plano</h2>
-        <button type="button" class="modal-close-btn" id="closeCompare" aria-label="Fechar comparativo">×</button>
+        <div class="modal-actions">
+          <button type="button" class="modal-expand-btn" id="toggleExpand" aria-label="Expandir">
+            <img src="https://www.svgrepo.com/show/513825/expand.svg" alt="">
+          </button>
+          <button type="button" class="modal-close-btn" id="closeCompare" aria-label="Fechar comparativo">×</button>
+        </div>
       </div>
       <p class="modal-subtitle" data-i18n="compare.subtitle">
         Veja rapidamente quais capacidades da CleverTap estão inclusas em cada plano.
@@ -1513,6 +1633,8 @@
         'addons.title': 'Add-ons CleverTap',
         'addons.subtitle': 'Expanda suas capacidades conectando canais e experiências premium pagos à parte: ideais para escalar campanhas multicanal com alto volume e personalização avançada.',
         'addons.badge': 'Serviços adicionais',
+        'addons.expandAll': 'Expandir todos',
+        'addons.collapseAll': 'Recolher todos',
 
         'addons.email.title': 'Email',
         'addons.email.tag': 'Canal de Mensageria',
@@ -1608,6 +1730,8 @@
         'addons.title': 'CleverTap Add-ons',
         'addons.subtitle': 'Expand your capabilities by connecting premium, separately priced channels and experiences – ideal to scale multichannel campaigns with high volume and advanced personalization.',
         'addons.badge': 'Additional services',
+        'addons.expandAll': 'Expand all',
+        'addons.collapseAll': 'Collapse all',
 
         'addons.email.title': 'Email',
         'addons.email.tag': 'Messaging Channel',
@@ -1703,6 +1827,8 @@
         'addons.title': 'Add-ons de CleverTap',
         'addons.subtitle': 'Expande tus capacidades conectando canales y experiencias premium contratadas aparte: ideales para escalar campañas multicanal con alto volumen y personalización avanzada.',
         'addons.badge': 'Servicios adicionales',
+        'addons.expandAll': 'Expandir todo',
+        'addons.collapseAll': 'Contraer todo',
 
         'addons.email.title': 'Email',
         'addons.email.tag': 'Canal de mensajería',
@@ -1743,6 +1869,8 @@
     const expandUpdateFns = [];
     const diffToggle = document.getElementById('diffOnlyToggle');
     const diffLabel = document.getElementById('diffLabel');
+    const toggleAllAddons = document.getElementById('toggleAllAddons');
+    const addonCards = Array.from(document.querySelectorAll('details.addon-card'));
 
     // --- Helpers ---
     function getFocusable(root) {
@@ -1770,6 +1898,7 @@
       if (langLabel) langLabel.textContent = langLabelMap[currentLang] || 'ENG';
 
       expandUpdateFns.forEach(fn => fn());
+      updateAddonToggleLabel();
     }
 
     function updateLanguage(lang) {
@@ -1812,6 +1941,14 @@
 
       // Acessibilidade: linkar label com input
       diffLabel.setAttribute('for', 'diffOnlyToggle');
+    }
+
+    function updateAddonToggleLabel(forceOpen) {
+      if (!toggleAllAddons) return;
+      const dict = translations[currentLang] || translations.pt;
+      const isOpen = typeof forceOpen === 'boolean' ? forceOpen : toggleAllAddons.getAttribute('data-state') === 'open';
+      toggleAllAddons.textContent = isOpen ? dict['addons.collapseAll'] : dict['addons.expandAll'];
+      toggleAllAddons.setAttribute('data-state', isOpen ? 'open' : 'closed');
     }
 
     // --- Expand / Collapse por card ---
@@ -1882,11 +2019,29 @@
     // --- Toggle diferenças ---
     diffToggle.addEventListener('change', updateDiffVisibility);
 
+    if (toggleAllAddons) {
+      toggleAllAddons.addEventListener('click', () => {
+        const shouldOpen = toggleAllAddons.getAttribute('data-state') !== 'open';
+        addonCards.forEach(card => { card.open = shouldOpen; });
+        updateAddonToggleLabel(shouldOpen);
+      });
+    }
+
+    addonCards.forEach(card => {
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('a')) return;
+        if (event.target.closest('summary')) return;
+        event.preventDefault();
+        card.open = !card.open;
+      });
+    });
+
     // --- Modal comparativo (com foco + scroll lock) ---
     const openCompareBtn = document.getElementById('openCompare');
     const compareModal = document.getElementById('compareModal');
     const modalDialog = compareModal.querySelector('.modal');
     const closeCompareBtn = document.getElementById('closeCompare');
+    const toggleExpandBtn = document.getElementById('toggleExpand');
 
     let lastFocusedEl = null;
 
@@ -1907,6 +2062,10 @@
 
     openCompareBtn.addEventListener('click', openModal);
     closeCompareBtn.addEventListener('click', closeModal);
+    toggleExpandBtn.addEventListener('click', () => {
+      const isFull = modalDialog.classList.toggle('fullscreen');
+      toggleExpandBtn.setAttribute('aria-label', isFull ? 'Reduzir' : 'Expandir');
+    });
 
     compareModal.addEventListener('click', (e) => {
       if (e.target === compareModal) closeModal();
