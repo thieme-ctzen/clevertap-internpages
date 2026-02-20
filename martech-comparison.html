@@ -1,1 +1,2100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Martech Comparativo - Sales Support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-page: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --text-on-bg: #133B58;
+      --text-on-card: #133B58;
+      --accent: #F04444;
+      --border-card: #D0D7DF;
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.10);
+      --radius-card: 18px;
+      --focus-ring: 0 0 0 3px rgba(240, 68, 68, 0.35);
+      --transition-fast: 0.22s ease-out;
+      --muted: rgba(19, 59, 88, 0.7);
+      --soft-bg: rgba(19, 59, 88, 0.04);
+    }
+    *{ box-sizing: border-box; margin: 0; padding: 0; font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body{
+      min-height: 100vh;
+      background: var(--bg-page);
+      color: var(--text-on-bg);
+      padding: 0 0 32px;
+    }
+    body.modal-open{ overflow: hidden; }
+
+    .site-header{
+      background: #102C45;
+      height: 60px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .site-header nav{ display: flex; align-items: center; }
+    .site-logo{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .site-logo img{ height: 40px; max-height: 40px; width: auto; display: block; }
+    nav a{
+      color: #ffffff;
+      margin-left: 24px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 4px;
+      opacity: 0.92;
+      transition: opacity var(--transition-fast);
+    }
+    nav a::after{
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--accent);
+      transition: width var(--transition-fast);
+    }
+    nav a:hover{ opacity: 1; }
+    nav a:hover::after{ width: 100%; }
+
+    .top-nav{ display: flex; align-items: center; }
+
+    .lang-dd{
+      margin-left: 22px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,0.14);
+      position: relative;
+    }
+    .lang-dd-btn{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.06);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+    }
+    .lang-dd-btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.10);
+    }
+    .lang-dd-menu{
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      min-width: 120px;
+      background: #0E263B;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      display: none;
+      z-index: 999;
+    }
+    .lang-dd.open .lang-dd-menu{ display: block; }
+    .lang-dd-item{
+      width: 100%;
+      text-align: left;
+      padding: 10px 10px;
+      border: 0;
+      background: transparent;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background var(--transition-fast), transform var(--transition-fast);
+    }
+    .lang-dd-item:hover{ background: rgba(255,255,255,0.08); transform: translateX(2px); }
+
+    .page-wrapper{
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+      padding: 28px 16px 0;
+    }
+
+    .header{ text-align: center; margin-bottom: 18px; }
+    .title{ font-size: clamp(26px, 4vw, 32px); font-weight: 650; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .subtitle{ font-size: 14px; opacity: 0.85; max-width: 680px; margin: 0 auto; line-height: 1.5; }
+
+    .section-nav{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 16px 0 20px;
+    }
+    .section-link{
+      border-radius: 999px;
+      border: 1px solid rgba(19,59,88,0.22);
+      background: rgba(19,59,88,0.06);
+      color: #133B58;
+      font-size: 12px;
+      padding: 7px 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.15s, box-shadow 0.18s, background var(--transition-fast), border-color var(--transition-fast);
+    }
+    .section-link:hover{ transform: translateY(-1px); box-shadow: 0 10px 20px rgba(0,0,0,0.12); }
+
+    .panel{
+      background: var(--card-bg);
+      color: var(--text-on-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .meta-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .meta-item{
+      background: var(--soft-bg);
+      border: 1px solid rgba(19,59,88,0.12);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12.5px;
+      color: #133B58;
+    }
+    .meta-label{ font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.7; }
+    .meta-value{ margin-top: 6px; font-weight: 600; }
+
+    .selector-grid{
+      display: flex;
+      gap: 16px;
+      padding: 4px 2px 10px;
+      width: 100%;
+    }
+    .selector-carousel{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .selector-viewport{
+      overflow: hidden;
+      width: 100%;
+      scroll-behavior: smooth;
+    }
+    .selector-viewport::-webkit-scrollbar{ display: none; }
+    .selector-viewport{ scrollbar-width: none; }
+    .carousel-btn{
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(19,59,88,0.2);
+      background: #fff;
+      color: #133B58;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+    .carousel-btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(0,0,0,0.12);
+      border-color: rgba(19,59,88,0.35);
+    }
+    .carousel-btn:disabled{
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .select-card{
+      position: relative;
+      display: block;
+      cursor: pointer;
+      flex: 0 0 300px;
+    }
+    .select-card input{
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .select-card-inner{
+      border: 1px solid rgba(19,59,88,0.16);
+      border-radius: 18px;
+      padding: 14px;
+      background: #fff;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.10);
+      transition: transform 0.15s, box-shadow 0.18s, border-color var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 230px;
+      text-align: center;
+      align-items: center;
+      width: 300px;
+    }
+    .select-card:hover .select-card-inner{
+      transform: translateY(-3px);
+      box-shadow: 0 18px 30px rgba(15, 23, 42, 0.16);
+    }
+    .select-card input:checked + .select-card-inner{
+      border-color: var(--accent-color, rgba(16, 44, 69, 0.85));
+      box-shadow: 0 20px 34px color-mix(in srgb, var(--accent-color, #102C45) 28%, transparent);
+      transform: translateY(-3px);
+      animation: selectPulseBlue 1.4s ease-in-out infinite;
+    }
+    .select-top{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-direction: column;
+    }
+    .select-logo{
+      width: 86px;
+      height: 86px;
+      border-radius: 16px;
+      background: rgba(19,59,88,0.06);
+      border: 1px solid rgba(19,59,88,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #133B58;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .select-logo img{ width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+    .select-name{ font-weight: 800; font-size: 15px; margin-top: 6px; }
+    .select-summary{ font-size: 12px; opacity: 0.75; margin-top: 16px; line-height: 1.5; }
+    .select-score{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .stars{
+      display: inline-flex;
+      gap: 2px;
+      font-size: 14px;
+      color: rgba(19,59,88,0.25);
+    }
+    .star{
+      position: relative;
+      display: inline-block;
+      line-height: 1;
+    }
+    .star.filled{ color: #F04444; text-shadow: 0 2px 6px rgba(240,68,68,0.35); }
+    .star.half::before{
+      content: "★";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50%;
+      overflow: hidden;
+      color: #F04444;
+      text-shadow: 0 2px 6px rgba(240,68,68,0.35);
+    }
+    .score-number{
+      font-weight: 800;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(240,68,68,0.08);
+      border: 1px solid rgba(240,68,68,0.3);
+      color: #0F172A;
+    }
+    .points-title{
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.6;
+      font-weight: 700;
+      margin-top: 18px;
+    }
+    .points-list{
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      font-size: 12.5px;
+      color: #133B58;
+      font-weight: 600;
+      width: 100%;
+    }
+    .points-list li{
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .selector-actions{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      justify-content: space-between;
+    }
+    .btn{
+      border-radius: 999px;
+      border: 1px solid rgba(19,59,88,0.22);
+      background: rgba(19,59,88,0.06);
+      color: #133B58;
+      font-size: 12.5px;
+      padding: 7px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.15s, box-shadow 0.18s, background var(--transition-fast), border-color var(--transition-fast);
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 20px rgba(0,0,0,0.12); }
+    .fight-btn{
+      border: 1px solid rgba(240,68,68,0.4);
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-weight: 800;
+      font-size: 13px;
+      background: #F04444;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(240,68,68,0.25);
+      transition: transform 0.15s, box-shadow 0.18s, border-color 0.2s ease, background 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .fight-btn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(240,68,68,0.32);
+      background: #e23a3a;
+    }
+    .fight-btn:disabled{
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .fight-btn.is-hot{
+      border-color: rgba(240,68,68,0.75);
+      box-shadow: 0 0 0 0 rgba(240,68,68,0.4);
+      animation: fightPulseRed 1.4s ease-in-out infinite;
+    }
+    @keyframes fightPulseRed{
+      0%{ box-shadow: 0 0 0 0 rgba(240,68,68,0.35); }
+      70%{ box-shadow: 0 0 0 10px rgba(240,68,68,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(240,68,68,0); }
+    }
+
+    @keyframes selectPulseBlue{
+      0%{ box-shadow: 0 0 0 0 rgba(16,44,69,0.3); }
+      70%{ box-shadow: 0 0 0 12px rgba(16,44,69,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(16,44,69,0); }
+    }
+
+    .panel-title{
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      flex: 1;
+    }
+    .panel-subtitle{
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-top: 6px;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+    .selector-panel .panel-subtitle{
+      margin-bottom: 32px;
+    }
+    .panel.panel-collapsible{
+      padding: 0;
+    }
+    .panel-summary{
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      border-bottom: 1px solid rgba(19,59,88,0.12);
+    }
+    .panel-summary::-webkit-details-marker{ display: none; }
+    .panel-toggle{
+      font-size: 11.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .panel-body{
+      padding: 0 16px 16px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.55s ease 0.05s, opacity 0.35s ease 0.08s;
+    }
+    .panel-collapsible[open] .panel-body{
+      max-height: 2000px;
+      opacity: 1;
+      transition: max-height 0.65s ease 0.1s, opacity 0.4s ease 0.12s;
+    }
+    .panel-body .panel-subtitle{
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .panel-body .table-wrap,
+    .panel-body .feature-list{
+      margin-top: 12px;
+    }
+
+    .score-final-title{
+      margin-top: 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .select-links{
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 18px;
+      width: 100%;
+    }
+    .select-link{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      text-decoration: none;
+      color: #133B58;
+      border: 1px solid rgba(19,59,88,0.2);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(19,59,88,0.06);
+      font-weight: 700;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    }
+    .select-link:hover{
+      background: #F04444;
+      color: #fff;
+      border-color: rgba(240,68,68,0.6);
+      transform: translateY(-1px);
+    }
+
+    .action-bar{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px 0 10px;
+      flex-wrap: wrap;
+    }
+    .action-btn{
+      border-radius: 14px;
+      border: 1px solid rgba(19,59,88,0.18);
+      background: rgba(19,59,88,0.06);
+      color: #133B58;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.18s, background var(--transition-fast);
+    }
+    .action-btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(0,0,0,0.12);
+    }
+    .action-btn:disabled{
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .comparison-area.is-hidden{ display: none; }
+
+    .modal-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 16px;
+    }
+    .modal-overlay.open{ display: flex; }
+    .modal-shell{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1100px;
+    }
+    .modal{
+      background: #FFFFFF;
+      color: #111827;
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+      max-width: 1100px;
+      width: 92%;
+      max-height: 90vh;
+      padding: 20px 22px 18px;
+      position: relative;
+      outline: none;
+      overflow: auto;
+    }
+    .modal-header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .modal-title{ font-size: 18px; font-weight: 700; color: #0F172A; }
+    .modal-close-btn{
+      border-radius: 999px;
+      border: 1px solid #E5E7EB;
+      background: #F9FAFB;
+      color: #374151;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+    }
+    .modal-close-btn:hover{ background: #E5E7EB; transform: translateY(-1px); }
+    .modal-close-outside{
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.15s;
+      backdrop-filter: blur(6px);
+    }
+    .modal-close-outside:hover{
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-1px);
+    }
+
+    .table-scroll{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .table-wrap{
+      overflow: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(19,59,88,0.12);
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .compare-table.sticky-first th:first-child,
+    .compare-table.sticky-first td:first-child{
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 2;
+    }
+    .compare-table.sticky-first thead th:first-child{
+      z-index: 3;
+    }
+    .table-nav{
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(19,59,88,0.18);
+      background: #fff;
+      color: #102C45;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+    }
+    .table-nav:hover{
+      transform: translateY(-1px);
+      background: rgba(240,68,68,0.08);
+      border-color: rgba(240,68,68,0.4);
+      color: #F04444;
+    }
+    .table-nav:disabled{
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
+    table.compare-table{
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+      font-size: 12.5px;
+    }
+    .compare-table th, .compare-table td{
+      border-bottom: 1px solid rgba(19,59,88,0.12);
+      text-align: left;
+      padding: 10px 12px;
+      vertical-align: top;
+    }
+    .compare-table th{ background: rgba(19,59,88,0.04); font-weight: 700; color: #0F172A; position: sticky; top: 0; }
+    .compare-table tbody tr:nth-child(even){ background: rgba(19,59,88,0.02); }
+
+    .score-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid rgba(19,59,88,0.18);
+      background: rgba(19,59,88,0.06);
+    }
+    .score-high{
+      color: #166534;
+      border-color: rgba(34, 197, 94, 0.38);
+      background: rgba(34, 197, 94, 0.14);
+      animation: scoreGlow 1.6s ease-in-out infinite;
+    }
+    .score-mid{ color: #92400E; border-color: rgba(245, 158, 11, 0.38); background: rgba(245, 158, 11, 0.14); }
+    .score-low{ color: #991B1B; border-color: rgba(239, 68, 68, 0.38); background: rgba(239, 68, 68, 0.12); }
+    .score-basic{ color: #374151; border-color: rgba(148, 163, 184, 0.4); background: rgba(148, 163, 184, 0.16); }
+    @keyframes scoreGlow{
+      0%, 100%{ box-shadow: 0 0 0 0 rgba(34,197,94,0.28); }
+      50%{ box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    }
+
+    .info-icon{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      margin-left: 6px;
+      position: relative;
+      cursor: help;
+    }
+    .info-icon img{
+      width: 16px;
+      height: 16px;
+      display: block;
+      object-fit: contain;
+    }
+    .info-bubble{
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 8px);
+      transform: translateX(-50%);
+      min-width: 220px;
+      max-width: 280px;
+      background: #F8FAFC;
+      border: 1px solid rgba(19,59,88,0.14);
+      border-radius: 14px;
+      box-shadow: 0 18px 34px rgba(15, 23, 42, 0.22);
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #133B58;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 5;
+    }
+    .info-icon:hover .info-bubble{
+      opacity: 1;
+      transform: translateX(-50%) translateY(2px);
+      pointer-events: auto;
+    }
+
+    .feature-list{ display: grid; gap: 12px; }
+    details.feature-item{
+      border: 1px solid rgba(19,59,88,0.14);
+      border-radius: 14px;
+      background: #fff;
+      padding: 10px 12px;
+    }
+    summary.feature-summary{
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      list-style: none;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    summary.feature-summary::-webkit-details-marker{ display: none; }
+    .feature-meta{ font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+    .feature-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .feature-card{
+      border: 1px solid rgba(19,59,88,0.12);
+      border-radius: 12px;
+      padding: 10px;
+      background: var(--soft-bg);
+    }
+    .feature-card h5{ font-size: 12.5px; margin-bottom: 6px; }
+    .feature-desc{ font-size: 12px; line-height: 1.5; color: #1F2937; }
+
+    .pill-row{ display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
+    .podium{
+      display: grid;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    .podium-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .podium-card{
+      background: #fff;
+      border: 1px solid rgba(19,59,88,0.12);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .podium-card.rank-1{ border-color: rgba(245, 158, 11, 0.55); box-shadow: 0 18px 30px rgba(245, 158, 11, 0.18); }
+    .podium-card.rank-2{ border-color: rgba(148, 163, 184, 0.6); }
+    .podium-card.rank-3{ border-color: rgba(180, 83, 9, 0.45); }
+    .podium-rank{
+      font-weight: 800;
+      font-size: 12px;
+      color: #0F172A;
+      opacity: 0.85;
+    }
+    .podium-score{ font-weight: 800; font-size: 14px; }
+    .score-card{
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 12px;
+      border: 1px solid rgba(19,59,88,0.2);
+      background: rgba(19,59,88,0.06);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .score-card-left{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .score-logo{
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid rgba(19,59,88,0.12);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .score-logo img{ width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+    .score-name{ font-weight: 700; }
+    .score-value{ font-weight: 800; }
+
+    .ranking-list{ display: none; }
+    .ranking-item{
+      border: 1px solid rgba(19,59,88,0.14);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .ranking-item.rank-1{
+      border-color: rgba(217, 119, 6, 0.45);
+      background: rgba(217, 119, 6, 0.08);
+    }
+    .ranking-item.rank-2{
+      border-color: rgba(107, 114, 128, 0.45);
+      background: rgba(107, 114, 128, 0.08);
+    }
+    .ranking-item.rank-3{
+      border-color: rgba(154, 52, 18, 0.45);
+      background: rgba(154, 52, 18, 0.08);
+    }
+    .ranking-logo{
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(19,59,88,0.12);
+      background: rgba(19,59,88,0.04);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .ranking-logo img{ width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+    .ranking-medal{ font-size: 18px; }
+    .ranking-text{ font-size: 12.5px; }
+
+    .profile-grid{ display: grid; gap: 12px; margin-top: 10px; }
+    .profile-card{
+      border: 1px solid rgba(19,59,88,0.14);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+    }
+    .profile-head{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .profile-icon{
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(19,59,88,0.12);
+      background: rgba(19,59,88,0.04);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .profile-icon img{ width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+    .profile-title{ font-weight: 700; font-size: 13px; }
+    .profile-line{ font-size: 12px; margin-top: 6px; color: #1F2937; }
+
+    .site-footer{
+      margin-top: 28px;
+      padding: 18px 20px 24px;
+      border-radius: 18px;
+      background: #f8fafc;
+      border: 1px solid rgba(19,59,88,0.12);
+      box-shadow: var(--shadow-soft);
+    }
+    .footer-title{
+      font-weight: 700;
+      font-size: 14px;
+      color: #102C45;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .footer-links{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .footer-link{
+      border-radius: 999px;
+      border: 1px solid rgba(19,59,88,0.18);
+      background: #fff;
+      color: #102C45;
+      font-size: 12px;
+      padding: 6px 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.15s, box-shadow 0.18s, background var(--transition-fast), border-color var(--transition-fast);
+    }
+    .footer-link:hover{
+      transform: translateY(-1px);
+      border-color: rgba(240,68,68,0.5);
+      background: rgba(240,68,68,0.08);
+    }
+    .profile-highlight{ font-weight: 700; }
+
+    .empty-state{
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(19,59,88,0.3);
+      background: rgba(19,59,88,0.04);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+
+    @media (max-width: 900px){
+      .site-header{ padding: 0 16px; }
+      nav a{ margin-left: 14px; font-size: 13px; }
+      .lang-dd{ margin-left: 12px; padding-left: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-logo">
+      <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
+      <span>Sales Support Portal</span>
+    </div>
+
+    <nav class="top-nav">
+      <a href="index.html">Home</a>
+      <a href="clever-plans.html">Plan Comparison</a>
+      <a href="use-cases-ai.html">Use Cases</a>
+
+      <div class="lang-dd" id="langDD">
+        <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
+          <span id="langDDLabel">PT</span>
+          <span class="lang-dd-caret">▾</span>
+        </button>
+
+        <div class="lang-dd-menu" id="langDDMenu" role="menu" aria-label="Select language">
+          <button type="button" class="lang-dd-item" data-lang-select="pt" role="menuitem">PT</button>
+          <button type="button" class="lang-dd-item" data-lang-select="en" role="menuitem">EN</button>
+          <button type="button" class="lang-dd-item" data-lang-select="es" role="menuitem">ES</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-wrapper">
+    <header class="header">
+      <h1 class="title" id="pageTitle" data-i18n="page.title">Comparativo Martech</h1>
+      <p class="subtitle" id="pageSubtitle" data-i18n="page.subtitle">
+        Use esta visão para alinhar rapidamente diferenças entre plataformas e montar comparações com clientes.
+      </p>
+    </header>
+
+    <div class="action-bar">
+      <button class="action-btn" id="openScore" type="button" data-i18n="buttons.score">Score geral</button>
+      <button class="action-btn" id="openMatrix" type="button" data-i18n="buttons.matrix">Matriz LATAM</button>
+    </div>
+
+    <section class="panel selector-panel" id="selector">
+      <h3 class="panel-title" data-i18n="choose.title">Escolha os competidores</h3>
+      <p class="panel-subtitle" data-i18n="choose.subtitle">Selecione quem entra na briga. Os cards mostram score médio e os 3 pontos técnicos mais fortes.</p>
+      <div class="selector-carousel">
+        <button class="carousel-btn" id="prevCompetitor" type="button" aria-label="Anterior">‹</button>
+        <div class="selector-viewport" id="selectorViewport">
+          <div class="selector-grid" id="platformSelector"></div>
+        </div>
+        <button class="carousel-btn" id="nextCompetitor" type="button" aria-label="Próximo">›</button>
+      </div>
+      <div class="selector-actions">
+        <button class="btn" id="selectAll" type="button" data-i18n="buttons.selectAll">Selecionar todos</button>
+        <button class="btn" id="clearAll" type="button" data-i18n="buttons.clearAll">Limpar seleção</button>
+        <button class="fight-btn" id="fightBtn" type="button" data-i18n="buttons.compare">
+          Comparar soluções
+        </button>
+      </div>
+    </section>
+
+    <div class="comparison-area is-hidden" id="comparisonArea">
+      <details class="panel panel-collapsible" id="commercial" open>
+        <summary class="panel-summary">
+          <span class="panel-title" data-i18n="sections.commercial">Visão comercial</span>
+          <span class="panel-toggle" data-i18n="panel.collapse">Recolher</span>
+        </summary>
+        <div class="panel-body">
+          <p class="panel-subtitle" id="commercialDesc" data-i18n="sections.commercial.desc"></p>
+          <div class="table-scroll">
+            <button class="table-nav" type="button" data-scroll="prev" aria-label="Anterior">‹</button>
+            <div class="table-wrap" id="commercialTable"></div>
+            <button class="table-nav" type="button" data-scroll="next" aria-label="Próximo">›</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="panel panel-collapsible" id="features" open>
+        <summary class="panel-summary">
+          <span class="panel-title" data-i18n="sections.features">Features técnicas</span>
+          <span class="panel-toggle" data-i18n="panel.collapse">Recolher</span>
+        </summary>
+        <div class="panel-body">
+          <p class="panel-subtitle" id="featuresDesc" data-i18n="sections.features.desc"></p>
+          <div class="feature-list" id="featuresList"></div>
+        </div>
+      </details>
+
+      <details class="panel panel-collapsible" id="specs" open>
+        <summary class="panel-summary">
+          <span class="panel-title" data-i18n="sections.specs">Especificações técnicas</span>
+          <span class="panel-toggle" data-i18n="panel.collapse">Recolher</span>
+        </summary>
+        <div class="panel-body">
+          <p class="panel-subtitle" id="specsDesc" data-i18n="sections.specs.desc"></p>
+          <div class="table-scroll">
+            <button class="table-nav" type="button" data-scroll="prev" aria-label="Anterior">‹</button>
+            <div class="table-wrap" id="specsTable"></div>
+            <button class="table-nav" type="button" data-scroll="next" aria-label="Próximo">›</button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </main>
+  <footer class="site-footer" aria-label="Fontes">
+    <div class="footer-title">Fontes consultadas</div>
+    <div class="footer-links" id="sourcesList"></div>
+  </footer>
+
+  <div class="modal-overlay" id="scoreModal" aria-hidden="true">
+    <div class="modal-shell">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="scoreModalTitle" tabindex="-1">
+        <div class="modal-header">
+        <h3 class="panel-title" id="scoreModalTitle" data-i18n="scores.title">Scores gerais e ranking</h3>
+      </div>
+      <p class="panel-subtitle" id="scoresDesc" data-i18n="scores.subtitle"></p>
+      <div class="table-scroll">
+        <button class="table-nav" type="button" data-scroll="prev" aria-label="Anterior">‹</button>
+        <div class="table-wrap" id="scoresTable"></div>
+        <button class="table-nav" type="button" data-scroll="next" aria-label="Próximo">›</button>
+      </div>
+      <div class="score-final-title" data-i18n="scores.final">Score geral final</div>
+        <div class="pill-row" id="scoreFinal"></div>
+        <div class="ranking-list" id="rankingList"></div>
+      </div>
+      <button class="modal-close-outside" id="closeScore" type="button" aria-label="Fechar">×</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="matrixModal" aria-hidden="true">
+    <div class="modal-shell">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="matrixModalTitle" tabindex="-1">
+        <div class="modal-header">
+        <h3 class="panel-title" id="matrixModalTitle" data-i18n="matrix.title">Matriz de decisão LATAM</h3>
+      </div>
+      <p class="panel-subtitle" id="matrixDesc" data-i18n="matrix.subtitle"></p>
+        <div class="profile-grid" id="matrixList"></div>
+      </div>
+      <button class="modal-close-outside" id="closeMatrix" type="button" aria-label="Fechar">×</button>
+    </div>
+  </div>
+
+  <script>
+    const DATA = {"meta":{"titulo":"Análise Comparativa de Plataformas Martech","versao":"2.0","data":"Fevereiro 2026","foco_regional":"LATAM","segmentos":["SMB","Mid-market","Enterprise"],"fontes":["G2","Gartner Peer Insights","Forrester Wave","IDC MarketScape","Documentação oficial de cada plataforma"],"disclaimer":"Scores são avaliações qualitativas baseadas em evidências públicas (1–10). Não representam posição oficial de nenhuma das empresas citadas.","escala_scores":{"9-10":"Excelente – Funcionalidade líder de mercado, altamente diferenciada","7-8":"Bom – Funcionalidade sólida, atende a maioria dos casos de uso","5-6":"Básico – Funcionalidade presente mas com limitações relevantes","1-4":"Fraco – Ausente ou requer integrações externas significativas"}},"plataformas":[{"id":"clevertap","nome":"CleverTap","cor":"#C0392B","emoji":"🟥","tagline":"All-in-One de Retenção Mobile-First com Loyalty Nativo e TesseractDB","descricao":"Banco de dados proprietário TesseractDB (10k data points/user, lookback 10 anos), loyalty/cupons totalmente nativos, analytics comportamental mais profundo do grupo. Forte em APAC e crescendo em LATAM. Clever.AI para automação inteligente.","website":"https://clevertap.com","docs":"https://docs.clevertap.com"},{"id":"braze","nome":"Braze","cor":"#2980B9","emoji":"🔵","tagline":"Líder de Mercado em Engajamento Multi-Canal em Tempo Real","descricao":"Referência em personalização avançada (Connected Content), ecossistema Braze Alloys (150+ parceiros), escala enterprise B2C. Líder Gartner MMH 2025. Expansão LATAM com escritório SP desde 2024 (clientes iFood, Westwing BR). Maior curva técnica do grupo.","website":"https://braze.com","docs":"https://www.braze.com/docs"},{"id":"moengage","nome":"MoEngage","cor":"#16A085","emoji":"🟢","tagline":"Insights-Led de Melhor Custo-Benefício e Onboarding mais Rápido","descricao":"SDK mais leve do grupo (~4MB), trial disponível, implementação 3–6 semanas, suporte G2 9/10. Sherpa AI para churn prediction e next best action. Ideal para mobile-first mid-market. Crescendo em LATAM (BR, MX). Não possui loyalty nativo.","website":"https://moengage.com","docs":"https://developers.moengage.com"},{"id":"salesforce_mkt","nome":"Salesforce Marketing Cloud","cor":"#1A3C5E","emoji":"🟤","tagline":"O Gigante CRM-First para Enterprise B2B e Email","descricao":"Líder histórico em email enterprise, maior ecossistema do mercado (AppExchange 5000+), altamente integrado ao CRM Salesforce. Alta complexidade de implementação (12–26 semanas) e custo elevado. Forte presença local LATAM com equipe e parceiros.","website":"https://www.salesforce.com/products/marketing-cloud","docs":"https://help.salesforce.com/s/articleView?id=sf.mc_overview.htm"},{"id":"adobe_ec","nome":"Adobe Experience Cloud","cor":"#7D3C98","emoji":"🟣","tagline":"A Suíte de IA, Dados e Experiência Digital Enterprise","descricao":"Adobe Experience Platform (AEP) como CDP enterprise; Adobe Journey Optimizer (AJO) para orquestração; Customer Journey Analytics (CJA); AI Agents (2025). Líder em dados, IA generativa (Sensei + Firefly), compliance e analytics avançado. Ideal para grandes contas com ecossistema Adobe pré-existente.","website":"https://business.adobe.com","docs":"https://experienceleague.adobe.com"},{"id":"insider","nome":"Insider","cor":"#D35400","emoji":"🟠","tagline":"Campeão de Satisfação G2 com Foco em eCommerce e Agilidade","descricao":"#1 G2 em 11 categorias (2025), IDC Leader AI 2025, Gartner MQ Leader Personalization 2026. White-glove migration, CSM in-house, escritório SP. Forte em web personalization, site search IA, InStory e WhatsApp Conversational Commerce. Sem loyalty nativo completo.","website":"https://useinsider.com","docs":"https://academy.useinsider.com"},{"id":"netcore","nome":"Netcore Cloud","cor":"#E74C3C","emoji":"🔴","tagline":"Agentic Marketing All-in-One com Pricing Pay-for-Performance e Líder em Email/Search India","descricao":"Fundada em 1998 em Mumbai, 25+ anos de experiência em martech. Pioneira no modelo de precificação baseado em resultados (pay-for-performance, 2025). Líder Gartner MQ Search & Product Discovery 2025 (2 anos consecutivos). 6.500+ clientes em 18+ países. 247 badges G2 em 23 categorias (Summer 2025). Forte em eCommerce, BFSI, mídia e EdTech. CRO LATAM dedicado desde 2024. AI Co-Marketer para personalização 1:1.","website":"https://netcorecloud.com","docs":"https://docs.netcorecloud.com"},{"id":"dito","nome":"Dito CRM","cor":"#2ECC71","emoji":"🟩","tagline":"O CRM de Retenção para o Varejo Omnichannel Brasileiro – Único com Integração Real Física + Digital","descricao":"Fundada em 2008 em Belo Horizonte (MG), especialista absoluta em CRM para varejo omnichannel brasileiro. Única plataforma nacional que integra nativamente lojas físicas (PDV/ERP TOTVS, Linx, Microvix) e eCommerce (VTEX, Shopify, Tray). Dito IA para propensão de compra e Dito Agenda (Super App de vendas via WhatsApp para vendedores). Cashback nativo configurável. Conformidade LGPD nativa. Parceira Endeavor.","website":"https://dito.com.br","docs":"https://central.dito.com.br"},{"id":"activecampaign","nome":"ActiveCampaign","cor":"#3498DB","emoji":"🔷","tagline":"A Plataforma de Automação de Marketing Mais Bem Avaliada do Mundo para PMEs","descricao":"Fundada em 2003, Chicago/EUA. 185.000+ clientes em 170 países. Referência mundial em automação de marketing para PMEs e agências. Plataforma visual de automação com CRM integrado, email marketing, SMS, WhatsApp e lead scoring. 950+ integrações nativas. Ganhadora consecutiva de prêmios de melhor ferramenta de email marketing (G2, Capterra). Plano de entrada acessível a partir de $15/mês. Trial 14 dias.","website":"https://activecampaign.com","docs":"https://help.activecampaign.com"},{"id":"rdstation","nome":"RD Station","cor":"#9B59B6","emoji":"🟣","tagline":"Líder Absoluto em Inbound Marketing e Automação de Vendas no Brasil – 50.000+ Clientes","descricao":"Fundada em 2011, Florianópolis (SC). Líder de mercado em marketing digital para PMEs brasileiras. 50.000+ clientes em 40+ países, 1.500 funcionários na América Latina, 2.000+ agências parceiras. Produto RD Station Marketing (inbound, email, automação, WhatsApp) + RD Station CRM (vendas, pipeline) + RD Station Conversas (conversacional). RD Summit: maior evento de marketing e vendas da América Latina (12.000+ participantes). Grupo TOTVS desde 2021.","website":"https://rdstation.com","docs":"https://ajuda.rdstation.com.br"}],"analise_comercial":{"descricao":"Comparativo de mercado, presença LATAM, preços, suporte e posicionamento. Itens marcados com latam_destaque=true são específicos da região.","criterios":[{"criterio":"Segmento-alvo","latam_destaque":false,"dados":{"clevertap":"Mid-market & Enterprise mobile-first (500k+ MAU)","braze":"Enterprise & Large Enterprise B2C global","moengage":"Mid-market & Enterprise mobile-first (25k+ MAU)","salesforce_mkt":"Enterprise (CRM Salesforce-first)","adobe_ec":"Enterprise B2B & B2C data-driven (AEP ecosystem)","insider":"Mid-market & Enterprise omnichannel (eComm, Retail)","netcore":"Mid-market & Enterprise (eCommerce, BFSI, Mídia, EdTech, Telecom)","dito":"Mid-market & Enterprise Varejo Omnichannel (exclusivamente BR)","activecampaign":"SMB & Mid-market (startups, agências, PMEs B2B e B2C)","rdstation":"SMB & Mid-market B2B (empresas de 10 a 500 funcionários, forte em BR)"}},{"criterio":"Tamanho mínimo recomendado","latam_destaque":false,"dados":{"clevertap":"50k–100k MAU+","braze":"500k MAU+ / time técnico dedicado","moengage":"25k–100k MAU+","salesforce_mkt":"Base de contatos ativa + orçamento alto","adobe_ec":"Enterprise com ecossistema Adobe ou AEP pré-existente","insider":"50k–200k MAU / foco eCommerce e Varejo","netcore":"Mid-market com base de 50k+ usuários; Enterprise para Unbxd/Search","dito":"Varejo com loja física + eComm; mínimo ~10 lojas ou base ativa de 50k+ clientes","activecampaign":"Qualquer tamanho – funciona a partir de 1.000 contatos ($15/mês)","rdstation":"PMEs com time de marketing de 1–5 pessoas; funciona a partir de R$50/mês"}},{"criterio":"Modelo de Preço","latam_destaque":false,"dados":{"clevertap":"MAU-based + mensagens; ~$75k/ano+","braze":"MAU + mensagens; ~$60k–120k/ano+","moengage":"MAU-based; Growth ~$750/mês; Enterprise custom","salesforce_mkt":"Contatos + envios; muito alto em volumes grandes","adobe_ec":"Profiles + mensagens; bundle AEP ~$250k+/ano","insider":"MAU + canais; mid-market ~$30k+; enterprise custom","netcore":"Híbrido: 75% fixo (plataforma) + 25% variável por resultado (pay-for-performance, 2025); custom enterprise","dito":"Subscription baseado em consumidores ativos + funcionalidades contratadas; custom; consulta obrigatória","activecampaign":"Contact-based: Starter $15/mês (1k contatos), Plus $49, Pro $79, Enterprise $145+; add-ons: SMS, CRM, relatórios","rdstation":"Planos por contatos/funcionalidades: Light, Basic, Pro (R$749/mês), Advanced (R$1.099/mês); implementação obrigatória Pro/Advanced"}},{"criterio":"Transparência de Preço","latam_destaque":false,"dados":{"clevertap":"Baixa – sales-driven","braze":"Baixa – totalmente via vendas","moengage":"Média – planos publicados para PME","salesforce_mkt":"Baixa – altamente customizado","adobe_ec":"Baixa – bundle complexo por módulo","insider":"Média-Baixa – conversação com vendas necessária","netcore":"Média – modelo publicado; variável por resultado mas detalhes via vendas","dito":"Baixa – totalmente via consulta comercial","activecampaign":"Alta – preços publicados no site; calculadora de custos disponível","rdstation":"Alta – preços em BRL publicados no site para todos os planos"}},{"criterio":"Avaliação Gratuita / Trial","latam_destaque":false,"dados":{"clevertap":"Sim (14 dias)","braze":"Não","moengage":"Sim (trial PME disponível)","salesforce_mkt":"Não","adobe_ec":"Não","insider":"Demo guiado; sem trial self-serve","netcore":"Demo guiado; sem trial self-serve público","dito":"Demo personalizado; sem trial self-serve","activecampaign":"Sim – 14 dias grátis, sem cartão de crédito, acesso a features Pro","rdstation":"Sim – 10 dias grátis RD Station Marketing; CRM gratuito permanente"}},{"criterio":"Suporte ao Cliente (G2 score)","latam_destaque":false,"dados":{"clevertap":"8.9/10","braze":"8.5/10","moengage":"9.0/10","salesforce_mkt":"7.8/10","adobe_ec":"7.5/10","insider":"9.5/10 (Gartner Peer Insights 4.9/5)"}},{"criterio":"Onboarding & Implementação","latam_destaque":false,"dados":{"clevertap":"Moderado (4–8 semanas)","braze":"Alto (8–16 semanas)","moengage":"Baixo (3–6 semanas) – melhor do segmento","salesforce_mkt":"Muito alto (12–26 semanas+)","adobe_ec":"Muito alto (16–30 semanas+; múltiplos módulos)","insider":"Baixo-Moderado (4–8 semanas) – white-glove migration","netcore":"Moderado (4–8 semanas); equipe LATAM dedicada","dito":"Moderado (4–8 semanas); implementação consultiva; foco em integração ERPs/PDV","activecampaign":"Muito baixo (1–2 semanas) – melhor do segmento para PME; wizard guiado","rdstation":"Baixo (1–4 semanas) – implementação guiada; obrigatória nos planos Pro/Advanced (R$2.699–3.079)"}},{"criterio":"CSM Dedicado","latam_destaque":false,"dados":{"clevertap":"Sim (planos Enterprise)","braze":"Sim (Enterprise)","moengage":"Sim (planos avançados)","salesforce_mkt":"Sim (via parceiros e equipe SF)","adobe_ec":"Sim (via parceiros Adobe)","insider":"Sim – in-house CSM em todos os planos enterprise","netcore":"Sim (contas Enterprise e mid-market relevantes)","dito":"Sim – CS dedicada em todos os planos; referência de suporte no mercado BR","activecampaign":"Sim (Enterprise); suporte chat/email em planos menores","rdstation":"Sim – Gerente de Sucesso dedicado nos planos Pro e Advanced; ponto único de contato"}},{"criterio":"Presença LATAM","latam_destaque":true,"dados":{"clevertap":"Moderada – clientes BR, MX, CO; sem escritório local","braze":"Crescente – escritório SP desde 2024; clientes iFood, Westwing BR","moengage":"Moderada – clientes BR e MX; suporte remoto","salesforce_mkt":"Alta – infraestrutura e parceiros locais robustos","adobe_ec":"Alta – Adobe Brasil consolidado; forte em grandes contas","insider":"Crescente – escritório SP; clientes BR, MX, AR; 28 mercados","netcore":"Crescente – CRO LATAM desde 2024; clientes BR, MX; expansão ativa","dito":"Exclusiva – empresa 100% brasileira; escritórios BH, SP (Cubo), RJ (WeWork)","activecampaign":"Moderada – sem escritório local; produto disponível em PT-BR e ES; 185k clientes globais","rdstation":"Dominante – líder absoluto no Brasil; 1.500 funcionários LATAM; presença em 40+ países"}},{"criterio":"Países LATAM com clientes","latam_destaque":true,"dados":{"clevertap":["Brasil","México","Colômbia","Argentina"],"braze":["Brasil","México"],"moengage":["Brasil","México","Colômbia","Chile"],"salesforce_mkt":["Brasil","México","Argentina","Chile","Colômbia"],"adobe_ec":["Brasil","México","Argentina","Chile","Colômbia","Peru"],"insider":["Brasil","México","Argentina","Chile","Colômbia"],"netcore":["Brasil","México","Argentina (expandindo)"],"dito":["Brasil (exclusivo – produto voltado 100% para o mercado BR)"],"activecampaign":["Brasil","México","Argentina","Chile","Colômbia","Peru","170+ países globais"],"rdstation":["Brasil (94%+ da base)","Colômbia","México","Argentina","Chile","40+ países"]}},{"criterio":"Idioma de suporte LATAM","latam_destaque":true,"dados":{"clevertap":"Inglês / Português parcial","braze":"Inglês / Português em expansão","moengage":"Inglês / Português parcial","salesforce_mkt":"Português, Espanhol (equipe local)","adobe_ec":"Português, Espanhol (Adobe Brasil)","insider":"Português, Espanhol (equipe local SP)","netcore":"Inglês principal; Português e Espanhol em expansão com equipe LATAM","dito":"Português brasileiro nativo (única plataforma 100% PT-BR nativo)","activecampaign":"Inglês principal; suporte em PT-BR e ES disponível mas não prioritário","rdstation":"Português brasileiro nativo; Espanhol para LATAM; única com RD University em PT-BR"}},{"criterio":"Presença APAC","latam_destaque":false,"dados":{"clevertap":"Forte – sede Mumbai; SE Asia, India","braze":"Moderada – escritório Singapura","moengage":"Forte – origem indiana; forte SE Asia","salesforce_mkt":"Alta – múltiplos escritórios","adobe_ec":"Alta – escritórios Japão, Austrália, Índia","insider":"Forte – origem Turquia; APAC, MENA, 28 países","netcore":"Muito forte – sede Mumbai; 75% do tráfego email da Índia; 50% da Ásia; líder SE Asia","dito":"Sem presença APAC – produto exclusivo para mercado BR","activecampaign":"Moderada – escritório Austrália; clientes globais mas foco EUA","rdstation":"Fraca – foco exclusivo LATAM; sem estratégia APAC"}},{"criterio":"Reconhecimento Analistas 2025","latam_destaque":false,"dados":{"clevertap":"Gartner MQ Challenger (MMH)","braze":"Gartner MQ Leader (MMH 2025, 3 anos consecutivos)","moengage":"Gartner Visionary (MMH); Forrester Strong Performer","salesforce_mkt":"Gartner Leader (histórico)","adobe_ec":"Gartner Leader (AEP); Forrester Leader (CJA)","insider":"Gartner MQ Leader (Personalization 2026); Forrester Leader; IDC Leader AI 2025","netcore":"Gartner MQ Leader Search & Product Discovery 2025 (2 anos consec.); Forrester Leader Commerce Search Q3 2025; 247 badges G2","dito":"Sem reconhecimento de analistas globais – referência local BR via prêmios nacionais (Ecommerce Brasil)","activecampaign":"Consistentemente #1 ou Top 3 G2 em Email Marketing e Automação; sem Gartner MQ próprio","rdstation":"Líder de mercado BR (50k+ clientes); sem Gartner/Forrester globais; reconhecido por ABStartups e GPTW"}},{"criterio":"Rating G2 Geral","latam_destaque":false,"dados":{"clevertap":"4.6/5","braze":"4.4/5","moengage":"4.5/5","salesforce_mkt":"4.0/5","adobe_ec":"4.1/5","insider":"4.8/5 (#1 em 11 categorias G2 2025)","netcore":"4.5/5 (G2) – 247 badges em 23 categorias Summer 2025","dito":"4.6/5 (Capterra BR) – avaliações predominantemente de usuários brasileiros","activecampaign":"4.5/5 G2 – plataforma mais bem avaliada do mundo em marketing automation para PMEs","rdstation":"4.4/5 (Capterra) – líder em avaliações de usuários brasileiros"}},{"criterio":"Clientes LATAM de Referência","latam_destaque":true,"dados":{"clevertap":["Grupo Sura","Riachuelo","Drogasil"],"braze":["iFood","Westwing Brasil","Rappi"],"moengage":["Nubank","Dafiti","Grupo MagaluLabs"],"salesforce_mkt":["Bradesco","Ambev","Magazine Luiza","Natura"],"adobe_ec":["Embraer","Ambev","Oi","Santander Brasil"],"insider":["Watsons","Claro","Carrefour LATAM","Falabella"],"netcore":["Pizza Hut BR","McDonald's BR","clientes BFSI e eComm em expansão"],"dito":["FARM","ANIMALE","Grupo Lins Ferrão","Swarovski BR","Lojas Zema","Zona Sul Supermercados","Constance","Grupo Sacada"],"activecampaign":["Agências de marketing BR/LATAM","SaaS B2B","eComm SMB – base ampla não divulgada publicamente por conta"],"rdstation":["Resultados Digitais própria","50.000+ PMEs BR/LATAM","casos em todos os segmentos B2B"]}},{"criterio":"Verticais Mais Fortes","latam_destaque":false,"dados":{"clevertap":["Fintech","eCommerce","Mídia","Telecom","Gaming"],"braze":["Varejo global","Mídia","SaaS","Fintech"],"moengage":["Fintech","eCommerce","EdTech","Mobile-first"],"salesforce_mkt":["B2B Enterprise","Financeiro","Manufactura"],"adobe_ec":["B2B","Mídia","Viagens","Financeiro","Manufatura"],"insider":["eCommerce","Varejo","Viagens","Telecom","Fintech"],"netcore":["eCommerce","BFSI (Financeiro)","Mídia & Entretenimento","EdTech","Telecom","Travel"],"dito":["Varejo Moda & Vestuário","Supermercados & Alimentação","Casa & Decoração","Franquias","Multi-lojas BR"],"activecampaign":["SaaS B2B","Agências de marketing","eCommerce SMB","Educação","Serviços profissionais"],"rdstation":["SaaS B2B","Agências","Serviços profissionais","EdTech","PMEs de todos os segmentos BR"]}},{"criterio":"Custo-Benefício Geral","latam_destaque":false,"dados":{"clevertap":"Alto para mobile-first (sem loyalty extra cost)","braze":"Médio-Alto – requer time técnico dedicado","moengage":"Excelente – melhor custo-benefício do segmento","salesforce_mkt":"Baixo – alto custo e alta complexidade","adobe_ec":"Baixo – investimento inicial muito elevado","insider":"Alto – agilidade + suporte + canais nativos","netcore":"Alto para eComm enterprise (Search + Engagement integrados); pay-for-performance reduz risco","dito":"Excelente para varejo BR – única plataforma com integração física+digital nativa no mercado nacional","activecampaign":"Excelente para PMEs – melhor custo-benefício de automação avançada do segmento SMB global","rdstation":"Excelente para PMEs BR – menor TCO para inbound marketing em português com suporte local"}},{"criterio":"Ecossistema de Parceiros","latam_destaque":false,"dados":{"clevertap":"~100+ parceiros (moderado)","braze":"150+ (Braze Alloys – muito robusto)","moengage":"~80 parceiros (App Marketplace)","salesforce_mkt":"5000+ (Salesforce AppExchange – maior)","adobe_ec":"500+ (Adobe Exchange – muito robusto)","insider":"100+ parceiros nativos","netcore":"~200+ integrações (Netcore Marketplace); parceiros globais em eComm, BFSI","dito":"~50 integrações focadas em varejo BR (VTEX, TOTVS, Linx, Shopify, Tray, Twilio)","activecampaign":"950+ integrações nativas (maior do segmento SMB); Zapier, Make, nativo Shopify, WooCommerce","rdstation":"Centenas de integrações; 2.000+ agências parceiras no Brasil; marketplace próprio"}},{"criterio":"Suporte ao Cliente (G2 / Capterra score)","latam_destaque":false,"dados":{"netcore":"8.7/10 G2 – suporte reconhecido; 247 badges G2 Summer 2025","dito":"9.2/10 Capterra (avaliações BR) – suporte em PT-BR, CS dedicada, muito elogiado","activecampaign":"8.9/10 G2 – suporte live chat, email, extensa base de conhecimento","rdstation":"8.5/10 Capterra – suporte PT-BR nativo, gerente de sucesso nos planos Pro/Advanced"}}]},"features_tecnicas":{"descricao":"Comparativo de capacidades por feature com nome de mercado padronizado, casos de uso e scores individuais por plataforma (1–10).","features":[{"id":"journeys","nome":"Jornadas Automatizadas","nome_mercado":"Journey Builder / Orchestração","categoria":"Automação","casos_de_uso":"Onboarding, carrinho abandonado, reativação, cross-sell, lifecycle; fluxos trigger-based multi-etapa","plataformas":{"clevertap":{"descricao":"Journeys + IntelliNODE (IA); split condicional por evento/perfil; nós de delay, A/B e webhook","score":9},"braze":{"descricao":"Canvas Flow: branching avançado, delay dinâmico, real-time triggers, Action-Based + API-Triggered","score":9},"moengage":{"descricao":"Smart Trigger + Flows; sólido mas menos ramificações complexas que Braze/CT","score":7},"salesforce_mkt":{"descricao":"Journey Builder: poderoso, SQL-based para avançado; complexo para times não-técnicos","score":7},"adobe_ec":{"descricao":"Adobe Journey Optimizer (AJO): canvas robusto, AI Decisioning, frequência capping avançado","score":9},"insider":{"descricao":"Architect: canvas visual, Next Best Channel IA, Send Time Optimization, Auto-Winner A/B","score":9},"netcore":{"descricao":"Journey Builder visual multi-canal; Smart Triggers; AI-driven next-best-action; suporte a 10+ canais; robusto para enterprise","score":8},"dito":{"descricao":"Automação de campanhas por RFV (RFM), comportamento e eventos; focada em reativação, cross-sell varejo; sem canvas avançado como Braze/CT","score":6},"activecampaign":{"descricao":"Automation Builder visual líder do segmento SMB; branching, condições, goals, split testing; 900+ receitas prontas; referência em UX de automação","score":8},"rdstation":{"descricao":"Automação de marketing com fluxos visuais; lead nurturing, scoring, email sequences; bom para inbound B2B; menos robusto para B2C complexo","score":7}}},{"id":"segmentacao","nome":"Segmentação Avançada de Usuários","nome_mercado":"Audience Builder / Segmentos Dinâmicos","categoria":"Dados & Audiências","casos_de_uso":"Targeting por comportamento, RFM, geo, lifecycle stage; retenção e reativação customizados","plataformas":{"clevertap":{"descricao":"NextGen Segment Builder; RFM nativo; 10k data points/user; lookback 10 anos; TesseractDB","score":9},"braze":{"descricao":"Segmentação comportamental real-time; limite 250 data points/user/mês; sem RFM nativo","score":7},"moengage":{"descricao":"Smart Segments + IA (Sherpa); dinâmico por comportamento; boa cobertura","score":7},"salesforce_mkt":{"descricao":"Data Extensions (SQL); poderoso mas requer habilidade técnica e SQL profundo","score":6},"adobe_ec":{"descricao":"Real-Time CDP: unificação de perfis cross-channel; audiences federadas; machine learning scoring","score":8},"insider":{"descricao":"CDP nativo com 360° profiles; segmentação preditiva por IA; InStory segments","score":8},"netcore":{"descricao":"Segmentação comportamental + RFM + ML; Unified Customer Profile 360°; profiles online e offline; audience builder visual","score":8},"dito":{"descricao":"RFV (RFM) nativo para varejo; segmentação por histórico de compras física+online; propensão de compra por IA (Dito IA); forte e especializada","score":8},"activecampaign":{"descricao":"Segmentação por comportamento, tags, campos customizados, lead scoring; avançada para SMB; sem RFM nativo mas funcional","score":7},"rdstation":{"descricao":"Segmentação por Lead Score, conversões, comportamento no site, estágio no funil; focada em leads B2B; menos profunda em comportamento transacional","score":6}}},{"id":"analytics_comportamental","nome":"Análise Comportamental & Funis","nome_mercado":"Behavioral Analytics / Funnel Analysis","categoria":"Analytics","casos_de_uso":"Otimizar conversão, identificar drop-offs, medir impacto de campanha, decisão de produto","plataformas":{"clevertap":{"descricao":"Funnels, Flows, Trends, Pivots, Cohorts, RFM, Real Impact, ROI Insights – tudo nativo; mais completo do grupo","score":9},"braze":{"descricao":"Relatórios sólidos; sem funis nativos avançados; Currents para export BI","score":6},"moengage":{"descricao":"Funnel Analysis, Cohorts, Smart Analytics; boa cobertura; dashboard limpo","score":7},"salesforce_mkt":{"descricao":"Datorama / MCI: poderoso mas fragmentado entre módulos; requer setup","score":6},"adobe_ec":{"descricao":"Customer Journey Analytics (CJA): cross-channel, offline+online; altamente avançado","score":8},"insider":{"descricao":"Analytics dashboard; Journey Analytics; Funnel Analysis; bom mas menos profundo que CT ou Adobe","score":7},"netcore":{"descricao":"Product Analytics + Campaign Analytics + AI Insights Agent (2025); dashboards avançados; cohorts e funnels nativos; bom para enterprise","score":8},"dito":{"descricao":"Analytics de receita influenciada por canal; relatórios de LTV, ticket médio, recompra; focado em varejo; boa cobertura para o segmento","score":7},"activecampaign":{"descricao":"Relatórios de automação, campanha e CRM; Attribution Reporting; custom reports (add-on); bom mas sem funis comportamentais nativos avançados","score":6},"rdstation":{"descricao":"Analytics de geração de leads, conversão de funil B2B, ROI por canal; Lead Tracking 25–60x base; focado em marketing B2B; sem analytics comportamental deep","score":6}}},{"id":"ab_testing","nome":"Testes A/B & Multivariados","nome_mercado":"Experimentation / Split Testing","categoria":"Otimização","casos_de_uso":"Otimizar copy, horário de envio, canal, layout; identificar variante vencedora automaticamente","plataformas":{"clevertap":{"descricao":"A/B e Multivariate em campanhas e Journeys; Product A/B Tests nativo; Best Time automático","score":8},"braze":{"descricao":"A/B com significância estatística; Winner Path automático; Experiment Groups avançados","score":9},"moengage":{"descricao":"A/B testing em campanhas e jornadas; funcional mas menos profundo","score":7},"salesforce_mkt":{"descricao":"A/B em Journey Builder e Email Studio; funcional; configuração técnica","score":6},"adobe_ec":{"descricao":"AJO Experimentation Accelerator (2025); AI agents recomendam experimentos; robusto","score":8},"insider":{"descricao":"Auto-Winner testing; Send Time Optimization; Next Best Channel test; IA-driven","score":8},"netcore":{"descricao":"A/B em email, push, in-app; Winner automático; Send-time AI; funcional e robusto para enterprise","score":7},"dito":{"descricao":"A/B básico em campanhas de email e SMS; sem multivariate ou testes avançados de jornada","score":5},"activecampaign":{"descricao":"A/B testing em emails e automações (Pro+); split testing em workflows; predictive sending; competitivo para PMEs","score":7},"rdstation":{"descricao":"A/B em emails e landing pages; funcional; sem testes avançados de jornada ou canal","score":6}}},{"id":"personalizacao","nome":"Personalização & Conteúdo Dinâmico","nome_mercado":"Hyper-Personalization / Dynamic Content","categoria":"Personalização","casos_de_uso":"Personalização 1:1 de copy, produto, oferta e layout por perfil, comportamento e contexto em tempo real","plataformas":{"clevertap":{"descricao":"Liquid Tags, Linked Content, Catálogos, Recommendations, Bulletins, send-time personalization","score":9},"braze":{"descricao":"Connected Content (API real-time em runtime), Liquid, personalização avançada, Catalogs","score":9},"moengage":{"descricao":"DPA (Dynamic Product Ads), personalização por comportamento; boa cobertura","score":7},"salesforce_mkt":{"descricao":"AMPScript, SQL, Content Builder – poderoso mas requer dev","score":7},"adobe_ec":{"descricao":"AEP + AJO Decisioning: offer management, real-time personalization; GenStudio (2025)","score":9},"insider":{"descricao":"Smart Recommender, InStory, site search personalizada, web + app personalization em tempo real","score":9},"netcore":{"descricao":"AI Co-Marketer: personalização 1:1 em escala; Unbxd: product discovery e recomendações AI; GenAI para conteúdo (Netcore GenAI suite 2025)","score":8},"dito":{"descricao":"Hiperpersonalização por histórico de compra, perfil e RFV; personalização de copy em email/SMS/WhatsApp; foco varejo; boa cobertura","score":7},"activecampaign":{"descricao":"Conteúdo dinâmico por tags, campos, comportamento; predictive content AI (Pro+); bom para SMB mas limitado vs plataformas enterprise","score":7},"rdstation":{"descricao":"Conteúdo dinâmico básico por segmento/estágio de funil; personalização de email OK; menos profundo para B2C complexo","score":6}}},{"id":"ia_preditiva","nome":"Inteligência Artificial & Automação Inteligente","nome_mercado":"IA Preditiva / Predictive Marketing Engine","categoria":"IA & Automação","casos_de_uso":"Churn prediction, next best action, send-time ideal, canal preferido, scoring de engajamento","plataformas":{"clevertap":{"descricao":"Clever.AI: Ask, Scribe, IntelliNODE, Preferred Channel, Churn Prediction, Recomendações","score":8},"braze":{"descricao":"BrazeAI: Decisioning Studio, Operator, Agent Console; líder em IA aplicada a campanhas 2025","score":9},"moengage":{"descricao":"Sherpa AI: next best action, insights automáticos, churn prediction; AI-native posicionamento","score":8},"salesforce_mkt":{"descricao":"Einstein AI: send-time, scoring, personalização; robusto mas módulo premium adicional","score":7},"adobe_ec":{"descricao":"Adobe Sensei / AI Agent Orchestrator (2025): agentic AI, decisioning, GenAI content; mais avançado do grupo","score":9},"insider":{"descricao":"Agent One (agentic AI 2025): IDC Leader AI 2025; Sirius AI, GenAI, predictive segmentation","score":9},"netcore":{"descricao":"AI Co-Marketer, Insights Agent (2025), Netcore GenAI Suite, 50+ modelos Unbxd; agentic marketing; forte e crescendo","score":8},"dito":{"descricao":"Dito IA: propensão de compra (conversão em até 3x); churn prediction para varejo; AI ainda em evolução; funcional e em expansão","score":6},"activecampaign":{"descricao":"Active Intelligence: predictive sending, lead scoring AI, automation suggestions; Win Probability CRM; competitivo para PME","score":7},"rdstation":{"descricao":"Lead scoring preditivo; envio inteligente; AI ainda básica; Radar GEO (brand perception em GenAI, 2025); evolução contínua","score":5}}},{"id":"push_notifications","nome":"Push Notifications","nome_mercado":"Mobile Push / Web Push","categoria":"Canais","casos_de_uso":"Reengajamento, alertas transacionais, promoções flash, onboarding steps, retenção pós-churn","plataformas":{"clevertap":{"descricao":"RenderMax (~90% render rate); rich media; geofencing; collapse key; iOS + Android + Web","score":9},"braze":{"descricao":"Push Max; entrega massiva real-time; #1 G2 Push Grid; rich push iOS/Android; alta escala","score":9},"moengage":{"descricao":"Rich push + personalização por IA; AI send-time; otimização cross-device","score":8},"salesforce_mkt":{"descricao":"Mobile Studio push; funcional mas menos especializado; configuração complexa","score":6},"adobe_ec":{"descricao":"AJO: push iOS/Android nativo; rich media; API-triggered; bom mas não especializado","score":7},"insider":{"descricao":"Push nativo web + app; send-time IA; rich media; InStory-based triggers","score":8},"netcore":{"descricao":"Push nativo iOS + Android + Web; rich media; AI send-time; alto volume; forte deliverability","score":8},"dito":{"descricao":"Mobile push nativo (Android + iOS); web push; send-time personalizado; integrado ao journey de retenção varejo","score":7},"activecampaign":{"descricao":"Site messaging (in-browser); sem mobile push nativo – foco em email e automação; push via integrações parceiras","score":4},"rdstation":{"descricao":"Pop-ups e site notifications (web); sem mobile push nativo; foco em email e landing pages; push via Zapier","score":4}}},{"id":"inapp_webpopup","nome":"In-App Messaging & Web Pop-ups","nome_mercado":"In-App / Web Overlay / Onboarding Tooltips","categoria":"Canais","casos_de_uso":"Onboarding flows, feature discovery, upsell in-context, NPS surveys, pop-ups de conversão","plataformas":{"clevertap":{"descricao":"In-App Editor + Advanced Builder; Web Pop-up; Web Exit Intent; Web Native Display; App Inbox","score":9},"braze":{"descricao":"In-App com templating avançado; hard-code e no-code; Content Cards","score":8},"moengage":{"descricao":"In-App messaging + personalização; boa cobertura; SDK leve ~4MB","score":7},"salesforce_mkt":{"descricao":"Cloud Pages + pop-ups via Journey Builder; limitado para casos complexos","score":5},"adobe_ec":{"descricao":"AJO In-App + Code-based experience (2025); web e app; bom mas menos nativo que CT","score":7},"insider":{"descricao":"In-App nativo; web overlays; InStory (formato stories); gamification widgets; rico em templates","score":9},"netcore":{"descricao":"In-App nativo (nudges, walkthroughs, tooltips via Hansel.io acquisition); web overlays; no-code editor; forte para retenção app","score":8},"dito":{"descricao":"Pop-ups e mensagens web básicas; sem in-app SDK robusto; foco em canais de saída (email, SMS, WhatsApp)","score":4},"activecampaign":{"descricao":"Site messages e pop-ups nativos (Plus+); formulários e landing pages; sem in-app SDK mobile","score":6},"rdstation":{"descricao":"Pop-ups e formulários web nativos; landing pages customizáveis; sem in-app mobile; foco em conversão de leads","score":6}}},{"id":"email_marketing","nome":"Email Marketing","nome_mercado":"Email Studio / Bulk & Transactional Email","categoria":"Canais","casos_de_uso":"Newsletters, campanhas batch, triggered emails, nurture, reativação; deliverability enterprise","plataformas":{"clevertap":{"descricao":"Email nativo com ESP próprio; drag-and-drop editor; AMP for Email; preferências avançadas; grupo unsubscribe","score":8},"braze":{"descricao":"Email robusto; Liquid; Connected Content; deliverability tools; seed testing","score":8},"moengage":{"descricao":"Email nativo integrado; segmentação comportamental; boa entregabilidade","score":7},"salesforce_mkt":{"descricao":"Email Studio: líder histórico; AMPScript; deliverability avançado; preview 80+ clients","score":9},"adobe_ec":{"descricao":"AJO Email Designer; GenStudio (2025); Adobe Express integration; líder enterprise email","score":9},"insider":{"descricao":"Email nativo; drag-and-drop + HTML; personalização comportamental; AMP parcial","score":7},"netcore":{"descricao":"Líder histórico em deliverability – 18 bilhões emails/mês; 75% do tráfego email India; 50% da Ásia; email enterprise com AMP, AI e GenAI","score":9},"dito":{"descricao":"Email nativo com drag-and-drop; segmentação RFV; bom para varejo; volume moderado; integrado ao journey de retenção","score":7},"activecampaign":{"descricao":"Email marketing referência para PMEs; 240+ templates; drag-and-drop avançado; deliverability sólida; 10–15x contact limit/mês","score":8},"rdstation":{"descricao":"Email marketing core do produto; 100+ templates; bom drag-and-drop; deliverability OK; integrado ao CRM; 100% em PT-BR","score":8}}},{"id":"whatsapp","nome":"WhatsApp Business","nome_mercado":"WhatsApp Marketing / Conversational Commerce","categoria":"Canais","casos_de_uso":"Notificações transacionais, campanhas conversacionais, suporte automatizado, promoções LATAM","plataformas":{"clevertap":{"descricao":"WhatsApp nativo via múltiplos BSPs (Gupshup, Infobip, etc.); Flows; subscription management","score":9},"braze":{"descricao":"WhatsApp via parceiros (Twilio, Vonage); menos nativo; funcional mas requer configuração","score":6},"moengage":{"descricao":"WhatsApp nativo com BSPs; forte para LATAM e APAC; boa cobertura","score":8},"salesforce_mkt":{"descricao":"WhatsApp via parceiros externos; integração menos fluida; não prioritário no roadmap","score":5},"adobe_ec":{"descricao":"AJO WhatsApp (2025); parceiros BSP; funcional mas ainda amadurecendo","score":6},"insider":{"descricao":"WhatsApp nativo via BSPs; Conversational Commerce (commerce in-WhatsApp); IDC Leader","score":9},"netcore":{"descricao":"WhatsApp nativo via BSPs; campaigns + automation + inbox; forte para LATAM e APAC; Inbox Commerce (shopping in-WhatsApp)","score":8},"dito":{"descricao":"Dito Agenda: Super App para vendedores via WhatsApp – first mover em vendas ativas via WhatsApp no varejo BR; nativo e diferenciado","score":8},"activecampaign":{"descricao":"WhatsApp nativo nos planos WhatsApp (Core $159/mês, Advanced, Premium); automação e chatbots; funcional e crescendo","score":7},"rdstation":{"descricao":"WhatsApp Business API via RD Station Marketing; campanhas + automação; Conversas (atendimento conversacional via Tallos); bom para PMEs BR","score":7}}},{"id":"sms_rcs","nome":"SMS & RCS","nome_mercado":"SMS Marketing / Rich Communication Services","categoria":"Canais","casos_de_uso":"OTPs, promoções, reativação, alertas; RCS para rich media interativa sem app","plataformas":{"clevertap":{"descricao":"SMS nativo com 15+ providers; RCS nativo (Infobip, Generic RCS); regulations por país","score":9},"braze":{"descricao":"SMS nativo robusto; RCS em beta; bom ecossistema de providers","score":8},"moengage":{"descricao":"SMS nativo com providers globais; regulação por país","score":7},"salesforce_mkt":{"descricao":"MobileConnect SMS; funcional; RCS via parceiros","score":7},"adobe_ec":{"descricao":"AJO SMS + custom SMS (mTLS 2025); RCS em roadmap","score":7},"insider":{"descricao":"SMS nativo; RCS nativo; TikTok, Facebook, Instagram integrados","score":8},"netcore":{"descricao":"SMS nativo com providers globais; RCS em roadmap; forte entregabilidade via infraestrutura própria","score":7},"dito":{"descricao":"SMS nativo integrado às campanhas de retenção varejo; sem RCS; funcional para o segmento","score":6},"activecampaign":{"descricao":"SMS nativo via add-on ($16.83/mês+); sem número dedicado próprio; sem RCS; funcional para automação","score":5},"rdstation":{"descricao":"SMS via integrações parceiras; sem canal nativo robusto; RCS não disponível; foco em email e WhatsApp","score":4}}},{"id":"loyalty_cupons","nome":"Carteira Digital, Cupons & Fidelidade","nome_mercado":"Loyalty Wallet / Promos & Rewards Engine","categoria":"Retenção & Loyalty","casos_de_uso":"Programas de pontos, cashback, cupons individuais, vouchers de parceiros, promoções gamificadas","plataformas":{"clevertap":{"descricao":"Loyalty Wallets, Coupons, Partner Vouchers, Custom Rewards, Promo Campaigns – tudo nativo","score":9},"braze":{"descricao":"Sem loyalty nativo; requer parceiros Yotpo, Talon.One, Voucherify","score":3},"moengage":{"descricao":"Sem loyalty nativo; integrações parciais via parceiros externos","score":3},"salesforce_mkt":{"descricao":"Loyalty Management (módulo separado, alto custo); parceiros como Salesforce Loyalty Mgmt","score":5},"adobe_ec":{"descricao":"Adobe Experience Cloud não possui loyalty nativo; requer AEC + parceiro Loyalty","score":3},"insider":{"descricao":"Gamification widgets; sem loyalty full nativo; integra Voucherify e Yotpo","score":4},"netcore":{"descricao":"Sem loyalty nativo completo; cupons via Netcore Engage; requer parceiro para programa de fidelidade robusto","score":4},"dito":{"descricao":"Cashback nativo configurável (único diferencial frente a ActiveCampaign/RD); regras por perfil e canal; sem programa de pontos full","score":6},"activecampaign":{"descricao":"Sem loyalty nativo; integrações via LoyaltyLion, Smile.io, Yotpo via Zapier/integrações; requer partner","score":2},"rdstation":{"descricao":"Sem loyalty nativo; foco em inbound e funil de vendas; requer ferramentas externas para fidelidade","score":2}}},{"id":"product_experiments","nome":"Experiências de Produto & Feature Flags","nome_mercado":"Product Experiments / Remote Config","categoria":"Produto & Crescimento","casos_de_uso":"Rollout gradual de features, A/B de produto, remote config sem deploy, dark launches","plataformas":{"clevertap":{"descricao":"Product A/B Tests nativo; Remote Config; Feature Flags – Product Experiences Next Gen","score":8},"braze":{"descricao":"Feature Flags básico nativo; melhor junto com LaunchDarkly como parceiro","score":6},"moengage":{"descricao":"Sem Product Experiments nativos robustos; requer ferramentas externas","score":4},"salesforce_mkt":{"descricao":"Sem feature flags nativo; requer Salesforce + external tool","score":3},"adobe_ec":{"descricao":"AEP Target / Experimentation (via Adobe Target); robusto mas módulo separado","score":7},"insider":{"descricao":"Sem feature flags nativo; A/B focado em canais de marketing","score":5},"netcore":{"descricao":"Product Experiments via Hansel (acquired); Remote Config; in-app experiences no-code; diferencial forte","score":7},"dito":{"descricao":"Sem feature flags ou product experiments; plataforma de marketing, não de produto","score":1},"activecampaign":{"descricao":"Sem feature flags nativos; foco em automação de marketing; requer LaunchDarkly ou similar","score":2},"rdstation":{"descricao":"Sem feature flags nativos; plataforma de inbound marketing, não de produto","score":1}}},{"id":"remarketing_paid","nome":"Remarketing em Canais Pagos","nome_mercado":"Paid Audience Sync / Retargeting Digital","categoria":"Mídia Paga","casos_de_uso":"Sync de segmentos para Google Ads, Meta, TikTok para retargeting e lookalike de alta intenção","plataformas":{"clevertap":{"descricao":"Google Ads, Facebook Audiences, TikTok Remarketing sincronizados nativamente via segmentos","score":8},"braze":{"descricao":"Audience Sync: Google, Meta, TikTok via Canvas Audience Sync; robusto","score":8},"moengage":{"descricao":"Integrações com Google, Facebook via parceiros; funcional mas não nativo end-to-end","score":7},"salesforce_mkt":{"descricao":"Advertising Studio + AudienceBuilder: forte; integração direta com paid media","score":8},"adobe_ec":{"descricao":"Real-Time CDP Destinations: 50+ destinos pagos nativos; Google, Meta, TikTok, Amazon Ads","score":9},"insider":{"descricao":"Predictive Ad Audiences; Google Ads, Facebook, TikTok, Instagram nativo; InStory ads","score":9},"netcore":{"descricao":"Integrações com Google Ads, Facebook Audiences; funcional via Netcore Marketplace; moderado","score":6},"dito":{"descricao":"Facebook Custom Audiences nativo; Google Ads via integração; funcional para varejo; foco em canais próprios","score":6},"activecampaign":{"descricao":"Facebook Audiences, Google Ads sync nativo; funcional para PMEs; sem TikTok nativo","score":6},"rdstation":{"descricao":"Integrações com Google Ads e Meta nativas; bom para leads B2B; audiences por funil de conversão; funcional","score":6}}},{"id":"lifecycle_analytics","nome":"Análise de Ciclo de Vida & Lifecycle Optimizer","nome_mercado":"Lifecycle Analytics / Churn Prevention","categoria":"Analytics","casos_de_uso":"Identificar usuários em risco, acionar retenção automática, medir saúde do engajamento por cohort","plataformas":{"clevertap":{"descricao":"Lifecycle Optimizer, ROI Insights, Real Impact, Uninstall Tracking, Cohort Analysis; mais completo","score":9},"braze":{"descricao":"Lifecycle analytics; uninstall tracking; Currents para BI externo; menos nativo que CT","score":6},"moengage":{"descricao":"Funnel de lifecycle; churn prediction (Sherpa AI); analytics; boa cobertura","score":7},"salesforce_mkt":{"descricao":"Datorama / Marketing Cloud Intelligence: poderoso mas fragmentado","score":6},"adobe_ec":{"descricao":"Customer Journey Analytics (CJA): líder em análise cross-channel end-to-end; muito robusto","score":9},"insider":{"descricao":"Funnel analytics; churn prediction por IA; lifecycle dashboard; bom mas não tão profundo quanto CT","score":7},"netcore":{"descricao":"Lifecycle analytics + churn prediction + cohort analysis; AI Insights Agent; bom para enterprise","score":7},"dito":{"descricao":"Lifecycle para varejo: identificação de clientes ativos, inativos, em risco; RFV-driven; relatórios de LTV e recompra; forte no segmento","score":8},"activecampaign":{"descricao":"Lifecycle por automação e lead scoring; Win Probability; contact scoring; funcional para SMB B2B","score":6},"rdstation":{"descricao":"Funil de conversão lead-to-customer; lead scoring; sem lifecycle profundo B2C; focado em jornada de vendas B2B","score":6}}},{"id":"web_engagement","nome":"Web Engagement Suite","nome_mercado":"Web Push / Pop-ups / Native Display / Site Personalization","categoria":"Canais","casos_de_uso":"Converter visitantes anônimos, recuperar abandono, personalizar homepage em tempo real, coletar leads","plataformas":{"clevertap":{"descricao":"Web Push, Pop-up, Exit Intent, Native Display, Web Inbox – suite completa e nativa","score":9},"braze":{"descricao":"Web Push, In-Browser Messages, Feature Flags básico; boa cobertura","score":7},"moengage":{"descricao":"Web push, in-browser messaging nativo; editor drag-and-drop","score":7},"salesforce_mkt":{"descricao":"Web Studio funcional; limitado para casos complexos de personalização web","score":5},"adobe_ec":{"descricao":"AJO Web + Code-based experience; web channel personalizado; Adobe Target integration","score":8},"insider":{"descricao":"Web personalization em tempo real; site search IA; InStory web; overlays avançados; eCommerce-first","score":9},"netcore":{"descricao":"Web push, pop-ups, overlays, Unbxd site search e personalization; Suite web robusta para eCommerce","score":8},"dito":{"descricao":"Pop-ups e formulários web básicos; sem personalização web em tempo real avançada; foco em canais de saída","score":5},"activecampaign":{"descricao":"Site messages, pop-ups, formulários nativos; tracking comportamental no site; landing pages; bom para PMEs","score":6},"rdstation":{"descricao":"Landing pages nativas, pop-ups, formulários, CTAs; tracking de leads; essencial para inbound; ponto forte do produto","score":7}}},{"id":"rcs","nome":"Canal RCS","nome_mercado":"RCS Messaging / Rich Business Messaging","categoria":"Canais","casos_de_uso":"Mensagens interativas rich media sem app; botões, carrossel, imagens; alternativa SMS premium","plataformas":{"clevertap":{"descricao":"RCS nativo via Infobip e Generic RCS; primeiro do grupo a ter nativo","score":8},"braze":{"descricao":"RCS em beta; parceiros limitados","score":5},"moengage":{"descricao":"RCS em roadmap; ainda não nativo","score":4},"salesforce_mkt":{"descricao":"RCS via parceiros; não prioritário","score":4},"adobe_ec":{"descricao":"RCS no roadmap AJO 2025","score":5},"insider":{"descricao":"RCS nativo integrado (2024/25); pioneiro no grupo junto com CT","score":8},"netcore":{"descricao":"RCS em roadmap / fase inicial; sem anúncio de GA ainda","score":3},"dito":{"descricao":"Sem RCS – plataforma não voltada para canais de mensageria avançada","score":1},"activecampaign":{"descricao":"Sem RCS – foco em email, SMS básico e WhatsApp","score":1},"rdstation":{"descricao":"Sem RCS – foco em inbound marketing, email e WhatsApp","score":1}}}]},"specs_tecnicas":{"descricao":"Especificações técnicas de SDKs, APIs, integrações, data warehouses, complexidade e time-to-value.","criterios":[{"criterio":"SDKs Disponíveis","dados":{"clevertap":["iOS","Android","React Native","Flutter","Web JS","Unity","Cordova","Xamarin"],"braze":["iOS","Android","React Native","Flutter","Web","Unity","tvOS","Roku","Xamarin","Swift Package"],"moengage":["iOS","Android","React Native","Flutter","Web JS","Cordova","Unity"],"salesforce_mkt":["iOS","Android via MobileConnect","Web JS"],"adobe_ec":["iOS","Android","Flutter","React Native","Web SDK"],"insider":["iOS","Android","React Native","Flutter","Web JS"],"netcore":["iOS","Android","React Native","Flutter","Web JS","Unity","Cordova"],"dito":["iOS (Dito Agenda app)","Android (Dito Agenda app)","API REST para integrações"],"activecampaign":["Web JS (site tracking)","API REST (sem SDK mobile nativo para engagement)"],"rdstation":["Web JS (tracking)","API REST (sem SDK mobile nativo)"]}},{"criterio":"Tamanho do SDK","dados":{"clevertap":"~5MB – leve","braze":"~9MB – pesado (maior do grupo)","moengage":"~4MB – mais leve do grupo","salesforce_mkt":"Variável ~4–12MB (múltiplos módulos)","adobe_ec":"Modular; core ~3–7MB dependendo das extensões","insider":"~6MB – moderado","netcore":"~5–7MB (modular por features incluídas)","dito":"N/A – sem SDK de engagement mobile; API REST para integrações","activecampaign":"N/A – sem SDK mobile; tracking via JS snippet (<50KB)","rdstation":"N/A – sem SDK mobile; tracking via JS snippet (<50KB)"}},{"criterio":"APIs Disponíveis","dados":{"clevertap":"REST API completa: eventos, perfis, segmentos, campanhas, exports, imports","braze":"REST API robusta + streaming via Currents; GraphQL parcial em beta","moengage":"REST API completa; Kafka Streams para dados em tempo real; boa documentação","salesforce_mkt":"REST + SOAP (legacy); Marketing Cloud API; mais complexo de integrar","adobe_ec":"AEP API: Data Ingestion, Segmentation, Profile, Destinations; completo mas complexo","insider":"REST API + Webhook API; 100+ integrações nativas; bem documentado","netcore":"REST API completa: perfis, eventos, campanhas, segmentos, transacional; bem documentada","dito":"REST API para integração com ERPs, eComm e PDVs; foco em ingestão de dados transacionais de lojas","activecampaign":"REST API v3 muito completa e bem documentada; Webhooks avançados; suporte a 950+ integrações nativas","rdstation":"REST API bem documentada; Webhooks; foco em lead management e pipeline de vendas"}},{"criterio":"Webhooks & Event Streaming","dados":{"clevertap":"Webhooks saída + entrada; personalizáveis por evento; Amazon EventBridge nativo","braze":"Braze Currents (streaming completo); Webhooks avançados; referência do setor","moengage":"Webhooks entrada/saída; Kafka para streaming; bom para casos data-intensive","salesforce_mkt":"Webhooks via Automation Studio; funcional mas configuração complexa","adobe_ec":"AEP: Event Hubs, Kafka, S3 streaming; Azure VNet (2025); enterprise-grade","insider":"Webhooks REST; event streaming via parceiros; funcional","netcore":"Webhooks entrada/saída; Kafka parcial; integrações enterprise","dito":"Webhooks REST para sincronização com ERPs e PDVs; focado em eventos transacionais de compra","activecampaign":"Webhooks muito robustos; automações trigger por evento; 950+ integrações nativas; Zapier e Make nativos","rdstation":"Webhooks nativos; integrações via Zapier, Make; API para eventos de lead"}},{"criterio":"Banco de Dados Proprietário","dados":{"clevertap":"TesseractDB – primeiro banco projetado para engagement; 10k data points/user; lookback 10 anos","braze":"Infraestrutura cloud padrão (AWS); sem banco proprietário; escala horizontal","moengage":"Cloud standard; sem banco proprietário; boa performance","salesforce_mkt":"SQL Server padrão + Data Cloud; performance depende de arquitetura do cliente","adobe_ec":"AEP Data Lake (Delta Lake); Real-Time Profile Store; altamente avançado e escalável","insider":"CDP próprio; sem banco proprietário especializado; cloud standard","netcore":"Infraestrutura cloud própria escalável; sem banco proprietário de engagement como TesseractDB","dito":"Cloud BR (conformidade LGPD); infraestrutura dedicada para dados de varejo nacional","activecampaign":"AWS cloud standard; sem banco proprietário; escala horizontal","rdstation":"Cloud AWS BR; infraestrutura brasileira; conformidade LGPD nativa"}},{"criterio":"Integrações CDP","dados":{"clevertap":["Segment","mParticle","RudderStack","Hightouch","Census","Treasure Data","Boltic"],"braze":["Segment","mParticle","RudderStack","Lytics","Amplitude"],"moengage":["Segment","mParticle","RudderStack","Amplitude"],"salesforce_mkt":["MuleSoft","Data Cloud (CDP nativo SF)","Segment"],"adobe_ec":["AEP é CDP nativo enterprise","fonte para todos os outros"],"insider":["Segment","mParticle","RudderStack","Salesforce","HubSpot"],"netcore":["Segment","mParticle","RudderStack","CDP nativo em desenvolvimento"],"dito":["CDP nativo integrado ao CRM (varejo-specific)","VTEX","Shopify","TOTVS","Linx"],"activecampaign":["Segment (via Zapier)","mParticle (parcial)","950+ integrações nativas"],"rdstation":["Integrações nativas com CRM próprio","Salesforce","HubSpot via Zapier"]}},{"criterio":"Data Warehouse / Cloud Storage","dados":{"clevertap":["AWS S3","GCP","Azure","BigQuery Export","Amazon EventBridge"],"braze":["Snowflake (Currents)","AWS S3","Databricks","BigQuery","Azure"],"moengage":["AWS S3","BigQuery","Azure","GCP"],"salesforce_mkt":["Snowflake","AWS S3","GCP via Data Cloud"],"adobe_ec":["BigQuery","Snowflake","Azure Synapse","AWS Redshift","AEP Data Distiller"],"insider":["Snowflake","Databricks","Google Cloud","AWS S3"],"netcore":["AWS S3","GCP","BigQuery Export","Databricks parcial"],"dito":["Exportação de dados via API","conformidade LGPD em cloud BR"],"activecampaign":["AWS S3 via Zapier/integrações","BigQuery via parceiros","sem integração nativa DW robusta"],"rdstation":["Exportação CSV/API","Google Analytics nativo","BigQuery via integrações"]}},{"criterio":"Total de Canais Nativos","dados":{"clevertap":{"total":14,"lista":["Push","In-App","Email","Web Push","Web Pop-up","WhatsApp","SMS","RCS","App Inbox","Native Display","Webhooks","Google Ads","Facebook Audiences","TikTok Remarketing"]},"braze":{"total":10,"lista":["Push","In-App","Email","Web Push","SMS","WhatsApp","Content Cards","Webhooks","Facebook","Google"]},"moengage":{"total":9,"lista":["Push","In-App","Email","Web Push","SMS","WhatsApp","Webhooks","Facebook","Google"]},"salesforce_mkt":{"total":8,"lista":["Email","SMS","Push","Social","Advertising","Journey","WhatsApp (parceiros)","Direct Mail"]},"adobe_ec":{"total":9,"lista":["Email","SMS","Push","WhatsApp (2025)","Web","In-App","Direct Mail","Decisioning","RCS (roadmap)"]},"insider":{"total":13,"lista":["Web","App Push","Web Push","Email","SMS","WhatsApp","RCS","TikTok","Facebook","Instagram","Conversational","InStory","Site Search"]},"netcore":{"total":10,"lista":["Email","Push (mobile + web)","In-App","SMS","WhatsApp","Web Overlay","Site Search (Unbxd)","Facebook Audiences","Google Ads","Inbox Commerce"]},"dito":{"total":6,"lista":["Email","SMS","Mobile Push","Web Push","WhatsApp (Dito Agenda – vendedores)","Facebook Audiences"]},"activecampaign":{"total":7,"lista":["Email","SMS (add-on)","WhatsApp","Site Messages","Pop-ups/Forms","Facebook Audiences","Google Ads"]},"rdstation":{"total":6,"lista":["Email","WhatsApp","Landing Pages","Pop-ups/Forms","Facebook Ads","Google Ads"]}}},{"criterio":"Integrações de Atribuição","dados":{"clevertap":["Adjust","AppsFlyer","Branch","Airbridge","Singular"],"braze":["Adjust","AppsFlyer","Branch","Singular","Kochava"],"moengage":["Adjust","AppsFlyer","Branch","Singular"],"salesforce_mkt":["Via parceiros terceiros"],"adobe_ec":["AppsFlyer","Adjust via AEP"],"insider":["AppsFlyer","Adjust","Branch","Singular"],"netcore":["Adjust","AppsFlyer","Branch"],"dito":["Google Analytics 360 (nativo)","atribuição de receita por canal própria"],"activecampaign":["Google Analytics","Attribution Reporting nativo","Adjust via integração"],"rdstation":["Google Analytics nativo","Google Ads","Facebook Ads"]}},{"criterio":"Complexidade de Implementação","dados":{"clevertap":"Moderada – SDK + API bem documentados; 4–8 semanas típico","braze":"Alta – curva de aprendizado íngreme; time técnico dedicado; 8–16 semanas","moengage":"Baixa-Moderada – melhor onboarding do segmento; 3–6 semanas","salesforce_mkt":"Muito Alta – SQL necessário; múltiplos módulos; 12–26 semanas+","adobe_ec":"Muito Alta – AEP + módulos independentes; maior curva de aprendizado; 16–30 semanas+","insider":"Baixa-Moderada – white-glove migration; CSM in-house; 4–8 semanas","netcore":"Moderada – SDK + API bem documentados; equipe LATAM dedicada; 4–8 semanas","dito":"Moderada-Alta – requer integração com ERP/PDV da loja física; 6–12 semanas para omnichannel completo","activecampaign":"Muito Baixa – melhor onboarding do mercado global SMB; 1–2 semanas; wizard guiado self-serve","rdstation":"Baixa – implementação guiada; planos Pro/Advanced têm implementação assistida obrigatória (R$2.699–3.079); 2–4 semanas"}},{"criterio":"Time-to-Value Estimado","dados":{"clevertap":"4–8 semanas","braze":"6–12 semanas","moengage":"3–6 semanas (mais rápido do segmento)","salesforce_mkt":"12–26 semanas","adobe_ec":"12–24 semanas","insider":"4–8 semanas","netcore":"4–8 semanas (engagement) + 8–16 semanas (Search/Unbxd full)","dito":"6–12 semanas para integração completa física + digital","activecampaign":"1–2 semanas (email marketing); 2–4 semanas (automação completa)","rdstation":"2–4 semanas (planos básicos); 4–8 semanas (Pro/Advanced completo)"}},{"criterio":"Segurança & Compliance","dados":{"clevertap":["SOC2","GDPR","CCPA","HIPAA","ISO 27001","BYOK","PII Tokenization","Field-level Encryption","SSO SAML","2FA"],"braze":["SOC2","GDPR","CCPA","HIPAA","SSO","RBAC granular","Braze Data Privacy Framework"],"moengage":["SOC2","GDPR","CCPA","HIPAA","ISO 27001","SSO SAML"],"salesforce_mkt":["SOC2","GDPR","CCPA","HIPAA","ISO 27001","Shield (premium)","Enterprise Shield compliance"],"adobe_ec":["SOC2","ISO 27001","HIPAA","GDPR","FedRAMP (GovCloud)"],"insider":["SOC2","GDPR","CCPA","HIPAA","ISO 27001"],"netcore":["SOC2","GDPR","ISO 27001","DPDP Act 2023 (India – first martech)","HIPAA parcial"],"dito":["LGPD (nativo – único produto 100% BR LGPD-first)","conformidade BR nativa","dados em cloud brasileiro"],"activecampaign":["SOC2","GDPR","CCPA","HIPAA (Enterprise)","SSO","ISO 27001"],"rdstation":["LGPD nativa","SOC2","GDPR parcial","dados em cloud BR","conformidade brasileira nativa"]}},{"criterio":"Qualidade de Documentação Técnica","dados":{"clevertap":"Boa – docs.clevertap.com + developer.clevertap.com bem estruturados","braze":"Excelente – docs.braze.com é referência do setor em qualidade e profundidade","moengage":"Boa – documentação completa; developer portal organizado","salesforce_mkt":"Extensa mas fragmentada entre produtos; curva alta para aprender","adobe_ec":"Muito boa – experienceleague.adobe.com; porém a curva de complexidade é enorme","insider":"Boa – documentação crescendo; comunidade menor que Braze","netcore":"Boa – documentação técnica completa; central de ajuda organizada; base de conhecimento pública","dito":"Boa para o mercado BR – central.dito.com.br em PT-BR; suporte via chat e telefone em horário comercial BR","activecampaign":"Excelente – help.activecampaign.com é referência para SMB; vídeos, guias, 900+ receitas de automação","rdstation":"Excelente em PT-BR – ajuda.rdstation.com.br; RD University (cursos); blog Resultados Digitais (maior blog de marketing do BR)"}},{"criterio":"Casos de Uso Prioritários LATAM","dados":{"clevertap":"Apps Fintech BR, eComm, Mídia, Telecom; retenção mobile-first; loyalty nativo para varejo","braze":"iFood, Rappi, apps de escala; campanhas em tempo real; B2C enterprise com time técnico","moengage":"Fintechs, neobanks, apps educação; mobile analytics + engagement; custo acessível","salesforce_mkt":"Grandes empresas BR (Bradesco, Ambev); B2B; quem já usa Salesforce CRM","adobe_ec":"Grandes contas enterprise BR com ecossistema Adobe (AEM, Analytics, Marketo)","insider":"eCommerce, Varejo e Telecom LATAM; personalização web + app + WhatsApp; ROI rápido","netcore":"eCommerce enterprise BR e MX; BFSI; retenção + search + personalization integrados; pay-for-performance atrai mid-market","dito":"Varejo de moda, alimentação, eletro e franquias BR; CRM omnichannel físico + digital; único para este nicho no Brasil","activecampaign":"Agências de marketing BR/LATAM; SaaS B2B; PMEs com necessidade de automação avançada a custo acessível","rdstation":"PMEs B2B brasileiras; startups e scale-ups; agências de inbound; empresas que priorizam geração e nutrição de leads em PT-BR"}}]},"scores_gerais":{"descricao":"23 categorias avaliadas de 1 a 10. Score médio ponderado ao final.","categorias":[{"categoria":"Presença & Cobertura LATAM","emoji":"🗺️","scores":{"clevertap":6,"braze":7,"moengage":6,"salesforce_mkt":9,"adobe_ec":8,"insider":8,"netcore":5,"dito":9,"activecampaign":6,"rdstation":10}},{"categoria":"Adequação por Segmento (SMB–Enterprise)","emoji":"🏢","scores":{"clevertap":7,"braze":6,"moengage":8,"salesforce_mkt":6,"adobe_ec":5,"insider":7,"netcore":7,"dito":6,"activecampaign":9,"rdstation":8}},{"categoria":"Custo-Benefício","emoji":"💰","scores":{"clevertap":7,"braze":5,"moengage":9,"salesforce_mkt":4,"adobe_ec":3,"insider":7,"netcore":7,"dito":8,"activecampaign":9,"rdstation":9}},{"categoria":"Time-to-Value / Onboarding","emoji":"⏱️","scores":{"clevertap":7,"braze":5,"moengage":9,"salesforce_mkt":3,"adobe_ec":3,"insider":8,"netcore":6,"dito":5,"activecampaign":10,"rdstation":8}},{"categoria":"Complexidade Técnica (facilidade)","emoji":"🛠️","scores":{"clevertap":7,"braze":5,"moengage":8,"salesforce_mkt":3,"adobe_ec":3,"insider":7,"netcore":6,"dito":6,"activecampaign":9,"rdstation":8}},{"categoria":"Suporte & CSM","emoji":"🤝","scores":{"clevertap":8,"braze":7,"moengage":9,"salesforce_mkt":7,"adobe_ec":7,"insider":9,"netcore":8,"dito":9,"activecampaign":8,"rdstation":8}},{"categoria":"Analytics Comportamental & Funis","emoji":"📊","scores":{"clevertap":9,"braze":6,"moengage":7,"salesforce_mkt":6,"adobe_ec":9,"insider":7,"netcore":8,"dito":7,"activecampaign":6,"rdstation":6}},{"categoria":"Jornadas Automatizadas","emoji":"🗺️","scores":{"clevertap":9,"braze":9,"moengage":7,"salesforce_mkt":7,"adobe_ec":9,"insider":9,"netcore":8,"dito":6,"activecampaign":8,"rdstation":7}},{"categoria":"Segmentação Avançada","emoji":"👤","scores":{"clevertap":9,"braze":7,"moengage":7,"salesforce_mkt":6,"adobe_ec":8,"insider":8,"netcore":8,"dito":8,"activecampaign":7,"rdstation":6}},{"categoria":"Personalização & Conteúdo Dinâmico","emoji":"🎯","scores":{"clevertap":9,"braze":9,"moengage":7,"salesforce_mkt":7,"adobe_ec":9,"insider":9,"netcore":8,"dito":7,"activecampaign":7,"rdstation":6}},{"categoria":"IA Preditiva & Automação","emoji":"🤖","scores":{"clevertap":8,"braze":9,"moengage":8,"salesforce_mkt":7,"adobe_ec":9,"insider":9,"netcore":8,"dito":6,"activecampaign":7,"rdstation":5}},{"categoria":"Push Notifications","emoji":"📱","scores":{"clevertap":9,"braze":9,"moengage":8,"salesforce_mkt":6,"adobe_ec":7,"insider":8,"netcore":8,"dito":7,"activecampaign":4,"rdstation":4}},{"categoria":"In-App & Web Engagement","emoji":"💬","scores":{"clevertap":9,"braze":8,"moengage":7,"salesforce_mkt":5,"adobe_ec":7,"insider":9,"netcore":8,"dito":4,"activecampaign":6,"rdstation":6}},{"categoria":"Email Marketing","emoji":"📧","scores":{"clevertap":8,"braze":8,"moengage":7,"salesforce_mkt":9,"adobe_ec":9,"insider":7,"netcore":9,"dito":7,"activecampaign":8,"rdstation":8}},{"categoria":"WhatsApp Business","emoji":"🟢","scores":{"clevertap":9,"braze":6,"moengage":8,"salesforce_mkt":5,"adobe_ec":6,"insider":9,"netcore":8,"dito":8,"activecampaign":7,"rdstation":7}},{"categoria":"SMS & RCS","emoji":"📲","scores":{"clevertap":9,"braze":8,"moengage":7,"salesforce_mkt":7,"adobe_ec":7,"insider":8,"netcore":7,"dito":6,"activecampaign":5,"rdstation":4}},{"categoria":"Loyalty, Cupons & Carteira Digital","emoji":"🎁","scores":{"clevertap":9,"braze":3,"moengage":3,"salesforce_mkt":5,"adobe_ec":3,"insider":4,"netcore":4,"dito":6,"activecampaign":2,"rdstation":2}},{"categoria":"Product Experiments & Feature Flags","emoji":"🧪","scores":{"clevertap":8,"braze":6,"moengage":4,"salesforce_mkt":3,"adobe_ec":7,"insider":5,"netcore":7,"dito":1,"activecampaign":2,"rdstation":1}},{"categoria":"Remarketing Paid Channels","emoji":"📣","scores":{"clevertap":8,"braze":8,"moengage":7,"salesforce_mkt":8,"adobe_ec":9,"insider":9,"netcore":6,"dito":6,"activecampaign":6,"rdstation":6}},{"categoria":"Integrações CDP & Data Warehouse","emoji":"🔗","scores":{"clevertap":7,"braze":9,"moengage":7,"salesforce_mkt":8,"adobe_ec":10,"insider":7,"netcore":7,"dito":6,"activecampaign":7,"rdstation":6}},{"categoria":"SDKs & Qualidade de APIs","emoji":"📚","scores":{"clevertap":8,"braze":9,"moengage":8,"salesforce_mkt":6,"adobe_ec":8,"insider":7,"netcore":8,"dito":5,"activecampaign":8,"rdstation":7}},{"categoria":"Segurança & Compliance","emoji":"🔒","scores":{"clevertap":8,"braze":8,"moengage":8,"salesforce_mkt":8,"adobe_ec":9,"insider":8,"netcore":8,"dito":8,"activecampaign":8,"rdstation":8}},{"categoria":"Ecossistema de Parceiros","emoji":"🌐","scores":{"clevertap":6,"braze":9,"moengage":6,"salesforce_mkt":10,"adobe_ec":9,"insider":7,"netcore":6,"dito":5,"activecampaign":9,"rdstation":8}}],"score_final":{"clevertap":8.1,"braze":7.6,"moengage":7.1,"salesforce_mkt":6.3,"adobe_ec":7.0,"insider":7.8,"netcore":7.1,"dito":6.2,"activecampaign":6.7,"rdstation":6.4},"ranking":[{"posicao":1,"plataforma":"clevertap","score":8.1,"medalha":"🥇","destaque":"All-in-One de retenção com loyalty nativo, analytics profundo e TesseractDB. Melhor para mobile-first LATAM."},{"posicao":2,"plataforma":"insider","score":7.8,"medalha":"🥈","destaque":"#1 G2 (11 categorias), IDC AI Leader 2025. Melhor para eCommerce/Varejo LATAM com ROI rápido e suporte in-house."},{"posicao":3,"plataforma":"braze","score":7.6,"medalha":"🥉","destaque":"Líder de mercado em escala real-time. Melhor em personalização e ecossistema de parceiros. Requer time técnico."},{"posicao":4,"plataforma":"moengage","score":7.1,"medalha":"4️⃣","destaque":"Insights-led com melhor custo-benefício. Mais fácil de implementar. Ideal para mid-market mobile."},{"posicao":5,"plataforma":"adobe_ec","score":7.0,"medalha":"5️⃣","destaque":"Líder em dados, IA e analytics enterprise. Melhor para grandes contas com ecossistema Adobe pré-existente."},{"posicao":6,"plataforma":"salesforce_mkt","score":6.3,"medalha":"6️⃣","destaque":"Gigante CRM enterprise. Imbatível para quem já usa Salesforce. Alta complexidade e custo."},{"posicao":1,"plataforma":"netcore","score":7.1,"medalha":"🥇","destaque":"Líder em email deliverability e eCommerce search (Unbxd). Pay-for-performance único no mercado. Forte em BFSI e eComm enterprise. CRO LATAM dedicado desde 2024."},{"posicao":2,"plataforma":"activecampaign","score":6.7,"medalha":"🥈","destaque":"Melhor plataforma de automação de marketing para PMEs do mundo. 185k+ clientes, 950+ integrações, onboarding em 1–2 semanas. Ideal para agências e SaaS B2B LATAM."},{"posicao":3,"plataforma":"rdstation","score":6.4,"medalha":"🥉","destaque":"Líder absoluto em inbound marketing no Brasil. 50k+ clientes, suporte total em PT-BR, menor TCO para PMEs brasileiras. Dominante no segmento B2B SMB nacional."},{"posicao":4,"plataforma":"dito","score":6.2,"medalha":"4️⃣","destaque":"Única plataforma especializada em CRM omnichannel para varejo brasileiro (físico + digital). Insubstituível para redes de lojas BR que precisam integrar PDV, eComm e WhatsApp de vendedores."}]},"matriz_decisao_latam":{"descricao":"Guia de recomendação por perfil de cliente LATAM: qual plataforma escolher, por que e o que evitar.","perfis":[{"perfil":"App Mobile Fintech/Neobank BR (100k–5M MAU)","primeira_opcao":"clevertap","segunda_opcao":"moengage","justificativa":"Analytics profundo + push + loyalty nativo + WhatsApp; TesseractDB para dados históricos","cuidados":"Sem escritório local BR; suporte em inglês","nao_indicado":["adobe_ec"]},{"perfil":"eCommerce Varejo LATAM (mid-market, 50k–500k MAU)","primeira_opcao":"insider","segunda_opcao":"clevertap","justificativa":"Web personalization + site search + WhatsApp nativo + ROI rápido + escritório SP","cuidados":"Insider sem loyalty nativo; requer parceiro Voucherify","nao_indicado":["salesforce_mkt"]},{"perfil":"Grande Enterprise CRM-first (Bradesco, Ambev, LVMH BR)","primeira_opcao":"salesforce_mkt","segunda_opcao":"adobe_ec","justificativa":"Ecossistema AppExchange + equipe local + CRM integrado + compliance enterprise","cuidados":"Alta complexidade; SQL necessário; 12–26 semanas implementação","nao_indicado":["moengage"]},{"perfil":"App Mídia/Streaming/EdTech (engajamento mobile-first)","primeira_opcao":"clevertap","segunda_opcao":"moengage","justificativa":"Lifecycle optimizer + cohort analysis + funis profundos + notificações segmentadas","cuidados":"Crescimento de time técnico necessário para aproveitar 100%","nao_indicado":["braze"]},{"perfil":"Scale-up Tecnologia (50–500 pessoas, budget limitado)","primeira_opcao":"moengage","segunda_opcao":"insider","justificativa":"Trial disponível + SDK leve + onboarding 3–6 semanas + suporte 9/10 G2","cuidados":"Loyalty e feature flags requerem parceiros externos","nao_indicado":["adobe_ec","salesforce_mkt"]},{"perfil":"Telecom & Utilities LATAM (Claro, Vivo, Entel)","primeira_opcao":"clevertap","segunda_opcao":"salesforce_mkt","justificativa":"Loyalty nativo + WhatsApp + SMS + RCS + escala de notificações massiva","cuidados":"Precisa time interno ou parceiro SI para máximo aproveitamento","nao_indicado":["braze"]},{"perfil":"Enterprise Data-driven com Ecossistema Adobe (AEP)","primeira_opcao":"adobe_ec","segunda_opcao":"salesforce_mkt","justificativa":"AEP como CDP + AJO + CJA + AI Agents = melhor stack de dados e IA do grupo","cuidados":"Investimento muito alto; curva de aprendizado enorme; 16–30 semanas","nao_indicado":["moengage"]},{"perfil":"eCommerce Fashion/Beleza (DTC, alta personalização web)","primeira_opcao":"insider","segunda_opcao":"braze","justificativa":"Web personalization + InStory + site search IA + G2 #1 + escritório SP","cuidados":"Insider sem loyalty nativo full; integrar Voucherify","nao_indicado":["salesforce_mkt"]}]},"diferenciais_unicos":{"netcore":["Único no grupo com modelo de pricing pay-for-performance (25% variável por resultado, 2025)","Líder Gartner MQ em Search & Product Discovery 2025 (Netcore Unbxd – 2 anos consecutivos)","18 bilhões de emails/mês – maior infraestrutura de email independente do mundo","75% do tráfego email da Índia; 50% da Ásia – escala incomparável na categoria","Netcore GenAI Suite: maior suite de ferramentas de IA generativa para marketers (2025)","In-app experiences no-code via Hansel (acquired) – similar ao CleverTap Product Experiences"],"dito":["ÚNICA plataforma nacional especializada em CRM omnichannel para varejo físico + digital BR","Dito Agenda: primeiro app brasileiro de vendas ativas via WhatsApp para vendedores em loja","Integração nativa com todos os ERPs e PDVs líderes no Brasil (TOTVS, Linx, Microvix)","100% LGPD-first – dados em cloud brasileiro, suporte em PT-BR nativo, time 100% BR","Cashback nativo configurável – diferencial frente a ActiveCampaign e RD Station","Único produto no mercado brasileiro que conecta receita de loja física com campanhas digitais"],"activecampaign":["Plataforma de automação de marketing mais bem avaliada do mundo para PMEs (G2 e Capterra)","950+ integrações nativas – maior ecossistema do segmento SMB","Onboarding mais rápido do comparativo global (1–2 semanas, self-serve completo)","Trial 14 dias sem cartão de crédito com acesso a features Pro","Preço de entrada mais acessível do comparativo completo ($15/mês para 1k contatos)","Active Intelligence: automação preditiva de envio, lead scoring AI, win probability CRM"],"rdstation":["Líder absoluto do mercado brasileiro de inbound marketing – 50k+ clientes, 40+ países","Única plataforma com produto completo 100% em português brasileiro (UI, suporte, educação)","RD University: maior plataforma de educação em marketing digital do Brasil","RD Summit: maior evento de marketing e vendas da América Latina (12k+ participantes/edição)","2.000+ agências parceiras no Brasil – maior ecossistema de revenda nacional","CRM gratuito permanente integrado ao produto de marketing"]},"posicionamento_latam":{"descricao":"Onde cada novo competidor se encaixa no mapa de decisão LATAM","recomendacoes":[{"cenario":"Varejo Omnichannel Brasileiro (lojas físicas + eComm)","melhor_opcao":"dito","justificativa":"Sem alternativa nacional com a mesma profundidade de integração PDV + eComm + WhatsApp vendedor","segunda_opcao_global":"insider","nota":"Para o nicho de varejo omnichannel BR com lojas físicas, Dito não tem substituto nativo no mercado nacional"},{"cenario":"PME Brasileira – Inbound Marketing & Funil de Vendas B2B","melhor_opcao":"rdstation","justificativa":"Líder de mercado, menor TCO, suporte total PT-BR, 2k agências parceiras, CRM gratuito","segunda_opcao_global":"activecampaign","nota":"RD Station domina este segmento no Brasil de forma incontestável"},{"cenario":"Agência de Marketing ou SaaS B2B LATAM (qualquer tamanho)","melhor_opcao":"activecampaign","justificativa":"Melhor custo-benefício global, 950+ integrações, onboarding rápido, automação de referência","segunda_opcao_global":"rdstation","nota":"Para agências que atendem clientes em múltiplos países, ActiveCampaign escala melhor internacionalmente"},{"cenario":"eCommerce Enterprise BR ou MX (email + search + engagement integrados)","melhor_opcao":"netcore","justificativa":"Único com email enterprise de alta escala + Unbxd search/discovery + pay-for-performance no mesmo stack","segunda_opcao_global":"insider","nota":"Netcore Unbxd é líder Gartner em Search & Product Discovery – diferencial para eComm de grande porte"}]}};
+
+    const selectorEl = document.getElementById('platformSelector');
+    const commercialDesc = document.getElementById('commercialDesc');
+    const commercialTable = document.getElementById('commercialTable');
+    const featuresDesc = document.getElementById('featuresDesc');
+    const featuresList = document.getElementById('featuresList');
+    const specsDesc = document.getElementById('specsDesc');
+    const specsTable = document.getElementById('specsTable');
+    const scoresDesc = document.getElementById('scoresDesc');
+    const scoresTable = document.getElementById('scoresTable');
+    const scoreFinal = document.getElementById('scoreFinal');
+    const rankingList = document.getElementById('rankingList');
+    const matrixDesc = document.getElementById('matrixDesc');
+    const matrixList = document.getElementById('matrixList');
+    const comparisonArea = document.getElementById('comparisonArea');
+    const selectAllBtn = document.getElementById('selectAll');
+    const clearAllBtn = document.getElementById('clearAll');
+    const fightBtn = document.getElementById('fightBtn');
+    const selectorViewport = document.getElementById('selectorViewport');
+    const prevCompetitor = document.getElementById('prevCompetitor');
+    const nextCompetitor = document.getElementById('nextCompetitor');
+    const openScoreBtn = document.getElementById('openScore');
+    const openMatrixBtn = document.getElementById('openMatrix');
+    const scoreModal = document.getElementById('scoreModal');
+    const closeScoreBtn = document.getElementById('closeScore');
+    const matrixModal = document.getElementById('matrixModal');
+    const closeMatrixBtn = document.getElementById('closeMatrix');
+    const sourcesList = document.getElementById('sourcesList');
+
+    const state = {
+      data: DATA,
+      selected: new Set(),
+      comparisonReady: false
+    };
+
+    const TECHNICAL_CATEGORIES = new Set([
+      'Analytics Comportamental & Funis',
+      'Jornadas Automatizadas',
+      'Segmentação Avançada',
+      'Personalização & Conteúdo Dinâmico',
+      'IA Preditiva & Automação',
+      'Push Notifications',
+      'In-App & Web Engagement',
+      'Email Marketing',
+      'WhatsApp Business',
+      'SMS & RCS',
+      'Loyalty, Cupons & Carteira Digital',
+      'Product Experiments & Feature Flags',
+      'Remarketing Paid Channels',
+      'Integrações CDP & Data Warehouse',
+      'SDKs & Qualidade de APIs',
+      'Segurança & Compliance'
+    ]);
+
+    const SOURCE_LINKS = {
+      'G2': 'https://www.g2.com',
+      'Gartner Peer Insights': 'https://www.gartner.com/reviews/home',
+      'Forrester Wave': 'https://www.forrester.com',
+      'IDC MarketScape': 'https://www.idc.com',
+      'Documentação oficial de cada plataforma': 'https://clevertap.com'
+    };
+
+    const LOGO_MAP = {
+      clevertap: 'https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png',
+      braze: 'https://cdn-public.softwarereviews.com/production/favicons/offerings/8887/original/braze_fav.png',
+      salesforce_mkt: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Sf-marketingcloud-logo.png',
+      adobe_ec: 'https://wp.logos-download.com/wp-content/uploads/2024/03/Adobe_Experience_Cloud_Logo.png?dl',
+      insider: 'https://cdn.shopify.com/app-store/listing_images/027852670801695da55f09813aa1e6e6/icon/CI_By5_21ZEDEAE=.png',
+      moengage: 'https://lokalise.com/uploads/moengage_logo_a1b5ee3fe6.webp',
+      dito: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2HHwufy83oWi56HJQ0DFQERSSB4KmHpb8Og&s',
+      netcore: 'https://gdm-catalog-fmapi-prod.imgix.net/ProductLogo/0dd12ac5-db67-4102-a271-e5ad5dba8ceb.png?w=90&h=90&fit=max&dpr=3&auto=format&q=50',
+      activecampaign: 'https://s3.amazonaws.com/integrated-apps/c30c7404c61a44f6ad543a1a3d2cb17d/87fd2cf4d01e4a75928ebb42bfa7dd9f.png',
+      rdstation: 'https://cdn.prod.website-files.com/618d2912818669913e63c92e/62449537809bb9263d1cdacc_logo2.png'
+    };
+
+    const MATRIX_ICON_CART = 'https://static.vecteezy.com/system/resources/previews/053/238/870/non_2x/shopping-cart-icon-representing-online-commerce-and-retail-png.png';
+    const MATRIX_ICON_BANK = 'data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"12\" fill=\"%23F1F5F9\"/><path d=\"M12 26h40L32 14 12 26zm4 6h6v18h-6V32zm10 0h6v18h-6V32zm10 0h6v18h-6V32zm10 0h6v18h-6V32z\" fill=\"%23102C45\"/></svg>';
+    const MATRIX_ICON_TOWER = 'data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"12\" fill=\"%23F1F5F9\"/><path d=\"M32 14a4 4 0 0 1 4 4v6l8 26h-6l-2-6h-8l-2 6h-6l8-26v-6a4 4 0 0 1 4-4zm0 20-2 6h4l-2-6z\" fill=\"%23102C45\"/></svg>';
+    const MATRIX_ICON_BRIEFCASE = 'data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\"><rect width=\"64\" height=\"64\" rx=\"12\" fill=\"%23F1F5F9\"/><path d=\"M22 20h20a2 2 0 0 1 2 2v6h-4v-4H24v4h-4v-6a2 2 0 0 1 2-2zm-6 10h32a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V34a4 4 0 0 1 4-4z\" fill=\"%23102C45\"/></svg>';
+    const I18N = {
+      en: {
+        'page.title': 'Martech Comparison',
+        'page.subtitle': 'Use this view to align platform differences and build comparisons for clients.',
+        'buttons.score': 'Overall score',
+        'buttons.matrix': 'LATAM matrix',
+        'choose.title': 'Choose competitors',
+        'choose.subtitle': 'Select who enters the matchup. Cards show average score and top technical strengths.',
+        'buttons.selectAll': 'Select all',
+        'buttons.clearAll': 'Clear selection',
+        'buttons.compare': 'Compare solutions',
+        'sections.commercial': 'Commercial view',
+        'sections.features': 'Technical features',
+        'sections.specs': 'Technical specs',
+        'panel.collapse': 'Collapse',
+        'panel.expand': 'Expand',
+        'scores.title': 'Overall scores and ranking',
+        'scores.subtitle': 'See how each platform performs across the key categories.',
+        'scores.final': 'Overall final score',
+        'matrix.title': 'LATAM decision matrix',
+        'matrix.subtitle': 'Recommendations by customer profile in LATAM.',
+        'empty.noCommercial': 'No commercial data.',
+        'empty.noFeatures': 'No technical features data.',
+        'empty.noSpecs': 'No technical specs data.',
+        'empty.noScores': 'No score data.',
+        'empty.noMatrix': 'No LATAM matrix.',
+        'empty.selectCompare': 'Select platforms to compare.',
+        'headers.criteria': 'Criteria',
+        'headers.category': 'Category',
+        'matrix.first': 'First option',
+        'matrix.second': 'Second option',
+        'matrix.why': 'Why',
+        'matrix.care': 'Caution',
+        'matrix.not': 'Not recommended'
+      },
+      pt: {
+        'page.title': 'Comparativo Martech',
+        'page.subtitle': 'Use esta visão para alinhar rapidamente diferenças entre plataformas e montar comparações com clientes.',
+        'buttons.score': 'Score geral',
+        'buttons.matrix': 'Matriz LATAM',
+        'choose.title': 'Escolha os competidores',
+        'choose.subtitle': 'Selecione quem entra na briga. Os cards mostram score médio e os 3 pontos técnicos mais fortes.',
+        'buttons.selectAll': 'Selecionar todos',
+        'buttons.clearAll': 'Limpar seleção',
+        'buttons.compare': 'Comparar soluções',
+        'sections.commercial': 'Visão comercial',
+        'sections.features': 'Features técnicas',
+        'sections.specs': 'Especificações técnicas',
+        'panel.collapse': 'Recolher',
+        'panel.expand': 'Expandir',
+        'scores.title': 'Scores gerais e ranking',
+        'scores.subtitle': 'Veja o desempenho de cada plataforma nas categorias principais.',
+        'scores.final': 'Score geral final',
+        'matrix.title': 'Matriz de decisão LATAM',
+        'matrix.subtitle': 'Recomendações por perfil de cliente na LATAM.',
+        'empty.noCommercial': 'Sem dados comerciais.',
+        'empty.noFeatures': 'Sem dados de features técnicas.',
+        'empty.noSpecs': 'Sem dados técnicos.',
+        'empty.noScores': 'Sem dados de scores.',
+        'empty.noMatrix': 'Sem matriz LATAM.',
+        'empty.selectCompare': 'Selecione plataformas para comparar.',
+        'headers.criteria': 'Critério',
+        'headers.category': 'Categoria',
+        'matrix.first': 'Primeira opção',
+        'matrix.second': 'Segunda opção',
+        'matrix.why': 'Justificativa',
+        'matrix.care': 'Cuidados',
+        'matrix.not': 'Não indicado'
+      },
+      es: {
+        'page.title': 'Comparativo Martech',
+        'page.subtitle': 'Usa esta vista para alinear diferencias entre plataformas y preparar comparaciones con clientes.',
+        'buttons.score': 'Score general',
+        'buttons.matrix': 'Matriz LATAM',
+        'choose.title': 'Elige competidores',
+        'choose.subtitle': 'Selecciona quienes entran en la comparativa. Los cards muestran score medio y los 3 puntos técnicos clave.',
+        'buttons.selectAll': 'Seleccionar todos',
+        'buttons.clearAll': 'Limpiar selección',
+        'buttons.compare': 'Comparar soluciones',
+        'sections.commercial': 'Visión comercial',
+        'sections.features': 'Features técnicas',
+        'sections.specs': 'Especificaciones técnicas',
+        'panel.collapse': 'Contraer',
+        'panel.expand': 'Expandir',
+        'scores.title': 'Scores generales y ranking',
+        'scores.subtitle': 'Mira el desempeño de cada plataforma en las categorías clave.',
+        'scores.final': 'Score general final',
+        'matrix.title': 'Matriz de decisión LATAM',
+        'matrix.subtitle': 'Recomendaciones por perfil de cliente en LATAM.',
+        'empty.noCommercial': 'Sin datos comerciales.',
+        'empty.noFeatures': 'Sin datos de features técnicas.',
+        'empty.noSpecs': 'Sin datos técnicos.',
+        'empty.noScores': 'Sin datos de scores.',
+        'empty.noMatrix': 'Sin matriz LATAM.',
+        'empty.selectCompare': 'Selecciona plataformas para comparar.',
+        'headers.criteria': 'Criterio',
+        'headers.category': 'Categoría',
+        'matrix.first': 'Primera opción',
+        'matrix.second': 'Segunda opción',
+        'matrix.why': 'Justificación',
+        'matrix.care': 'Cuidados',
+        'matrix.not': 'No recomendado'
+      }
+    };
+
+    let currentLang = 'pt';
+    const tableNavUpdates = [];
+    function t(key){
+      return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
+    }
+
+    function applyI18n(){
+      document.documentElement.lang = currentLang === 'pt' ? 'pt-BR' : (currentLang === 'es' ? 'es' : 'en');
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const value = I18N[currentLang] && I18N[currentLang][key];
+        if (value) el.textContent = value;
+      });
+      const langLabelMap = { pt: 'PT', en: 'EN', es: 'ES' };
+      const label = document.getElementById('langDDLabel');
+      if (label) label.textContent = langLabelMap[currentLang] || 'EN';
+      document.querySelectorAll('.panel-collapsible').forEach(detail => updatePanelToggle(detail));
+    }
+
+    function setLang(lang){
+      currentLang = lang || 'en';
+      applyI18n();
+      try{
+        renderAll();
+      } catch (err){
+        console.error(err);
+        renderSelector();
+        updateCarouselButtons();
+      }
+    }
+
+    const SCORE_INFO = {
+      en: {
+        'Presenca & Cobertura LATAM': 'Regional coverage, local operations and support, plus maturity in LATAM.',
+        'Adequacao por Segmento (SMB-Enterprise)': 'Fit across company sizes, data volumes and operational complexity.',
+        'Custo-Beneficio': 'Value delivered versus investment and operating cost.',
+        'Time-to-Value / Onboarding': 'Implementation speed, go-live ease and time to results.',
+        'Complexidade Tecnica (facilidade)': 'Technical effort to implement, maintain and operate.',
+        'Suporte & CSM': 'Support quality, customer success and strategic guidance.',
+        'Analytics Comportamental & Funis': 'Behavior analytics, funnels, cohorts and conversion insights.',
+        'Jornadas Automatizadas': 'Multi-step orchestration with triggers, conditions and channels.',
+        'Segmentacao Avancada': 'Dynamic segments based on behavior, attributes and real-time events.',
+        'Personalizacao & Conteudo Dinamico': 'Dynamic content and 1:1 personalization in real time.',
+        'IA Preditiva & Automacao': 'AI for churn prediction, retention, next best action and content automation.',
+        'Push Notifications': 'Mobile and web push with personalization and delivery best practices.',
+        'In-App & Web Engagement': 'In-app messages and web overlays for contextual engagement.',
+        'Email Marketing': 'Email campaigns, automation and personalization.',
+        'WhatsApp Business': 'WhatsApp channel maturity, native integration and conversational features.',
+        'SMS & RCS': 'SMS and RCS coverage and capability for transactional and promo messages.',
+        'Loyalty, Cupons & Carteira Digital': 'Native loyalty, coupons, vouchers and digital wallets.',
+        'Product Experiments & Feature Flags': 'Experimentation, A/B testing and feature flags.',
+        'Remarketing Paid Channels': 'Audience sync for paid channels like Google and Meta.',
+        'Integracoes CDP & Data Warehouse': 'Connectivity with CDPs, data lakes and warehouses.',
+        'SDKs & Qualidade de APIs': 'SDK coverage, API quality and documentation depth.',
+        'Seguranca & Compliance': 'Certifications, privacy, access control and compliance.',
+        'Ecossistema de Parceiros': 'Breadth and depth of partner integrations.'
+      },
+      pt: {
+        'Presenca & Cobertura LATAM': 'Cobertura regional, operacao e suporte local, alem de referencias e maturidade na America Latina.',
+        'Adequacao por Segmento (SMB-Enterprise)': 'Aderencia da plataforma para diferentes portes, volumes de dados e complexidade operacional.',
+        'Custo-Beneficio': 'Relacao entre investimento, custo operacional e valor entregue frente ao mercado.',
+        'Time-to-Value / Onboarding': 'Velocidade de implementacao, facilidade de go-live e tempo ate gerar resultados.',
+        'Complexidade Tecnica (facilidade)': 'Esforco tecnico para implementar, manter e operar (SDK, integracoes, governanca).',
+        'Suporte & CSM': 'Qualidade de suporte, sucesso do cliente, onboarding guiado e acompanhamentos estrategicos.',
+        'Analytics Comportamental & Funis': 'Analise de comportamento, funis, coortes e insights para otimizar conversao e retencao.',
+        'Jornadas Automatizadas': 'Orquestracao de fluxos multi-etapa com triggers, condicoes, delays e canais integrados.',
+        'Segmentacao Avancada': 'Segmentos dinamicos por comportamento, RFM, atributos e eventos em tempo real.',
+        'Personalizacao & Conteudo Dinamico': 'Conteudo dinamico e personalizacao 1:1 em tempo real por perfil e contexto.',
+        'IA Preditiva & Automacao': 'Capacidade de usar IA para predicao de churn, retention, next best action e automacao de conteudo.',
+        'Push Notifications': 'Push mobile e web com personalizacao, rich media e boas praticas de entrega.',
+        'In-App & Web Engagement': 'Mensagens in-app, overlays web, onboarding contextual e experiencias no produto.',
+        'Email Marketing': 'Campanhas, templates, automacoes e personalizacao para email marketing e transacional.',
+        'WhatsApp Business': 'Maturidade do canal WhatsApp, integracao nativa e recursos conversacionais.',
+        'SMS & RCS': 'Cobertura, qualidade e recursos de SMS e RCS para mensagens transacionais e promocionais.',
+        'Loyalty, Cupons & Carteira Digital': 'Recursos nativos de fidelidade, cupons, vouchers e carteiras digitais.',
+        'Product Experiments & Feature Flags': 'Experimentacao, testes A/B e feature flags para otimizar produto e mensagens.',
+        'Remarketing Paid Channels': 'Sincronizacao de audiencias para Google, Meta e outros canais pagos.',
+        'Integracoes CDP & Data Warehouse': 'Conectividade com CDPs, data lakes e data warehouses para ativacao e BI.',
+        'SDKs & Qualidade de APIs': 'Cobertura de SDKs, qualidade das APIs e profundidade da documentacao tecnica.',
+        'Seguranca & Compliance': 'Certificacoes, privacidade, controle de acesso e requisitos regulatórios.',
+        'Ecossistema de Parceiros': 'Quantidade, qualidade e profundidade das integracoes com parceiros.'
+      },
+      es: {
+        'Presenca & Cobertura LATAM': 'Cobertura regional, operacion y soporte local, ademas de madurez en LATAM.',
+        'Adequacao por Segmento (SMB-Enterprise)': 'Adecuacion para distintos tamanos, volumenes de datos y complejidad.',
+        'Custo-Beneficio': 'Relacion entre inversion, costo operativo y valor entregado.',
+        'Time-to-Value / Onboarding': 'Velocidad de implementacion, facilidad de go-live y tiempo a resultados.',
+        'Complexidade Tecnica (facilidade)': 'Esfuerzo tecnico para implementar, mantener y operar.',
+        'Suporte & CSM': 'Calidad de soporte, customer success y acompanamiento estrategico.',
+        'Analytics Comportamental & Funis': 'Analitica de comportamiento, funnels, cohorts e insights de conversion.',
+        'Jornadas Automatizadas': 'Orquestacion de flujos multi-etapa con triggers, condiciones y canales.',
+        'Segmentacao Avancada': 'Segmentos dinamicos por comportamiento, atributos y eventos en tiempo real.',
+        'Personalizacao & Conteudo Dinamico': 'Contenido dinamico y personalizacion 1:1 en tiempo real.',
+        'IA Preditiva & Automacao': 'IA para prediccion de churn, retention, next best action y automatizacion de contenido.',
+        'Push Notifications': 'Push mobile y web con personalizacion y buenas practicas de entrega.',
+        'In-App & Web Engagement': 'Mensajes in-app y overlays web para engagement contextual.',
+        'Email Marketing': 'Campanas, automatizaciones y personalizacion de email.',
+        'WhatsApp Business': 'Madurez del canal WhatsApp, integracion nativa y funciones conversacionales.',
+        'SMS & RCS': 'Cobertura y capacidades de SMS y RCS para mensajes transaccionales y promo.',
+        'Loyalty, Cupons & Carteira Digital': 'Recursos nativos de fidelidad, cupones, vouchers y wallets.',
+        'Product Experiments & Feature Flags': 'Experimentacion, pruebas A/B y feature flags.',
+        'Remarketing Paid Channels': 'Sincronizacion de audiencias para canales pagos.',
+        'Integracoes CDP & Data Warehouse': 'Conectividad con CDPs, data lakes y data warehouses.',
+        'SDKs & Qualidade de APIs': 'Cobertura de SDKs, calidad de APIs y documentacion tecnica.',
+        'Seguranca & Compliance': 'Certificaciones, privacidad, control de acceso y compliance.',
+        'Ecossistema de Parceiros': 'Amplitud y profundidad de integraciones con partners.'
+      }
+    };
+
+    function escapeHtml(str){
+      return String(str || '')
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+    }
+
+    function scoreClass(score){
+      if (score >= 9) return 'score-high';
+      if (score >= 7) return 'score-mid';
+      if (score >= 5) return 'score-basic';
+      return 'score-low';
+    }
+
+    function formatValue(value){
+      if (value === null || value === undefined) return '—';
+      if (Array.isArray(value)){
+        return `<ul>${value.map(v => `<li>${escapeHtml(v)}</li>`).join('')}</ul>`;
+      }
+      if (typeof value === 'object'){
+        if (Object.prototype.hasOwnProperty.call(value, 'total') && Object.prototype.hasOwnProperty.call(value, 'lista')){
+          const list = Array.isArray(value.lista) ? value.lista : [];
+          return `${escapeHtml(String(value.total))} canais<br><span style="font-size:11px;opacity:.7;">${escapeHtml(list.join(', '))}</span>`;
+        }
+        return escapeHtml(JSON.stringify(value));
+      }
+      return escapeHtml(String(value));
+    }
+
+    function getPlatform(id){
+      return (state.data?.plataformas || []).find(p => p.id === id);
+    }
+
+    function getSelectedPlatforms(){
+      const all = state.data?.plataformas || [];
+      return all.filter(p => state.selected.has(p.id));
+    }
+
+    function setDefaultSelection(){
+      const platforms = state.data?.plataformas || [];
+      if (!platforms.length) return;
+      const ranking = state.data?.scores_gerais?.ranking || [];
+      const defaults = [];
+      if (platforms.find(p => p.id === 'clevertap')) defaults.push('clevertap');
+      ranking.forEach(item => {
+        if (defaults.length >= 3) return;
+        if (!defaults.includes(item.plataforma)) defaults.push(item.plataforma);
+      });
+      if (!defaults.length) platforms.slice(0, 3).forEach(p => defaults.push(p.id));
+      defaults.forEach(id => state.selected.add(id));
+    }
+
+    function getScoreFinal(platformId){
+      const val = state.data?.scores_gerais?.score_final?.[platformId];
+      return typeof val === 'number' ? val : null;
+    }
+
+    function getTopPoints(platformId, limit = 3){
+      const categories = state.data?.scores_gerais?.categorias || [];
+      return categories
+        .filter(cat => TECHNICAL_CATEGORIES.has(cat.categoria))
+        .map(cat => ({ name: cat.categoria, score: cat.scores?.[platformId] }))
+        .filter(item => typeof item.score === 'number')
+        .sort((a, b) => b.score - a.score)
+        .slice(0, limit)
+        .map(item => item.name);
+    }
+
+    function renderStars(score){
+      if (typeof score !== 'number') return Array.from({ length: 5 }).map(() => '<span class="star">★</span>').join('');
+      const rating = score / 2;
+      const rounded = Math.round(rating * 2) / 2;
+      return Array.from({ length: 5 }).map((_, i) => {
+        const value = i + 1;
+        if (rounded >= value) return '<span class="star filled">★</span>';
+        if (rounded >= value - 0.5) return '<span class="star half">★</span>';
+        return '<span class="star">★</span>';
+      }).join('');
+    }
+
+    function initTableNav(tableEl){
+      if (!tableEl) return;
+      const wrapper = tableEl;
+      const nav = wrapper.closest('.table-scroll');
+      if (!nav) return;
+      const prev = nav.querySelector('[data-scroll=\"prev\"]');
+      const next = nav.querySelector('[data-scroll=\"next\"]');
+      if (!prev || !next) return;
+
+      let edgeResetTimer = null;
+      function resetEdgeFlags(){
+        wrapper.dataset.edgeLeft = '0';
+        wrapper.dataset.edgeRight = '0';
+      }
+
+      function update(){
+        const max = wrapper.scrollWidth - wrapper.clientWidth;
+        const atStart = wrapper.scrollLeft <= 1;
+        const atEnd = wrapper.scrollLeft >= max - 1;
+        const disable = max <= 0;
+        prev.disabled = disable || atStart;
+        next.disabled = disable || atEnd;
+        if (!atStart && !atEnd) resetEdgeFlags();
+      }
+
+      prev.addEventListener('click', () => {
+        const step = Math.max(240, Math.round(wrapper.clientWidth * 0.8));
+        wrapper.scrollBy({ left: -step, behavior: 'smooth' });
+      });
+      next.addEventListener('click', () => {
+        const step = Math.max(240, Math.round(wrapper.clientWidth * 0.8));
+        wrapper.scrollBy({ left: step, behavior: 'smooth' });
+      });
+
+      wrapper.addEventListener('scroll', update);
+      window.addEventListener('resize', update);
+      wrapper.addEventListener('wheel', (e) => {
+        if (wrapper.scrollWidth <= wrapper.clientWidth) return;
+        e.preventDefault();
+        const direction = e.deltaY > 0 ? 1 : -1;
+        const max = wrapper.scrollWidth - wrapper.clientWidth;
+        const atStart = wrapper.scrollLeft <= 1;
+        const atEnd = wrapper.scrollLeft >= max - 1;
+
+        if (direction > 0 && atEnd){
+          if (wrapper.dataset.edgeRight === '1'){
+            wrapper.scrollTo({ left: 0, behavior: 'smooth' });
+            resetEdgeFlags();
+            return;
+          }
+          wrapper.dataset.edgeRight = '1';
+        } else if (direction < 0 && atStart){
+          if (wrapper.dataset.edgeLeft === '1'){
+            wrapper.scrollTo({ left: max, behavior: 'smooth' });
+            resetEdgeFlags();
+            return;
+          }
+          wrapper.dataset.edgeLeft = '1';
+        } else {
+          resetEdgeFlags();
+        }
+
+        const step = Math.max(240, Math.round(wrapper.clientWidth * 0.8));
+        wrapper.scrollBy({ left: direction * step, behavior: 'smooth' });
+
+        if (edgeResetTimer) window.clearTimeout(edgeResetTimer);
+        edgeResetTimer = window.setTimeout(resetEdgeFlags, 900);
+      }, { passive: false });
+      tableNavUpdates.push(update);
+      resetEdgeFlags();
+      update();
+    }
+
+    function refreshTableNavs(){
+      tableNavUpdates.forEach(fn => fn());
+    }
+
+    function getMatrixIcon(profileText){
+      const text = String(profileText || '').toLowerCase();
+      if (text.includes('ecommerce') || text.includes('varejo') || text.includes('retail') || text.includes('fashion') || text.includes('beleza')){
+        return MATRIX_ICON_CART;
+      }
+      if (text.includes('fintech') || text.includes('neobank') || text.includes('bank')){
+        return MATRIX_ICON_BANK;
+      }
+      if (text.includes('telecom') || text.includes('utilities')){
+        return MATRIX_ICON_TOWER;
+      }
+      if (text.includes('enterprise') || text.includes('crm') || text.includes('data-driven') || text.includes('scale-up')){
+        return MATRIX_ICON_BRIEFCASE;
+      }
+      return MATRIX_ICON_BRIEFCASE;
+    }
+
+    function renderSelector(){
+      const platforms = state.data?.plataformas || [];
+      selectorEl.innerHTML = platforms.map(p => {
+        const logoUrl = LOGO_MAP[p.id] || '';
+        const logoHtml = logoUrl
+          ? `<img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(p.nome)}">`
+          : `<span>${escapeHtml((p.nome || 'C')[0])}</span>`;
+        const score = getScoreFinal(p.id);
+        const scoreText = typeof score === 'number' ? score.toFixed(1) : '—';
+        const points = getTopPoints(p.id, 3);
+        const pointsHtml = points.length
+          ? points.map(pt => `<li>${escapeHtml(pt)}</li>`).join('')
+          : '<li>Sem pontos destacados</li>';
+
+        const accentMap = {
+          clevertap: '#F04444',
+          braze: '#7C3AED',
+          moengage: '#1E3A8A',
+          salesforce_mkt: '#38BDF8',
+          adobe_ec: '#EF4444',
+          insider: '#F59E0B',
+          netcore: '#FDBA74',
+          dito: '#1E3A8A',
+          activecampaign: '#2563EB',
+          rdstation: '#2DD4BF'
+        };
+        const accent = accentMap[p.id] || '#102C45';
+        return `
+          <label class="select-card" style="--accent-color: ${escapeHtml(accent)};">
+            <input type="checkbox" value="${escapeHtml(p.id)}" ${state.selected.has(p.id) ? 'checked' : ''}>
+            <div class="select-card-inner">
+              <div class="select-top">
+                <div class="select-logo">${logoHtml}</div>
+                <div>
+                  <div class="select-name">${escapeHtml(p.nome)}</div>
+                </div>
+              </div>
+              <div class="select-score">
+                <div class="stars" aria-hidden="true">${renderStars(score)}</div>
+                <div class="score-number">${escapeHtml(scoreText)}</div>
+              </div>
+              <div class="select-summary">${escapeHtml(p.tagline || '')}</div>
+              <div class="points-title">Top 3 pontos</div>
+              <ul class="points-list">${pointsHtml}</ul>
+              <div class="select-links">
+                ${p.docs ? `<a class="select-link" href="${escapeHtml(p.docs)}" target="_blank" rel="noopener">Docs</a>` : ''}
+                ${p.website ? `<a class="select-link" href="${escapeHtml(p.website)}" target="_blank" rel="noopener">Site</a>` : ''}
+              </div>
+            </div>
+          </label>
+        `;
+      }).join('');
+
+      selectorEl.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+          cb.checked ? state.selected.add(cb.value) : state.selected.delete(cb.value);
+          renderAll();
+        });
+      });
+      updateCarouselButtons();
+    }
+
+    function renderSources(){
+      if (!sourcesList) return;
+      const sources = state.data?.meta?.fontes || [];
+      sourcesList.innerHTML = sources.map(source => {
+        const label = String(source || '').trim();
+        if (!label) return '';
+        const url = SOURCE_LINKS[label] || `https://www.google.com/search?q=${encodeURIComponent(label)}`;
+        return `<a class="footer-link" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`;
+      }).join('');
+    }
+
+    function scrollSelector(direction){
+      if (!selectorViewport) return;
+      const card = selectorEl.querySelector('.select-card-inner');
+      const step = card ? card.getBoundingClientRect().width + 16 : 280;
+      const maxScroll = selectorViewport.scrollWidth - selectorViewport.clientWidth;
+      if (direction > 0 && selectorViewport.scrollLeft >= maxScroll - 2){
+        selectorViewport.scrollTo({ left: 0, behavior: 'smooth' });
+        return;
+      }
+      if (direction < 0 && selectorViewport.scrollLeft <= 2){
+        selectorViewport.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        return;
+      }
+      selectorViewport.scrollBy({ left: step * direction, behavior: 'smooth' });
+    }
+
+    function updateCarouselButtons(){
+      if (!selectorViewport || !prevCompetitor || !nextCompetitor) return;
+      prevCompetitor.disabled = false;
+      nextCompetitor.disabled = false;
+    }
+
+    function renderCommercial(){
+      const commercial = state.data?.analise_comercial;
+      if (!commercial){
+        commercialDesc.textContent = '';
+        commercialTable.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.noCommercial'))}</div>`;
+        refreshTableNavs();
+        return;
+      }
+      commercialDesc.textContent = commercial.descricao || '';
+
+      const selected = getSelectedPlatforms();
+      if (!selected.length){
+        commercialTable.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.selectCompare'))}</div>`;
+        refreshTableNavs();
+        return;
+      }
+
+      const head = `<tr><th>${escapeHtml(t('headers.criteria'))}</th>${selected.map(p => `<th>${escapeHtml(p.nome)}</th>`).join('')}</tr>`;
+      const rows = commercial.criterios.map(c => {
+        const rowCells = selected.map(p => `<td>${formatValue(c.dados?.[p.id])}</td>`).join('');
+        return `<tr><td><strong>${escapeHtml(c.criterio)}</strong></td>${rowCells}</tr>`;
+      }).join('');
+
+      commercialTable.innerHTML = `
+        <table class="compare-table">
+          <thead>${head}</thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+      refreshTableNavs();
+    }
+
+    function renderFeatures(){
+      const features = state.data?.features_tecnicas;
+      if (!features){
+        featuresDesc.textContent = '';
+        featuresList.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.noFeatures'))}</div>`;
+        return;
+      }
+      featuresDesc.textContent = features.descricao || '';
+      const selected = getSelectedPlatforms();
+      if (!selected.length){
+        featuresList.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.selectCompare'))}</div>`;
+        return;
+      }
+
+      featuresList.innerHTML = features.features.map(feature => {
+        const cards = selected.map(p => {
+          const data = feature.plataformas?.[p.id];
+          const score = data?.score;
+          const desc = data?.descricao || '—';
+          const badge = typeof score === 'number'
+            ? `<span class="score-badge ${scoreClass(score)}">${score.toFixed(0)}</span>`
+            : '';
+          return `
+            <div class="feature-card">
+              <h5>${escapeHtml(p.nome)} ${badge}</h5>
+              <div class="feature-desc">${escapeHtml(desc)}</div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <details class="feature-item">
+            <summary class="feature-summary">
+              <span>${escapeHtml(feature.nome)}</span>
+              <span>${escapeHtml(feature.categoria || '')}</span>
+            </summary>
+            <div class="feature-meta">${escapeHtml(feature.nome_mercado || '')}</div>
+            <div class="feature-meta">${escapeHtml(feature.casos_de_uso || '')}</div>
+            <div class="feature-grid">${cards}</div>
+          </details>
+        `;
+      }).join('');
+    }
+
+    function renderSpecs(){
+      const specs = state.data?.specs_tecnicas;
+      if (!specs){
+        specsDesc.textContent = '';
+        specsTable.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.noSpecs'))}</div>`;
+        refreshTableNavs();
+        return;
+      }
+      specsDesc.textContent = specs.descricao || '';
+      const selected = getSelectedPlatforms();
+      if (!selected.length){
+        specsTable.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.selectCompare'))}</div>`;
+        refreshTableNavs();
+        return;
+      }
+
+      const head = `<tr><th>${escapeHtml(t('headers.criteria'))}</th>${selected.map(p => `<th>${escapeHtml(p.nome)}</th>`).join('')}</tr>`;
+      const rows = specs.criterios.map(c => {
+        const rowCells = selected.map(p => `<td>${formatValue(c.dados?.[p.id])}</td>`).join('');
+        return `<tr><td><strong>${escapeHtml(c.criterio)}</strong></td>${rowCells}</tr>`;
+      }).join('');
+
+      specsTable.innerHTML = `
+        <table class="compare-table">
+          <thead>${head}</thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+      refreshTableNavs();
+    }
+
+    function renderScores(){
+      const scores = state.data?.scores_gerais;
+      if (!scores){
+        scoresDesc.textContent = '';
+        scoresTable.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.noScores'))}</div>`;
+        refreshTableNavs();
+        return;
+      }
+      scoresDesc.textContent = scores.descricao || '';
+      const selected = getSelectedPlatforms();
+      if (!selected.length){
+        scoresTable.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.selectCompare'))}</div>`;
+        scoreFinal.innerHTML = '';
+        rankingList.innerHTML = '';
+        refreshTableNavs();
+        return;
+      }
+
+      const head = `<tr><th>${escapeHtml(t('headers.category'))}</th>${selected.map(p => `<th>${escapeHtml(p.nome)}</th>`).join('')}</tr>`;
+      const rows = scores.categorias.map(cat => {
+        const key = String(cat.categoria || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+        const info = (SCORE_INFO[currentLang] && SCORE_INFO[currentLang][key]) || SCORE_INFO.en[key] || 'Indicador de comparacao por categoria no mercado.';
+        const infoHtml = `
+          <span class="info-icon" aria-label="Informacao">
+            <img src="https://static.thenounproject.com/png/2392583-200.png" alt="">
+            <span class="info-bubble">${escapeHtml(info)}</span>
+          </span>
+        `;
+        const rowCells = selected.map(p => {
+          const val = cat.scores?.[p.id];
+          const badge = typeof val === 'number'
+            ? `<span class="score-badge ${scoreClass(val)}">${val}</span>`
+            : '—';
+          return `<td>${badge}</td>`;
+        }).join('');
+        return `<tr><td>${escapeHtml(cat.categoria)} ${infoHtml}</td>${rowCells}</tr>`;
+      }).join('');
+
+      scoresTable.innerHTML = `
+        <table class="compare-table sticky-first">
+          <thead>${head}</thead>
+          <tbody>${rows}</tbody>
+        </table>
+      `;
+
+      const allPlatforms = state.data?.plataformas || [];
+      const scoreEntries = allPlatforms
+        .map(p => ({ platform: p, score: scores.score_final?.[p.id] }))
+        .filter(item => typeof item.score === 'number')
+        .sort((a, b) => b.score - a.score);
+
+      const topThree = scoreEntries.slice(0, 3);
+      const rest = scoreEntries.slice(3);
+      const podiumLabels = ['1º', '2º', '3º'];
+
+      function podiumCard(item, idx){
+        const logoUrl = LOGO_MAP[item.platform.id] || '';
+        const logoHtml = logoUrl
+          ? `<img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(item.platform.nome)}">`
+          : `<span>${escapeHtml((item.platform.nome || 'C')[0])}</span>`;
+        return `
+          <div class="podium-card rank-${idx + 1}">
+            <div class="score-logo">${logoHtml}</div>
+            <div>
+              <div class="podium-rank">${podiumLabels[idx] || `${idx + 1}º`}</div>
+              <div class="score-name">${escapeHtml(item.platform.nome)}</div>
+              <div class="podium-score">${escapeHtml(String(item.score))}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      scoreFinal.innerHTML = `
+        <div class="podium">
+          <div class="podium-row">
+            ${topThree.map(podiumCard).join('')}
+          </div>
+          <div class="podium-row">
+            ${rest.map((item, idx) => podiumCard(item, idx + 3)).join('')}
+          </div>
+        </div>
+      `;
+
+      const rankingByPlatform = {};
+      (scores.ranking || []).forEach(item => {
+        if (item && item.plataforma) rankingByPlatform[item.plataforma] = item;
+      });
+      const rankingEntries = Object.entries(scores.score_final || {})
+        .map(([plataforma, score]) => ({ plataforma, score }))
+        .filter(item => typeof item.score === 'number')
+        .sort((a, b) => b.score - a.score);
+      const medals = ['🥇', '🥈', '🥉'];
+      const rankingItems = rankingEntries.map((entry, idx) => {
+        const base = rankingByPlatform[entry.plataforma] || {};
+        return {
+          plataforma: entry.plataforma,
+          score: entry.score,
+          medalha: medals[idx] || `${idx + 1}º`,
+          destaque: base.destaque || ''
+        };
+      });
+
+      rankingList.innerHTML = rankingItems.map((item, idx) => {
+        const plat = getPlatform(item.plataforma);
+        const logoUrl = LOGO_MAP[item.plataforma] || '';
+        const logoHtml = logoUrl
+          ? `<img src="${escapeHtml(logoUrl)}" alt="${escapeHtml(plat?.nome || item.plataforma)}">`
+          : `<span>${escapeHtml((plat?.nome || 'C')[0])}</span>`;
+        const rankClass = `rank-${idx + 1}`;
+        return `
+          <div class="ranking-item ${rankClass}">
+            <div class="ranking-logo">${logoHtml}</div>
+            <div class="ranking-medal">${escapeHtml(item.medalha || '')}</div>
+            <div class="ranking-text">
+              <div><strong>${escapeHtml(plat?.nome || item.plataforma)}</strong> — ${escapeHtml(String(item.score))}</div>
+              <div>${escapeHtml(item.destaque || '')}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      refreshTableNavs();
+    }
+
+    function renderMatrix(){
+      const matrix = state.data?.matriz_decisao_latam;
+      if (!matrix){
+        matrixDesc.textContent = '';
+        matrixList.innerHTML = `<div class="empty-state">${escapeHtml(t('empty.noMatrix'))}</div>`;
+        return;
+      }
+      matrixDesc.textContent = matrix.descricao || '';
+      const selected = getSelectedPlatforms();
+      const selectedIds = new Set(selected.map(p => p.id));
+
+      matrixList.innerHTML = (matrix.perfis || []).map(profile => {
+        const p1 = getPlatform(profile.primeira_opcao);
+        const p2 = getPlatform(profile.segunda_opcao);
+        const nots = (profile.nao_indicado || []).map(id => getPlatform(id)?.nome || id).join(', ');
+        const p1Name = p1?.nome || profile.primeira_opcao;
+        const p2Name = p2?.nome || profile.segunda_opcao;
+        const highlight1 = selectedIds.has(profile.primeira_opcao) ? ' ✅' : '';
+        const highlight2 = selectedIds.has(profile.segunda_opcao) ? ' ✅' : '';
+        const iconUrl = getMatrixIcon(profile.perfil);
+        const iconHtml = iconUrl ? `<img src="${escapeHtml(iconUrl)}" alt="">` : '';
+
+        return `
+          <div class="profile-card">
+            <div class="profile-head">
+              <div class="profile-icon">${iconHtml}</div>
+              <div class="profile-title">${escapeHtml(profile.perfil || '')}</div>
+            </div>
+            <div class="profile-line"><span class="profile-highlight">${escapeHtml(t('matrix.first'))}:</span> ${escapeHtml(p1Name)}${highlight1}</div>
+            <div class="profile-line"><span class="profile-highlight">${escapeHtml(t('matrix.second'))}:</span> ${escapeHtml(p2Name)}${highlight2}</div>
+            <div class="profile-line"><span class="profile-highlight">${escapeHtml(t('matrix.why'))}:</span> ${escapeHtml(profile.justificativa || '')}</div>
+            <div class="profile-line"><span class="profile-highlight">${escapeHtml(t('matrix.care'))}:</span> ${escapeHtml(profile.cuidados || '')}</div>
+            <div class="profile-line"><span class="profile-highlight">${escapeHtml(t('matrix.not'))}:</span> ${escapeHtml(nots)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderAll(){
+      renderSelector();
+      const canFight = state.selected.size >= 2;
+      fightBtn.disabled = !canFight;
+      fightBtn.classList.toggle('is-hot', canFight);
+      openScoreBtn.disabled = !state.comparisonReady;
+      openMatrixBtn.disabled = !state.comparisonReady;
+      comparisonArea.classList.toggle('is-hidden', !state.comparisonReady);
+
+      if (!state.comparisonReady) return;
+      renderCommercial();
+      renderFeatures();
+      renderSpecs();
+      renderScores();
+      renderMatrix();
+    }
+
+    selectAllBtn.addEventListener('click', () => {
+      (state.data?.plataformas || []).forEach(p => state.selected.add(p.id));
+      renderAll();
+    });
+    clearAllBtn.addEventListener('click', () => {
+      state.selected.clear();
+      renderAll();
+    });
+
+    if (prevCompetitor && nextCompetitor && selectorViewport){
+      prevCompetitor.addEventListener('click', () => scrollSelector(-1));
+      nextCompetitor.addEventListener('click', () => scrollSelector(1));
+      selectorViewport.addEventListener('scroll', updateCarouselButtons);
+      window.addEventListener('resize', updateCarouselButtons);
+      selectorViewport.dataset.edgeRight = '0';
+      selectorViewport.dataset.edgeLeft = '0';
+    }
+
+    fightBtn.addEventListener('click', () => {
+      if (state.selected.size < 2) return;
+      state.comparisonReady = true;
+      renderAll();
+      comparisonArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    function openModal(modal){
+      if (!modal) return;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      const dialog = modal.querySelector('.modal');
+      if (dialog) dialog.focus();
+    }
+
+    function closeModal(modal){
+      if (!modal) return;
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    }
+
+    openScoreBtn.addEventListener('click', () => {
+      if (!state.comparisonReady) return;
+      renderScores();
+      openModal(scoreModal);
+    });
+    openMatrixBtn.addEventListener('click', () => {
+      if (!state.comparisonReady) return;
+      renderMatrix();
+      openModal(matrixModal);
+    });
+    closeScoreBtn.addEventListener('click', () => closeModal(scoreModal));
+    closeMatrixBtn.addEventListener('click', () => closeModal(matrixModal));
+    scoreModal.addEventListener('click', (e) => {
+      if (e.target === scoreModal) closeModal(scoreModal);
+    });
+    matrixModal.addEventListener('click', (e) => {
+      if (e.target === matrixModal) closeModal(matrixModal);
+    });
+
+    function updatePanelToggle(detail){
+      const toggle = detail.querySelector('.panel-toggle');
+      if (!toggle) return;
+      toggle.textContent = detail.open ? t('panel.collapse') : t('panel.expand');
+    }
+
+    document.querySelectorAll('.panel-collapsible').forEach(detail => {
+      updatePanelToggle(detail);
+      detail.addEventListener('toggle', () => updatePanelToggle(detail));
+    });
+
+    const langDD = document.getElementById('langDD');
+    const langDDBtn = document.getElementById('langDDBtn');
+    const langDDMenu = document.getElementById('langDDMenu');
+    function closeLangMenu(){
+      if (!langDD) return;
+      langDD.classList.remove('open');
+      langDDBtn.setAttribute('aria-expanded', 'false');
+    }
+    function openLangMenu(){
+      if (!langDD) return;
+      langDD.classList.add('open');
+      langDDBtn.setAttribute('aria-expanded', 'true');
+      const first = langDD.querySelector('.lang-dd-item');
+      if (first) first.focus();
+    }
+    if (langDD && langDDBtn && langDDMenu){
+      langDDBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        langDD.classList.contains('open') ? closeLangMenu() : openLangMenu();
+      });
+      langDDMenu.addEventListener('click', (e) => {
+        const item = e.target.closest('.lang-dd-item');
+        if (!item) return;
+        setLang(item.getAttribute('data-lang-select'));
+        closeLangMenu();
+        langDDBtn.focus();
+      });
+      document.addEventListener('click', () => closeLangMenu());
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (scoreModal.classList.contains('open')) closeModal(scoreModal);
+      if (matrixModal.classList.contains('open')) closeModal(matrixModal);
+      closeLangMenu();
+    });
+
+    (function init(){
+      const meta = state.data?.meta;
+      if (meta){
+        document.getElementById('pageTitle').textContent = meta.titulo || 'Comparativo Martech';
+        document.getElementById('pageSubtitle').textContent = meta.disclaimer || 'Use esta visão para alinhar rapidamente diferenças entre plataformas e montar comparações com clientes.';
+      }
+      renderSelector();
+      updateCarouselButtons();
+      renderSources();
+      setLang('pt');
+      initTableNav(commercialTable);
+      initTableNav(specsTable);
+      initTableNav(scoresTable);
+      refreshTableNavs();
+    })();
+  </script>
+</body>
+</html>
 
