@@ -4466,9 +4466,9 @@
       path.setAttribute("id", pid);
       path.setAttribute("d", d);
       path.setAttribute("fill","none");
-      path.setAttribute("stroke", isSel ? edgeCfg.activeColor : etype.color);
+      path.setAttribute("stroke", isSel ? edgeCfg.activeColor : edgeCfg.lineColor);
       path.setAttribute("stroke-width", String(isSel ? (etype.width + 1) : etype.width));
-      path.setAttribute("stroke-dasharray", isSel ? "6 6" : etype.dash);
+      path.setAttribute("stroke-dasharray", lineDashForType(edgeCfg.lineType));
       path.setAttribute("opacity","0.95");
       const murl = markerUrl(isSel);
       if(murl) path.setAttribute("marker-end", murl);
@@ -4551,7 +4551,7 @@
       if(flowOn){
         const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
         dot.setAttribute("r","4.2");
-        dot.setAttribute("fill", isSel ? edgeCfg.activeColor : etype.color);
+        dot.setAttribute("fill", isSel ? edgeCfg.activeColor : edgeCfg.flowColor);
         dot.setAttribute("opacity","0.95");
 
         const anim = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
