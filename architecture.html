@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -43,97 +42,113 @@
     /* App layout */
     .app{
       height:100vh;
-      display:grid;
-      grid-template-columns: 300px 1fr;
-      transition: grid-template-columns .26s ease;
-    }
-    .app.sidebar-collapsed{
-      grid-template-columns: 0 1fr;
+      display:block;
+      position:relative;
     }
 
     /* Sidebar */
     .sidebar{
+      position:absolute;
+      left:12px;
+      top:68px;
+      bottom:12px;
+      width:198px;
+      z-index:55;
       background: rgba(255,255,255,.9);
-      border-right:1px solid var(--stroke);
+      border:1px solid var(--stroke);
+      border-radius:24px;
       backdrop-filter: blur(8px);
-      padding:14px 12px;
+      padding:10px 9px;
       overflow:auto;
-      transition: opacity .22s ease, padding .22s ease, border-color .22s ease;
+      transition: transform .22s ease, opacity .22s ease, padding .22s ease, border-color .22s ease;
       min-width:0;
+      box-shadow: 0 18px 36px rgba(15,23,42,.12);
+    }
+    .sidebar{
+      scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar{
+      display:none;
     }
     .app.sidebar-collapsed .sidebar{
       opacity:0;
       pointer-events:none;
-      padding-left:0;
-      padding-right:0;
-      border-right-color: transparent;
+      transform: translateX(-120%);
+      border-color: transparent;
     }
     .brand{
       display:flex;
       align-items:center;
-      justify-content:flex-start;
-      gap:10px;
-      padding:10px 10px;
+      justify-content:center;
+      gap:6px;
+      padding:6px 7px;
       border:1px solid var(--stroke);
-      border-radius:16px;
+      border-radius:14px;
       background: linear-gradient(135deg, rgba(239,68,68,.10), rgba(37,99,235,.10));
-      box-shadow: 0 10px 22px rgba(15,23,42,.07);
-      margin-bottom:12px;
+      box-shadow: 0 8px 16px rgba(15,23,42,.06);
+      margin-bottom:8px;
     }
     .brandLogo{
-      width:22px;
-      height:22px;
+      width:16px;
+      height:16px;
       object-fit:contain;
       display:block;
       flex:0 0 auto;
     }
     .brand h1{
       margin:0;
-      font-size:15px;
+      font-size:11px;
       font-weight:800;
       letter-spacing:-.01em;
     }
 
     .section{
-      margin-top:12px;
+      margin-top:7px;
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.85);
-      border-radius: 16px;
+      border-radius: 12px;
       overflow:hidden;
-      box-shadow: 0 10px 22px rgba(15,23,42,.05);
+      box-shadow: 0 8px 16px rgba(15,23,42,.05);
     }
     .section .hd{
-      padding:10px 12px;
+      padding:6px 8px;
       background: rgba(37,99,235,.06);
       border-bottom:1px solid rgba(219,228,240,.75);
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:center;
       gap:10px;
+      position:relative;
     }
     .section .hd h2{
       margin:0;
-      font-size:12px;
-      font-weight:950;
+      font-size:8px;
+      font-weight:900;
       color:#1f2a44;
-      letter-spacing:.06em;
+      letter-spacing:.05em;
       text-transform:uppercase;
+      text-align:center;
+      width:100%;
     }
-    .section .bd{ padding:10px 10px 12px; }
+    .section .bd{ padding:6px 6px 8px; }
     .secToggle{
-      width:24px;
-      height:24px;
+      width:16px;
+      height:16px;
       border-radius:999px;
       border:1px solid var(--stroke);
       background:#fff;
       color:#334155;
-      font-size:13px;
+      font-size:9px;
       font-weight:900;
       display:grid;
       place-items:center;
       cursor:pointer;
-      box-shadow: 0 4px 10px rgba(15,23,42,.06);
+      box-shadow: 0 3px 8px rgba(15,23,42,.06);
       flex:0 0 auto;
+      position:absolute;
+      right:6px;
+      top:50%;
+      transform: translateY(-50%);
     }
     .section.collapsed .bd{ display:none; }
 
@@ -142,18 +157,18 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
-      padding:10px 10px;
-      border-radius: 14px;
+      gap:6px;
+      padding:6px 6px;
+      border-radius: 10px;
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.95);
       cursor:pointer;
-      box-shadow: 0 6px 16px rgba(15,23,42,.05);
+      box-shadow: 0 4px 12px rgba(15,23,42,.05);
       transition:.12s ease;
       font-weight:850;
-      font-size:13px;
+      font-size:9px;
       color:var(--ink);
-      margin-top:8px;
+      margin-top:5px;
     }
     .btn:hover{ transform: translateY(-1px); border-color:#cbd7ea; }
     .btn:active{ transform: translateY(0px); }
@@ -161,16 +176,16 @@
     .btn .left{
       display:flex;
       align-items:center;
-      gap:10px;
+      gap:6px;
       min-width:0;
     }
     .ico{
-      width:28px; height:28px;
+      width:18px; height:18px;
       display:grid; place-items:center;
-      border-radius: 10px;
+      border-radius: 6px;
       border:none;
       background: transparent;
-      font-size:16px;
+      font-size:10px;
       flex: 0 0 auto;
     }
     .ico img{
@@ -186,30 +201,28 @@
       min-width:0;
     }
     .txt span{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:750;
+      display:none;
     }
-    .arrow{ color:#94a3b8; font-size:14px; }
+    .arrow{ display:none; }
 
     .toolbar{
-      margin-top:12px;
+      margin-top:8px;
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
+      gap:5px;
       align-items:center;
     }
     .tbtn{
       flex:1;
-      min-width: 120px;
-      padding:9px 10px;
+      min-width: 92px;
+      padding:6px 7px;
       border-radius:999px;
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.95);
       cursor:pointer;
       font-weight:850;
-      font-size:12px;
-      box-shadow: 0 6px 16px rgba(15,23,42,.05);
+      font-size:10px;
+      box-shadow: 0 4px 12px rgba(15,23,42,.05);
       transition:.12s ease;
     }
     .tbtn:hover{ transform: translateY(-1px); }
@@ -219,14 +232,7 @@
       border-color: rgba(239,68,68,.30);
     }
     .hint{
-      margin-top:10px;
-      padding:10px 10px;
-      border-radius: 14px;
-      border:1px dashed rgba(148,163,184,.55);
-      background: #fff;
-      color:#334155;
-      font-size:12.5px;
-      line-height:1.35;
+      display:none;
     }
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
@@ -243,6 +249,7 @@
     .main{
       position:relative;
       overflow:hidden;
+      height:100vh;
     }
     .main.grabbing,
     .main.grabbing .canvas{
@@ -272,13 +279,13 @@
       min-width:38px;
     }
     .sideToggle{
-      width:34px;
-      height:34px;
+      width:24px;
+      height:24px;
       border-radius:999px;
       border:1px solid var(--stroke);
       background:#fff;
       color:#334155;
-      box-shadow: 0 6px 14px rgba(15,23,42,.10);
+      box-shadow: 0 4px 10px rgba(15,23,42,.10);
       display:grid;
       place-items:center;
       cursor:pointer;
@@ -290,10 +297,10 @@
       transform: translateY(-1px);
     }
     .sideToggle .arr{
-      width:10px;
-      height:10px;
-      border-right:2px solid currentColor;
-      border-bottom:2px solid currentColor;
+      width:8px;
+      height:8px;
+      border-right:1.5px solid currentColor;
+      border-bottom:1.5px solid currentColor;
       transform: rotate(135deg);
       transition: transform .26s ease;
       margin-left:2px;
@@ -314,6 +321,39 @@
       gap:8px;
       align-items:center;
       flex-wrap:wrap;
+    }
+    .canvasNameWrap{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-width:0;
+    }
+    .canvasName{
+      font-size:13px;
+      font-weight:850;
+      color:var(--ink);
+      letter-spacing:-.01em;
+      cursor:text;
+      padding:4px 10px;
+      border-radius:8px;
+      border:1px solid transparent;
+      max-width:260px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      transition:border-color .12s ease, background .12s ease;
+    }
+    .canvasName:hover{
+      border-color: var(--stroke);
+      background: rgba(255,255,255,.8);
+    }
+    .canvasName[contenteditable="true"]{
+      border-color: rgba(37,99,235,.4);
+      background:#fff;
+      outline:none;
+      cursor:text;
+      white-space:nowrap;
     }
     .pill{
       display:flex;
@@ -410,6 +450,23 @@
       pointer-events:none;
       display:none;
       z-index:28;
+    }
+    .previewPick{
+      position:absolute;
+      border:2px dashed rgba(16,185,129,.92);
+      background: rgba(16,185,129,.14);
+      border-radius:8px;
+      pointer-events:none;
+      display:none;
+      z-index:29;
+    }
+    .wrap.preview-pick{
+      cursor:crosshair !important;
+    }
+    .wrap.preview-pick .node,
+    .wrap.preview-pick .port,
+    .wrap.preview-pick .edgeDel{
+      pointer-events:none !important;
     }
 
     .node{
@@ -746,6 +803,16 @@
       font-weight:900;
       color:#334e6f;
       background:#f2f6fb;
+      overflow:hidden;
+    }
+    .solutionGridIcon img{
+      width:76%;
+      height:76%;
+      object-fit:contain;
+      display:block;
+    }
+    .solutionGridIcon img.mono{
+      filter: grayscale(1) brightness(0.1);
     }
     .solutionGridLabel{
       font-size:10.5px;
@@ -1263,6 +1330,56 @@
       cursor: grab;
       user-select:text;
     }
+    .node.sticky-node{
+      background: var(--stickyColor, #fef08a);
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 4px;
+      box-shadow: 3px 4px 10px rgba(0,0,0,.18);
+      padding: 10px 12px 28px;
+      min-width: 160px;
+      max-width: 300px;
+      min-height: 80px;
+      cursor: grab;
+      position: absolute;
+    }
+    .sticky-node .stickyBody{
+      font-size:14px;
+      line-height:1.45;
+      color:#1e293b;
+      outline:none;
+      min-height:48px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      user-select:text;
+      -webkit-user-select:text;
+    }
+    .stickyColors{
+      position:absolute;
+      bottom:6px;
+      left:8px;
+      display:flex;
+      gap:5px;
+      opacity:0;
+      transition: opacity .12s ease;
+    }
+    .sticky-node:hover .stickyColors,
+    .sticky-node.selected .stickyColors{
+      opacity:1;
+    }
+    .stickyColorBtn{
+      width:14px;
+      height:14px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.2);
+      cursor:pointer;
+    }
+    @keyframes nodeEnter{
+      from{ opacity:0; transform: scale(0.82) translateY(6px); }
+      to{ opacity:1; transform: scale(1) translateY(0); }
+    }
+    .node.is-new{
+      animation: nodeEnter 180ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
     .textWrap{
       position:relative;
       min-width:160px;
@@ -1343,26 +1460,26 @@
     .canvasTools{ display:none; }
     .zoomDock{
       position:absolute;
-      left:12px;
+      right:12px;
       top:12px;
       z-index:36;
       display:flex;
       align-items:center;
-      gap:6px;
+      gap:4px;
       background: rgba(255,255,255,.96);
       border:1px solid var(--stroke);
       border-radius:999px;
       box-shadow: 0 8px 16px rgba(15,23,42,.10);
-      padding:5px 7px;
+      padding:4px 5px;
     }
     .zoomBtn{
-      width:24px;
-      height:24px;
+      width:22px;
+      height:22px;
       border-radius:999px;
       border:1px solid var(--stroke);
       background:#fff;
       color:#334155;
-      font-size:14px;
+      font-size:12px;
       font-weight:900;
       display:grid;
       place-items:center;
@@ -1372,16 +1489,17 @@
     }
     .zoomBtn:hover{ border-color:#cbd5e1; }
     .zoomPct{
-      min-width:48px;
+      min-width:13px;
+      width:25px;
       text-align:center;
-      font-size:11px;
+      font-size:9px;
       font-weight:800;
       color:#334155;
-      height:24px;
+      height:21px;
       border:1px solid var(--stroke);
       border-radius:999px;
       background:#fff;
-      padding:0 8px;
+      padding:0 2px;
       outline:none;
     }
     .zoomPct:focus{ border-color:#94a3b8; }
@@ -1417,7 +1535,7 @@
       outline-offset:2px;
       background: rgba(239,68,68,.08);
     }
-    .iconBtn.active svg{ opacity:1; stroke:#dc2626; }
+    .iconBtn.active img{ opacity:1; }
     .settingsFab{
       position:absolute;
       right:14px;
@@ -1445,10 +1563,22 @@
       border-radius:14px;
       box-shadow: 0 16px 30px rgba(15,23,42,.14);
       padding:10px;
-      display:none;
+      display:block;
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transform: translateY(8px) scale(.98);
+      transform-origin: bottom right;
+      transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
       z-index:34;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .settingsPanel.show{ display:block; }
+    .settingsPanel.show{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+      transform: translateY(0) scale(1);
+    }
     .settingsRow{
       display:flex;
       align-items:center;
@@ -1457,34 +1587,100 @@
     }
     .settingsRow:first-child{ margin-top:0; }
     .settingsRow label{
-      font-size:11px !important;
+      font-size:10px !important;
       text-transform:none !important;
       letter-spacing:0 !important;
       min-width:70px;
-      color:#475569;
-      font-weight:700 !important;
+      color:#64748b;
+      font-weight:600 !important;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     .settingsRow input[type="color"],
     .settingsRow select{
       width:100%;
-      height:30px;
+      height:28px;
       border:1px solid var(--stroke);
-      border-radius:10px;
+      border-radius:9px;
       padding:0 8px;
       background:#fff;
-      font-size:12px;
-      color:#1f2937;
+      font-size:11px;
+      color:#334155;
       outline:none;
     }
-    .settingsRow .iconBtn{
-      width:30px;
-      height:30px;
-      box-shadow:none;
-      border-width:1px;
+    .settingsRow select{
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .settingsRow .iconBtn svg{
-      width:14px;
-      height:14px;
+    .settingsRow .iconBtn{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:#fff;
+      color:#334155;
+      box-shadow: 0 6px 14px rgba(15,23,42,.10);
+      border-width:1px;
+      outline:none;
+      padding:0;
+    }
+    .settingsRow .iconBtn:hover{
+      border-color:#cbd5e1;
+      transform: translateY(-1px);
+    }
+    .settingsRow .iconBtn.active{
+      border-color: rgba(37,99,235,.40);
+      background: rgba(37,99,235,.08);
+      outline:none;
+    }
+    .settingsRow .iconBtn img{
+      width:12px;
+      height:12px;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      opacity:.86;
+    }
+    #cfgLineColor,
+    #cfgFlowColor{
+      width:22px !important;
+      min-width:22px;
+      height:22px !important;
+      border-radius:999px;
+      padding:0;
+      border:1px solid #d3deea;
+      background:#fff;
+      box-shadow: 0 3px 8px rgba(15,23,42,.08);
+      cursor:pointer;
+    }
+    #cfgLineColor::-webkit-color-swatch-wrapper,
+    #cfgFlowColor::-webkit-color-swatch-wrapper{
+      padding:0;
+      border-radius:999px;
+    }
+    #cfgLineColor::-webkit-color-swatch,
+    #cfgFlowColor::-webkit-color-swatch{
+      border:none;
+      border-radius:999px;
+    }
+    .colorPairRow{
+      align-items:center;
+    }
+    .colorPair{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-left:auto;
+    }
+    .colorDotWrap{
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .colorRef{
+      font-size:10px;
+      color:#64748b;
+      font-weight:600;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height:1;
     }
 
     /* Ports */
@@ -1547,6 +1743,59 @@
       z-index:50;
     }
     .toast.show{ opacity:1; transform: translate(-50%, 0px); }
+    .ctxMenu{
+      position:fixed;
+      z-index:999;
+      background:#fff;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      box-shadow: 0 12px 32px rgba(15,23,42,.16);
+      padding:4px;
+      min-width:164px;
+      display:none;
+      flex-direction:column;
+    }
+    .ctxMenu.open{ display:flex; }
+    .ctxItem{
+      padding:6px 10px;
+      border-radius:8px;
+      font-size:10.5px;
+      font-weight:500;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:#475569;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .ctxItem:hover{ background: var(--appBg); }
+    .ctxItem.ctx-danger{ color:#b91c1c; }
+    .ctxItem.ctx-danger:hover{ background: rgba(239,68,68,.08); }
+    .edgeTypeBar{
+      gap:5px;
+      background:#fff;
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      padding:5px 8px;
+      box-shadow: 0 6px 20px rgba(15,23,42,.14);
+      display:none;
+      position:fixed;
+      z-index:50;
+    }
+    .etypeBtn{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      border:2px solid var(--etcolor, #94a3b8);
+      background: color-mix(in srgb, var(--etcolor) 18%, white);
+      cursor:pointer;
+      transition: transform .1s ease;
+    }
+    .etypeBtn:hover,
+    .etypeBtn.active{
+      transform: scale(1.3);
+    }
+    .etypeBtn.active{
+      background: var(--etcolor);
+    }
 
     /* Modal */
     .modalBack{
@@ -1559,7 +1808,7 @@
       z-index:999;
     }
     .modal{
-      width:min(760px, 100%);
+      width:min(700px, 100%);
       background:#fff;
       border-radius: 18px;
       border:1px solid rgba(255,255,255,.2);
@@ -1567,7 +1816,7 @@
       overflow:hidden;
     }
     .modal .mh{
-      padding:14px 16px;
+      padding:12px 14px;
       background: linear-gradient(135deg, rgba(239,68,68,.10), rgba(37,99,235,.10));
       border-bottom:1px solid var(--stroke);
       display:flex;
@@ -1575,7 +1824,14 @@
       justify-content:space-between;
       gap:10px;
     }
-    .modal .mh h3{ margin:0; font-size:14px; font-weight:950; }
+    .modal .mh h3{
+      margin:0;
+      font-size:11px;
+      font-weight:700;
+      color:#334155;
+      letter-spacing:-.01em;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
     .modal .close{
       border:1px solid rgba(148,163,184,.35);
       background: rgba(255,255,255,.85);
@@ -1584,23 +1840,31 @@
       cursor:pointer;
       font-weight:850;
     }
-    .modal .mb{ padding:14px 16px 16px; }
+    .modal .mb{ padding:12px 14px 14px; }
 
     .row{
       display:grid;
-      grid-template-columns: 110px 1fr;
-      gap:10px;
+      grid-template-columns: 94px 1fr;
+      gap:8px;
       align-items:center;
-      margin-bottom:10px;
+      margin-bottom:8px;
     }
-    label{ font-size:12px; color:var(--muted); font-weight:800; text-transform:uppercase; letter-spacing:.06em; }
+    label{
+      font-size:9px;
+      color:#64748b;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
     input, textarea, select{
       width:100%;
       border:1px solid var(--stroke);
       border-radius:12px;
-      padding:10px 10px;
+      padding:8px 9px;
       font: inherit;
-      font-size:13px;
+      font-size:10.5px;
+      color:#475569;
       outline:none;
       background:#fff;
     }
@@ -1611,24 +1875,98 @@
       gap:10px;
       margin-top:10px;
     }
+    .tplList{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      max-height:360px;
+      overflow-y:auto;
+      padding-right:2px;
+    }
+    .tplCard{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      background: var(--appBg);
+    }
+    .tplCard:hover{
+      background: rgba(37,99,235,.04);
+    }
+    .tplMeta{
+      min-width:0;
+    }
+    .tplName{
+      font-size:12px;
+      font-weight:700;
+      color:#334155;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .tplDesc{
+      margin-top:2px;
+      font-size:11px;
+      color:#64748b;
+    }
+    .previewModal{
+      width:min(1100px, 100%);
+    }
+    .previewBody{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .previewStage{
+      width:100%;
+      min-height:320px;
+      max-height:70vh;
+      overflow:auto;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      background:#fff;
+      display:grid;
+      place-items:center;
+      padding:8px;
+      position:relative;
+    }
+    .previewStage img{
+      max-width:100%;
+      height:auto;
+      display:block;
+      border-radius:10px;
+      box-shadow: 0 8px 20px rgba(15,23,42,.12);
+    }
+    .wrap.exporting .zoomDock,
+    .wrap.exporting .settingsFab,
+    .wrap.exporting .settingsPanel,
+    .wrap.exporting .textBar,
+    .wrap.exporting .toast,
+    .wrap.exporting .marquee{
+      visibility:hidden !important;
+    }
 
     @media (max-width: 1024px){
       body{ height:100dvh; }
       .app{
-        grid-template-columns: 1fr;
+        grid-template-columns:none;
         position:relative;
       }
       .sidebar{
         position:absolute;
-        top:0;
+        top:66px;
         left:0;
-        bottom:0;
-        width:min(86vw, 340px);
+        bottom:8px;
+        width:min(74vw, 198px);
         z-index:60;
         background:rgba(255,255,255,.96);
         box-shadow: 0 20px 36px rgba(15,23,42,.18);
         transform: translateX(0);
         transition: transform .24s ease, opacity .18s ease;
+        border-radius:20px;
       }
       .app.sidebar-collapsed .sidebar{
         opacity:1;
@@ -1665,14 +2003,14 @@
         bottom:10px;
       }
       .zoomDock{
-        left:8px;
+        right:8px;
         top:8px;
       }
       .zoomBtn,
       .iconBtn,
       .sideToggle{
-        min-width:38px;
-        min-height:38px;
+        min-width:28px;
+        min-height:28px;
       }
     }
 
@@ -1690,8 +2028,8 @@
         padding:8px 9px;
       }
       .zoomPct{
-        min-width:42px;
-        padding:0 6px;
+        min-width:22px;
+        padding:0 4px;
       }
       .node{
         min-width:240px;
@@ -1878,6 +2216,7 @@
       </div>
 
       <div class="toolbar">
+        <button class="tbtn" id="btnTemplate">Templates</button>
         <button class="tbtn" id="btnExport">Export JSON</button>
         <button class="tbtn" id="btnImport">Import JSON</button>
         <button class="tbtn" id="btnReset">Reset</button>
@@ -1893,6 +2232,13 @@
             <div class="left">
               <div class="ico">T</div>
               <div class="txt"><div>Texto Livre</div><span>Nota flutuante no canvas</span></div>
+            </div>
+            <div class="arrow">→</div>
+          </button>
+          <button class="btn" data-add="text:sticky">
+            <div class="left">
+              <div class="ico">📌</div>
+              <div class="txt"><div>Sticky Note</div><span>Post-it colorido</span></div>
             </div>
             <div class="arrow">→</div>
           </button>
@@ -1914,47 +2260,29 @@
             <span class="arr" aria-hidden="true"></span>
           </button>
         </div>
+        <div class="canvasNameWrap">
+          <span class="canvasName" id="canvasName" title="Clique para renomear" tabindex="0">Sem título</span>
+        </div>
         <div class="controls">
           <div class="pill searchPill">
             <input id="search" placeholder="Buscar blocos..." />
           </div>
+          <button class="btn2" id="btnPreview">Selecionar área</button>
           <button class="btn2" id="btnCenter">Centralizar</button>
           <button class="btn2 primary" id="btnClearSel">Limpar seleção</button>
         </div>
       </div>
       <div class="settingsPanel" id="settingsPanel" aria-hidden="true">
         <div class="settingsRow">
-          <label>Rapido</label>
+          <label>Config Canva</label>
           <button class="iconBtn active" id="btnConnect" type="button" title="Modo Conectar">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="7" cy="8" r="2.6"/>
-              <circle cx="17" cy="16" r="2.6"/>
-              <path d="M9.2 9.8l5.6 4.4"/>
-              <path d="M9.4 17.4h-4"/>
-              <path d="M18.6 6.6h-4"/>
-            </svg>
+            <img src="https://cdn-icons-png.flaticon.com/512/6619/6619462.png" alt="Conector" />
           </button>
           <button class="iconBtn active" id="btnGrid" type="button" title="Grid">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="4" y="4" width="4" height="4"/>
-              <rect x="10" y="4" width="4" height="4"/>
-              <rect x="16" y="4" width="4" height="4"/>
-              <rect x="4" y="10" width="4" height="4"/>
-              <rect x="10" y="10" width="4" height="4"/>
-              <rect x="16" y="10" width="4" height="4"/>
-              <rect x="4" y="16" width="4" height="4"/>
-              <rect x="10" y="16" width="4" height="4"/>
-              <rect x="16" y="16" width="4" height="4"/>
-            </svg>
+            <img src="https://cdn-icons-png.flaticon.com/512/91/91080.png" alt="Grid" />
           </button>
           <button class="iconBtn active" id="btnFlow" type="button" title="Flow">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 7h10"/>
-              <path d="M12 4l3 3-3 3"/>
-              <path d="M19 17H9"/>
-              <path d="M12 14l-3 3 3 3"/>
-              <path d="M19 7v5a3 3 0 0 1-3 3"/>
-            </svg>
+            <img src="https://static.thenounproject.com/png/2383823-200.png" alt="Flow" />
           </button>
         </div>
         <div class="settingsRow">
@@ -1980,13 +2308,18 @@
             <option value="none">Nenhum</option>
           </select>
         </div>
-        <div class="settingsRow">
-          <label>Cor linha</label>
-          <input id="cfgLineColor" type="color" />
-        </div>
-        <div class="settingsRow">
-          <label>Cor flow</label>
-          <input id="cfgFlowColor" type="color" />
+        <div class="settingsRow colorPairRow">
+          <label>Cores</label>
+          <div class="colorPair">
+            <div class="colorDotWrap">
+              <span class="colorRef">Linha</span>
+              <input id="cfgLineColor" type="color" title="Cor da linha" />
+            </div>
+            <div class="colorDotWrap">
+              <span class="colorRef">Flow</span>
+              <input id="cfgFlowColor" type="color" title="Cor do flow" />
+            </div>
+          </div>
         </div>
       </div>
       <button class="settingsFab" id="btnSettings" type="button" title="Configuracoes">⚙</button>
@@ -2016,6 +2349,7 @@
           <button class="zoomBtn" id="btnZoomIn" type="button" title="Zoom in">+</button>
         </div>
         <div class="marquee" id="marquee"></div>
+        <div class="previewPick" id="previewPick"></div>
         <div class="canvas" id="canvas"></div>
         <div class="grid" id="grid"></div>
         <svg id="svg" aria-hidden="true"></svg>
@@ -2061,6 +2395,50 @@
       </div>
     </div>
   </div>
+  <div class="modalBack" id="previewBack" aria-hidden="true">
+    <div class="modal previewModal">
+      <div class="mh">
+        <h3>Pré-visualização do Canvas</h3>
+        <button class="close" id="btnPreviewClose" type="button">Fechar</button>
+      </div>
+      <div class="mb previewBody">
+        <div class="previewStage">
+          <img id="previewImg" alt="Pré-visualização do canvas" />
+        </div>
+        <div class="actions">
+          <button class="btn2" id="btnDownloadPng" type="button">Download PNG</button>
+          <button class="btn2 primary" id="btnDownloadPdf" type="button">Download PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modalBack" id="tplBack" aria-hidden="true">
+    <div class="modal" style="max-width:560px;">
+      <div class="mh">
+        <h3>Templates</h3>
+        <button class="close" id="btnTplClose" type="button">Fechar</button>
+      </div>
+      <div class="mb">
+        <div class="tplList" id="tplList"></div>
+        <div class="actions">
+          <button class="btn2" id="btnTplPaste" type="button">Colar JSON Template</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ctxMenu" id="ctxMenu" role="menu" aria-hidden="true">
+    <div class="ctxItem" id="ctx-edit">Editar</div>
+    <div class="ctxItem" id="ctx-dup">Duplicar</div>
+    <div class="ctxItem" id="ctx-connect">Conectar daqui</div>
+    <div class="ctxItem ctx-danger" id="ctx-del">✕ Excluir</div>
+  </div>
+  <div class="ctxMenu" id="ctxCanvasMenu" role="menu" aria-hidden="true">
+    <div class="ctxItem" id="ctx-addNote">Adicionar Sticky Note aqui</div>
+    <div class="ctxItem" id="ctx-addText">Adicionar Texto aqui</div>
+    <div class="ctxItem" id="ctx-selectAll">Selecionar todos</div>
+    <div class="ctxItem" id="ctx-fitAll">Centralizar tudo</div>
+  </div>
+  <div class="edgeTypeBar" id="edgeTypeBar"></div>
 
 <script>
 (() => {
@@ -2072,10 +2450,13 @@
   const svg = document.getElementById("svg");
   const toast = document.getElementById("toast");
   const search = document.getElementById("search");
+  const canvasNameEl = document.getElementById("canvasName");
 
   const btnConnect = document.getElementById("btnConnect");
   const btnGrid = document.getElementById("btnGrid");
   const btnFlow = document.getElementById("btnFlow");
+  const btnPreview = document.getElementById("btnPreview");
+  const btnTemplate = document.getElementById("btnTemplate");
   const btnExport = document.getElementById("btnExport");
   const btnImport = document.getElementById("btnImport");
   const btnReset = document.getElementById("btnReset");
@@ -2085,6 +2466,7 @@
   const btnZoomOut = document.getElementById("btnZoomOut");
   const zoomPct = document.getElementById("zoomPct");
   const marqueeEl = document.getElementById("marquee");
+  const previewPickEl = document.getElementById("previewPick");
   const textBar = document.getElementById("textBar");
   const tbText = document.getElementById("tbText");
   const tbDec = document.getElementById("tbDec");
@@ -2102,13 +2484,25 @@
   const cfgFlowColor = document.getElementById("cfgFlowColor");
 
   const modalBack = document.getElementById("modalBack");
+  const previewBack = document.getElementById("previewBack");
+  const tplBack = document.getElementById("tplBack");
   const btnClose = document.getElementById("btnClose");
+  const btnPreviewClose = document.getElementById("btnPreviewClose");
+  const btnTplClose = document.getElementById("btnTplClose");
+  const btnTplPaste = document.getElementById("btnTplPaste");
+  const tplList = document.getElementById("tplList");
+  const btnDownloadPng = document.getElementById("btnDownloadPng");
+  const btnDownloadPdf = document.getElementById("btnDownloadPdf");
+  const previewImg = document.getElementById("previewImg");
   const fTitle = document.getElementById("fTitle");
   const fDesc = document.getElementById("fDesc");
   const fLogo = document.getElementById("fLogo");
   const fType = document.getElementById("fType");
   const btnSaveNode = document.getElementById("btnSaveNode");
   const btnDeleteNode = document.getElementById("btnDeleteNode");
+  const ctxMenu = document.getElementById("ctxMenu");
+  const ctxCanvasMenu = document.getElementById("ctxCanvasMenu");
+  const edgeTypeBar = document.getElementById("edgeTypeBar");
 
   // viewport pan+zoom
   let view = { x: 0, y: 0, z: 1 };
@@ -2139,6 +2533,9 @@
   const STORAGE_KEY = "clevertap_canvas_state_v3";
   const SCHEMA_VERSION = 3;
   let persistTimer = null;
+  let canvasName = "Sem título";
+  let ctxTargetNodeId = null;
+  let ctxClickPos = null;
   let edgeCfg = {
     connectorType: "curved",
     lineType: "dashed",
@@ -2150,7 +2547,282 @@
 
   // modal
   let editingNodeId = null;
+  let previewDataUrl = "";
+  let previewImageSize = { w:0, h:0 };
+  let previewPickMode = false;
+  let previewPickDrag = null;
+  let html2canvasLoader = null;
+  let jsPdfLoader = null;
   const DUP_ICON_URL = "https://cdn-icons-png.freepik.com/512/17146/17146941.png";
+  const TEMPLATE_LIBRARY_KEY = "clevertap_canvas_templates_v1";
+  const CLEVERTAP_ARQ_TEMPLATE = JSON.parse(String.raw`{
+  "format": "clevertap.canvas-doc.v1",
+  "schemaVersion": 1,
+  "exportedAt": "2026-03-04T19:47:54.557Z",
+  "canvas": {
+    "view": {
+      "x": 247.35918727332546,
+      "y": 178.49611620004447,
+      "z": 0.6836669506743931
+    },
+    "flowOn": true,
+    "connectMode": true,
+    "name": "Clevertap Arquitetura",
+    "edgeCfg": {
+      "connectorType": "curved",
+      "lineType": "dashed",
+      "marker": "arrow",
+      "lineColor": "#d1d1d1",
+      "activeColor": "#ef4444",
+      "flowColor": "#eb2424"
+    }
+  },
+  "indexes": {
+    "nodeCount": 28,
+    "edgeCount": 0,
+    "nodeIds": [
+      "n_e8698d52",
+      "n_76f2698c",
+      "n_07322311",
+      "n_6aecb6a6",
+      "n_9f068eef",
+      "n_ef541179",
+      "n_bde90527",
+      "n_22f14357",
+      "n_d179f91a",
+      "n_2c161496",
+      "n_46b76dad",
+      "n_10a515fc",
+      "n_f976045f",
+      "n_a84b4160",
+      "n_4d2b58d9",
+      "n_d0494966",
+      "n_652817e3",
+      "n_55ac0e71",
+      "n_dfa6e41e",
+      "n_e810a2c3",
+      "n_7af0f680",
+      "n_ba413691",
+      "n_a80c7530",
+      "n_216fcc78",
+      "n_350c3a4d",
+      "n_0bc8b132",
+      "n_a52fb00e",
+      "n_941970f2"
+    ],
+    "edgeIds": []
+  },
+  "nodes": [
+    {
+      "id": "n_e8698d52",
+      "nodeRef": "core:clever-ai:n_e8698d52",
+      "order": 1,
+      "kind": "Core",
+      "variant": "organizer",
+      "title": "Clever.AI",
+      "position": { "x": -174, "y": 94 },
+      "size": { "w": 1099, "h": 430, "userMinH": 430 },
+      "style": {
+        "type": "blue","icon": "ORG","logoUrl": "","stickyColor": "",
+        "fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left",
+        "solutionLayout": "pills","solutionLogo": "","stackCatalog": ""
+      },
+      "content": { "description": "","text": "","items": [],"orgOptions": ["Fonte de dados","Mecanismo de integração","Orquestrador","Canais de comunicação","Data Layer"],"stacks": [] }
+    },
+    {
+      "id": "n_76f2698c","nodeRef": "solucao-ai:ai-agent:n_76f2698c","order": 2,"kind": "Solução AI","variant": "ai","title": "AI Agent",
+      "position": { "x": 175, "y": 160 },"size": { "w": 368, "h": 345, "userMinH": 343 },
+      "style": { "type": "blue","icon": "AI","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Agentes inteligentes para estratégia, decisão e ação.","text": "","items": ["Strategy Agents","Decision Agents","Creative Agents","Action Agents","IntelliNODE","Product Recommendations"],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_07322311","nodeRef": "solucao-ai:askai:n_07322311","order": 3,"kind": "Solução AI","variant": "ai","title": "AskAI",
+      "position": { "x": -157, "y": 163 },"size": { "w": 331, "h": 260, "userMinH": 194 },
+      "style": { "type": "blue","icon": "AI","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Camada de decisão e recomendação da jornada com AI.","text": "","items": ["Best Time to Deliver","Preferred Channel","Predictive Segmentation","Lifecycle Optmizer"],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_6aecb6a6","nodeRef": "solucao-ai:scribeai:n_6aecb6a6","order": 4,"kind": "Solução AI","variant": "ai","title": "ScribeAI",
+      "position": { "x": 545, "y": 161 },"size": { "w": 360, "h": 291, "userMinH": 220 },
+      "style": { "type": "blue","icon": "AI","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Assistente de conteúdo com AI generativa.","text": "","items": ["Copy Generation","Emotion Signals","Content Rewrite","Emotion Optimization","Channel Support"],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_9f068eef","nodeRef": "core:orquestrador:n_9f068eef","order": 5,"kind": "Core","variant": "organizer","title": "Orquestrador",
+      "position": { "x": -175, "y": -363 },"size": { "w": 1093, "h": 449, "userMinH": 449 },
+      "style": { "type": "blue","icon": "ORG","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "","text": "","items": [],"orgOptions": ["Fonte de dados","Mecanismo de integração","Orquestrador","Canais de comunicação","Data Layer","Clever.AI"],"stacks": [] }
+    },
+    {
+      "id": "n_ef541179","nodeRef": "solucao:martech:n_ef541179","order": 6,"kind": "Solução","variant": "solution","title": "Martech",
+      "position": { "x": -131, "y": -274 },"size": { "w": 302, "h": 326, "userMinH": 260 },
+      "style": { "type": "red","icon": "M","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "","text": "","items": ["Experimentação","Campanhas batch","Native Display","Customer Journeys","Campanhas Real Time","Audiences","Hiperpersonalização"],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_bde90527","nodeRef": "solucao:segments:n_bde90527","order": 7,"kind": "Solução","variant": "solution","title": "Segments",
+      "position": { "x": 549, "y": -279 },"size": { "w": 329, "h": 310, "userMinH": 310 },
+      "style": { "type": "red","icon": "S","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "grid","solutionLogo": "","stackCatalog": "" },
+      "content": {
+        "description": "","text": "",
+        "items": [
+          { "icon": "◌","label": "RFM","mono": false },
+          { "icon": "https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png","label": "Real-time","mono": false },
+          { "icon": "https://cdn-icons-png.flaticon.com/512/5799/5799191.png","label": "Preditiva","mono": false },
+          { "icon": "https://cdn-icons-png.flaticon.com/512/12282/12282281.png","label": "Psicográfica","mono": true },
+          { "icon": "https://idecbrasil.com.br/wp-content/uploads/2025/03/processo-1.png","label": "Comportamental","mono": true }
+        ],
+        "orgOptions": [],"stacks": []
+      }
+    },
+    {
+      "id": "n_22f14357","nodeRef": "solucao:analytics:n_22f14357","order": 8,"kind": "Solução","variant": "solution","title": "Analytics",
+      "position": { "x": 198, "y": -271 },"size": { "w": 324, "h": 314, "userMinH": 314 },
+      "style": { "type": "red","icon": "A","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "","text": "","items": ["Drop offs","Desinstalações","Cortes de Retenção","Comportamental","Tendências","Impacto Real"],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_d179f91a","nodeRef": "core:mecanismo-de-integracao:n_d179f91a","order": 9,"kind": "Core","variant": "organizer","title": "Mecanismo de integração",
+      "position": { "x": -536, "y": -362 },"size": { "w": 349, "h": 467, "userMinH": 467 },
+      "style": { "type": "blue","icon": "ORG","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "","text": "","items": [],"orgOptions": ["Fonte de dados","Mecanismo de integração","Orquestrador","Canais de comunicação","Data Layer","Clever.AI"],"stacks": [] }
+    },
+    {
+      "id": "n_2c161496","nodeRef": "integration:sdk:n_2c161496","order": 10,"kind": "Integration","variant": "default","title": "SDK",
+      "position": { "x": -503, "y": -169 },"size": { "w": 280, "h": 122, "userMinH": 0 },
+      "style": { "type": "blue","icon": "SDK","logoUrl": "https://icons.veryicon.com/png/o/miscellaneous/hekr/open-sdk-download.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Instrumentacao App/Web para coleta e mensageria.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_46b76dad","nodeRef": "integration:nativo:n_46b76dad","order": 11,"kind": "Integration","variant": "default","title": "Nativo",
+      "position": { "x": -501, "y": -35 },"size": { "w": 280, "h": 105, "userMinH": 0 },
+      "style": { "type": "blue","icon": "N","logoUrl": "https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Capacidade nativa da plataforma (sem conector externo).","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_10a515fc","nodeRef": "integration:api:n_10a515fc","order": 12,"kind": "Integration","variant": "default","title": "API",
+      "position": { "x": -503, "y": -283 },"size": { "w": 280, "h": 105, "userMinH": 0 },
+      "style": { "type": "blue","icon": "API","logoUrl": "https://icons.veryicon.com/png/o/internet--web/internet-simple-icon/api-management.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Conector server-to-server para eventos, perfis e integracoes.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_f976045f","nodeRef": "core:canais-de-comunicacao:n_f976045f","order": 13,"kind": "Core","variant": "organizer","title": "Canais de comunicação",
+      "position": { "x": 931, "y": -364 },"size": { "w": 340, "h": 1109, "userMinH": 1109 },
+      "style": { "type": "blue","icon": "ORG","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "","text": "","items": [],"orgOptions": ["Fonte de dados","Mecanismo de integração","Orquestrador","Canais de comunicação","Data Layer","Clever.AI"],"stacks": [] }
+    },
+    {
+      "id": "n_a84b4160","nodeRef": "channel:app:n_a84b4160","order": 14,"kind": "Channel","variant": "stack","title": "App",
+      "position": { "x": 960, "y": -280 },"size": { "w": 280, "h": 121, "userMinH": 0 },
+      "style": { "type": "red","icon": "APP","logoUrl": "https://cdn-icons-png.flaticon.com/512/8766/8766948.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Push, In-App, App Inbox, Native Display.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_4d2b58d9","nodeRef": "channel:web:n_4d2b58d9","order": 15,"kind": "Channel","variant": "stack","title": "Web",
+      "position": { "x": 961, "y": -154 },"size": { "w": 280, "h": 137, "userMinH": 0 },
+      "style": { "type": "red","icon": "WEB","logoUrl": "https://cdn-icons-png.flaticon.com/512/5339/5339181.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Web Push, Pop-ups, Exit intent, Native Display.","text": "","items": [],"orgOptions": [],"stacks": [{ "id": "web-sdk","label": "Web SDK" }] }
+    },
+    {
+      "id": "n_d0494966","nodeRef": "channel:email:n_d0494966","order": 16,"kind": "Channel","variant": "default","title": "Email",
+      "position": { "x": 961, "y": 331 },"size": { "w": 280, "h": 105, "userMinH": 0 },
+      "style": { "type": "red","icon": "EM","logoUrl": "https://static.vecteezy.com/system/resources/thumbnails/014/440/980/small/email-message-icon-design-in-blue-circle-png.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Campanhas e mensagens com HTML rico.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_652817e3","nodeRef": "channel:sms:n_652817e3","order": 17,"kind": "Channel","variant": "default","title": "SMS",
+      "position": { "x": 961, "y": -13 },"size": { "w": 280, "h": 105, "userMinH": 0 },
+      "style": { "type": "red","icon": "SMS","logoUrl": "https://cdn-icons-png.flaticon.com/512/733/733533.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Mensagens transacionais e promocionais.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_55ac0e71","nodeRef": "ads:facebook-ads:n_55ac0e71","order": 18,"kind": "Ads","variant": "default","title": "Facebook Ads",
+      "position": { "x": 959, "y": 626 },"size": { "w": 280, "h": 92, "userMinH": 0 },
+      "style": { "type": "red","icon": "FB","logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2023_Facebook_icon.svg/960px-2023_Facebook_icon.svg.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Export de audiencia para remarketing.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_dfa6e41e","nodeRef": "ads:tiktok-ads:n_dfa6e41e","order": 19,"kind": "Ads","variant": "default","title": "TikTok Ads",
+      "position": { "x": 961, "y": 439 },"size": { "w": 280, "h": 92, "userMinH": 0 },
+      "style": { "type": "red","icon": "TT","logoUrl": "https://www.oviond.com/wp-content/uploads/2023/06/tiktok-ads-icon.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Export de audiencia para remarketing.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_e810a2c3","nodeRef": "ads:google-ads:n_e810a2c3","order": 20,"kind": "Ads","variant": "default","title": "Google Ads",
+      "position": { "x": 959, "y": 533 },"size": { "w": 280, "h": 92, "userMinH": 0 },
+      "style": { "type": "red","icon": "GA","logoUrl": "https://static.vecteezy.com/system/resources/previews/042/712/671/non_2x/google-ads-icon-logo-symbol-free-png.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Export de audiencia para remarketing.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_7af0f680","nodeRef": "core:fonte-de-dados:n_7af0f680","order": 21,"kind": "Core","variant": "organizer","title": "Fonte de dados",
+      "position": { "x": -535, "y": 113 },"size": { "w": 352, "h": 407, "userMinH": 407 },
+      "style": { "type": "blue","icon": "ORG","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "","text": "","items": [],"orgOptions": ["Fonte de dados","Mecanismo de integração","Orquestrador","Canais de comunicação","Data Layer","Clever.AI"],"stacks": [] }
+    },
+    {
+      "id": "n_ba413691","nodeRef": "data:data-lake:n_ba413691","order": 22,"kind": "Data","variant": "default","title": "Data Lake",
+      "position": { "x": -502, "y": 296 },"size": { "w": 280, "h": 92, "userMinH": 0 },
+      "style": { "type": "green","icon": "DL","logoUrl": "https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Armazenamento bruto/historico.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_a80c7530","nodeRef": "data:data-warehouse:n_a80c7530","order": 23,"kind": "Data","variant": "default","title": "Data Warehouse",
+      "position": { "x": -502, "y": 395 },"size": { "w": 280, "h": 92, "userMinH": 0 },
+      "style": { "type": "green","icon": "DW","logoUrl": "https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Camada analitica/BI e modelagem.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_216fcc78","nodeRef": "data:data-queue:n_216fcc78","order": 24,"kind": "Data","variant": "default","title": "Data Queue",
+      "position": { "x": -502, "y": 196 },"size": { "w": 280, "h": 92, "userMinH": 0 },
+      "style": { "type": "green","icon": "DQ","logoUrl": "https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Streaming buffer/ingestao.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_350c3a4d","nodeRef": "texto:texto-livre:n_350c3a4d","order": 25,"kind": "Texto","variant": "text","title": "Texto Livre",
+      "position": { "x": 134, "y": -425 },"size": { "w": 220, "h": 61, "userMinH": 0 },
+      "style": { "type": "gray","icon": "T","logoUrl": "","stickyColor": "","fontSize": 36,"fontFamily": "Verdana","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "","text": "Arquitetura da CleverTap","items": [],"orgOptions": [],"stacks": [] }
+    },
+    {
+      "id": "n_0bc8b132","nodeRef": "solucao:tesseractdb:n_0bc8b132","order": 26,"kind": "Solução","variant": "solution","title": "TesseractDB™",
+      "position": { "x": -173, "y": 530 },"size": { "w": 1095, "h": 211, "userMinH": 211 },
+      "style": { "type": "red","icon": "T","logoUrl": "","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "tesseract","solutionLogo": "https://clevertap.com/wp-content/uploads/2024/03/Hyper-personalization-image.png","stackCatalog": "" },
+      "content": {
+        "description": "","text": "",
+        "items": [
+          { "icon": "https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png","label": "Retenção entre 3~10 anos" },
+          { "icon": "https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png","label": "Escala e Performance" },
+          { "icon": "https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png","label": "Dados em tempo real" },
+          { "icon": "https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png","label": "Visão Unificada do Cliente" },
+          { "icon": "https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png","label": "Redução de Custo e Complexidade" }
+        ],
+        "orgOptions": [],"stacks": []
+      }
+    },
+    {
+      "id": "n_a52fb00e","nodeRef": "channel:whatsapp:n_a52fb00e","order": 27,"kind": "Channel","variant": "stack","title": "WhatsApp",
+      "position": { "x": 961, "y": 206 },"size": { "w": 280, "h": 121, "userMinH": 0 },
+      "style": { "type": "red","icon": "WA","logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/960px-WhatsApp.svg.png","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "whatsappProviders" },
+      "content": { "description": "Canal conversacional (menu/flows/IA).","text": "","items": [],"orgOptions": [],"stacks": [{ "id": "direct","label": "Direct" }] }
+    },
+    {
+      "id": "n_941970f2","nodeRef": "channel:rcs:n_941970f2","order": 28,"kind": "Channel","variant": "default","title": "RCS",
+      "position": { "x": 961, "y": 97 },"size": { "w": 280, "h": 105, "userMinH": 0 },
+      "style": { "type": "red","icon": "RCS","logoUrl": "https://avatars.githubusercontent.com/u/67345131?s=280&v=4","stickyColor": "","fontSize": 28,"fontFamily": "Georgia","color": "#1e293b","align": "left","solutionLayout": "pills","solutionLogo": "","stackCatalog": "" },
+      "content": { "description": "Mensagens ricas (cards, botoes) via operadoras.","text": "","items": [],"orgOptions": [],"stacks": [] }
+    }
+  ],
+  "edges": []
+}`);
+  const builtinCanvasTemplates = [
+    {
+      id: "clevertap-arquitetura",
+      name: "Clevertap Arquitetura",
+      description: "Template completo base da arquitetura CleverTap.",
+      data: CLEVERTAP_ARQ_TEMPLATE
+    }
+  ];
+  let customCanvasTemplates = [];
 
   const uid = () => Math.random().toString(16).slice(2,10);
   const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
@@ -2186,8 +2858,12 @@
     const fallbackH = (n.variant === "solution" || n.variant === "organizer" || n.variant === "ai")
       ? Math.max(n.h || 0, n.userMinH || 180, 180)
       : Math.max(n.h || 92, 92);
-    const w = n.variant === "text" ? (el?.offsetWidth || n.w || 220) : (n.w || el?.offsetWidth || 280);
-    const h = n.variant === "text" ? (el?.offsetHeight || n.h || 56) : (el?.offsetHeight || fallbackH);
+    const w = (n.variant === "text" || n.variant === "sticky")
+      ? (el?.offsetWidth || n.w || (n.variant === "sticky" ? 200 : 220))
+      : (n.w || el?.offsetWidth || 280);
+    const h = (n.variant === "text" || n.variant === "sticky")
+      ? (el?.offsetHeight || n.h || (n.variant === "sticky" ? 80 : 56))
+      : (el?.offsetHeight || fallbackH);
     return { x:n.x, y:n.y, w:Math.max(1,w), h:Math.max(1,h) };
   }
   function allNodesBounds(){
@@ -2285,11 +2961,11 @@
     const ids = new Set();
     for(let i = 0; i < nodes.length; i++){
       const a = nodes[i];
-      if(a.variant === "text" || a.variant === "organizer") continue;
+      if(a.variant === "text" || a.variant === "sticky" || a.variant === "organizer") continue;
       const ab = nodeBounds(a);
       for(let j = i + 1; j < nodes.length; j++){
         const b = nodes[j];
-        if(b.variant === "text" || b.variant === "organizer") continue;
+        if(b.variant === "text" || b.variant === "sticky" || b.variant === "organizer") continue;
         const bb = nodeBounds(b);
         const overlap = !(ab.x + ab.w <= bb.x || ab.x >= bb.x + bb.w || ab.y + ab.h <= bb.y || ab.y >= bb.y + bb.h);
         if(overlap){
@@ -2313,6 +2989,34 @@
       btnSidebar.title = collapsed ? "Expandir sidebar" : "Recolher sidebar";
       btnSidebar.setAttribute("aria-label", btnSidebar.title);
     }
+  }
+  function openCtxMenu(menu, x, y){
+    if(!menu) return;
+    ctxMenu?.classList.remove("open");
+    ctxCanvasMenu?.classList.remove("open");
+    ctxMenu?.setAttribute("aria-hidden", "true");
+    ctxCanvasMenu?.setAttribute("aria-hidden", "true");
+    const margin = 8;
+    const mw = 220;
+    const mh = 180;
+    const px = Math.min(x, window.innerWidth - mw - margin);
+    const py = Math.min(y, window.innerHeight - mh - margin);
+    menu.style.left = `${Math.max(margin, px)}px`;
+    menu.style.top = `${Math.max(margin, py)}px`;
+    menu.classList.add("open");
+    menu.setAttribute("aria-hidden", "false");
+  }
+  function closeAllCtxMenus(){
+    ctxMenu?.classList.remove("open");
+    ctxCanvasMenu?.classList.remove("open");
+    ctxMenu?.setAttribute("aria-hidden", "true");
+    ctxCanvasMenu?.setAttribute("aria-hidden", "true");
+    ctxTargetNodeId = null;
+  }
+  function hideEdgeTypeBar(){
+    if(!edgeTypeBar) return;
+    edgeTypeBar.style.display = "none";
+    edgeTypeBar.innerHTML = "";
   }
   function isCompactViewport(){
     return window.matchMedia("(max-width: 1024px)").matches;
@@ -2385,6 +3089,25 @@
       if(u.protocol === "http:" || u.protocol === "https:") return u.href;
     } catch {}
     return "";
+  }
+  function captureSafeUrl(v){
+    const clean = normalizeLogoUrl(v);
+    if(!clean) return "";
+    try{
+      const u = new URL(clean);
+      const host = u.hostname.toLowerCase();
+      const needsProxy = (
+        host === "icons.veryicon.com" ||
+        host === "images.icon-icons.com" ||
+        host === "www.messangi.com" ||
+        host === "messangi.com"
+      );
+      if(!needsProxy) return clean;
+      const urlNoScheme = clean.replace(/^https?:\/\//i, "");
+      return `https://images.weserv.nl/?url=${encodeURIComponent(urlNoScheme)}`;
+    } catch {
+      return clean;
+    }
   }
   function getNodeById(id){
     return nodes.find(n=>n.id===id);
@@ -2489,12 +3212,14 @@
           type: n.type || "gray",
           icon: n.icon || "",
           logoUrl: n.logoUrl || "",
+          stickyColor: n.stickyColor || "",
           fontSize: Number(n.fontSize || 28),
           fontFamily: n.fontFamily || "Georgia",
           color: n.color || "#1e293b",
           align: n.align || "left",
           solutionLayout: n.solutionLayout || "pills",
-          solutionLogo: n.solutionLogo || ""
+          solutionLogo: n.solutionLogo || "",
+          stackCatalog: n.stackCatalog || ""
         },
         content: {
           description: n.desc || "",
@@ -2502,7 +3227,7 @@
           items: Array.isArray(n.items) ? n.items.map(deepCopyItem) : [],
           orgOptions: Array.isArray(n.orgOptions) ? [...n.orgOptions] : [],
           stacks: stacks.map((sid)=>{
-            const s = stackById(sid);
+            const s = stackById(sid, n);
             return { id: sid, label: s?.label || sid };
           })
         }
@@ -2514,7 +3239,8 @@
         id: e.id,
         edgeRef: `link-${index + 1}-${e.id}`,
         from: { nodeId: e.from.node, port: e.from.port },
-        to: { nodeId: e.to.node, port: e.to.port }
+        to: { nodeId: e.to.node, port: e.to.port },
+        edgeType: e.edgeType || "generic"
       }));
 
     return {
@@ -2525,6 +3251,7 @@
         view: { ...view },
         flowOn: !!flowOn,
         connectMode: !!connectMode,
+        name: canvasName,
         edgeCfg: { ...edgeCfg }
       },
       indexes: {
@@ -2571,7 +3298,9 @@
         fontSize: Number(n?.style?.fontSize ?? n.fontSize ?? 28),
         fontFamily: (n?.style?.fontFamily ?? n.fontFamily ?? "Georgia").toString(),
         color: (n?.style?.color ?? n.color ?? "#1e293b").toString(),
-        align: (n?.style?.align ?? n.align ?? "left").toString()
+        align: (n?.style?.align ?? n.align ?? "left").toString(),
+        stickyColor: (n?.style?.stickyColor ?? n.stickyColor ?? "#fef08a").toString(),
+        stackCatalog: (n?.style?.stackCatalog ?? n.stackCatalog ?? "").toString()
       }));
       const nodeIds = new Set(importedNodes.map(n => n.id));
       const importedEdges = obj.edges
@@ -2584,7 +3313,8 @@
           to: {
             node: e?.to?.nodeId ?? e?.to?.node ?? e?.toNodeId,
             port: e?.to?.port ?? e?.toPort ?? "w"
-          }
+          },
+          edgeType: (e?.edgeType || "generic").toString()
         }))
         .filter(e => nodeIds.has(e.from.node) && nodeIds.has(e.to.node));
       return {
@@ -2593,6 +3323,7 @@
         edges: importedEdges,
         flowOn: obj?.canvas?.flowOn,
         connectMode: obj?.canvas?.connectMode,
+        canvasName: (obj?.canvas?.name || "").toString(),
         edgeCfg: obj?.canvas?.edgeCfg
       };
     }
@@ -2602,13 +3333,88 @@
     }
     return null;
   }
+  function applyImportedState(obj){
+    if(!obj) return false;
+    rememberActionState();
+    if(obj.view) view = obj.view;
+    if(Array.isArray(obj.nodes)) nodes = obj.nodes;
+    if(Array.isArray(obj.edges)) edges = obj.edges;
+    clearNodeSelection();
+    selected = { type:null, id:null };
+    if(typeof obj.flowOn === "boolean") flowOn = obj.flowOn;
+    if(obj.edgeCfg && typeof obj.edgeCfg === "object") edgeCfg = { ...edgeCfg, ...obj.edgeCfg };
+    if(typeof obj.connectMode === "boolean"){
+      setConnectMode(obj.connectMode, true);
+    } else {
+      btnConnect.classList.toggle("active", connectMode);
+    }
+    if(typeof obj.canvasName === "string" && obj.canvasName.trim()){
+      canvasName = obj.canvasName.trim();
+      if(canvasNameEl) canvasNameEl.textContent = canvasName;
+    }
+    btnFlow.classList.toggle("active", flowOn);
+    refreshSettingsUI();
+    setTransform();
+    render();
+    return true;
+  }
+  function openTemplateModal(){
+    if(!tplBack || !tplList) return;
+    const all = [...builtinCanvasTemplates, ...customCanvasTemplates];
+    tplList.innerHTML = all.map((tpl)=>`
+      <div class="tplCard">
+        <div class="tplMeta">
+          <div class="tplName">${escapeHTML(tpl.name)}</div>
+          <div class="tplDesc">${escapeHTML(tpl.description || "")}</div>
+        </div>
+        <button class="btn2 primary tplApply" data-tpl-id="${escapeHTML(tpl.id)}" ${tpl?.data ? "" : "disabled"}>Aplicar</button>
+      </div>
+    `).join("");
+    tplList.querySelectorAll(".tplApply").forEach((btn)=>{
+      btn.addEventListener("click", ()=>{
+        const id = btn.dataset.tplId;
+        const tpl = all.find(t => t.id === id);
+        if(!tpl?.data) return;
+        if(nodes.length && !confirm(`Aplicar o template "${tpl.name}"? O canvas atual será substituído.`)) return;
+        const obj = extractImportState(tpl.data);
+        if(!obj){
+          alert("Template inválido.");
+          return;
+        }
+        applyImportedState(obj);
+        closeTemplateModal();
+        showToast(`Template "${tpl.name}" aplicado.`);
+      });
+    });
+    tplBack.style.display = "flex";
+    tplBack.setAttribute("aria-hidden", "false");
+  }
+  function closeTemplateModal(){
+    if(!tplBack) return;
+    tplBack.style.display = "none";
+    tplBack.setAttribute("aria-hidden", "true");
+  }
+  function loadTemplateLibrary(){
+    try{
+      const raw = localStorage.getItem(TEMPLATE_LIBRARY_KEY);
+      if(!raw) return;
+      const arr = JSON.parse(raw);
+      if(!Array.isArray(arr)) return;
+      customCanvasTemplates = arr.filter(x => x && x.id && x.name && x.data);
+    } catch {}
+  }
+  function persistTemplateLibrary(){
+    try{
+      localStorage.setItem(TEMPLATE_LIBRARY_KEY, JSON.stringify(customCanvasTemplates));
+    } catch {}
+  }
   function queuePersist(){
     clearTimeout(persistTimer);
     persistTimer = setTimeout(()=>{
       try{
         const payload = {
           schemaVersion: SCHEMA_VERSION,
-          data: { view, nodes, edges, flowOn, connectMode, edgeCfg }
+          data: { view, nodes, edges, flowOn, connectMode, edgeCfg, canvasName }
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       } catch {}
@@ -2627,6 +3433,10 @@
       if(typeof data?.connectMode === "boolean") connectMode = data.connectMode;
       if(data?.edgeCfg && typeof data.edgeCfg === "object"){
         edgeCfg = { ...edgeCfg, ...data.edgeCfg };
+      }
+      if(typeof data?.canvasName === "string" && data.canvasName.trim()){
+        canvasName = data.canvasName.trim();
+        if(canvasNameEl) canvasNameEl.textContent = canvasName;
       }
       return true;
     } catch {
@@ -2712,6 +3522,13 @@
     if(type === "dotted") return "2 6";
     return "6 6";
   }
+  const EDGE_TYPES = {
+    "generic":  { label: "Generico", color: "#94a3b8", dash: "6 6", width: 2 },
+    "data":     { label: "Dados", color: "#2563eb", dash: "", width: 2 },
+    "event":    { label: "Evento", color: "#10b981", dash: "3 5", width: 2 },
+    "audience": { label: "Audiencia", color: "#f59e0b", dash: "8 4", width: 2 },
+    "api":      { label: "API Call", color: "#8b5cf6", dash: "2 4", width: 2 },
+  };
   function markerUrl(isSel){
     const mode = edgeCfg.marker || "arrow";
     if(mode === "none") return "";
@@ -2731,10 +3548,46 @@
     { id:"unreal-sdk", label:"Unreal SDK", logo:"https://static.amplitude.com/data-connections/icons/UNREAL.png" },
     { id:"smart-tv-sdk", label:"Smart TV SDK", logo:"" }
   ];
-  const stackById = (id)=> STACK_OPTIONS.find(s=>s.id===id);
+  const WHATSAPP_PROVIDER_OPTIONS = [
+    { id:"direct", label:"Direct", logo:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" },
+    { id:"generic", label:"Generic", logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/960px-WhatsApp.svg.png" },
+    { id:"8x8", label:"8x8", logo:"https://companieslogo.com/img/orig/EGHT-95dcecf5.png?t=1744724283" },
+    { id:"aisensy", label:"AiSensy", logo:"https://waba.aisensy.com/static/media/logo.704a7a4bfa9c51deca0f.jpg" },
+    { id:"exotel", label:"Exotel", logo:"https://exotel.com/wp-content/uploads/2025/07/green-black-logo.png" },
+    { id:"gupshup", label:"Gupshup", logo:"https://companieslogo.com/img/orig/gupshup-1d75e54c.png?t=1720244494" },
+    { id:"haptik", label:"Haptik", logo:"https://www.haptik.ai/hs-fs/hubfs/Business%20Blog/Haptik%20Reborn/handlogo-1-2.png?width=262&name=handlogo-1-2.png" },
+    { id:"infobip", label:"Infobip", logo:"https://www.infobip.com/developers/wp-content/uploads/2023/03/Infobip_logo_favicon.png" },
+    { id:"interakt", label:"Interakt", logo:"https://images.g2crowd.com/uploads/product/image/social_landscape/social_landscape_7370fed2a36dc9eee7c8a2952c803b81/haptik-interakt.png" },
+    { id:"kaleyra", label:"Kaleyra", logo:"https://www.tatacommunications.com/hubfs/TaCO-2024/Brand-logo/Kaleyra/Kaleyra.png" },
+    { id:"msg91", label:"MSG91", logo:"https://media.trustradius.com/product-logos/7D/jl/09ULF2HP569H.PNG" },
+    { id:"nexmo", label:"Nexmo", logo:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGkTwn6R8vAhNEErNhon8OEKBNZoFvIAwYuA&s" },
+    { id:"onextel", label:"OneXtel", logo:"https://onextelcommunication.com/wp-content/uploads/2024/09/OCM_Logo_OneXtel_Communication_Media_Pvt._Ltd._Logo2.png" },
+    { id:"pingbix", label:"Pingbix", logo:"https://pingbix.com/static/navbar-logo.png" },
+    { id:"quickreply", label:"QuickReply", logo:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4GF507R2A_iwwxy6dPPDtnn5QBI8JmPgMyw&s" },
+    { id:"route-mobile", label:"Route Mobile", logo:"https://play-lh.googleusercontent.com/nBsYx365olelYmQHPflxq8vpS5wZ17kPzOILRwbEnW2aNqttltjcHOQOF5TGlBGgmQ" },
+    { id:"sinch", label:"Sinch", logo:"https://sinch.com/wp-content/themes/simpletexting-theme-blank/assets/images/logo-sinch.svg" }
+  ];
+  function stackCatalogForNode(n){
+    if((n?.stackCatalog || "") === "whatsappProviders") return WHATSAPP_PROVIDER_OPTIONS;
+    return STACK_OPTIONS;
+  }
+  function stackById(id, n){
+    return stackCatalogForNode(n).find(s=>s.id===id);
+  }
+  function shortTag(label){
+    const txt = (label || "").toString().trim();
+    if(!txt) return "•";
+    const words = txt.split(/\s+/).filter(Boolean);
+    if(words.length === 1){
+      const one = words[0].replace(/[^a-z0-9]/ig, "");
+      return one.slice(0, 2).toUpperCase() || "•";
+    }
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
 
   // ports definition
   const PORTS = ["n","e","s","w"];
+  const STICKY_COLORS = ["#fef08a", "#fce7f3", "#dbeafe", "#dcfce7", "#ffedd5"];
   function portPos(n, port){
     const w = n.w || 280;
     const h = Math.max(n.h || 92, 92);
@@ -2798,6 +3651,30 @@
     }
     return curveMid(a, b);
   }
+  function showEdgeTypeBar(edgeId, midScreenX, midScreenY){
+    if(!edgeTypeBar) return;
+    const edge = edges.find(x => x.id === edgeId);
+    if(!edge){
+      hideEdgeTypeBar();
+      return;
+    }
+    edgeTypeBar.innerHTML = Object.entries(EDGE_TYPES).map(([key, cfg])=>`
+      <button class="etypeBtn ${(edge.edgeType || "generic") === key ? "active" : ""}" data-etype="${escapeHTML(key)}" style="--etcolor:${escapeHTML(cfg.color)}" title="${escapeHTML(cfg.label)}"></button>
+    `).join("");
+    edgeTypeBar.style.left = `${Math.round(midScreenX - 60)}px`;
+    edgeTypeBar.style.top = `${Math.round(midScreenY + 16)}px`;
+    edgeTypeBar.style.display = "flex";
+    edgeTypeBar.querySelectorAll(".etypeBtn").forEach((btn)=>{
+      btn.addEventListener("click", (e)=>{
+        e.stopPropagation();
+        const found = edges.find(x => x.id === edgeId);
+        if(!found) return;
+        rememberActionState();
+        found.edgeType = btn.dataset.etype || "generic";
+        render();
+      });
+    });
+  }
 
   // --- Render ---
   function render(){
@@ -2809,7 +3686,7 @@
       "Data Layer",
       "Clever.AI"
     ];
-    const TESSERACT_ITEM_ICON = "https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png";
+    const TESSERACT_ITEM_ICON = "https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png";
     const TESSERACT_LOGO_URL = "https://clevertap.com/wp-content/uploads/2024/03/Hyper-personalization-image.png";
     const TESSERACT_PILL_DEFAULTS = [
       { icon:TESSERACT_ITEM_ICON, label:"Retenção entre 3~10 anos" },
@@ -2818,11 +3695,30 @@
       { icon:TESSERACT_ITEM_ICON, label:"Visão Unificada do Cliente" },
       { icon:TESSERACT_ITEM_ICON, label:"Redução de Custo e Complexidade" }
     ];
+    const TESSERACT_ICON_BY_LABEL = {
+      "retenção entre 3~10 anos":TESSERACT_ITEM_ICON,
+      "escala e performance":TESSERACT_ITEM_ICON,
+      "dados em tempo real":TESSERACT_ITEM_ICON,
+      "visão unificada do cliente":TESSERACT_ITEM_ICON,
+      "visao unificada do cliente":TESSERACT_ITEM_ICON,
+      "redução de custo e complexidade":TESSERACT_ITEM_ICON,
+      "reducao de custo e complexidade":TESSERACT_ITEM_ICON
+    };
+    const SEGMENTS_ICON_BY_LABEL = {
+      "real-time":"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png",
+      "real time":"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png",
+      "preditiva":"https://cdn-icons-png.flaticon.com/512/5799/5799191.png",
+      "psicográfica":"https://cdn-icons-png.flaticon.com/512/12282/12282281.png",
+      "psicografica":"https://cdn-icons-png.flaticon.com/512/12282/12282281.png",
+      "comportamental":"https://idecbrasil.com.br/wp-content/uploads/2025/03/processo-1.png"
+    };
+    const SEGMENTS_MONO = new Set(["psicográfica", "psicografica", "comportamental"]);
     const baseHeightFor = (variant) => {
       if(variant === "solution") return 180;
       if(variant === "organizer") return 220;
       if(variant === "ai") return 180;
       if(variant === "stack") return 104;
+      if(variant === "sticky") return 80;
       if(variant === "text") return 0;
       return 92;
     };
@@ -2847,6 +3743,7 @@
       if(n.variant === "organizer") el.classList.add("organizer");
       if(n.variant === "ai") el.classList.add("ai");
       if(n.variant === "text") el.classList.add("text-node");
+      if(n.variant === "sticky") el.classList.add("sticky-node");
       el.dataset.id = n.id;
       el.style.left = n.x + "px";
       el.style.top = n.y + "px";
@@ -2854,6 +3751,11 @@
         el.style.width = "auto";
         el.style.minWidth = "0";
         el.style.minHeight = "0";
+        el.style.height = "auto";
+      } else if(n.variant === "sticky"){
+        el.style.width = clamp(Number(n.w || 200), 160, 300) + "px";
+        el.style.minWidth = "160px";
+        el.style.minHeight = "80px";
         el.style.height = "auto";
       } else {
         el.style.width = (n.w || 280) + "px";
@@ -2885,7 +3787,7 @@
         el.style.height = Math.max(n.h || 0, n.userMinH || variantMinH, variantMinH) + "px";
         el.style.minHeight = "0px";
       } else {
-        if(n.variant !== "text"){
+        if(n.variant !== "text" && n.variant !== "sticky"){
           el.style.height = "auto";
           el.style.minHeight = baseHeightFor(n.variant) + "px";
         }
@@ -2908,6 +3810,21 @@
             <button class="nact del" type="button" title="Excluir bloco" aria-label="Excluir bloco">✕</button>
           </div>
         `;
+      } else if(n.variant === "sticky"){
+        const stickyText = escapeHTML(n.text || "Clique para editar...");
+        const stickyColor = (n.stickyColor || "#fef08a").toString();
+        const colorsHtml = STICKY_COLORS
+          .map((c)=>`<button class="stickyColorBtn" type="button" data-sticky-color="${escapeHTML(c)}" style="background:${escapeHTML(c)};" title="Cor ${escapeHTML(c)}"></button>`)
+          .join("");
+        el.style.setProperty("--stickyColor", stickyColor);
+        el.innerHTML = `
+          <div class="stickyBody" contenteditable="false">${stickyText}</div>
+          <div class="stickyColors">${colorsHtml}</div>
+          <div class="nodeActions">
+            <button class="nact dup" type="button" title="Duplicar bloco" aria-label="Duplicar bloco"><img src="${DUP_ICON_URL}" alt="Duplicar" /></button>
+            <button class="nact del" type="button" title="Excluir bloco" aria-label="Excluir bloco">✕</button>
+          </div>
+        `;
       } else if(n.variant === "solution"){
         let layout = n.solutionLayout || "pills";
         const isTesseract = (n.title || "").toLowerCase().includes("tesseractdb");
@@ -2923,7 +3840,9 @@
               let nextLabel = txt;
               if(/lookback/i.test(txt)) nextLabel = "Retenção entre 3~10 anos";
               if(/ai\s*\/\s*ml|ai\/ml|dados em tempo real/i.test(txt)) nextLabel = "Dados em tempo real";
-              const nextIcon = (typeof it === "object" && it?.icon) ? it.icon : TESSERACT_ITEM_ICON;
+              const key = (nextLabel || "").toLowerCase();
+              const mappedIcon = TESSERACT_ICON_BY_LABEL[key];
+              const nextIcon = mappedIcon || ((typeof it === "object" && it?.icon) ? it.icon : TESSERACT_ITEM_ICON);
               return { icon: nextIcon, label: nextLabel };
             })
             .filter(Boolean);
@@ -2940,14 +3859,29 @@
             n.items = TESSERACT_PILL_DEFAULTS.map(it => ({ ...it }));
           }
         }
+        if(layout === "grid" && (n.title || "").toLowerCase().includes("segments") && Array.isArray(n.items)){
+          n.items = n.items.map((it)=>{
+            if(typeof it === "string"){
+              return { icon:"•", label:it };
+            }
+            const labelRaw = (it?.label || "").toString();
+            const labelKey = labelRaw.trim().toLowerCase();
+            const nextIcon = SEGMENTS_ICON_BY_LABEL[labelKey] || it?.icon || "•";
+            const nextMono = SEGMENTS_MONO.has(labelKey) || !!it?.mono;
+            return { ...it, icon: nextIcon, mono: nextMono };
+          });
+        }
         const solutionItems = (n.items || []).map((item, idx)=>{
           const label = typeof item === "string" ? item : (item?.label || "");
           const icon = typeof item === "string" ? "" : (item?.icon || "");
+          const isIconUrl = !!normalizeLogoUrl(icon);
+          const iconUrl = isIconUrl ? (captureSafeUrl(icon) || icon) : "";
+          const mono = typeof item === "object" && !!item?.mono;
           if(layout === "grid"){
             return `
               <div class="solutionGridItem" draggable="true" data-item-index="${idx}" data-node-id="${n.id}">
                 <button class="solItemDel" type="button" data-node="${n.id}" data-index="${idx}" title="Remover item" aria-label="Remover item">✕</button>
-                <div class="solutionGridIcon">${escapeHTML(icon || "•")}</div>
+                <div class="solutionGridIcon">${isIconUrl ? `<img src="${escapeHTML(iconUrl)}" alt="${escapeHTML(label || "icon")}" ${mono ? 'class="mono"' : ""} />` : escapeHTML(icon || "•")}</div>
                 <div class="solutionGridLabel">${escapeHTML(label)}</div>
               </div>
             `;
@@ -2967,7 +3901,7 @@
               <div class="tesseractLayout">
                 <div class="tesseractBrand">
                   <div class="solutionLogoBadge">
-                    <img src="${escapeHTML(normalizeLogoUrl(n.solutionLogo || TESSERACT_LOGO_URL) || TESSERACT_LOGO_URL)}" alt="TesseractDB" />
+                    <img src="${escapeHTML(captureSafeUrl(n.solutionLogo || TESSERACT_LOGO_URL) || TESSERACT_LOGO_URL)}" alt="TesseractDB" />
                   </div>
                   <div class="tesseractTitle">${escapeHTML(n.title || "TesseractDB™")}</div>
                 </div>
@@ -2980,7 +3914,7 @@
                       const label = typeof item === "string" ? item : (item?.label || "");
                       const icon = typeof item === "string" ? TESSERACT_ITEM_ICON : (item?.icon || TESSERACT_ITEM_ICON);
                       const iconHtml = icon
-                        ? `<img class="tesseractItemLogo" src="${escapeHTML(icon)}" alt="${escapeHTML(label || "item")}" />`
+                        ? `<img class="tesseractItemLogo" src="${escapeHTML(captureSafeUrl(icon) || icon)}" alt="${escapeHTML(label || "item")}" />`
                         : `<span class="tesseractItemLogoFallback">DB</span>`;
                       return `<div class="tesseractItem" draggable="true" data-item-index="${idx}" data-node-id="${n.id}">
                         <button class="solItemDel" type="button" data-node="${n.id}" data-index="${idx}" title="Remover item" aria-label="Remover item">✕</button>
@@ -3136,23 +4070,32 @@
         `;
       } else if(n.variant === "stack"){
         const stacks = Array.isArray(n.stacks) ? n.stacks : [];
+        const catalog = stackCatalogForNode(n);
+        const isProviderCatalog = (n.stackCatalog || "") === "whatsappProviders";
+        const termSingular = isProviderCatalog ? "provedor" : "stack";
+        const termPlural = isProviderCatalog ? "provedores" : "stacks";
+        const termSingularCap = isProviderCatalog ? "Provedor" : "Stack";
         const pills = stacks.map((id)=>{
-          const item = stackById(id);
+          const item = stackById(id, n);
           if(!item) return "";
-          const logo = item.logo ? `<img src="${escapeHTML(item.logo)}" alt="${escapeHTML(item.label)}" />` : `<span style="font-size:10px;">TV</span>`;
+          const logo = item.logo
+            ? `<img src="${escapeHTML(captureSafeUrl(item.logo) || item.logo)}" alt="${escapeHTML(item.label)}" />`
+            : `<span style="font-size:10px;font-weight:800;min-width:16px;text-align:center;">${escapeHTML(shortTag(item.label))}</span>`;
           return `
             <div class="stackPill">
               ${logo}
               <span class="label">${escapeHTML(item.label)}</span>
-              <button type="button" class="stackDel" data-stack="${escapeHTML(item.id)}" title="Remover stack">×</button>
+              <button type="button" class="stackDel" data-stack="${escapeHTML(item.id)}" title="Remover ${escapeHTML(termSingular)}">×</button>
             </div>
           `;
         }).join("");
-        const options = STACK_OPTIONS
+        const options = catalog
           .filter(s => !stacks.includes(s.id))
           .map(s => `
             <button type="button" class="stackOption" data-stack="${escapeHTML(s.id)}">
-              ${s.logo ? `<img src="${escapeHTML(s.logo)}" alt="${escapeHTML(s.label)}" />` : `<span style="width:18px;display:inline-block;text-align:center;">TV</span>`}
+              ${s.logo
+                ? `<img src="${escapeHTML(captureSafeUrl(s.logo) || s.logo)}" alt="${escapeHTML(s.label)}" />`
+                : `<span style="width:18px;display:inline-block;text-align:center;font-weight:800;">${escapeHTML(shortTag(s.label))}</span>`}
               <span>${escapeHTML(s.label)}</span>
             </button>
           `).join("");
@@ -3169,10 +4112,10 @@
           </div>
           <div class="stackWrap">
             <div class="stackMain">
-              <div class="stackPills">${pills || `<div class="stackEmpty">Nenhuma stack selecionada.</div>`}</div>
-              <div class="stackMenu">${options || `<div class="stackEmpty" style="padding:8px;">Todas as stacks já foram adicionadas.</div>`}</div>
+              <div class="stackPills">${pills || `<div class="stackEmpty">Nenhum ${escapeHTML(termSingular)} selecionado.</div>`}</div>
+              <div class="stackMenu">${options || `<div class="stackEmpty" style="padding:8px;">Todos os ${escapeHTML(termPlural)} já foram adicionados.</div>`}</div>
             </div>
-            <button class="stackAdd" type="button" aria-label="Adicionar stack" title="Adicionar stack">+</button>
+            <button class="stackAdd" type="button" aria-label="Adicionar ${escapeHTML(termSingular)}" title="Adicionar ${escapeHTML(termSingularCap)}">+</button>
           </div>
           <div class="nodeActions">
             <button class="nact dup" type="button" title="Duplicar bloco" aria-label="Duplicar bloco"><img src="${DUP_ICON_URL}" alt="Duplicar" /></button>
@@ -3206,7 +4149,7 @@
           const fallbackText = (n.icon || n.title || "BL").toString().slice(0, 3).toUpperCase();
           iconEl.textContent = "";
           const img = document.createElement("img");
-          img.src = logoUrl;
+          img.src = captureSafeUrl(logoUrl) || logoUrl;
           img.alt = "Logo";
           img.loading = "lazy";
           img.onerror = ()=>{
@@ -3224,6 +4167,46 @@
           e.stopPropagation();
           selectNode(n.id);
         });
+      } else if(n.variant === "sticky"){
+        const stickyBody = el.querySelector(".stickyBody");
+        stickyBody?.addEventListener("mousedown", (e)=>{
+          e.stopPropagation();
+        });
+        stickyBody?.addEventListener("click", (e)=>{
+          e.stopPropagation();
+        });
+        stickyBody?.addEventListener("dblclick", (e)=>{
+          e.stopPropagation();
+          stickyBody.setAttribute("contenteditable", "true");
+          stickyBody.focus();
+          const sel = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(stickyBody);
+          sel?.removeAllRanges();
+          sel?.addRange(range);
+        });
+        stickyBody?.addEventListener("blur", ()=>{
+          stickyBody.setAttribute("contenteditable", "false");
+          n.text = (stickyBody.textContent || "").trim() || "Clique para editar...";
+          stickyBody.textContent = n.text;
+          queuePersist();
+        });
+        stickyBody?.addEventListener("keydown", (e)=>{
+          if(e.key === "Escape"){
+            e.preventDefault();
+            stickyBody.textContent = n.text || "Clique para editar...";
+            stickyBody.blur();
+          }
+        });
+        el.querySelectorAll(".stickyColorBtn").forEach((btn)=>{
+          btn.addEventListener("click", (e)=>{
+            e.stopPropagation();
+            const c = btn.dataset.stickyColor;
+            if(!c) return;
+            n.stickyColor = c;
+            render();
+          });
+        });
       }
 
       if(n.variant === "solution" || n.variant === "organizer" || n.variant === "ai"){
@@ -3238,13 +4221,13 @@
       if(n.variant === "solution" || n.variant === "organizer" || n.variant === "ai"){
         el.style.height = measuredH + "px";
         el.style.minHeight = "0px";
-      } else if(n.variant !== "text"){
+      } else if(n.variant !== "text" && n.variant !== "sticky"){
         el.style.height = measuredH + "px";
         el.style.minHeight = measuredH + "px";
       }
 
       // ports
-      if(n.variant !== "text"){
+      if(n.variant !== "text" && n.variant !== "sticky"){
         for(const p of PORTS){
           const port = document.createElement("div");
           port.className = "port";
@@ -3432,7 +4415,7 @@
         if(suppressNodeClick) return;
         selectNode(n.id, !!e.shiftKey);
       });
-      if(n.variant !== "text"){
+      if(n.variant !== "text" && n.variant !== "sticky"){
         el.addEventListener("dblclick", (e)=>{ e.stopPropagation(); openEdit(n.id); });
       }
     }
@@ -3465,6 +4448,7 @@
     `;
     svg.appendChild(defs);
 
+    let selectedEdgeMeta = null;
     for(const ed of edges){
       const aN = nodes.find(n=>n.id===ed.from.node);
       const bN = nodes.find(n=>n.id===ed.to.node);
@@ -3474,6 +4458,7 @@
       const B = portPos(bN, ed.to.port);
       const d = drawEdgePath(A, B, ed.from.port, ed.to.port);
       const isSel = selected.type==="edge" && selected.id===ed.id;
+      const etype = EDGE_TYPES[ed.edgeType || "generic"] || EDGE_TYPES.generic;
 
       // visible path
       const path = document.createElementNS("http://www.w3.org/2000/svg","path");
@@ -3481,9 +4466,9 @@
       path.setAttribute("id", pid);
       path.setAttribute("d", d);
       path.setAttribute("fill","none");
-      path.setAttribute("stroke", isSel ? edgeCfg.activeColor : edgeCfg.lineColor);
-      path.setAttribute("stroke-width", isSel ? "3" : "2");
-      path.setAttribute("stroke-dasharray", lineDashForType(edgeCfg.lineType));
+      path.setAttribute("stroke", isSel ? edgeCfg.activeColor : etype.color);
+      path.setAttribute("stroke-width", String(isSel ? (etype.width + 1) : etype.width));
+      path.setAttribute("stroke-dasharray", isSel ? "6 6" : etype.dash);
       path.setAttribute("opacity","0.95");
       const murl = markerUrl(isSel);
       if(murl) path.setAttribute("marker-end", murl);
@@ -3507,6 +4492,10 @@
       svg.appendChild(hit);
 
       const mid = edgeMid(A, B, ed.from.port, ed.to.port);
+      if(isSel){
+        const ms = worldToScreen(mid.x, mid.y);
+        selectedEdgeMeta = { edgeId: ed.id, x: ms.x, y: ms.y };
+      }
       const g = document.createElementNS("http://www.w3.org/2000/svg","g");
       g.setAttribute("class","edgeDel");
 
@@ -3562,7 +4551,7 @@
       if(flowOn){
         const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
         dot.setAttribute("r","4.2");
-        dot.setAttribute("fill", isSel ? edgeCfg.activeColor : edgeCfg.flowColor);
+        dot.setAttribute("fill", isSel ? edgeCfg.activeColor : etype.color);
         dot.setAttribute("opacity","0.95");
 
         const anim = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
@@ -3580,6 +4569,11 @@
     }
 
     // intentionally hidden: no temporary red connector preview while dragging
+    if(selectedEdgeMeta){
+      showEdgeTypeBar(selectedEdgeMeta.edgeId, selectedEdgeMeta.x, selectedEdgeMeta.y);
+    } else {
+      hideEdgeTypeBar();
+    }
     refreshTextBar();
     queuePersist();
   }
@@ -3648,7 +4642,8 @@
     edges.push({
       id: "e_" + uid(),
       from: { node: from.nodeId, port: from.port },
-      to:   { node: to.nodeId, port: to.port }
+      to:   { node: to.nodeId, port: to.port },
+      edgeType: "generic"
     });
     showToast("Conexao criada (fluxo animado).");
     connectFrom = null;
@@ -3662,7 +4657,7 @@
     let hit = null;
     let best = worldRadius * worldRadius;
     for(const n of nodes){
-      if(n.variant === "text") continue;
+      if(n.variant === "text" || n.variant === "sticky") continue;
       for(const p of PORTS){
         if(exclude && exclude.nodeId===n.id && exclude.port===p) continue;
         const pos = portPos(n, p);
@@ -3680,7 +4675,7 @@
   function findNodeAtPoint(x, y){
     for(let i = nodes.length - 1; i >= 0; i--){
       const n = nodes[i];
-      if(n.variant === "text") continue;
+      if(n.variant === "text" || n.variant === "sticky") continue;
       const w = n.w || 280;
       const h = Math.max(n.h || 92, 92);
       if(x >= n.x && x <= n.x + w && y >= n.y && y <= n.y + h) return n;
@@ -3845,6 +4840,7 @@
       items: Array.isArray(src.items) ? [...src.items] : [],
       stacks: Array.isArray(src.stacks) ? [...src.stacks] : [],
       text: src.text || "",
+      stickyColor: src.stickyColor || "#fef08a",
       fontSize: src.fontSize || 28,
       fontFamily: src.fontFamily || "Georgia",
       color: src.color || "#1e293b",
@@ -3862,6 +4858,7 @@
   function startDragNode(e, nodeId){
     if(e.button !== 0) return;
     if(e.target.closest(".port")) return;
+    if(e.target.closest(".stickyBody")) return;
     if(e.target.closest(".nact")) return;
     if(e.target.closest(".solTool")) return;
     if(e.target.closest(".solItemDel")) return;
@@ -3871,6 +4868,7 @@
     if(e.target.closest(".stackDel")) return;
     if(e.target.closest(".solutionItem")) return;
     if(e.target.closest(".solutionGridItem")) return;
+    if(e.target.closest(".stickyColorBtn")) return;
     if(e.target.closest(".nodeResize")) return;
     if(e.target.closest(".orgTitleBtn")) return;
     if(e.target.closest(".orgMenu")) return;
@@ -3878,6 +4876,7 @@
     if(e.target.closest("#tbText")) return;
     if(e.target.closest(".textCtl")) return;
     if(e.target.closest(".textFont")) return;
+    if(e.target.closest('[contenteditable="true"]')) return;
     if(e.shiftKey) return;
     e.stopPropagation();
     rememberActionState();
@@ -3973,8 +4972,62 @@
     e.stopPropagation();
   }, true);
 
+  // --- Area selection for preview (before opening popup) ---
+  wrap.addEventListener("mousedown", (e)=>{
+    if(!previewPickMode || e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const r = wrap.getBoundingClientRect();
+    const startX = clamp(e.clientX - r.left, 0, r.width);
+    const startY = clamp(e.clientY - r.top, 0, r.height);
+    previewPickDrag = { x0:startX, y0:startY };
+    showPreviewPickRect({ x:startX, y:startY, w:0, h:0 });
+    const move = (ev)=>{
+      if(!previewPickDrag) return;
+      const x = clamp(ev.clientX - r.left, 0, r.width);
+      const y = clamp(ev.clientY - r.top, 0, r.height);
+      const rect = {
+        x: Math.min(previewPickDrag.x0, x),
+        y: Math.min(previewPickDrag.y0, y),
+        w: Math.abs(x - previewPickDrag.x0),
+        h: Math.abs(y - previewPickDrag.y0)
+      };
+      showPreviewPickRect(rect);
+    };
+    const up = async (ev)=>{
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+      if(!previewPickDrag) return;
+      const x = clamp(ev.clientX - r.left, 0, r.width);
+      const y = clamp(ev.clientY - r.top, 0, r.height);
+      const rect = {
+        x: Math.min(previewPickDrag.x0, x),
+        y: Math.min(previewPickDrag.y0, y),
+        w: Math.abs(x - previewPickDrag.x0),
+        h: Math.abs(y - previewPickDrag.y0)
+      };
+      previewPickDrag = null;
+      hidePreviewPickRect();
+      setPreviewPickMode(false);
+      if(rect.w < 10 || rect.h < 10){
+        showToast("Área muito pequena. Tente novamente.");
+        return;
+      }
+      try{
+        await capturePreviewFromRect(rect);
+        openPreviewModal();
+      } catch(err){
+        console.error(err);
+        alert("Não foi possível gerar a pré-visualização.");
+      }
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  }, true);
+
   // --- Pan on background ---
   wrap.addEventListener("mousedown", (e)=>{
+    if(previewPickMode) return;
     if(isMiddlePanning) return;
     if(e.button !== 0) return;
     // only pan if click background
@@ -4113,10 +5166,14 @@
   }
 
   btnClose.addEventListener("click", closeEdit);
+  btnPreviewClose?.addEventListener("click", closePreviewModal);
+  previewBack?.addEventListener("click", (e)=>{ if(e.target === previewBack) closePreviewModal(); });
   modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeEdit(); });
   window.addEventListener("keydown", (e)=>{
     if(e.key==="Escape"){
       closeEdit();
+      closePreviewModal();
+      setPreviewPickMode(false);
       settingsPanel?.classList.remove("show");
       settingsPanel?.setAttribute("aria-hidden","true");
     }
@@ -4164,8 +5221,15 @@
       ]
     },
 
-    "channel:whatsapp":    { icon:"WA", kind:"Channel",     type:"red",   title:"WhatsApp", desc:"Canal conversacional (menu/flows/IA).", logoUrl:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/960px-WhatsApp.svg.png" },
-    "channel:rcs":         { icon:"RCS", kind:"Channel",     type:"red",   title:"RCS", desc:"Mensagens ricas (cards, botoes) via operadoras.", logoUrl:"https://www.messangi.com/wp-content/uploads/2023/06/rcs-1.png" },
+    "channel:whatsapp":    {
+      icon:"WA", kind:"Channel", type:"red", title:"WhatsApp",
+      desc:"Canal conversacional (menu/flows/IA).",
+      logoUrl:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/960px-WhatsApp.svg.png",
+      variant:"stack",
+      stackCatalog:"whatsappProviders",
+      stacks:["direct"]
+    },
+    "channel:rcs":         { icon:"RCS", kind:"Channel",     type:"red",   title:"RCS", desc:"Mensagens ricas (cards, botoes) via operadoras.", logoUrl:"https://avatars.githubusercontent.com/u/67345131?s=280&v=4" },
     "channel:app":         { icon:"APP", kind:"Channel",     type:"red",   title:"App", desc:"Push, In-App, App Inbox, Native Display.", logoUrl:"https://cdn-icons-png.flaticon.com/512/8766/8766948.png", variant:"stack", stacks:["ios-native","android-native"] },
     "channel:web":         { icon:"WEB", kind:"Channel",     type:"red",   title:"Web", desc:"Web Push, Pop-ups, Exit intent, Native Display.", logoUrl:"https://cdn-icons-png.flaticon.com/512/5339/5339181.png", variant:"stack", stacks:["web-sdk"] },
     "channel:email":       { icon:"EM", kind:"Channel",     type:"red",   title:"Email", desc:"Campanhas e mensagens com HTML rico.", logoUrl:"https://static.vecteezy.com/system/resources/thumbnails/014/440/980/small/email-message-icon-design-in-blue-circle-png.png" },
@@ -4201,10 +5265,10 @@
       solutionLayout: "grid",
       items: [
         { icon:"◌", label:"RFM" },
-        { icon:"◷", label:"Real-time" },
-        { icon:"◴", label:"Preditiva" },
-        { icon:"◍", label:"Psicográfica" },
-        { icon:"⚙", label:"Comportamental" }
+        { icon:"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png", label:"Real-time" },
+        { icon:"https://cdn-icons-png.flaticon.com/512/5799/5799191.png", label:"Preditiva" },
+        { icon:"https://cdn-icons-png.flaticon.com/512/12282/12282281.png", label:"Psicográfica", mono:true },
+        { icon:"https://idecbrasil.com.br/wp-content/uploads/2025/03/processo-1.png", label:"Comportamental", mono:true }
       ]
     },
     "solution:analytics":  {
@@ -4231,11 +5295,11 @@
       solutionLogo: "https://clevertap.com/wp-content/uploads/2024/03/Hyper-personalization-image.png",
       unboundedResize: true,
       items: [
-        { icon:"https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png", label:"Retenção entre 3~10 anos" },
-        { icon:"https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png", label:"Escala e Performance" },
-        { icon:"https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png", label:"Dados em tempo real" },
-        { icon:"https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png", label:"Visão Unificada do Cliente" },
-        { icon:"https://images.icon-icons.com/1502/PNG/512/officedatabase_103574.png", label:"Redução de Custo e Complexidade" }
+        { icon:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png", label:"Retenção entre 3~10 anos" },
+        { icon:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png", label:"Escala e Performance" },
+        { icon:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png", label:"Dados em tempo real" },
+        { icon:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png", label:"Visão Unificada do Cliente" },
+        { icon:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png", label:"Redução de Custo e Complexidade" }
       ]
     },
     "solution:scribeai": {
@@ -4290,6 +5354,14 @@
       align:"left",
       w: 220
     },
+    "text:sticky": {
+      icon:"📌", kind:"Nota", type:"gray", variant:"sticky",
+      title:"Sticky Note",
+      text:"Clique para editar...",
+      stickyColor:"#fef08a",
+      w: 200,
+      fontSize: 14
+    },
   };
 
   function addFromTemplateAt(key, clientX, clientY){
@@ -4298,8 +5370,9 @@
 
     rememberActionState();
     const p = worldFromClient(clientX, clientY);
+    const newId = "n_" + uid();
     nodes.push({
-      id: "n_" + uid(),
+      id: newId,
       x: Math.round(p.x - 140),
       y: Math.round(p.y - 60),
       w: t.w || 280,
@@ -4314,6 +5387,7 @@
       variant: t.variant || "default",
       items: Array.isArray(t.items) ? [...t.items] : [],
       stacks: Array.isArray(t.stacks) ? [...t.stacks] : [],
+      stackCatalog: t.stackCatalog || "",
       userMinH: t.userMinH || 0,
       solutionLayout: t.solutionLayout || "pills",
       solutionLogo: t.solutionLogo || "",
@@ -4323,11 +5397,15 @@
       fontFamily: t.fontFamily || "Georgia",
       color: t.color || "#1e293b",
       align: t.align || "left",
+      stickyColor: t.stickyColor || "#fef08a",
       unboundedResize: !!t.unboundedResize
     });
 
-    setSingleNodeSelection(nodes[nodes.length-1].id);
+    setSingleNodeSelection(newId);
     render();
+    const newEl = nodesLayer.querySelector(`[data-id="${newId}"]`);
+    newEl?.classList.add("is-new");
+    setTimeout(()=> newEl?.classList.remove("is-new"), 250);
     if(isCompactViewport()) setSidebarCollapsed(true);
     showToast("Bloco adicionado. Duplo clique para editar.");
   }
@@ -4362,8 +5440,38 @@
     e.preventDefault();
     addFromTemplateAt(key, e.clientX, e.clientY);
   });
+  function addFromTemplateAtWorld(key, wx, wy){
+    const r = wrap.getBoundingClientRect();
+    addFromTemplateAt(key, wx * view.z + view.x + r.left, wy * view.z + view.y + r.top);
+  }
 
   // --- Buttons ---
+  btnTemplate?.addEventListener("click", ()=> openTemplateModal());
+  btnTplClose?.addEventListener("click", ()=> closeTemplateModal());
+  tplBack?.addEventListener("click", (e)=>{
+    if(e.target === tplBack) closeTemplateModal();
+  });
+  btnTplPaste?.addEventListener("click", ()=>{
+    const txt = prompt("Cole aqui o JSON do template:");
+    if(!txt) return;
+    try{
+      const parsed = JSON.parse(txt);
+      const obj = extractImportState(parsed);
+      if(!obj) throw new Error("Template invalido");
+      const entry = {
+        id: `custom-${uid()}`,
+        name: parsed?.canvas?.name || parsed?.name || `Template ${customCanvasTemplates.length + 1}`,
+        description: parsed?.description || "Template importado via JSON.",
+        data: parsed
+      };
+      customCanvasTemplates.unshift(entry);
+      persistTemplateLibrary();
+      showToast("Template importado.");
+      openTemplateModal();
+    } catch {
+      alert("JSON de template inválido.");
+    }
+  });
   btnConnect.addEventListener("click", ()=> setConnectMode(!connectMode));
 
   btnGrid.addEventListener("click", ()=>{
@@ -4379,6 +5487,17 @@
     showToast(`Flow ${flowOn ? "habilitado" : "desabilitado"}.`);
     render();
   });
+  btnPreview?.addEventListener("click", ()=>{
+    if(!nodes.length){
+      showToast("Não há elementos para visualizar.");
+      return;
+    }
+    setPreviewPickMode(!previewPickMode);
+  });
+  btnDownloadPng?.addEventListener("click", ()=> downloadDataUrl(previewDataUrl, "clevertap-canvas.png"));
+  btnDownloadPdf?.addEventListener("click", ()=> downloadPreviewPdf().catch(()=>{
+    alert("Não foi possível gerar o PDF.");
+  }));
 
   btnExport.addEventListener("click", ()=>{
     const data = JSON.stringify(buildPortableExportPayload(), null, 2);
@@ -4406,6 +5525,10 @@
       } else {
         btnConnect.classList.toggle("active", connectMode);
       }
+      if(typeof obj.canvasName === "string" && obj.canvasName.trim()){
+        canvasName = obj.canvasName.trim();
+        if(canvasNameEl) canvasNameEl.textContent = canvasName;
+      }
       btnFlow.classList.toggle("active", flowOn);
       refreshSettingsUI();
 
@@ -4423,6 +5546,8 @@
     view = { x: 0, y: 0, z: 1 };
     nodes = [];
     edges = [];
+    canvasName = "Sem título";
+    if(canvasNameEl) canvasNameEl.textContent = canvasName;
     clearNodeSelection();
     selected = { type:null, id:null };
     connectFrom = null;
@@ -4460,6 +5585,35 @@
       zoomPct.blur();
     }
   });
+  if(canvasNameEl){
+    canvasNameEl.textContent = canvasName;
+    canvasNameEl.addEventListener("click", ()=>{
+      canvasNameEl.setAttribute("contenteditable", "true");
+      canvasNameEl.focus();
+      const sel = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(canvasNameEl);
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+    });
+    canvasNameEl.addEventListener("blur", ()=>{
+      canvasNameEl.setAttribute("contenteditable", "false");
+      canvasName = (canvasNameEl.textContent || "").trim() || "Sem título";
+      canvasNameEl.textContent = canvasName;
+      queuePersist();
+    });
+    canvasNameEl.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter"){
+        e.preventDefault();
+        canvasNameEl.blur();
+      }
+      if(e.key === "Escape"){
+        e.preventDefault();
+        canvasNameEl.textContent = canvasName;
+        canvasNameEl.blur();
+      }
+    });
+  }
 
   btnClearSel.addEventListener("click", ()=>{
     clearNodeSelection();
@@ -4549,6 +5703,10 @@
     settingsPanel?.classList.remove("show");
     settingsPanel?.setAttribute("aria-hidden","true");
   });
+  ctxMenu?.addEventListener("click", (e)=> e.stopPropagation());
+  ctxCanvasMenu?.addEventListener("click", (e)=> e.stopPropagation());
+  edgeTypeBar?.addEventListener("click", (e)=> e.stopPropagation());
+  document.addEventListener("click", ()=> closeAllCtxMenus());
 
   // Search
   search.addEventListener("input", ()=> render());
@@ -4568,7 +5726,76 @@
     clearNodeSelection();
     selected = { type:null, id:null };
     connectFrom = null;
+    closeAllCtxMenus();
     render();
+  });
+
+  nodesLayer.addEventListener("contextmenu", (e)=>{
+    const nodeEl = e.target.closest(".node");
+    if(!nodeEl) return;
+    e.preventDefault();
+    e.stopPropagation();
+    ctxTargetNodeId = nodeEl.dataset.id || null;
+    if(ctxTargetNodeId) selectNode(ctxTargetNodeId);
+    openCtxMenu(ctxMenu, e.clientX, e.clientY);
+  });
+  wrap.addEventListener("contextmenu", (e)=>{
+    if(e.target.closest(".node")) return;
+    e.preventDefault();
+    e.stopPropagation();
+    ctxClickPos = worldFromClient(e.clientX, e.clientY);
+    openCtxMenu(ctxCanvasMenu, e.clientX, e.clientY);
+  });
+  document.getElementById("ctx-edit")?.addEventListener("click", ()=>{
+    if(!ctxTargetNodeId) return;
+    const n = getNodeById(ctxTargetNodeId);
+    if(!n) return;
+    if(n.variant === "text" || n.variant === "sticky"){
+      showToast("Esse bloco é editado direto no canvas.");
+    } else {
+      openEdit(ctxTargetNodeId);
+    }
+    closeAllCtxMenus();
+  });
+  document.getElementById("ctx-dup")?.addEventListener("click", ()=>{
+    if(ctxTargetNodeId) duplicateNode(ctxTargetNodeId);
+    closeAllCtxMenus();
+  });
+  document.getElementById("ctx-del")?.addEventListener("click", ()=>{
+    if(ctxTargetNodeId) removeNodeById(ctxTargetNodeId);
+    closeAllCtxMenus();
+  });
+  document.getElementById("ctx-connect")?.addEventListener("click", ()=>{
+    if(ctxTargetNodeId){
+      const n = getNodeById(ctxTargetNodeId);
+      if(n && n.variant !== "text" && n.variant !== "sticky"){
+        connectFrom = { nodeId: ctxTargetNodeId, port: "e" };
+        showToast("Agora clique no PORT de destino…");
+        render();
+      } else {
+        showToast("Esse bloco não possui conexão por port.");
+      }
+    }
+    closeAllCtxMenus();
+  });
+  document.getElementById("ctx-addNote")?.addEventListener("click", ()=>{
+    if(ctxClickPos) addFromTemplateAtWorld("text:sticky", ctxClickPos.x, ctxClickPos.y);
+    closeAllCtxMenus();
+  });
+  document.getElementById("ctx-addText")?.addEventListener("click", ()=>{
+    if(ctxClickPos) addFromTemplateAtWorld("text:note", ctxClickPos.x, ctxClickPos.y);
+    closeAllCtxMenus();
+  });
+  document.getElementById("ctx-selectAll")?.addEventListener("click", ()=>{
+    selected = { type:null, id:null };
+    nodes.forEach(n => selectedNodeIds.add(n.id));
+    syncSingleSelection();
+    render();
+    closeAllCtxMenus();
+  });
+  document.getElementById("ctx-fitAll")?.addEventListener("click", ()=>{
+    btnCenter?.click();
+    closeAllCtxMenus();
   });
 
   // Delete selected (node/edge)
@@ -4578,6 +5805,10 @@
       e.preventDefault();
       undoAction();
       return;
+    }
+    if(e.key === "Escape"){
+      closeAllCtxMenus();
+      closeTemplateModal();
     }
     if(cmd && (e.key.toLowerCase() === "y" || (e.shiftKey && e.key.toLowerCase() === "z"))){
       e.preventDefault();
@@ -4627,8 +5858,139 @@
       ta.remove();
     });
   }
+  function loadScriptOnce(src, getPromise, setPromise){
+    const existing = getPromise();
+    if(existing) return existing;
+    const promise = new Promise((resolve, reject)=>{
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = ()=>resolve();
+      s.onerror = ()=>reject(new Error("Falha ao carregar script externo"));
+      document.head.appendChild(s);
+    });
+    setPromise(promise);
+    return promise;
+  }
+  function nextFrame(){
+    return new Promise((resolve)=>requestAnimationFrame(()=>resolve()));
+  }
+  async function ensureHtml2Canvas(){
+    if(window.html2canvas) return;
+    await loadScriptOnce(
+      "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js",
+      ()=>html2canvasLoader,
+      (v)=>{ html2canvasLoader = v; }
+    );
+  }
+  async function ensureJsPdf(){
+    if(window.jspdf?.jsPDF) return;
+    await loadScriptOnce(
+      "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js",
+      ()=>jsPdfLoader,
+      (v)=>{ jsPdfLoader = v; }
+    );
+  }
+  function openPreviewModal(){
+    if(!previewDataUrl) return;
+    previewBack.style.display = "flex";
+    previewBack.setAttribute("aria-hidden","false");
+  }
+  function closePreviewModal(){
+    previewBack.style.display = "none";
+    previewBack.setAttribute("aria-hidden","true");
+  }
+  function showPreviewPickRect(rect){
+    if(!previewPickEl) return;
+    previewPickEl.style.display = "block";
+    previewPickEl.style.left = `${rect.x}px`;
+    previewPickEl.style.top = `${rect.y}px`;
+    previewPickEl.style.width = `${rect.w}px`;
+    previewPickEl.style.height = `${rect.h}px`;
+  }
+  function hidePreviewPickRect(){
+    if(!previewPickEl) return;
+    previewPickEl.style.display = "none";
+  }
+  function setPreviewPickMode(on){
+    previewPickMode = !!on;
+    wrap.classList.toggle("preview-pick", previewPickMode);
+    if(previewPickMode){
+      showToast("Arraste a área no canvas para visualizar.");
+    } else {
+      previewPickDrag = null;
+      hidePreviewPickRect();
+    }
+  }
+  async function capturePreviewFromRect(selRect){
+    if(!selRect || selRect.w < 8 || selRect.h < 8) return;
+    const prevSettingsOpen = settingsPanel?.classList.contains("show");
+    const prevTextBarOpen = textBar?.classList.contains("show");
+    settingsPanel?.classList.remove("show");
+    settingsPanel?.setAttribute("aria-hidden","true");
+    textBar?.classList.remove("show");
+    textBar?.setAttribute("aria-hidden","true");
+    try{
+      wrap.classList.add("exporting");
+      await nextFrame();
+      await nextFrame();
+      await ensureHtml2Canvas();
+      const canvas = await window.html2canvas(wrap, {
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        scale: Math.min(2, window.devicePixelRatio || 1.5),
+        logging: false
+      });
+      const sx = canvas.width / Math.max(wrap.clientWidth, 1);
+      const sy = canvas.height / Math.max(wrap.clientHeight, 1);
+      const cx = clamp(Math.round(selRect.x * sx), 0, canvas.width - 1);
+      const cy = clamp(Math.round(selRect.y * sy), 0, canvas.height - 1);
+      const cw = clamp(Math.round(selRect.w * sx), 1, canvas.width - cx);
+      const ch = clamp(Math.round(selRect.h * sy), 1, canvas.height - cy);
+      const cropped = document.createElement("canvas");
+      cropped.width = cw;
+      cropped.height = ch;
+      const ctx = cropped.getContext("2d");
+      ctx.drawImage(canvas, cx, cy, cw, ch, 0, 0, cw, ch);
+      previewDataUrl = cropped.toDataURL("image/png");
+      previewImageSize = { w: cw, h: ch };
+      if(previewImg) previewImg.src = previewDataUrl;
+    } finally {
+      wrap.classList.remove("exporting");
+      if(prevSettingsOpen){
+        settingsPanel?.classList.add("show");
+        settingsPanel?.setAttribute("aria-hidden","false");
+      }
+      if(prevTextBarOpen){
+        textBar?.classList.add("show");
+        textBar?.setAttribute("aria-hidden","false");
+      }
+    }
+  }
+  function downloadDataUrl(dataUrl, filename){
+    if(!dataUrl) return;
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+  async function downloadPreviewPdf(){
+    if(!previewDataUrl) return;
+    await ensureJsPdf();
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: previewImageSize.w >= previewImageSize.h ? "landscape" : "portrait",
+      unit: "px",
+      format: [previewImageSize.w, previewImageSize.h]
+    });
+    pdf.addImage(previewDataUrl, "PNG", 0, 0, previewImageSize.w, previewImageSize.h);
+    pdf.save("clevertap-canvas.pdf");
+  }
 
   // init
+  loadTemplateLibrary();
   loadPersisted();
   document.querySelectorAll(".section").forEach((section)=>{
     const toggle = section.querySelector(".secToggle");
