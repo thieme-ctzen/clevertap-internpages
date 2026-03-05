@@ -62,7 +62,16 @@
       overflow:auto;
       transition: transform .22s ease, opacity .22s ease, padding .22s ease, border-color .22s ease;
       min-width:0;
-      box-shadow: 0 18px 36px rgba(15,23,42,.12);
+      box-shadow: 0 22px 44px rgba(15,23,42,.15), inset 0 1px 0 rgba(255,255,255,.58);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+      border:1px solid rgba(255,255,255,.42);
+      background:
+        linear-gradient(155deg, rgba(255,255,255,.58), rgba(255,255,255,.22)) padding-box,
+        linear-gradient(130deg, rgba(255,255,255,.82), rgba(148,163,184,.28), rgba(255,255,255,.68)) border-box;
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
     }
     .sidebar{
       scrollbar-width: none;
@@ -122,11 +131,11 @@
     }
     .section .hd h2{
       margin:0;
-      font-size:8px;
-      font-weight:900;
+      font-size:10px;
+      font-weight:700;
       color:#1f2a44;
       letter-spacing:.05em;
-      text-transform:uppercase;
+      text-transform:none;
       text-align:center;
       width:100%;
     }
@@ -138,10 +147,11 @@
       border:1px solid var(--stroke);
       background:#fff;
       color:#334155;
-      font-size:9px;
+      font-size:11px;
       font-weight:900;
-      display:grid;
-      place-items:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       cursor:pointer;
       box-shadow: 0 3px 8px rgba(15,23,42,.06);
       flex:0 0 auto;
@@ -149,8 +159,19 @@
       right:6px;
       top:50%;
       transform: translateY(-50%);
+      line-height:1;
+      padding:0;
     }
-    .section.collapsed .bd{ display:none; }
+    .section .bd{
+      overflow:hidden;
+      transition: height .24s ease, opacity .2s ease, padding .2s ease;
+      opacity:1;
+    }
+    .section.collapsed .bd{
+      opacity:0;
+      padding-top:0;
+      padding-bottom:0;
+    }
 
     .btn{
       width:100%;
@@ -165,8 +186,8 @@
       cursor:pointer;
       box-shadow: 0 4px 12px rgba(15,23,42,.05);
       transition:.12s ease;
-      font-weight:850;
-      font-size:9px;
+      font-weight:400;
+      font-size:11px;
       color:var(--ink);
       margin-top:5px;
     }
@@ -220,7 +241,7 @@
       border:1px solid var(--stroke);
       background: rgba(255,255,255,.95);
       cursor:pointer;
-      font-weight:850;
+      font-weight:500;
       font-size:10px;
       box-shadow: 0 4px 12px rgba(15,23,42,.05);
       transition:.12s ease;
@@ -268,9 +289,22 @@
       align-items:center;
       justify-content:space-between;
       padding:10px 12px;
-      background: rgba(255,255,255,.85);
-      border-bottom:1px solid var(--stroke);
-      backdrop-filter: blur(8px);
+      width:auto;
+      margin:0;
+      top:10px;
+      left:12px;
+      right:12px;
+      border-radius:20px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.62), rgba(255,255,255,.28)) padding-box,
+        linear-gradient(120deg, rgba(255,255,255,.84), rgba(148,163,184,.24), rgba(255,255,255,.72)) border-box;
+      border:none;
+      box-shadow: 0 10px 26px rgba(15,23,42,.10), inset 0 1px 0 rgba(255,255,255,.60);
+      backdrop-filter: blur(16px) saturate(145%);
+      -webkit-backdrop-filter: blur(16px) saturate(145%);
+      position:absolute;
+      overflow:hidden;
+      z-index:60;
     }
     .topbar .leftTools{
       display:flex;
@@ -326,12 +360,14 @@
       flex:1;
       display:flex;
       align-items:center;
-      justify-content:center;
+      justify-content:flex-start;
+      padding-left:14px;
       min-width:0;
     }
     .canvasName{
       font-size:13px;
-      font-weight:850;
+      font-weight:600;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color:var(--ink);
       letter-spacing:-.01em;
       cursor:text;
@@ -403,7 +439,7 @@
     .wrap{
       position:relative;
       width:100%;
-      height: calc(100% - 56px);
+      height:100%;
       background: var(--bg);
       overflow:hidden;
       touch-action:none;
@@ -505,8 +541,29 @@
       outline-offset:2px;
     }
     .node.overlap{
-      outline: 2px dashed rgba(245,158,11,.9);
+      outline: 4px dashed rgba(217,119,6,.95);
       outline-offset:2px;
+    }
+    .node.highlightPulse{
+      border:3px solid transparent;
+      background:
+        linear-gradient(rgba(255,255,255,.94), rgba(255,255,255,.94)) padding-box,
+        linear-gradient(125deg, #ff6b6b, #ff3b3b, #ff7a59, #ff4d6d, #ff6b6b) border-box;
+      background-size: 100% 100%, 240% 240%;
+      animation: nodeRedBorderFlow 3.4s linear infinite;
+      box-shadow: 0 0 0 2px rgba(255,77,109,.28), 0 10px 24px rgba(255,59,59,.18);
+    }
+    .node.text-node.highlightPulse{
+      background:
+        linear-gradient(rgba(255,255,255,.0), rgba(255,255,255,.0)) padding-box,
+        linear-gradient(125deg, #ff6b6b, #ff3b3b, #ff7a59, #ff4d6d, #ff6b6b) border-box;
+      border:3px solid transparent;
+      border-radius:12px;
+      padding:2px 4px;
+    }
+    @keyframes nodeRedBorderFlow{
+      0%{ background-position: 0 0, 0% 50%; }
+      100%{ background-position: 0 0, 280% 50%; }
     }
 
     .node .hdr{
@@ -1245,6 +1302,7 @@
       top:-12px;
       right:-12px;
       display:flex;
+      align-items:center;
       gap:6px;
       opacity:0;
       pointer-events:none;
@@ -1272,7 +1330,24 @@
       line-height:1;
     }
     .nact:hover{ border-color:#cbd5e1; background:#fff; }
-    .nact.del:hover{ color:#b91c1c; border-color: rgba(239,68,68,.35); }
+    .nact.del{
+      width:14px;
+      height:14px;
+      min-width:14px;
+      min-height:14px;
+      border-radius:999px;
+      border:1px solid #e0443e;
+      background:#ff5f57;
+      color:transparent;
+      box-shadow: 0 4px 10px rgba(224,68,62,.28);
+      font-size:0;
+      line-height:0;
+    }
+    .nact.del:hover{
+      background:#ff3b30;
+      border-color:#d9342b;
+      color:#ffffff;
+    }
     .nact.dup:hover{ color:#1d4ed8; border-color: rgba(37,99,235,.35); }
     .nact.front:hover,
     .nact.back:hover{ color:#1d4ed8; border-color: rgba(37,99,235,.35); }
@@ -1285,6 +1360,11 @@
       object-fit:contain;
       display:block;
       pointer-events:none;
+    }
+    .nact.dup img{
+      width:12px;
+      height:12px;
+      margin:0 auto;
     }
     .nact svg{
       width:15px;
@@ -1690,7 +1770,7 @@
       height:12px;
       border-radius:999px;
       background: #fff;
-      border:2px solid var(--port);
+      border:4px solid #64748b;
       box-shadow: 0 6px 12px rgba(15,23,42,.10);
       cursor: crosshair;
       opacity:0;
@@ -1704,18 +1784,18 @@
       pointer-events:auto;
     }
     .port:hover{
-      border-color: var(--portActive);
+      border-color: #dc2626;
       transform: scale(1.05);
     }
     .port.active{
-      border-color: var(--portActive);
-      box-shadow: 0 0 0 6px rgba(239,68,68,.14), 0 8px 16px rgba(15,23,42,.12);
+      border-color: #b91c1c;
+      box-shadow: 0 0 0 8px rgba(220,38,38,.22), 0 8px 16px rgba(15,23,42,.12);
     }
     .port.preview{
       opacity:1;
       pointer-events:auto;
-      border-color:#16a34a;
-      box-shadow: 0 0 0 6px rgba(34,197,94,.16), 0 8px 16px rgba(15,23,42,.12);
+      border-color:#15803d;
+      box-shadow: 0 0 0 8px rgba(22,163,74,.22), 0 8px 16px rgba(15,23,42,.12);
       transform: scale(1.08);
     }
     .edgeDel{
@@ -1728,19 +1808,23 @@
     /* Toast */
     .toast{
       position:absolute;
-      top:14px;
+      top:84px;
       left:50%;
-      background: rgba(15,23,42,.92);
-      color:#fff;
+      background:#ffffff;
+      color:#0f172a;
+      border:1px solid rgba(203,213,225,.9);
       padding:10px 12px;
       border-radius:12px;
       font-size:12.5px;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight:500;
       opacity:0;
       transform: translate(-50%, -10px);
       transition:.18s ease;
       max-width:min(560px, 92vw);
       pointer-events:none;
-      z-index:50;
+      box-shadow: 0 10px 20px rgba(15,23,42,.14);
+      z-index:90;
     }
     .toast.show{ opacity:1; transform: translate(-50%, 0px); }
     .ctxMenu{
@@ -1948,6 +2032,9 @@
     .wrap.exporting .marquee{
       visibility:hidden !important;
     }
+    .wrap.exporting svg{
+      visibility:hidden !important;
+    }
 
     @media (max-width: 1024px){
       body{ height:100dvh; }
@@ -1978,6 +2065,12 @@
         min-height:56px;
         padding:8px 10px;
         gap:8px;
+        width:auto;
+        margin:0;
+        top:8px;
+        left:8px;
+        right:8px;
+        border-radius:18px;
       }
       .topbar .controls{
         min-width:0;
@@ -2230,14 +2323,12 @@
         <div class="bd">
           <button class="btn" data-add="text:note">
             <div class="left">
-              <div class="ico">T</div>
               <div class="txt"><div>Texto Livre</div><span>Nota flutuante no canvas</span></div>
             </div>
             <div class="arrow">→</div>
           </button>
           <button class="btn" data-add="text:sticky">
             <div class="left">
-              <div class="ico">📌</div>
               <div class="txt"><div>Sticky Note</div><span>Post-it colorido</span></div>
             </div>
             <div class="arrow">→</div>
@@ -2261,7 +2352,7 @@
           </button>
         </div>
         <div class="canvasNameWrap">
-          <span class="canvasName" id="canvasName" title="Clique para renomear" tabindex="0">Sem título</span>
+          <span class="canvasName" id="canvasName" title="Clique para renomear" tabindex="0">Diagrama CleverTap</span>
         </div>
         <div class="controls">
           <div class="pill searchPill">
@@ -2269,7 +2360,7 @@
           </div>
           <button class="btn2" id="btnPreview">Selecionar área</button>
           <button class="btn2" id="btnCenter">Centralizar</button>
-          <button class="btn2 primary" id="btnClearSel">Limpar seleção</button>
+          <button class="btn2 primary" id="btnGenerateProject">Gerar projeto</button>
         </div>
       </div>
       <div class="settingsPanel" id="settingsPanel" aria-hidden="true">
@@ -2306,6 +2397,14 @@
             <option value="arrow">Seta</option>
             <option value="dot">Ponto</option>
             <option value="none">Nenhum</option>
+          </select>
+        </div>
+        <div class="settingsRow">
+          <label>Fluxo</label>
+          <select id="cfgFlowDots">
+            <option value="1">1 ponto</option>
+            <option value="2">2 pontos</option>
+            <option value="3">3 pontos</option>
           </select>
         </div>
         <div class="settingsRow colorPairRow">
@@ -2426,10 +2525,49 @@
       </div>
     </div>
   </div>
+  <div class="modalBack" id="projectBack" aria-hidden="true">
+    <div class="modal" style="max-width:760px;">
+      <div class="mh">
+        <h3>Overall Information</h3>
+        <button class="close" id="btnProjectClose" type="button">Fechar</button>
+      </div>
+      <div class="mb">
+        <div class="row">
+          <label>Challenges - Current Situation</label>
+          <textarea id="pOverallChallenges" placeholder="Descreva os desafios e a situação atual..."></textarea>
+        </div>
+        <div class="row">
+          <label>Business Goals</label>
+          <textarea id="pOverallGoals" placeholder="Objetivo de negócio que querem atingir com CleverTap..."></textarea>
+        </div>
+        <div class="row">
+          <label>Expectations</label>
+          <textarea id="pOverallExpectations" placeholder="Quais expectativas para o projeto?"></textarea>
+        </div>
+        <div class="row">
+          <label>L1</label>
+          <input id="pOverallL1" placeholder="L1" />
+        </div>
+        <div class="row">
+          <label>L2</label>
+          <input id="pOverallL2" placeholder="L2" />
+        </div>
+        <div class="row">
+          <label>L3</label>
+          <input id="pOverallL3" placeholder="L3" />
+        </div>
+        <div class="actions">
+          <button class="btn2" id="btnProjectCancel" type="button">Cancelar</button>
+          <button class="btn2 primary" id="btnProjectCreate" type="button">Gerar projeto</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="ctxMenu" id="ctxMenu" role="menu" aria-hidden="true">
     <div class="ctxItem" id="ctx-edit">Editar</div>
     <div class="ctxItem" id="ctx-dup">Duplicar</div>
     <div class="ctxItem" id="ctx-connect">Conectar daqui</div>
+    <div class="ctxItem" id="ctx-highlight">Aplicar destaque de borda</div>
     <div class="ctxItem ctx-danger" id="ctx-del">✕ Excluir</div>
   </div>
   <div class="ctxMenu" id="ctxCanvasMenu" role="menu" aria-hidden="true">
@@ -2461,7 +2599,7 @@
   const btnImport = document.getElementById("btnImport");
   const btnReset = document.getElementById("btnReset");
   const btnCenter = document.getElementById("btnCenter");
-  const btnClearSel = document.getElementById("btnClearSel");
+  const btnGenerateProject = document.getElementById("btnGenerateProject");
   const btnZoomIn = document.getElementById("btnZoomIn");
   const btnZoomOut = document.getElementById("btnZoomOut");
   const zoomPct = document.getElementById("zoomPct");
@@ -2480,15 +2618,20 @@
   const cfgLineType = document.getElementById("cfgLineType");
   const cfgConnectorType = document.getElementById("cfgConnectorType");
   const cfgMarker = document.getElementById("cfgMarker");
+  const cfgFlowDots = document.getElementById("cfgFlowDots");
   const cfgLineColor = document.getElementById("cfgLineColor");
   const cfgFlowColor = document.getElementById("cfgFlowColor");
 
   const modalBack = document.getElementById("modalBack");
   const previewBack = document.getElementById("previewBack");
   const tplBack = document.getElementById("tplBack");
+  const projectBack = document.getElementById("projectBack");
   const btnClose = document.getElementById("btnClose");
   const btnPreviewClose = document.getElementById("btnPreviewClose");
   const btnTplClose = document.getElementById("btnTplClose");
+  const btnProjectClose = document.getElementById("btnProjectClose");
+  const btnProjectCancel = document.getElementById("btnProjectCancel");
+  const btnProjectCreate = document.getElementById("btnProjectCreate");
   const btnTplPaste = document.getElementById("btnTplPaste");
   const tplList = document.getElementById("tplList");
   const btnDownloadPng = document.getElementById("btnDownloadPng");
@@ -2500,6 +2643,12 @@
   const fType = document.getElementById("fType");
   const btnSaveNode = document.getElementById("btnSaveNode");
   const btnDeleteNode = document.getElementById("btnDeleteNode");
+  const pOverallChallenges = document.getElementById("pOverallChallenges");
+  const pOverallGoals = document.getElementById("pOverallGoals");
+  const pOverallExpectations = document.getElementById("pOverallExpectations");
+  const pOverallL1 = document.getElementById("pOverallL1");
+  const pOverallL2 = document.getElementById("pOverallL2");
+  const pOverallL3 = document.getElementById("pOverallL3");
   const ctxMenu = document.getElementById("ctxMenu");
   const ctxCanvasMenu = document.getElementById("ctxCanvasMenu");
   const edgeTypeBar = document.getElementById("edgeTypeBar");
@@ -2522,7 +2671,6 @@
   let selectedNodeIds = new Set();
   let connectFrom = null; // {nodeId, port}
   let connectDrag = null; // {from:{nodeId,port}, to:{x,y}, moved}
-  let suppressNextPortClick = false;
   let dragSolutionItem = null; // {nodeId, index}
   let marquee = null; // {x1,y1,x2,y2, append}
   let suppressWrapClick = false;
@@ -2531,15 +2679,17 @@
   let actionHistory = { undo: [], redo: [] };
   let restoringHistory = false;
   const STORAGE_KEY = "clevertap_canvas_state_v3";
+  const PROJECT_OVERALL_KEY = "clevertap_canvas_project_overall_v1";
   const SCHEMA_VERSION = 3;
   let persistTimer = null;
-  let canvasName = "Sem título";
+  let canvasName = "Diagrama CleverTap";
   let ctxTargetNodeId = null;
   let ctxClickPos = null;
   let edgeCfg = {
     connectorType: "curved",
     lineType: "dashed",
     marker: "arrow",
+    flowDots: 2,
     lineColor: "#94a3b8",
     activeColor: "#ef4444",
     flowColor: "#2563eb"
@@ -2553,8 +2703,17 @@
   let previewPickDrag = null;
   let html2canvasLoader = null;
   let jsPdfLoader = null;
-  const DUP_ICON_URL = "https://cdn-icons-png.freepik.com/512/17146/17146941.png";
+  const DUP_ICON_URL = "https://www.pngall.com/wp-content/uploads/16/Black-Copy-Icon-PNG-Photos.png";
   const TEMPLATE_LIBRARY_KEY = "clevertap_canvas_templates_v1";
+  const DRIVE_PROJECT_WEBHOOK_URL = "";
+  let projectOverallInfo = {
+    challenges: "",
+    businessGoals: "",
+    expectations: "",
+    l1: "",
+    l2: "",
+    l3: ""
+  };
   const CLEVERTAP_ARQ_TEMPLATE = JSON.parse(String.raw`{
   "format": "clevertap.canvas-doc.v1",
   "schemaVersion": 1,
@@ -2977,10 +3136,23 @@
     return ids;
   }
   function showToast(msg){
+    positionToastBelowHeader();
     toast.textContent = msg;
     toast.classList.add("show");
     clearTimeout(showToast._t);
     showToast._t = setTimeout(()=>toast.classList.remove("show"), 1600);
+  }
+  function positionToastBelowHeader(){
+    if(!toast || !wrap) return;
+    const wrapRect = wrap.getBoundingClientRect();
+    const topbarEl = mainEl?.querySelector(".topbar");
+    if(!topbarEl){
+      toast.style.top = "14px";
+      return;
+    }
+    const topbarRect = topbarEl.getBoundingClientRect();
+    const top = Math.max(14, Math.round(topbarRect.bottom - wrapRect.top + 8));
+    toast.style.top = `${top}px`;
   }
   function setSidebarCollapsed(collapsed){
     appEl?.classList.toggle("sidebar-collapsed", collapsed);
@@ -3394,6 +3566,60 @@
     tplBack.style.display = "none";
     tplBack.setAttribute("aria-hidden", "true");
   }
+  function loadProjectOverallInfo(){
+    try{
+      const raw = localStorage.getItem(PROJECT_OVERALL_KEY);
+      if(!raw) return;
+      const parsed = JSON.parse(raw);
+      if(!parsed || typeof parsed !== "object") return;
+      projectOverallInfo = {
+        ...projectOverallInfo,
+        challenges: (parsed.challenges || "").toString(),
+        businessGoals: (parsed.businessGoals || "").toString(),
+        expectations: (parsed.expectations || "").toString(),
+        l1: (parsed.l1 || "").toString(),
+        l2: (parsed.l2 || "").toString(),
+        l3: (parsed.l3 || "").toString()
+      };
+    } catch {}
+  }
+  function persistProjectOverallInfo(){
+    try{
+      localStorage.setItem(PROJECT_OVERALL_KEY, JSON.stringify(projectOverallInfo));
+    } catch {}
+  }
+  function fillProjectOverallForm(){
+    if(pOverallChallenges) pOverallChallenges.value = projectOverallInfo.challenges || "";
+    if(pOverallGoals) pOverallGoals.value = projectOverallInfo.businessGoals || "";
+    if(pOverallExpectations) pOverallExpectations.value = projectOverallInfo.expectations || "";
+    if(pOverallL1) pOverallL1.value = projectOverallInfo.l1 || "";
+    if(pOverallL2) pOverallL2.value = projectOverallInfo.l2 || "";
+    if(pOverallL3) pOverallL3.value = projectOverallInfo.l3 || "";
+  }
+  function readProjectOverallForm(){
+    projectOverallInfo = {
+      challenges: (pOverallChallenges?.value || "").trim(),
+      businessGoals: (pOverallGoals?.value || "").trim(),
+      expectations: (pOverallExpectations?.value || "").trim(),
+      l1: (pOverallL1?.value || "").trim(),
+      l2: (pOverallL2?.value || "").trim(),
+      l3: (pOverallL3?.value || "").trim()
+    };
+    persistProjectOverallInfo();
+    return { ...projectOverallInfo };
+  }
+  function openProjectModal(){
+    if(!projectBack) return;
+    fillProjectOverallForm();
+    projectBack.style.display = "flex";
+    projectBack.setAttribute("aria-hidden", "false");
+    setTimeout(()=>pOverallChallenges?.focus(), 0);
+  }
+  function closeProjectModal(){
+    if(!projectBack) return;
+    projectBack.style.display = "none";
+    projectBack.setAttribute("aria-hidden", "true");
+  }
   function loadTemplateLibrary(){
     try{
       const raw = localStorage.getItem(TEMPLATE_LIBRARY_KEY);
@@ -3514,6 +3740,7 @@
     if(cfgLineType) cfgLineType.value = edgeCfg.lineType || "dashed";
     if(cfgConnectorType) cfgConnectorType.value = edgeCfg.connectorType || "curved";
     if(cfgMarker) cfgMarker.value = edgeCfg.marker || "arrow";
+    if(cfgFlowDots) cfgFlowDots.value = String(clamp(Number(edgeCfg.flowDots || 2), 1, 3));
     if(cfgLineColor) cfgLineColor.value = edgeCfg.lineColor || "#94a3b8";
     if(cfgFlowColor) cfgFlowColor.value = edgeCfg.flowColor || "#2563eb";
   }
@@ -3744,6 +3971,7 @@
       if(n.variant === "ai") el.classList.add("ai");
       if(n.variant === "text") el.classList.add("text-node");
       if(n.variant === "sticky") el.classList.add("sticky-node");
+      if(n.highlightPulse) el.classList.add("highlightPulse");
       el.dataset.id = n.id;
       el.style.left = n.x + "px";
       el.style.top = n.y + "px";
@@ -4246,10 +4474,6 @@
             port.classList.add("preview");
           }
 
-          port.addEventListener("click", (e)=>{
-            e.stopPropagation();
-            onPortClick(n.id, p);
-          });
           port.addEventListener("mousedown", (e)=>{
             startConnectDrag(e, n.id, p);
           });
@@ -4549,22 +4773,32 @@
 
       // flow animation: a small dot moving along path
       if(flowOn){
-        const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
-        dot.setAttribute("r","4.2");
-        dot.setAttribute("fill", isSel ? edgeCfg.activeColor : edgeCfg.flowColor);
-        dot.setAttribute("opacity","0.95");
+        const flowColor = isSel ? edgeCfg.activeColor : edgeCfg.flowColor;
+        const dotCount = clamp(Number(edgeCfg.flowDots || 2), 1, 3);
+        const duration = 2.2;
+        const appendFlowDot = (beginOffset)=>{
+          const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
+          dot.setAttribute("r","3.9");
+          dot.setAttribute("fill", flowColor);
+          dot.setAttribute("opacity","0.92");
 
-        const anim = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
-        anim.setAttribute("dur", "2.2s");
-        anim.setAttribute("repeatCount", "indefinite");
-        anim.setAttribute("rotate", "auto");
+          const anim = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
+          anim.setAttribute("dur", `${duration}s`);
+          anim.setAttribute("repeatCount", "indefinite");
+          anim.setAttribute("rotate", "auto");
+          anim.setAttribute("begin", beginOffset);
 
-        const mpath = document.createElementNS("http://www.w3.org/2000/svg","mpath");
-        mpath.setAttributeNS("http://www.w3.org/1999/xlink","href", `#${pid}`);
+          const mpath = document.createElementNS("http://www.w3.org/2000/svg","mpath");
+          mpath.setAttributeNS("http://www.w3.org/1999/xlink","href", `#${pid}`);
 
-        anim.appendChild(mpath);
-        dot.appendChild(anim);
-        svg.appendChild(dot);
+          anim.appendChild(mpath);
+          dot.appendChild(anim);
+          svg.appendChild(dot);
+        };
+        for(let i = 0; i < dotCount; i++){
+          const offset = -((duration / dotCount) * i).toFixed(3);
+          appendFlowDot(`${offset}s`);
+        }
       }
     }
 
@@ -4600,10 +4834,6 @@
   }
 
   function onPortClick(nodeId, port){
-    if(suppressNextPortClick){
-      suppressNextPortClick = false;
-      return;
-    }
     if(!connectMode){
       showToast("Ative o Modo Conectar para ligar ports.");
       return;
@@ -4613,7 +4843,7 @@
     if(!connectFrom){
       connectFrom = { nodeId, port };
       setSingleNodeSelection(nodeId);
-      showToast("Agora clique no PORT de destino…");
+      showToast("Port de origem definido. Clique no próximo port para conectar.");
       render();
       return;
     }
@@ -4712,24 +4942,23 @@
     if(!connectMode) return;
     e.stopPropagation();
     e.preventDefault();
-
-    const pos = portPos(nodes.find(n=>n.id===nodeId), port);
-    connectFrom = { nodeId, port };
-    connectDrag = { from:{ nodeId, port }, to:{ x:pos.x, y:pos.y }, moved:false, target:null, hoverKey:"" };
-    setSingleNodeSelection(nodeId);
-    render();
+    const from = { nodeId, port };
+    const start = worldFromClient(e.clientX, e.clientY);
+    let dragStarted = false;
 
     const move = (ev)=>{
-      if(!connectDrag) return;
       const p = worldFromClient(ev.clientX, ev.clientY);
-      connectDrag.to = p;
-      if(!connectDrag.moved){
-        const start = portPos(nodes.find(n=>n.id===connectDrag.from.nodeId), connectDrag.from.port);
-        const moveMin = screenPxToWorld(3);
-        if(Math.abs(p.x - start.x) > moveMin || Math.abs(p.y - start.y) > moveMin){
-          connectDrag.moved = true;
-        }
+      const moveMin = screenPxToWorld(3);
+      if(!dragStarted && (Math.abs(p.x - start.x) > moveMin || Math.abs(p.y - start.y) > moveMin)){
+        const pos = portPos(nodes.find(n=>n.id===nodeId), port);
+        connectFrom = { ...from };
+        connectDrag = { from:{ ...from }, to:{ x:pos.x, y:pos.y }, moved:true, target:null, hoverKey:"" };
+        setSingleNodeSelection(nodeId);
+        dragStarted = true;
+        showToast("Arraste até o port de destino.");
       }
+      if(!dragStarted || !connectDrag) return;
+      connectDrag.to = p;
       let target = findPortNear(p.x, p.y, connectDrag.from, screenPxToWorld(26));
       if(!target){
         const hitNode = findNodeAtPoint(p.x, p.y);
@@ -4749,6 +4978,10 @@
     const up = (ev)=>{
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
+      if(!dragStarted){
+        onPortClick(nodeId, port);
+        return;
+      }
       if(!connectDrag) return;
 
       const p = worldFromClient(ev.clientX, ev.clientY);
@@ -4760,22 +4993,14 @@
           if(hitNode) target = bestPortForNode(hitNode, connectDrag.from);
         }
       }
-      const moved = connectDrag.moved;
       const from = connectDrag.from;
       connectDrag = null;
-      suppressNextPortClick = (!moved || !!target);
 
       if(target){
         createConnection(from, target);
       } else {
-        if(moved){
-          connectFrom = null;
-          render();
-        } else {
-          connectFrom = from;
-          showToast("Agora clique no PORT de destino…");
-          render();
-        }
+        connectFrom = null;
+        render();
       }
     };
 
@@ -4807,6 +5032,14 @@
     }
     render();
     showToast("Bloco removido.");
+  }
+  function toggleNodeHighlight(nodeId){
+    const n = getNodeById(nodeId);
+    if(!n) return;
+    rememberActionState();
+    n.highlightPulse = !n.highlightPulse;
+    render();
+    showToast(n.highlightPulse ? "Destaque de borda ativado." : "Destaque de borda removido.");
   }
   function bringNodeToFront(nodeId){
     const idx = nodes.findIndex(n => n.id === nodeId);
@@ -4844,7 +5077,8 @@
       fontSize: src.fontSize || 28,
       fontFamily: src.fontFamily || "Georgia",
       color: src.color || "#1e293b",
-      align: src.align || "left"
+      align: src.align || "left",
+      highlightPulse: !!src.highlightPulse
     };
     nodes.push(copy);
     setSingleNodeSelection(copy.id);
@@ -5167,12 +5401,40 @@
 
   btnClose.addEventListener("click", closeEdit);
   btnPreviewClose?.addEventListener("click", closePreviewModal);
+  btnProjectClose?.addEventListener("click", closeProjectModal);
+  btnProjectCancel?.addEventListener("click", closeProjectModal);
   previewBack?.addEventListener("click", (e)=>{ if(e.target === previewBack) closePreviewModal(); });
   modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeEdit(); });
+  projectBack?.addEventListener("click", (e)=>{ if(e.target===projectBack) closeProjectModal(); });
+  btnProjectCreate?.addEventListener("click", async ()=>{
+    if(!nodes.length){
+      showToast("Não há elementos para gerar o projeto.");
+      closeProjectModal();
+      return;
+    }
+    const overallInfo = readProjectOverallForm();
+    closeProjectModal();
+    const scope = buildProjectScopeData(overallInfo);
+    try{
+      const driveDocUrl = await tryCreateProjectDocOnDrive(scope);
+      if(driveDocUrl){
+        window.open(driveDocUrl, "_blank", "noopener,noreferrer");
+        showToast("Projeto gerado no Google Drive.");
+        return;
+      }
+      downloadProjectDoc(scope);
+      showToast("Projeto gerado em .doc.");
+    } catch(err){
+      console.error(err);
+      downloadProjectDoc(scope);
+      showToast("Falha no Drive. Documento .doc baixado.");
+    }
+  });
   window.addEventListener("keydown", (e)=>{
     if(e.key==="Escape"){
       closeEdit();
       closePreviewModal();
+      closeProjectModal();
       setPreviewPickMode(false);
       settingsPanel?.classList.remove("show");
       settingsPanel?.setAttribute("aria-hidden","true");
@@ -5546,7 +5808,7 @@
     view = { x: 0, y: 0, z: 1 };
     nodes = [];
     edges = [];
-    canvasName = "Sem título";
+    canvasName = "Diagrama CleverTap";
     if(canvasNameEl) canvasNameEl.textContent = canvasName;
     clearNodeSelection();
     selected = { type:null, id:null };
@@ -5555,6 +5817,7 @@
       connectorType: "curved",
       lineType: "dashed",
       marker: "arrow",
+      flowDots: 2,
       lineColor: "#94a3b8",
       activeColor: "#ef4444",
       flowColor: "#2563eb"
@@ -5598,7 +5861,7 @@
     });
     canvasNameEl.addEventListener("blur", ()=>{
       canvasNameEl.setAttribute("contenteditable", "false");
-      canvasName = (canvasNameEl.textContent || "").trim() || "Sem título";
+      canvasName = (canvasNameEl.textContent || "").trim() || "Diagrama CleverTap";
       canvasNameEl.textContent = canvasName;
       queuePersist();
     });
@@ -5615,11 +5878,12 @@
     });
   }
 
-  btnClearSel.addEventListener("click", ()=>{
-    clearNodeSelection();
-    selected = { type:null, id:null };
-    connectFrom = null;
-    render();
+  btnGenerateProject?.addEventListener("click", ()=>{
+    if(!nodes.length){
+      showToast("Não há elementos para gerar o projeto.");
+      return;
+    }
+    openProjectModal();
   });
 
   tbDec?.addEventListener("click", ()=>{
@@ -5688,6 +5952,10 @@
     edgeCfg.marker = cfgMarker.value;
     render();
   });
+  cfgFlowDots?.addEventListener("change", ()=>{
+    edgeCfg.flowDots = clamp(Number(cfgFlowDots.value || 2), 1, 3);
+    render();
+  });
   cfgLineColor?.addEventListener("change", ()=>{
     edgeCfg.lineColor = cfgLineColor.value;
     render();
@@ -5736,7 +6004,14 @@
     e.preventDefault();
     e.stopPropagation();
     ctxTargetNodeId = nodeEl.dataset.id || null;
-    if(ctxTargetNodeId) selectNode(ctxTargetNodeId);
+    if(ctxTargetNodeId){
+      selectNode(ctxTargetNodeId);
+      const n = getNodeById(ctxTargetNodeId);
+      const ctxHighlight = document.getElementById("ctx-highlight");
+      if(ctxHighlight){
+        ctxHighlight.textContent = n?.highlightPulse ? "Remover destaque de borda" : "Aplicar destaque de borda";
+      }
+    }
     openCtxMenu(ctxMenu, e.clientX, e.clientY);
   });
   wrap.addEventListener("contextmenu", (e)=>{
@@ -5778,6 +6053,10 @@
     }
     closeAllCtxMenus();
   });
+  document.getElementById("ctx-highlight")?.addEventListener("click", ()=>{
+    if(ctxTargetNodeId) toggleNodeHighlight(ctxTargetNodeId);
+    closeAllCtxMenus();
+  });
   document.getElementById("ctx-addNote")?.addEventListener("click", ()=>{
     if(ctxClickPos) addFromTemplateAtWorld("text:sticky", ctxClickPos.x, ctxClickPos.y);
     closeAllCtxMenus();
@@ -5809,6 +6088,7 @@
     if(e.key === "Escape"){
       closeAllCtxMenus();
       closeTemplateModal();
+      closeProjectModal();
     }
     if(cmd && (e.key.toLowerCase() === "y" || (e.shiftKey && e.key.toLowerCase() === "z"))){
       e.preventDefault();
@@ -5857,6 +6137,214 @@
       document.execCommand("copy");
       ta.remove();
     });
+  }
+  function projectSafeFilename(name){
+    return (name || "projeto-clevertap")
+      .toString()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9-_ ]+/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .slice(0, 80) || "projeto-clevertap";
+  }
+  function summarizeNodeContent(n){
+    const parts = [];
+    if(n.desc) parts.push(`Descrição: ${n.desc}`);
+    if(n.variant === "text" || n.variant === "sticky"){
+      if(n.text) parts.push(`Texto: ${n.text}`);
+    }
+    if(Array.isArray(n.items) && n.items.length){
+      const labels = n.items
+        .map((it)=> typeof it === "string" ? it : (it?.label || ""))
+        .filter(Boolean);
+      if(labels.length) parts.push(`Itens: ${labels.join(" | ")}`);
+    }
+    if(Array.isArray(n.stacks) && n.stacks.length){
+      const stackLabels = n.stacks
+        .map((sid)=>stackById(sid, n)?.label || sid)
+        .filter(Boolean);
+      if(stackLabels.length) parts.push(`Stacks: ${stackLabels.join(", ")}`);
+    }
+    return parts.join(" ");
+  }
+  function collectTechStackFromCanvas(){
+    const webStacks = new Set();
+    const appStacks = new Set();
+    const otherStacks = new Set();
+    let hasWeb = false;
+    let hasApp = false;
+
+    for(const n of nodes){
+      const title = (n.title || "").toLowerCase().trim();
+      const stacks = Array.isArray(n.stacks) ? n.stacks : [];
+      const stackLabels = stacks
+        .map((sid)=>stackById(sid, n)?.label || sid)
+        .filter(Boolean);
+
+      if(title === "web"){
+        hasWeb = true;
+        stackLabels.forEach((s)=>webStacks.add(s));
+        continue;
+      }
+      if(title === "app"){
+        hasApp = true;
+        stackLabels.forEach((s)=>appStacks.add(s));
+        continue;
+      }
+      if(stackLabels.length){
+        stackLabels.forEach((s)=>otherStacks.add(s));
+      }
+    }
+
+    return {
+      web: { hasChannel: hasWeb, stacks: [...webStacks] },
+      app: { hasChannel: hasApp, stacks: [...appStacks] },
+      other: { hasChannel: otherStacks.size > 0, stacks: [...otherStacks] }
+    };
+  }
+  function buildProjectScopeData(overallInput){
+    const overall = {
+      challenges: (overallInput?.challenges || "").toString().trim(),
+      businessGoals: (overallInput?.businessGoals || "").toString().trim(),
+      expectations: (overallInput?.expectations || "").toString().trim(),
+      l1: (overallInput?.l1 || "").toString().trim(),
+      l2: (overallInput?.l2 || "").toString().trim(),
+      l3: (overallInput?.l3 || "").toString().trim()
+    };
+    const links = edges.map((e, idx)=>{
+      const from = getNodeById(e.from?.node);
+      const to = getNodeById(e.to?.node);
+      return {
+        idx: idx + 1,
+        from: from?.title || e.from?.node || "Origem",
+        fromPort: e.from?.port || "",
+        to: to?.title || e.to?.node || "Destino",
+        toPort: e.to?.port || "",
+        edgeType: e.edgeType || "generic"
+      };
+    });
+    return {
+      generatedAt: new Date().toISOString(),
+      projectName: canvasName || "Diagrama CleverTap",
+      totalNodes: nodes.length,
+      totalEdges: edges.length,
+      overall,
+      techStack: collectTechStackFromCanvas(),
+      links
+    };
+  }
+  function buildProjectDocHtml(scope){
+    const chipHtml = (label)=>`<span style="display:inline-block;padding:2px 8px;border:1px solid #cbd5e1;border-radius:999px;background:#f8fafc;font-size:10pt;margin:2px 4px 2px 0;">${escapeHTML(label)}</span>`;
+    const stackCellHtml = (arr)=> arr.length ? arr.map(chipHtml).join("") : "-";
+    const hasWeb = !!scope?.techStack?.web?.hasChannel;
+    const hasApp = !!scope?.techStack?.app?.hasChannel;
+    const hasOther = !!scope?.techStack?.other?.hasChannel;
+    const webStacks = Array.isArray(scope?.techStack?.web?.stacks) ? scope.techStack.web.stacks : [];
+    const appStacks = Array.isArray(scope?.techStack?.app?.stacks) ? scope.techStack.app.stacks : [];
+    const otherStacks = Array.isArray(scope?.techStack?.other?.stacks) ? scope.techStack.other.stacks : [];
+    const overallRows = [
+      ["Challenges - Current Situation", scope?.overall?.challenges || "-"],
+      ["Business Goals (goal they want to achieve with CleverTap)", scope?.overall?.businessGoals || "-"],
+      ["Expectations", scope?.overall?.expectations || "-"],
+      ["L1", scope?.overall?.l1 || "-"],
+      ["L2", scope?.overall?.l2 || "-"],
+      ["L3", scope?.overall?.l3 || "-"]
+    ].map(([k, v])=>`<tr><td>${escapeHTML(k)}</td><td>${escapeHTML(v)}</td></tr>`).join("");
+    const linkRows = scope.links.length
+      ? scope.links.map((ln)=>`
+        <tr>
+          <td>${ln.idx}</td>
+          <td>${escapeHTML(ln.from)} (${escapeHTML(ln.fromPort)})</td>
+          <td>${escapeHTML(ln.to)} (${escapeHTML(ln.toPort)})</td>
+          <td>${escapeHTML(ln.edgeType)}</td>
+        </tr>
+      `).join("")
+      : `<tr><td colspan="4">Sem conexões mapeadas.</td></tr>`;
+    return `<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>${escapeHTML(scope.projectName)} - Escopo Técnico</title>
+  <style>
+    body{font-family:Inter,Arial,sans-serif;color:#0f172a;font-size:11pt;line-height:1.4;margin:28px}
+    h1{font-size:18pt;margin:0 0 10px}
+    h2{font-size:13pt;margin:18px 0 8px}
+    p{margin:4px 0}
+    table{border-collapse:collapse;width:100%;margin-top:6px}
+    th,td{border:1px solid #cbd5e1;padding:6px 8px;vertical-align:top}
+    th{background:#f8fafc;text-align:left}
+  </style>
+</head>
+<body>
+  <h1>Escopo Técnico do Projeto</h1>
+  <p><b>Projeto:</b> ${escapeHTML(scope.projectName)}</p>
+  <p><b>Gerado em:</b> ${escapeHTML(new Date(scope.generatedAt).toLocaleString("pt-BR"))}</p>
+  <p><b>Total de blocos:</b> ${scope.totalNodes} | <b>Total de conexões:</b> ${scope.totalEdges}</p>
+
+  <h2>Overall Information</h2>
+  <table>
+    <thead><tr><th>Campo</th><th>Resposta</th></tr></thead>
+    <tbody>${overallRows}</tbody>
+  </table>
+
+  <h2>Tech Stack</h2>
+  <table>
+    <thead>
+      <tr><th>Web</th><th>App</th><th>Other (please detail)</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center;font-size:14pt;">${hasWeb ? "☑" : "☐"}</td>
+        <td style="text-align:center;font-size:14pt;">${hasApp ? "☑" : "☐"}</td>
+        <td style="text-align:center;font-size:14pt;">${hasOther ? "☑" : "☐"}</td>
+      </tr>
+      <tr>
+        <td>${stackCellHtml(webStacks)}</td>
+        <td>${stackCellHtml(appStacks)}</td>
+        <td>${stackCellHtml(otherStacks)}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Conexões Previstas</h2>
+  <table>
+    <thead><tr><th>#</th><th>Origem</th><th>Destino</th><th>Tipo</th></tr></thead>
+    <tbody>${linkRows}</tbody>
+  </table>
+</body>
+</html>`;
+  }
+  function downloadProjectDoc(scope){
+    const html = buildProjectDocHtml(scope);
+    const blob = new Blob(["\ufeff", html], { type: "application/msword;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${projectSafeFilename(scope.projectName)}-escopo-tecnico.doc`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  async function tryCreateProjectDocOnDrive(scope){
+    if(!DRIVE_PROJECT_WEBHOOK_URL) return "";
+    const html = buildProjectDocHtml(scope);
+    const resp = await fetch(DRIVE_PROJECT_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "create_project_doc",
+        name: `${scope.projectName} - Escopo Técnico`,
+        html,
+        scope
+      })
+    });
+    if(!resp.ok){
+      throw new Error(`Falha ao criar doc no Drive (${resp.status})`);
+    }
+    const data = await resp.json().catch(()=>({}));
+    return data.docUrl || data.url || "";
   }
   function loadScriptOnce(src, getPromise, setPromise){
     const existing = getPromise();
@@ -5935,12 +6423,13 @@
       await nextFrame();
       await nextFrame();
       await ensureHtml2Canvas();
-      const canvas = await window.html2canvas(wrap, {
+      const baseCanvas = await window.html2canvas(wrap, {
         backgroundColor: "#ffffff",
         useCORS: true,
         scale: Math.min(2, window.devicePixelRatio || 1.5),
         logging: false
       });
+      const canvas = await composeCanvasWithSvgOverlay(baseCanvas);
       const sx = canvas.width / Math.max(wrap.clientWidth, 1);
       const sy = canvas.height / Math.max(wrap.clientHeight, 1);
       const cx = clamp(Math.round(selRect.x * sx), 0, canvas.width - 1);
@@ -5967,6 +6456,40 @@
       }
     }
   }
+  async function composeCanvasWithSvgOverlay(baseCanvas){
+    const merged = document.createElement("canvas");
+    merged.width = baseCanvas.width;
+    merged.height = baseCanvas.height;
+    const ctx = merged.getContext("2d");
+    if(!ctx) return baseCanvas;
+    ctx.drawImage(baseCanvas, 0, 0);
+    try{
+      const svgDataUrl = serializeSvgForExport(merged.width, merged.height);
+      if(!svgDataUrl) return merged;
+      const img = await loadImage(svgDataUrl);
+      ctx.drawImage(img, 0, 0, merged.width, merged.height);
+    } catch {}
+    return merged;
+  }
+  function serializeSvgForExport(width, height){
+    if(!svg) return "";
+    const clone = svg.cloneNode(true);
+    clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    clone.setAttribute("width", String(width));
+    clone.setAttribute("height", String(height));
+    clone.style.transform = svg.style.transform || "";
+    clone.style.transformOrigin = svg.style.transformOrigin || "0 0";
+    const xml = new XMLSerializer().serializeToString(clone);
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml);
+  }
+  function loadImage(src){
+    return new Promise((resolve, reject)=>{
+      const img = new Image();
+      img.onload = ()=>resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+  }
   function downloadDataUrl(dataUrl, filename){
     if(!dataUrl) return;
     const a = document.createElement("a");
@@ -5991,15 +6514,47 @@
 
   // init
   loadTemplateLibrary();
+  loadProjectOverallInfo();
   loadPersisted();
+  const setSectionCollapsed = (section, collapsed)=>{
+    const bd = section.querySelector(".bd");
+    const toggle = section.querySelector(".secToggle");
+    if(!bd || !toggle) return;
+    const currentHeight = bd.scrollHeight;
+    if(collapsed){
+      bd.style.height = `${currentHeight}px`;
+      requestAnimationFrame(()=>{
+        section.classList.add("collapsed");
+        bd.style.height = "0px";
+      });
+    } else {
+      section.classList.remove("collapsed");
+      bd.style.height = "0px";
+      requestAnimationFrame(()=>{
+        const targetHeight = bd.scrollHeight;
+        bd.style.height = `${targetHeight}px`;
+      });
+    }
+    toggle.textContent = collapsed ? "+" : "−";
+    toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    toggle.title = collapsed ? "Expandir seção" : "Recolher seção";
+  };
   document.querySelectorAll(".section").forEach((section)=>{
     const toggle = section.querySelector(".secToggle");
+    const bd = section.querySelector(".bd");
+    if(bd){
+      section.classList.remove("collapsed");
+      bd.style.height = "auto";
+      bd.addEventListener("transitionend", (ev)=>{
+        if(ev.propertyName !== "height") return;
+        if(section.classList.contains("collapsed")) return;
+        bd.style.height = "auto";
+      });
+    }
     if(!toggle) return;
     toggle.addEventListener("click", ()=>{
-      const collapsed = section.classList.toggle("collapsed");
-      toggle.textContent = collapsed ? "+" : "−";
-      toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
-      toggle.title = collapsed ? "Expandir seção" : "Recolher seção";
+      const willCollapse = !section.classList.contains("collapsed");
+      setSectionCollapsed(section, willCollapse);
     });
   });
   setTransform();
@@ -6008,11 +6563,13 @@
     if(isCompactViewport()){
       setSidebarCollapsed(true);
     }
+    positionToastBelowHeader();
   });
   setConnectMode(connectMode, true);
   btnGrid.classList.toggle("active", grid.style.display !== "none");
   btnFlow.classList.toggle("active", flowOn);
   refreshSettingsUI();
+  positionToastBelowHeader();
   render();
 
 })();
