@@ -1394,7 +1394,9 @@
     .node.organizer:hover .nodeResize,
     .node.organizer.selected .nodeResize,
     .node.ai:hover .nodeResize,
-    .node.ai.selected .nodeResize{
+    .node.ai.selected .nodeResize,
+    .node.sticky-node:hover .nodeResize,
+    .node.sticky-node.selected .nodeResize{
       opacity:.9;
     }
     .nodeResize:hover{
@@ -1415,28 +1417,45 @@
       border: 1px solid rgba(0,0,0,.12);
       border-radius: 4px;
       box-shadow: 3px 4px 10px rgba(0,0,0,.18);
-      padding: 10px 12px 28px;
+      padding: 12px 12px 34px;
       min-width: 160px;
-      max-width: 300px;
       min-height: 80px;
       cursor: grab;
       position: absolute;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
     .sticky-node .stickyBody{
       font-size:14px;
       line-height:1.45;
       color:#1e293b;
       outline:none;
-      min-height:48px;
+      min-height:0;
+      flex:1 1 auto;
       white-space: pre-wrap;
       word-break: break-word;
+      overflow:auto;
+      cursor:grab;
+      user-select:none;
+      -webkit-user-select:none;
+      font-weight:500;
+    }
+    .sticky-node .stickyBody[contenteditable="true"]{
+      cursor:text;
       user-select:text;
       -webkit-user-select:text;
     }
-    .stickyColors{
+    .stickyFooter{
       position:absolute;
-      bottom:6px;
       left:8px;
+      right:28px;
+      bottom:6px;
+      display:flex;
+      align-items:center;
+      min-height:16px;
+    }
+    .stickyColors{
       display:flex;
       gap:5px;
       opacity:0;
@@ -1537,12 +1556,22 @@
     .textBar .textFont{
       margin:0;
     }
+    .textBar.sticky-mode #tbText{
+      width:280px !important;
+      opacity:.75;
+      cursor:not-allowed;
+    }
+    .textBar.sticky-mode #tbFont,
+    .textBar.sticky-mode #tbColor,
+    .textBar.sticky-mode #tbAlign{
+      display:none;
+    }
     .canvasTools{ display:none; }
     .zoomDock{
       position:absolute;
       right:12px;
-      top:12px;
-      z-index:36;
+      top:76px;
+      z-index:62;
       display:flex;
       align-items:center;
       gap:4px;
@@ -1933,6 +1962,10 @@
       align-items:center;
       margin-bottom:8px;
     }
+    .row.full{
+      grid-template-columns: 1fr;
+      align-items:stretch;
+    }
     label{
       font-size:9px;
       color:#64748b;
@@ -1953,6 +1986,14 @@
       background:#fff;
     }
     textarea{ min-height:110px; resize:vertical; }
+    .jsonPasteArea{
+      min-height:320px;
+      resize:vertical;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12px;
+      line-height:1.45;
+      color:#0f172a;
+    }
     .modal .actions{
       display:flex;
       justify-content:flex-end;
@@ -2097,7 +2138,7 @@
       }
       .zoomDock{
         right:8px;
-        top:8px;
+        top:72px;
       }
       .zoomBtn,
       .iconBtn,
@@ -2167,6 +2208,14 @@
             <div class="left">
               <div class="ico"><img src="https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png" alt="Nativo" /></div>
               <div class="txt"><div>Nativo</div><span>Integração interna</span></div>
+            </div>
+            <div class="arrow">→</div>
+          </button>
+
+          <button class="btn" data-add="integration:manual">
+            <div class="left">
+              <div class="ico"><img src="https://media.istockphoto.com/id/1187149723/pt/vetorial/touch-outline-vector-illustration-icon-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=h2Z3b3CzeZPm5oLu_m_g6dzhhCgWWwfO5CEHTuS1E-A=" alt="Manual" /></div>
+              <div class="txt"><div>Manual</div><span>Operação assistida</span></div>
             </div>
             <div class="arrow">→</div>
           </button>
@@ -2420,6 +2469,14 @@
             </div>
           </div>
         </div>
+        <div class="settingsRow">
+          <label>Idioma</label>
+          <select id="cfgLanguage">
+            <option value="pt">Português</option>
+            <option value="es">Español</option>
+            <option value="en">English</option>
+          </select>
+        </div>
       </div>
       <button class="settingsFab" id="btnSettings" type="button" title="Configuracoes">⚙</button>
       <div class="textBar" id="textBar" aria-hidden="true">
@@ -2525,6 +2582,24 @@
       </div>
     </div>
   </div>
+  <div class="modalBack" id="importBack" aria-hidden="true">
+    <div class="modal" style="max-width:760px;">
+      <div class="mh">
+        <h3>Importar JSON</h3>
+        <button class="close" id="btnImportClose" type="button">Fechar</button>
+      </div>
+      <div class="mb">
+        <div class="row full">
+          <label for="importJsonInput">Cole o JSON exportado</label>
+          <textarea id="importJsonInput" class="jsonPasteArea" placeholder="Cole o JSON exportado aqui..."></textarea>
+        </div>
+        <div class="actions">
+          <button class="btn2" id="btnImportCancel" type="button">Cancelar</button>
+          <button class="btn2 primary" id="btnImportApply" type="button">Importar</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="modalBack" id="projectBack" aria-hidden="true">
     <div class="modal" style="max-width:760px;">
       <div class="mh">
@@ -2621,19 +2696,25 @@
   const cfgFlowDots = document.getElementById("cfgFlowDots");
   const cfgLineColor = document.getElementById("cfgLineColor");
   const cfgFlowColor = document.getElementById("cfgFlowColor");
+  const cfgLanguage = document.getElementById("cfgLanguage");
 
   const modalBack = document.getElementById("modalBack");
   const previewBack = document.getElementById("previewBack");
   const tplBack = document.getElementById("tplBack");
+  const importBack = document.getElementById("importBack");
   const projectBack = document.getElementById("projectBack");
   const btnClose = document.getElementById("btnClose");
   const btnPreviewClose = document.getElementById("btnPreviewClose");
   const btnTplClose = document.getElementById("btnTplClose");
+  const btnImportClose = document.getElementById("btnImportClose");
+  const btnImportCancel = document.getElementById("btnImportCancel");
+  const btnImportApply = document.getElementById("btnImportApply");
   const btnProjectClose = document.getElementById("btnProjectClose");
   const btnProjectCancel = document.getElementById("btnProjectCancel");
   const btnProjectCreate = document.getElementById("btnProjectCreate");
   const btnTplPaste = document.getElementById("btnTplPaste");
   const tplList = document.getElementById("tplList");
+  const importJsonInput = document.getElementById("importJsonInput");
   const btnDownloadPng = document.getElementById("btnDownloadPng");
   const btnDownloadPdf = document.getElementById("btnDownloadPdf");
   const previewImg = document.getElementById("previewImg");
@@ -2680,7 +2761,7 @@
   let restoringHistory = false;
   const STORAGE_KEY = "clevertap_canvas_state_v3";
   const PROJECT_OVERALL_KEY = "clevertap_canvas_project_overall_v1";
-  const SCHEMA_VERSION = 3;
+  const SCHEMA_VERSION = 4;
   let persistTimer = null;
   let canvasName = "Diagrama CleverTap";
   let ctxTargetNodeId = null;
@@ -2825,7 +2906,7 @@
       "content": {
         "description": "","text": "",
         "items": [
-          { "icon": "https://cdn-icons-png.freepik.com/512/5076/5076787.png","label": "RFM","mono": false },
+          { "icon": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Clock_icon.svg","label": "RFM","mono": false },
           { "icon": "https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png","label": "Real-time","mono": false },
           { "icon": "https://cdn-icons-png.flaticon.com/512/5799/5799191.png","label": "Preditiva","mono": false },
           { "icon": "https://cdn-icons-png.flaticon.com/512/12282/12282281.png","label": "Psicográfica","mono": true },
@@ -2982,11 +3063,636 @@
     }
   ];
   let customCanvasTemplates = [];
+  let currentLanguage = "pt";
+  let canvasNameI18n = null;
+
+  const LANGUAGES = ["pt", "es", "en"];
+  const UI_MESSAGES = {
+    pt: {
+      hintHtml: `<b>Como conectar:</b> clique e arraste de um <b>port</b> para outro (ou clique em um port e depois no destino).<br><br><b>Atalhos:</b> apagar seleção <span class="kbd">Del</span> • editar bloco: <b>duplo clique</b> • multi seleção: <span class="kbd">Shift</span> + clique ou arraste no fundo • pan: arrastar fundo • zoom: <span class="kbd">Ctrl</span> + scroll`,
+      searchPlaceholder: "Buscar blocos...",
+      freeTextPlaceholder: "Digite aqui sua anotação...",
+      stickyToolbarPlaceholder: "Duplo clique no sticky para editar o texto",
+      importJsonPlaceholder: "Cole o JSON exportado aqui...",
+      templateJsonPrompt: "Cole aqui o JSON do template:",
+      templateInvalid: "JSON de template inválido.",
+      templateImported: "Template importado.",
+      templateImportedDesc: "Template importado via JSON.",
+      importJsonEmpty: "Cole um JSON para importar.",
+      invalidJson: "JSON inválido.",
+      invalidTemplate: "Template inválido.",
+      templateApplied: `Template "{name}" aplicado.`,
+      templateApplyConfirm: `Aplicar o template "{name}"? O canvas atual será substituído.`,
+      layoutImported: "Layout importado.",
+      languageChanged: "Idioma alterado para Português.",
+      apply: "Aplicar",
+      confirmReset: "Resetar tudo?",
+      exportCopied: "JSON portável copiado.",
+      blockAdded: "Bloco adicionado. Duplo clique para editar."
+    },
+    es: {
+      hintHtml: `<b>Cómo conectar:</b> haz clic y arrastra desde un <b>port</b> hasta otro (o haz clic en un port y luego en el destino).<br><br><b>Atajos:</b> borrar selección <span class="kbd">Del</span> • editar bloque: <b>doble clic</b> • selección múltiple: <span class="kbd">Shift</span> + clic o arrastra sobre el fondo • pan: arrastrar el fondo • zoom: <span class="kbd">Ctrl</span> + scroll`,
+      searchPlaceholder: "Buscar bloques...",
+      freeTextPlaceholder: "Escribe tu anotación aquí...",
+      stickyToolbarPlaceholder: "Haz doble clic en la nota para editar el texto",
+      importJsonPlaceholder: "Pega aquí el JSON exportado...",
+      templateJsonPrompt: "Pega aquí el JSON de la plantilla:",
+      templateInvalid: "JSON de plantilla inválido.",
+      templateImported: "Plantilla importada.",
+      templateImportedDesc: "Plantilla importada mediante JSON.",
+      importJsonEmpty: "Pega un JSON para importar.",
+      invalidJson: "JSON inválido.",
+      invalidTemplate: "Plantilla inválida.",
+      templateApplied: `Plantilla "{name}" aplicada.`,
+      templateApplyConfirm: `¿Aplicar la plantilla "{name}"? El lienzo actual será reemplazado.`,
+      layoutImported: "Diseño importado.",
+      languageChanged: "Idioma cambiado a Español.",
+      apply: "Aplicar",
+      confirmReset: "¿Restablecer todo?",
+      exportCopied: "JSON portable copiado.",
+      blockAdded: "Bloque añadido. Haz doble clic para editar."
+    },
+    en: {
+      hintHtml: `<b>How to connect:</b> click and drag from one <b>port</b> to another (or click a port and then the target).<br><br><b>Shortcuts:</b> delete selection <span class="kbd">Del</span> • edit block: <b>double click</b> • multi-select: <span class="kbd">Shift</span> + click or drag on the background • pan: drag background • zoom: <span class="kbd">Ctrl</span> + scroll`,
+      searchPlaceholder: "Search blocks...",
+      freeTextPlaceholder: "Type your note here...",
+      stickyToolbarPlaceholder: "Double-click the sticky note to edit the text",
+      importJsonPlaceholder: "Paste the exported JSON here...",
+      templateJsonPrompt: "Paste the template JSON here:",
+      templateInvalid: "Invalid template JSON.",
+      templateImported: "Template imported.",
+      templateImportedDesc: "Template imported via JSON.",
+      importJsonEmpty: "Paste a JSON payload to import.",
+      invalidJson: "Invalid JSON.",
+      invalidTemplate: "Invalid template.",
+      templateApplied: `Template "{name}" applied.`,
+      templateApplyConfirm: `Apply the template "{name}"? The current canvas will be replaced.`,
+      layoutImported: "Layout imported.",
+      languageChanged: "Language changed to English.",
+      apply: "Apply",
+      confirmReset: "Reset everything?",
+      exportCopied: "Portable JSON copied.",
+      blockAdded: "Block added. Double-click to edit."
+    }
+  };
+  const PHRASE_BUNDLES = [
+    { pt:"Conectores de Integração", es:"Conectores de Integración", en:"Integration Connectors" },
+    { pt:"Bloco Central", es:"Bloque Central", en:"Core Block" },
+    { pt:"Canais", es:"Canales", en:"Channels" },
+    { pt:"Conectores de Dados", es:"Conectores de Datos", en:"Data Connectors" },
+    { pt:"Soluções CleverTap", es:"Soluciones CleverTap", en:"CleverTap Solutions" },
+    { pt:"Anotações", es:"Anotaciones", en:"Notes" },
+    { pt:"Texto Livre", es:"Texto Libre", en:"Free Text" },
+    { pt:"Nota flutuante no canvas", es:"Nota flotante en el lienzo", en:"Floating note on the canvas" },
+    { pt:"Sticky Note", es:"Nota adhesiva", en:"Sticky Note" },
+    { pt:"Post-it colorido", es:"Nota adhesiva de color", en:"Colored sticky note" },
+    { pt:"Arquitetura CleverTap", es:"Arquitectura CleverTap", en:"CleverTap Architecture" },
+    { pt:"Diagrama CleverTap", es:"Diagrama CleverTap", en:"CleverTap Diagram" },
+    { pt:"Templates", es:"Plantillas", en:"Templates" },
+    { pt:"Export JSON", es:"Exportar JSON", en:"Export JSON" },
+    { pt:"Import JSON", es:"Importar JSON", en:"Import JSON" },
+    { pt:"Reset", es:"Reiniciar", en:"Reset" },
+    { pt:"Selecionar área", es:"Seleccionar área", en:"Select area" },
+    { pt:"Centralizar", es:"Centrar", en:"Center" },
+    { pt:"Gerar projeto", es:"Generar proyecto", en:"Generate project" },
+    { pt:"Config Canva", es:"Configuración del lienzo", en:"Canvas Settings" },
+    { pt:"Configurações", es:"Configuración", en:"Settings" },
+    { pt:"Clique para renomear", es:"Haz clic para renombrar", en:"Click to rename" },
+    { pt:"Expandir sidebar", es:"Expandir barra lateral", en:"Expand sidebar" },
+    { pt:"Recolher sidebar", es:"Contraer barra lateral", en:"Collapse sidebar" },
+    { pt:"Expandir seção", es:"Expandir sección", en:"Expand section" },
+    { pt:"Recolher seção", es:"Contraer sección", en:"Collapse section" },
+    { pt:"Tipo linha", es:"Tipo de línea", en:"Line type" },
+    { pt:"Tracejada", es:"Trazada", en:"Dashed" },
+    { pt:"Sólida", es:"Sólida", en:"Solid" },
+    { pt:"Pontilhada", es:"Punteada", en:"Dotted" },
+    { pt:"Conector", es:"Conector", en:"Connector" },
+    { pt:"Livre", es:"Libre", en:"Free" },
+    { pt:"Reto", es:"Recto", en:"Straight" },
+    { pt:"Ponteiro", es:"Indicador", en:"Pointer" },
+    { pt:"Seta", es:"Flecha", en:"Arrow" },
+    { pt:"Ponto", es:"Punto", en:"Dot" },
+    { pt:"Nenhum", es:"Ninguno", en:"None" },
+    { pt:"Fluxo", es:"Flujo", en:"Flow" },
+    { pt:"Flow", es:"Flow", en:"Flow" },
+    { pt:"1 ponto", es:"1 punto", en:"1 dot" },
+    { pt:"2 pontos", es:"2 puntos", en:"2 dots" },
+    { pt:"3 pontos", es:"3 puntos", en:"3 dots" },
+    { pt:"Cores", es:"Colores", en:"Colors" },
+    { pt:"Linha", es:"Línea", en:"Line" },
+    { pt:"Idioma", es:"Idioma", en:"Language" },
+    { pt:"Editar Bloco", es:"Editar bloque", en:"Edit Block" },
+    { pt:"Fechar", es:"Cerrar", en:"Close" },
+    { pt:"Título", es:"Título", en:"Title" },
+    { pt:"Tipo", es:"Tipo", en:"Type" },
+    { pt:"Neutro", es:"Neutro", en:"Neutral" },
+    { pt:"Canais/Martech", es:"Canales/Martech", en:"Channels/Martech" },
+    { pt:"Core/Integração", es:"Core/Integración", en:"Core/Integration" },
+    { pt:"Dados", es:"Datos", en:"Data" },
+    { pt:"Descrição", es:"Descripción", en:"Description" },
+    { pt:"Logo URL", es:"Logo URL", en:"Logo URL" },
+    { pt:"Excluir", es:"Eliminar", en:"Delete" },
+    { pt:"Salvar", es:"Guardar", en:"Save" },
+    { pt:"Pré-visualização do Canvas", es:"Vista previa del lienzo", en:"Canvas Preview" },
+    { pt:"Download PNG", es:"Descargar PNG", en:"Download PNG" },
+    { pt:"Download PDF", es:"Descargar PDF", en:"Download PDF" },
+    { pt:"Colar JSON Template", es:"Pegar JSON de plantilla", en:"Paste Template JSON" },
+    { pt:"Importar JSON", es:"Importar JSON", en:"Import JSON" },
+    { pt:"Cole o JSON exportado", es:"Pega el JSON exportado", en:"Paste the exported JSON" },
+    { pt:"Diminuir fonte", es:"Disminuir fuente", en:"Decrease font" },
+    { pt:"Aumentar fonte", es:"Aumentar fuente", en:"Increase font" },
+    { pt:"Fonte", es:"Fuente", en:"Font" },
+    { pt:"Cor", es:"Color", en:"Color" },
+    { pt:"Alinhamento", es:"Alineación", en:"Alignment" },
+    { pt:"Esq", es:"Izq", en:"Left" },
+    { pt:"Centro", es:"Centro", en:"Center" },
+    { pt:"Dir", es:"Der", en:"Right" },
+    { pt:"Zoom out", es:"Alejar", en:"Zoom out" },
+    { pt:"Zoom in", es:"Acercar", en:"Zoom in" },
+    { pt:"Zoom porcentagem", es:"Porcentaje de zoom", en:"Zoom percentage" },
+    { pt:"Cancelar", es:"Cancelar", en:"Cancel" },
+    { pt:"Overall Information", es:"Información general", en:"Overall Information" },
+    { pt:"Challenges - Current Situation", es:"Desafíos - situación actual", en:"Challenges - Current Situation" },
+    { pt:"Business Goals", es:"Objetivos de negocio", en:"Business Goals" },
+    { pt:"Expectations", es:"Expectativas", en:"Expectations" },
+    { pt:"Adicionar Sticky Note aqui", es:"Añadir nota adhesiva aquí", en:"Add sticky note here" },
+    { pt:"Adicionar Texto aqui", es:"Añadir texto aquí", en:"Add text here" },
+    { pt:"Selecionar todos", es:"Seleccionar todo", en:"Select all" },
+    { pt:"Centralizar tudo", es:"Centrar todo", en:"Center everything" },
+    { pt:"Editar", es:"Editar", en:"Edit" },
+    { pt:"Duplicar", es:"Duplicar", en:"Duplicate" },
+    { pt:"Conectar daqui", es:"Conectar desde aquí", en:"Connect from here" },
+    { pt:"Aplicar destaque de borda", es:"Aplicar resaltado de borde", en:"Apply border highlight" },
+    { pt:"Remover destaque de borda", es:"Quitar resaltado de borde", en:"Remove border highlight" },
+    { pt:"API", es:"API", en:"API" },
+    { pt:"Server-to-server", es:"Servidor a servidor", en:"Server-to-server" },
+    { pt:"SDK", es:"SDK", en:"SDK" },
+    { pt:"App / Web", es:"App / Web", en:"App / Web" },
+    { pt:"Nativo", es:"Nativo", en:"Native" },
+    { pt:"Integração interna", es:"Integración interna", en:"Internal integration" },
+    { pt:"Manual", es:"Manual", en:"Manual" },
+    { pt:"Operação assistida", es:"Operación asistida", en:"Assisted operation" },
+    { pt:"Nome editável", es:"Nombre editable", en:"Editable name" },
+    { pt:"Organizador", es:"Organizador", en:"Organizer" },
+    { pt:"Container por categoria", es:"Contenedor por categoría", en:"Container by category" },
+    { pt:"WhatsApp", es:"WhatsApp", en:"WhatsApp" },
+    { pt:"Conversational", es:"Conversacional", en:"Conversational" },
+    { pt:"RCS", es:"RCS", en:"RCS" },
+    { pt:"Rich messaging", es:"Mensajería enriquecida", en:"Rich messaging" },
+    { pt:"App", es:"App", en:"App" },
+    { pt:"Push / In-App", es:"Push / In-App", en:"Push / In-App" },
+    { pt:"Web", es:"Web", en:"Web" },
+    { pt:"Web push / overlays", es:"Web push / overlays", en:"Web push / overlays" },
+    { pt:"Email", es:"Email", en:"Email" },
+    { pt:"HTML / templates", es:"HTML / plantillas", en:"HTML / templates" },
+    { pt:"SMS", es:"SMS", en:"SMS" },
+    { pt:"Transactional / promo", es:"Transaccional / promo", en:"Transactional / promo" },
+    { pt:"Facebook Ads", es:"Facebook Ads", en:"Facebook Ads" },
+    { pt:"TikTok Ads", es:"TikTok Ads", en:"TikTok Ads" },
+    { pt:"Google Ads", es:"Google Ads", en:"Google Ads" },
+    { pt:"Remarketing", es:"Remarketing", en:"Remarketing" },
+    { pt:"Data Lake", es:"Data Lake", en:"Data Lake" },
+    { pt:"Raw storage", es:"Almacenamiento raw", en:"Raw storage" },
+    { pt:"Data Warehouse", es:"Data Warehouse", en:"Data Warehouse" },
+    { pt:"BI / modelado", es:"BI / modelado", en:"BI / modeling" },
+    { pt:"Data Queue", es:"Cola de datos", en:"Data Queue" },
+    { pt:"Streaming buffer", es:"Búfer de streaming", en:"Streaming buffer" },
+    { pt:"Martech", es:"Martech", en:"Martech" },
+    { pt:"Segments", es:"Segments", en:"Segments" },
+    { pt:"Analytics", es:"Analytics", en:"Analytics" },
+    { pt:"TesseractDB™", es:"TesseractDB™", en:"TesseractDB™" },
+    { pt:"ScribeAI", es:"ScribeAI", en:"ScribeAI" },
+    { pt:"AskAI", es:"AskAI", en:"AskAI" },
+    { pt:"AI Agent", es:"Agente de IA", en:"AI Agent" },
+    { pt:"Bloco completo editável", es:"Bloque completamente editable", en:"Fully editable block" },
+    { pt:"Bloco AI especial", es:"Bloque especial de IA", en:"Special AI block" },
+    { pt:"Conector server-to-server para eventos, perfis e integracoes.", es:"Conector servidor a servidor para eventos, perfiles e integraciones.", en:"Server-to-server connector for events, profiles, and integrations." },
+    { pt:"Instrumentacao App/Web para coleta e mensageria.", es:"Instrumentación App/Web para captura y mensajería.", en:"App/Web instrumentation for data capture and messaging." },
+    { pt:"Capacidade nativa da plataforma (sem conector externo).", es:"Capacidad nativa de la plataforma (sin conector externo).", en:"Native platform capability (no external connector)." },
+    { pt:"Operacao manual ou assistida, sem dependencia de API, SDK ou conector nativo.", es:"Operación manual o asistida, sin dependencia de API, SDK o conector nativo.", en:"Manual or assisted operation without API, SDK, or native connector dependency." },
+    { pt:"Edite o nome e descreva a funcionalidade (ex.: Segmentacao, Journeys, Analytics).", es:"Edita el nombre y describe la funcionalidad (ej.: Segmentación, Journeys, Analytics).", en:"Edit the name and describe the functionality (e.g. Segmentation, Journeys, Analytics)." },
+    { pt:"Fonte de dados", es:"Fuente de datos", en:"Data source" },
+    { pt:"Mecanismo de integração", es:"Mecanismo de integración", en:"Integration mechanism" },
+    { pt:"Orquestrador", es:"Orquestador", en:"Orchestrator" },
+    { pt:"Canais de comunicação", es:"Canales de comunicación", en:"Communication channels" },
+    { pt:"Data Layer", es:"Capa de datos", en:"Data Layer" },
+    { pt:"Clever.AI", es:"Clever.AI", en:"Clever.AI" },
+    { pt:"Canal conversacional (menu/flows/IA).", es:"Canal conversacional (menú/flows/IA).", en:"Conversational channel (menus/flows/AI)." },
+    { pt:"Mensagens ricas (cards, botoes) via operadoras.", es:"Mensajes enriquecidos (cards, botones) vía operadoras.", en:"Rich messages (cards, buttons) via carriers." },
+    { pt:"Push, In-App, App Inbox, Native Display.", es:"Push, In-App, App Inbox, Native Display.", en:"Push, In-App, App Inbox, Native Display." },
+    { pt:"Web Push, Pop-ups, Exit intent, Native Display.", es:"Web Push, Pop-ups, Exit intent, Native Display.", en:"Web Push, Pop-ups, Exit intent, Native Display." },
+    { pt:"Campanhas e mensagens com HTML rico.", es:"Campañas y mensajes con HTML enriquecido.", en:"Campaigns and messages with rich HTML." },
+    { pt:"Mensagens transacionais e promocionais.", es:"Mensajes transaccionales y promocionales.", en:"Transactional and promotional messages." },
+    { pt:"Export de audiencia para remarketing.", es:"Exportación de audiencia para remarketing.", en:"Audience export for remarketing." },
+    { pt:"Armazenamento bruto/historico.", es:"Almacenamiento bruto/histórico.", en:"Raw and historical storage." },
+    { pt:"Camada analitica/BI e modelagem.", es:"Capa analítica/BI y modelado.", en:"Analytics/BI and modeling layer." },
+    { pt:"Streaming buffer/ingestao.", es:"Buffer de streaming/ingestión.", en:"Streaming buffer/ingestion." },
+    { pt:"Assistente de conteúdo com AI generativa.", es:"Asistente de contenido con IA generativa.", en:"Generative AI content assistant." },
+    { pt:"Camada de decisão e recomendação da jornada com AI.", es:"Capa de decisión y recomendación del journey con IA.", en:"Journey decision and recommendation layer with AI." },
+    { pt:"Agentes inteligentes para estratégia, decisão e ação.", es:"Agentes inteligentes para estrategia, decisión y acción.", en:"Intelligent agents for strategy, decision, and action." },
+    { pt:"Experimentação", es:"Experimentación", en:"Experimentation" },
+    { pt:"Campanhas batch", es:"Campañas batch", en:"Batch campaigns" },
+    { pt:"Native Display", es:"Native Display", en:"Native Display" },
+    { pt:"Customer Journeys", es:"Customer Journeys", en:"Customer Journeys" },
+    { pt:"Campanhas Real Time", es:"Campañas en tiempo real", en:"Real-time campaigns" },
+    { pt:"Audiences", es:"Audiencias", en:"Audiences" },
+    { pt:"Hiperpersonalização", es:"Hiperpersonalización", en:"Hyper-personalization" },
+    { pt:"RFM", es:"RFM", en:"RFM" },
+    { pt:"Real-time", es:"Tiempo real", en:"Real-time" },
+    { pt:"Preditiva", es:"Predictiva", en:"Predictive" },
+    { pt:"Psicográfica", es:"Psicográfica", en:"Psychographic" },
+    { pt:"Comportamental", es:"Conductual", en:"Behavioral" },
+    { pt:"Drop offs", es:"Abandonos", en:"Drop-offs" },
+    { pt:"Desinstalações", es:"Desinstalaciones", en:"Uninstalls" },
+    { pt:"Cortes de Retenção", es:"Cohortes de retención", en:"Retention cohorts" },
+    { pt:"Tendências", es:"Tendencias", en:"Trends" },
+    { pt:"Impacto Real", es:"Impacto real", en:"Real impact" },
+    { pt:"Copy Generation", es:"Generación de copies", en:"Copy Generation" },
+    { pt:"Emotion Signals", es:"Señales emocionales", en:"Emotion Signals" },
+    { pt:"Content Rewrite", es:"Reescritura de contenido", en:"Content Rewrite" },
+    { pt:"Emotion Optimization", es:"Optimización por emoción", en:"Emotion Optimization" },
+    { pt:"Channel Support", es:"Canales compatibles", en:"Channel Support" },
+    { pt:"Best Time to Deliver", es:"Mejor momento para enviar", en:"Best Time to Deliver" },
+    { pt:"Preferred Channel", es:"Canal preferido", en:"Preferred Channel" },
+    { pt:"Predictive Segmentation", es:"Segmentación predictiva", en:"Predictive Segmentation" },
+    { pt:"Lifecycle Optmizer", es:"Optimizador del ciclo de vida", en:"Lifecycle Optimizer" },
+    { pt:"Strategy Agents", es:"Agentes de estrategia", en:"Strategy Agents" },
+    { pt:"Decision Agents", es:"Agentes de decisión", en:"Decision Agents" },
+    { pt:"Creative Agents", es:"Agentes creativos", en:"Creative Agents" },
+    { pt:"Action Agents", es:"Agentes de acción", en:"Action Agents" },
+    { pt:"IntelliNODE", es:"IntelliNODE", en:"IntelliNODE" },
+    { pt:"Product Recommendations", es:"Recomendaciones de producto", en:"Product Recommendations" },
+    { pt:"Retenção entre 3~10 anos", es:"Retención entre 3~10 años", en:"3-10 year retention" },
+    { pt:"Escala e Performance", es:"Escala y rendimiento", en:"Scale and performance" },
+    { pt:"Dados em tempo real", es:"Datos en tiempo real", en:"Real-time data" },
+    { pt:"Visão Unificada do Cliente", es:"Visión unificada del cliente", en:"Unified customer view" },
+    { pt:"Redução de Custo e Complexidade", es:"Reducción de costo y complejidad", en:"Reduced cost and complexity" },
+    { pt:"Digite aqui sua anotação...", es:"Escribe tu anotación aquí...", en:"Type your note here..." },
+    { pt:"Clique para editar...", es:"Haz doble clic para editar...", en:"Double-click to edit..." },
+    { pt:"Arquitetura da CleverTap", es:"Arquitectura de CleverTap", en:"CleverTap Architecture" }
+  ];
+  const PHRASE_INDEX = new Map();
+  for(const entry of PHRASE_BUNDLES){
+    for(const lang of LANGUAGES){
+      const raw = (entry[lang] || "").toString().trim();
+      if(!raw) continue;
+      const norm = raw
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+      if(norm) PHRASE_INDEX.set(norm, entry);
+    }
+  }
 
   const uid = () => Math.random().toString(16).slice(2,10);
   const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
   const screenPxToWorld = (px)=> px / Math.max(view.z, 0.0001);
   const worldToScreen = (wx, wy)=> ({ x: wx * view.z + view.x, y: wy * view.z + view.y });
+  const STICKY_MIN_W = 160;
+  const STICKY_MAX_W = 560;
+  const STICKY_MIN_H = 80;
+  const STICKY_MAX_H = 560;
+  const STICKY_DEFAULT_TEXT = "Clique para editar...";
+  const STICKY_DEFAULT_FONT = 14;
+
+  function normalizeI18nText(value){
+    return (value || "")
+      .toString()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  function t(key, vars = {}){
+    let template = UI_MESSAGES[currentLanguage]?.[key] ?? UI_MESSAGES.pt?.[key] ?? key;
+    for(const [name, value] of Object.entries(vars)){
+      template = template.replaceAll(`{${name}}`, String(value ?? ""));
+    }
+    return template;
+  }
+  function findPhraseBundle(value){
+    return PHRASE_INDEX.get(normalizeI18nText(value)) || null;
+  }
+  function translateKnownPhrase(value, targetLanguage = currentLanguage){
+    const bundle = findPhraseBundle(value);
+    if(bundle) return bundle[targetLanguage] || bundle.pt || value;
+    return (value || "").toString();
+  }
+  function buildLocalizedStringRecord(value){
+    const text = (value || "").toString();
+    const bundle = findPhraseBundle(text);
+    if(bundle){
+      return {
+        pt: bundle.pt || text,
+        es: bundle.es || bundle.pt || text,
+        en: bundle.en || bundle.pt || text
+      };
+    }
+    return { pt: text, es: text, en: text };
+  }
+  function itemLabels(items){
+    return Array.isArray(items)
+      ? items.map((item)=> typeof item === "string" ? item : (item?.label || ""))
+      : [];
+  }
+  function buildLocalizedListRecord(items){
+    const labels = itemLabels(items);
+    const out = { pt: [], es: [], en: [] };
+    for(const label of labels){
+      const bundle = findPhraseBundle(label);
+      if(bundle){
+        out.pt.push(bundle.pt || label);
+        out.es.push(bundle.es || bundle.pt || label);
+        out.en.push(bundle.en || bundle.pt || label);
+      } else {
+        out.pt.push(label);
+        out.es.push(label);
+        out.en.push(label);
+      }
+    }
+    return out;
+  }
+  function applyLabelsToItems(items, labels){
+    if(!Array.isArray(items)) return [];
+    return items.map((item, index)=>{
+      const nextLabel = labels[index] ?? (typeof item === "string" ? item : (item?.label || ""));
+      return typeof item === "string" ? nextLabel : { ...(item || {}), label: nextLabel };
+    });
+  }
+  function ensureNodeI18n(node){
+    if(!node || typeof node !== "object") return;
+    if(!node.i18n || typeof node.i18n !== "object") node.i18n = {};
+    if(!node.i18n.title || typeof node.i18n.title !== "object") node.i18n.title = buildLocalizedStringRecord(node.title || "");
+    if(!node.i18n.desc || typeof node.i18n.desc !== "object") node.i18n.desc = buildLocalizedStringRecord(node.desc || "");
+    if(!node.i18n.text || typeof node.i18n.text !== "object") node.i18n.text = buildLocalizedStringRecord(node.text || "");
+    if(!node.i18n.items || typeof node.i18n.items !== "object") node.i18n.items = buildLocalizedListRecord(node.items || []);
+    if(!node.i18n.orgOptions || typeof node.i18n.orgOptions !== "object") node.i18n.orgOptions = buildLocalizedListRecord(node.orgOptions || []);
+  }
+  function snapshotNodeLanguage(node, lang = currentLanguage){
+    if(!node) return;
+    ensureNodeI18n(node);
+    node.i18n.title[lang] = (node.title || "").toString();
+    node.i18n.desc[lang] = (node.desc || "").toString();
+    node.i18n.text[lang] = (node.text || "").toString();
+    node.i18n.items[lang] = itemLabels(node.items).slice();
+    node.i18n.orgOptions[lang] = Array.isArray(node.orgOptions) ? [...node.orgOptions] : [];
+  }
+  function applyNodeLanguage(node, lang = currentLanguage){
+    if(!node) return;
+    ensureNodeI18n(node);
+    node.title = (node.i18n.title[lang] ?? node.title ?? "").toString();
+    node.desc = (node.i18n.desc[lang] ?? node.desc ?? "").toString();
+    node.text = (node.i18n.text[lang] ?? node.text ?? "").toString();
+    if(Array.isArray(node.items)){
+      const labels = Array.isArray(node.i18n.items[lang]) ? node.i18n.items[lang] : itemLabels(node.items);
+      node.items = applyLabelsToItems(node.items, labels);
+    }
+    if(Array.isArray(node.orgOptions)){
+      const opts = Array.isArray(node.i18n.orgOptions[lang]) ? node.i18n.orgOptions[lang] : node.orgOptions;
+      node.orgOptions = [...opts];
+    }
+  }
+  function ensureCanvasNameI18n(){
+    if(!canvasNameI18n || typeof canvasNameI18n !== "object"){
+      canvasNameI18n = buildLocalizedStringRecord(canvasName || "Diagrama CleverTap");
+    }
+  }
+  function snapshotCanvasLanguage(lang = currentLanguage){
+    ensureCanvasNameI18n();
+    canvasNameI18n[lang] = (canvasName || "").toString();
+    nodes.forEach((node)=> snapshotNodeLanguage(node, lang));
+  }
+  function setButtonCopy(key, title, subtitle = ""){
+    const btn = document.querySelector(`[data-add="${key}"]`);
+    if(!btn) return;
+    const titleEl = btn.querySelector(".txt > div");
+    const subtitleEl = btn.querySelector(".txt > span");
+    if(titleEl) titleEl.textContent = title;
+    if(subtitleEl) subtitleEl.textContent = subtitle;
+  }
+  function applyLanguageToUI(){
+    const sectionTitles = document.querySelectorAll(".sidebar .section .hd h2");
+    if(sectionTitles[0]) sectionTitles[0].textContent = translateKnownPhrase("Conectores de Integração");
+    if(sectionTitles[1]) sectionTitles[1].textContent = translateKnownPhrase("Bloco Central");
+    if(sectionTitles[2]) sectionTitles[2].textContent = translateKnownPhrase("Canais");
+    if(sectionTitles[3]) sectionTitles[3].textContent = translateKnownPhrase("Conectores de Dados");
+    if(sectionTitles[4]) sectionTitles[4].textContent = translateKnownPhrase("Soluções CleverTap");
+    if(sectionTitles[5]) sectionTitles[5].textContent = translateKnownPhrase("Anotações");
+    const brandTitle = document.querySelector(".brand h1");
+    if(brandTitle) brandTitle.textContent = translateKnownPhrase("Arquitetura CleverTap");
+    document.querySelectorAll(".secToggle").forEach((toggle)=>{
+      const expanded = toggle.getAttribute("aria-expanded") !== "false";
+      toggle.title = expanded ? translateKnownPhrase("Recolher seção") : translateKnownPhrase("Expandir seção");
+    });
+    setButtonCopy("integration:api", translateKnownPhrase("API"), translateKnownPhrase("Server-to-server"));
+    setButtonCopy("integration:sdk", translateKnownPhrase("SDK"), translateKnownPhrase("App / Web"));
+    setButtonCopy("integration:native", translateKnownPhrase("Nativo"), translateKnownPhrase("Integração interna"));
+    setButtonCopy("integration:manual", translateKnownPhrase("Manual"), translateKnownPhrase("Operação assistida"));
+    setButtonCopy("core:central", translateKnownPhrase("Bloco Central"), translateKnownPhrase("Nome editável"));
+    setButtonCopy("core:organizer", translateKnownPhrase("Organizador"), translateKnownPhrase("Container por categoria"));
+    setButtonCopy("channel:whatsapp", translateKnownPhrase("WhatsApp"), translateKnownPhrase("Conversational"));
+    setButtonCopy("channel:rcs", translateKnownPhrase("RCS"), translateKnownPhrase("Rich messaging"));
+    setButtonCopy("channel:app", translateKnownPhrase("App"), translateKnownPhrase("Push / In-App"));
+    setButtonCopy("channel:web", translateKnownPhrase("Web"), translateKnownPhrase("Web push / overlays"));
+    setButtonCopy("channel:email", translateKnownPhrase("Email"), translateKnownPhrase("HTML / templates"));
+    setButtonCopy("channel:sms", translateKnownPhrase("SMS"), translateKnownPhrase("Transactional / promo"));
+    setButtonCopy("channel:fbads", translateKnownPhrase("Facebook Ads"), translateKnownPhrase("Remarketing"));
+    setButtonCopy("channel:tiktok", translateKnownPhrase("TikTok Ads"), translateKnownPhrase("Remarketing"));
+    setButtonCopy("channel:gads", translateKnownPhrase("Google Ads"), translateKnownPhrase("Remarketing"));
+    setButtonCopy("data:datalake", translateKnownPhrase("Data Lake"), translateKnownPhrase("Raw storage"));
+    setButtonCopy("data:warehouse", translateKnownPhrase("Data Warehouse"), translateKnownPhrase("BI / modelado"));
+    setButtonCopy("data:queue", translateKnownPhrase("Data Queue"), translateKnownPhrase("Streaming buffer"));
+    setButtonCopy("solution:martech", translateKnownPhrase("Martech"), translateKnownPhrase("Bloco completo editável"));
+    setButtonCopy("solution:segments", translateKnownPhrase("Segments"), translateKnownPhrase("Bloco completo editável"));
+    setButtonCopy("solution:analytics", translateKnownPhrase("Analytics"), translateKnownPhrase("Bloco completo editável"));
+    setButtonCopy("solution:tesseractdbtm", translateKnownPhrase("TesseractDB™"), translateKnownPhrase("Bloco completo editável"));
+    setButtonCopy("solution:scribeai", translateKnownPhrase("ScribeAI"), translateKnownPhrase("Bloco AI especial"));
+    setButtonCopy("solution:askai", translateKnownPhrase("AskAI"), translateKnownPhrase("Bloco AI especial"));
+    setButtonCopy("solution:agentai", translateKnownPhrase("AI Agent"), translateKnownPhrase("Bloco AI especial"));
+    setButtonCopy("text:note", translateKnownPhrase("Texto Livre"), translateKnownPhrase("Nota flutuante no canvas"));
+    setButtonCopy("text:sticky", translateKnownPhrase("Sticky Note"), translateKnownPhrase("Post-it colorido"));
+    if(btnTemplate) btnTemplate.textContent = translateKnownPhrase("Templates");
+    if(btnExport) btnExport.textContent = translateKnownPhrase("Export JSON");
+    if(btnImport) btnImport.textContent = translateKnownPhrase("Import JSON");
+    if(btnReset) btnReset.textContent = translateKnownPhrase("Reset");
+    if(search) search.placeholder = t("searchPlaceholder");
+    if(btnPreview) btnPreview.textContent = translateKnownPhrase("Selecionar área");
+    if(btnCenter) btnCenter.textContent = translateKnownPhrase("Centralizar");
+    if(btnGenerateProject) btnGenerateProject.textContent = translateKnownPhrase("Gerar projeto");
+    if(canvasNameEl){
+      canvasNameEl.title = translateKnownPhrase("Clique para renomear");
+      canvasNameEl.setAttribute("aria-label", translateKnownPhrase("Clique para renomear"));
+    }
+    if(btnSettings) btnSettings.title = translateKnownPhrase("Configurações");
+    if(btnSidebar){
+      btnSidebar.title = appEl?.classList.contains("sidebar-collapsed")
+        ? translateKnownPhrase("Expandir sidebar")
+        : translateKnownPhrase("Recolher sidebar");
+      btnSidebar.setAttribute("aria-label", btnSidebar.title);
+    }
+    const settingsLabels = settingsPanel?.querySelectorAll(".settingsRow label");
+    if(settingsLabels?.[0]) settingsLabels[0].textContent = translateKnownPhrase("Config Canva");
+    if(settingsLabels?.[1]) settingsLabels[1].textContent = translateKnownPhrase("Tipo linha");
+    if(settingsLabels?.[2]) settingsLabels[2].textContent = translateKnownPhrase("Conector");
+    if(settingsLabels?.[3]) settingsLabels[3].textContent = translateKnownPhrase("Ponteiro");
+    if(settingsLabels?.[4]) settingsLabels[4].textContent = translateKnownPhrase("Fluxo");
+    if(settingsLabels?.[5]) settingsLabels[5].textContent = translateKnownPhrase("Cores");
+    if(settingsLabels?.[6]) settingsLabels[6].textContent = translateKnownPhrase("Idioma");
+    if(cfgLineType){
+      const opts = cfgLineType.querySelectorAll("option");
+      if(opts[0]) opts[0].textContent = translateKnownPhrase("Tracejada");
+      if(opts[1]) opts[1].textContent = translateKnownPhrase("Sólida");
+      if(opts[2]) opts[2].textContent = translateKnownPhrase("Pontilhada");
+    }
+    if(cfgConnectorType){
+      const opts = cfgConnectorType.querySelectorAll("option");
+      if(opts[0]) opts[0].textContent = translateKnownPhrase("Livre");
+      if(opts[1]) opts[1].textContent = translateKnownPhrase("Reto");
+    }
+    if(cfgMarker){
+      const opts = cfgMarker.querySelectorAll("option");
+      if(opts[0]) opts[0].textContent = translateKnownPhrase("Seta");
+      if(opts[1]) opts[1].textContent = translateKnownPhrase("Ponto");
+      if(opts[2]) opts[2].textContent = translateKnownPhrase("Nenhum");
+    }
+    if(cfgFlowDots){
+      const opts = cfgFlowDots.querySelectorAll("option");
+      if(opts[0]) opts[0].textContent = translateKnownPhrase("1 ponto");
+      if(opts[1]) opts[1].textContent = translateKnownPhrase("2 pontos");
+      if(opts[2]) opts[2].textContent = translateKnownPhrase("3 pontos");
+    }
+    const colorRefs = settingsPanel?.querySelectorAll(".colorRef");
+    if(colorRefs?.[0]) colorRefs[0].textContent = translateKnownPhrase("Linha");
+    if(colorRefs?.[1]) colorRefs[1].textContent = translateKnownPhrase("Flow");
+    if(cfgLineColor) cfgLineColor.title = translateKnownPhrase("Linha");
+    if(cfgFlowColor) cfgFlowColor.title = translateKnownPhrase("Flow");
+    if(cfgLanguage){
+      const opts = cfgLanguage.querySelectorAll("option");
+      if(opts[0]) opts[0].textContent = "Português";
+      if(opts[1]) opts[1].textContent = "Español";
+      if(opts[2]) opts[2].textContent = "English";
+    }
+    if(tbText && !tbText.disabled) tbText.placeholder = t("freeTextPlaceholder");
+    if(tbDec) tbDec.title = translateKnownPhrase("Diminuir fonte");
+    if(tbInc) tbInc.title = translateKnownPhrase("Aumentar fonte");
+    if(tbFont) tbFont.title = translateKnownPhrase("Fonte");
+    if(tbColor) tbColor.title = translateKnownPhrase("Cor");
+    if(tbAlign){
+      tbAlign.title = translateKnownPhrase("Alinhamento");
+      const opts = tbAlign.querySelectorAll("option");
+      if(opts[0]) opts[0].textContent = translateKnownPhrase("Esq");
+      if(opts[1]) opts[1].textContent = translateKnownPhrase("Centro");
+      if(opts[2]) opts[2].textContent = translateKnownPhrase("Dir");
+    }
+    if(btnZoomOut) btnZoomOut.title = translateKnownPhrase("Zoom out");
+    if(btnZoomIn) btnZoomIn.title = translateKnownPhrase("Zoom in");
+    if(zoomPct){
+      zoomPct.title = translateKnownPhrase("Zoom porcentagem");
+      zoomPct.setAttribute("aria-label", translateKnownPhrase("Zoom porcentagem"));
+    }
+    const hint = document.querySelector(".hint");
+    if(hint) hint.innerHTML = t("hintHtml");
+    const editTitle = modalBack?.querySelector(".mh h3");
+    if(editTitle) editTitle.textContent = translateKnownPhrase("Editar Bloco");
+    if(btnClose) btnClose.textContent = `${translateKnownPhrase("Fechar")} X`;
+    if(fTitle){
+      const label = fTitle.closest(".row")?.querySelector("label");
+      if(label) label.textContent = translateKnownPhrase("Título");
+      fTitle.placeholder = "Ex: Motor de Segmentação";
+    }
+    if(fType){
+      const label = fType.closest(".row")?.querySelector("label");
+      if(label) label.textContent = translateKnownPhrase("Tipo");
+      const opts = fType.querySelectorAll("option");
+      if(opts[0]) opts[0].textContent = translateKnownPhrase("Neutro");
+      if(opts[1]) opts[1].textContent = translateKnownPhrase("Canais/Martech");
+      if(opts[2]) opts[2].textContent = translateKnownPhrase("Core/Integração");
+      if(opts[3]) opts[3].textContent = translateKnownPhrase("Dados");
+    }
+    if(fDesc){
+      const label = fDesc.closest(".row")?.querySelector("label");
+      if(label) label.textContent = translateKnownPhrase("Descrição");
+    }
+    if(fLogo){
+      const label = fLogo.closest(".row")?.querySelector("label");
+      if(label) label.textContent = translateKnownPhrase("Logo URL");
+    }
+    if(btnDeleteNode) btnDeleteNode.textContent = translateKnownPhrase("Excluir");
+    if(btnSaveNode) btnSaveNode.textContent = translateKnownPhrase("Salvar");
+    const previewTitle = previewBack?.querySelector(".mh h3");
+    if(previewTitle) previewTitle.textContent = translateKnownPhrase("Pré-visualização do Canvas");
+    if(btnPreviewClose) btnPreviewClose.textContent = translateKnownPhrase("Fechar");
+    if(btnDownloadPng) btnDownloadPng.textContent = translateKnownPhrase("Download PNG");
+    if(btnDownloadPdf) btnDownloadPdf.textContent = translateKnownPhrase("Download PDF");
+    const templateTitle = tplBack?.querySelector(".mh h3");
+    if(templateTitle) templateTitle.textContent = translateKnownPhrase("Templates");
+    if(btnTplClose) btnTplClose.textContent = translateKnownPhrase("Fechar");
+    if(btnTplPaste) btnTplPaste.textContent = translateKnownPhrase("Colar JSON Template");
+    const importTitle = importBack?.querySelector(".mh h3");
+    if(importTitle) importTitle.textContent = translateKnownPhrase("Importar JSON");
+    if(btnImportClose) btnImportClose.textContent = translateKnownPhrase("Fechar");
+    const importLabel = importJsonInput?.closest(".row")?.querySelector("label");
+    if(importLabel) importLabel.textContent = translateKnownPhrase("Cole o JSON exportado");
+    if(importJsonInput) importJsonInput.placeholder = t("importJsonPlaceholder");
+    if(btnImportCancel) btnImportCancel.textContent = translateKnownPhrase("Cancelar");
+    if(btnImportApply) btnImportApply.textContent = translateKnownPhrase("Importar JSON");
+    const projectTitle = projectBack?.querySelector(".mh h3");
+    if(projectTitle) projectTitle.textContent = translateKnownPhrase("Overall Information");
+    if(btnProjectClose) btnProjectClose.textContent = translateKnownPhrase("Fechar");
+    if(btnProjectCancel) btnProjectCancel.textContent = translateKnownPhrase("Cancelar");
+    if(btnProjectCreate) btnProjectCreate.textContent = translateKnownPhrase("Gerar projeto");
+    const overallChallengesLabel = pOverallChallenges?.closest(".row")?.querySelector("label");
+    const overallGoalsLabel = pOverallGoals?.closest(".row")?.querySelector("label");
+    const overallExpectationsLabel = pOverallExpectations?.closest(".row")?.querySelector("label");
+    if(overallChallengesLabel) overallChallengesLabel.textContent = translateKnownPhrase("Challenges - Current Situation");
+    if(overallGoalsLabel) overallGoalsLabel.textContent = translateKnownPhrase("Business Goals");
+    if(overallExpectationsLabel) overallExpectationsLabel.textContent = translateKnownPhrase("Expectations");
+    if(ctxMenu){
+      const edit = document.getElementById("ctx-edit");
+      const dup = document.getElementById("ctx-dup");
+      const connect = document.getElementById("ctx-connect");
+      const highlight = document.getElementById("ctx-highlight");
+      const del = document.getElementById("ctx-del");
+      if(edit) edit.textContent = translateKnownPhrase("Editar");
+      if(dup) dup.textContent = translateKnownPhrase("Duplicar");
+      if(connect) connect.textContent = translateKnownPhrase("Conectar daqui");
+      if(highlight && !ctxTargetNodeId) highlight.textContent = translateKnownPhrase("Aplicar destaque de borda");
+      if(del) del.textContent = `✕ ${translateKnownPhrase("Excluir")}`;
+    }
+    const ctxAddNote = document.getElementById("ctx-addNote");
+    const ctxAddText = document.getElementById("ctx-addText");
+    const ctxSelectAll = document.getElementById("ctx-selectAll");
+    const ctxFitAll = document.getElementById("ctx-fitAll");
+    if(ctxAddNote) ctxAddNote.textContent = translateKnownPhrase("Adicionar Sticky Note aqui");
+    if(ctxAddText) ctxAddText.textContent = translateKnownPhrase("Adicionar Texto aqui");
+    if(ctxSelectAll) ctxSelectAll.textContent = translateKnownPhrase("Selecionar todos");
+    if(ctxFitAll) ctxFitAll.textContent = translateKnownPhrase("Centralizar tudo");
+  }
+  function applyCurrentLanguage(){
+    ensureCanvasNameI18n();
+    canvasName = (canvasNameI18n[currentLanguage] ?? canvasName ?? "").toString();
+    if(canvasNameEl) canvasNameEl.textContent = canvasName;
+    nodes.forEach((node)=> applyNodeLanguage(node, currentLanguage));
+    applyLanguageToUI();
+    refreshTextBar();
+    refreshSettingsUI();
+  }
+  function setLanguage(lang, options = {}){
+    const target = LANGUAGES.includes(lang) ? lang : "pt";
+    if(!options.skipSnapshot) snapshotCanvasLanguage(currentLanguage);
+    currentLanguage = target;
+    if(cfgLanguage) cfgLanguage.value = currentLanguage;
+    applyCurrentLanguage();
+    if(!options.silent) showToast(t("languageChanged"));
+    if(options.render !== false) render();
+  }
+
+  function defaultFontSizeForVariant(variant){
+    return variant === "sticky" ? STICKY_DEFAULT_FONT : 28;
+  }
 
   function firstSelectedNodeId(){
     const it = selectedNodeIds.values().next();
@@ -3158,7 +3864,9 @@
     appEl?.classList.toggle("sidebar-collapsed", collapsed);
     if(btnSidebar){
       btnSidebar.setAttribute("aria-expanded", collapsed ? "false" : "true");
-      btnSidebar.title = collapsed ? "Expandir sidebar" : "Recolher sidebar";
+      btnSidebar.title = collapsed
+        ? translateKnownPhrase("Expandir sidebar")
+        : translateKnownPhrase("Recolher sidebar");
       btnSidebar.setAttribute("aria-label", btnSidebar.title);
     }
   }
@@ -3361,8 +4069,11 @@
     return (typeof item === "string") ? item : { ...(item || {}) };
   }
   function buildPortableExportPayload(){
+    snapshotCanvasLanguage(currentLanguage);
+    ensureCanvasNameI18n();
     const nodeIds = new Set(nodes.map(n => n.id));
     const portableNodes = nodes.map((n, index)=>{
+      ensureNodeI18n(n);
       const stacks = Array.isArray(n.stacks) ? n.stacks : [];
       return {
         id: n.id,
@@ -3385,7 +4096,7 @@
           icon: n.icon || "",
           logoUrl: n.logoUrl || "",
           stickyColor: n.stickyColor || "",
-          fontSize: Number(n.fontSize || 28),
+          fontSize: Number(n.fontSize || defaultFontSizeForVariant(n.variant)),
           fontFamily: n.fontFamily || "Georgia",
           color: n.color || "#1e293b",
           align: n.align || "left",
@@ -3402,7 +4113,8 @@
             const s = stackById(sid, n);
             return { id: sid, label: s?.label || sid };
           })
-        }
+        },
+        i18n: JSON.parse(JSON.stringify(n.i18n || {}))
       };
     });
     const portableEdges = edges
@@ -3424,6 +4136,8 @@
         flowOn: !!flowOn,
         connectMode: !!connectMode,
         name: canvasName,
+        language: currentLanguage,
+        nameI18n: { ...canvasNameI18n },
         edgeCfg: { ...edgeCfg }
       },
       indexes: {
@@ -3440,12 +4154,14 @@
     if(!obj || typeof obj !== "object") return null;
 
     if(obj.format === "clevertap.canvas-doc.v1" && Array.isArray(obj.nodes) && Array.isArray(obj.edges)){
-      const importedNodes = obj.nodes.map((n)=>({
+      const importedNodes = obj.nodes.map((n)=>{
+        const variant = (n.variant || "default").toString();
+        return {
         id: n.id || ("n_" + uid()),
         x: Number(n?.position?.x ?? n?.x ?? 0),
         y: Number(n?.position?.y ?? n?.y ?? 0),
-        w: Number(n?.size?.w ?? n?.w ?? 280),
-        h: Number(n?.size?.h ?? n?.h ?? 92),
+        w: Number(n?.size?.w ?? n?.w ?? (variant === "sticky" ? 200 : 280)),
+        h: Number(n?.size?.h ?? n?.h ?? (variant === "sticky" ? 110 : 92)),
         title: (n.title || "").toString(),
         desc: (n?.content?.description ?? n.desc ?? "").toString(),
         type: (n?.style?.type ?? n.type ?? "gray").toString(),
@@ -3453,7 +4169,7 @@
         logoInvalid: false,
         icon: (n?.style?.icon ?? n.icon ?? "").toString(),
         kind: (n.kind || "").toString(),
-        variant: (n.variant || "default").toString(),
+        variant,
         items: Array.isArray(n?.content?.items)
           ? n.content.items.map(deepCopyItem)
           : (Array.isArray(n.items) ? n.items.map(deepCopyItem) : []),
@@ -3467,13 +4183,16 @@
           ? [...n.content.orgOptions]
           : (Array.isArray(n.orgOptions) ? [...n.orgOptions] : []),
         text: (n?.content?.text ?? n.text ?? "").toString(),
-        fontSize: Number(n?.style?.fontSize ?? n.fontSize ?? 28),
+        fontSize: Number(n?.style?.fontSize ?? n.fontSize ?? defaultFontSizeForVariant(variant)),
         fontFamily: (n?.style?.fontFamily ?? n.fontFamily ?? "Georgia").toString(),
         color: (n?.style?.color ?? n.color ?? "#1e293b").toString(),
         align: (n?.style?.align ?? n.align ?? "left").toString(),
         stickyColor: (n?.style?.stickyColor ?? n.stickyColor ?? "#fef08a").toString(),
-        stackCatalog: (n?.style?.stackCatalog ?? n.stackCatalog ?? "").toString()
-      }));
+        stackCatalog: (n?.style?.stackCatalog ?? n.stackCatalog ?? "").toString(),
+        i18n: (n?.i18n && typeof n.i18n === "object") ? JSON.parse(JSON.stringify(n.i18n)) : null
+      };
+      });
+      importedNodes.forEach((node)=> ensureNodeI18n(node));
       const nodeIds = new Set(importedNodes.map(n => n.id));
       const importedEdges = obj.edges
         .map((e)=>({
@@ -3496,12 +4215,22 @@
         flowOn: obj?.canvas?.flowOn,
         connectMode: obj?.canvas?.connectMode,
         canvasName: (obj?.canvas?.name || "").toString(),
+        canvasNameI18n: (obj?.canvas?.nameI18n && typeof obj.canvas.nameI18n === "object")
+          ? JSON.parse(JSON.stringify(obj.canvas.nameI18n))
+          : null,
+        language: LANGUAGES.includes(obj?.canvas?.language) ? obj.canvas.language : null,
         edgeCfg: obj?.canvas?.edgeCfg
       };
     }
 
     if(Array.isArray(obj.nodes) && Array.isArray(obj.edges)){
-      return obj;
+      return {
+        ...obj,
+        language: LANGUAGES.includes(obj?.currentLanguage) ? obj.currentLanguage : (LANGUAGES.includes(obj?.language) ? obj.language : null),
+        canvasNameI18n: (obj?.canvasNameI18n && typeof obj.canvasNameI18n === "object")
+          ? JSON.parse(JSON.stringify(obj.canvasNameI18n))
+          : null
+      };
     }
     return null;
   }
@@ -3511,6 +4240,7 @@
     if(obj.view) view = obj.view;
     if(Array.isArray(obj.nodes)) nodes = obj.nodes;
     if(Array.isArray(obj.edges)) edges = obj.edges;
+    nodes.forEach((node)=> ensureNodeI18n(node));
     clearNodeSelection();
     selected = { type:null, id:null };
     if(typeof obj.flowOn === "boolean") flowOn = obj.flowOn;
@@ -3522,10 +4252,17 @@
     }
     if(typeof obj.canvasName === "string" && obj.canvasName.trim()){
       canvasName = obj.canvasName.trim();
-      if(canvasNameEl) canvasNameEl.textContent = canvasName;
     }
+    canvasNameI18n = (obj.canvasNameI18n && typeof obj.canvasNameI18n === "object")
+      ? JSON.parse(JSON.stringify(obj.canvasNameI18n))
+      : buildLocalizedStringRecord(canvasName || "Diagrama CleverTap");
+    ensureCanvasNameI18n();
+    if(typeof obj.language === "string" && LANGUAGES.includes(obj.language)){
+      currentLanguage = obj.language;
+    }
+    if(cfgLanguage) cfgLanguage.value = currentLanguage;
     btnFlow.classList.toggle("active", flowOn);
-    refreshSettingsUI();
+    applyCurrentLanguage();
     setTransform();
     render();
     return true;
@@ -3539,7 +4276,7 @@
           <div class="tplName">${escapeHTML(tpl.name)}</div>
           <div class="tplDesc">${escapeHTML(tpl.description || "")}</div>
         </div>
-        <button class="btn2 primary tplApply" data-tpl-id="${escapeHTML(tpl.id)}" ${tpl?.data ? "" : "disabled"}>Aplicar</button>
+        <button class="btn2 primary tplApply" data-tpl-id="${escapeHTML(tpl.id)}" ${tpl?.data ? "" : "disabled"}>${escapeHTML(t("apply"))}</button>
       </div>
     `).join("");
     tplList.querySelectorAll(".tplApply").forEach((btn)=>{
@@ -3547,15 +4284,15 @@
         const id = btn.dataset.tplId;
         const tpl = all.find(t => t.id === id);
         if(!tpl?.data) return;
-        if(nodes.length && !confirm(`Aplicar o template "${tpl.name}"? O canvas atual será substituído.`)) return;
+        if(nodes.length && !confirm(t("templateApplyConfirm", { name: tpl.name }))) return;
         const obj = extractImportState(tpl.data);
         if(!obj){
-          alert("Template inválido.");
+          alert(t("invalidTemplate"));
           return;
         }
         applyImportedState(obj);
         closeTemplateModal();
-        showToast(`Template "${tpl.name}" aplicado.`);
+        showToast(t("templateApplied", { name: tpl.name }));
       });
     });
     tplBack.style.display = "flex";
@@ -3565,6 +4302,38 @@
     if(!tplBack) return;
     tplBack.style.display = "none";
     tplBack.setAttribute("aria-hidden", "true");
+  }
+  function openImportModal(){
+    if(!importBack) return;
+    importBack.style.display = "flex";
+    importBack.setAttribute("aria-hidden", "false");
+    if(importJsonInput){
+      importJsonInput.value = "";
+      setTimeout(()=>importJsonInput.focus(), 0);
+    }
+  }
+  function closeImportModal(){
+    if(!importBack) return;
+    importBack.style.display = "none";
+    importBack.setAttribute("aria-hidden", "true");
+  }
+  function applyImportFromModal(){
+    const txt = (importJsonInput?.value || "").trim();
+    if(!txt){
+      showToast(t("importJsonEmpty"));
+      importJsonInput?.focus();
+      return;
+    }
+    try{
+      const parsed = JSON.parse(txt);
+      const obj = extractImportState(parsed);
+      if(!obj) throw new Error("Formato invalido");
+      applyImportedState(obj);
+      closeImportModal();
+      showToast(t("layoutImported"));
+    } catch(e){
+      alert(t("invalidJson"));
+    }
   }
   function loadProjectOverallInfo(){
     try{
@@ -3638,9 +4407,20 @@
     clearTimeout(persistTimer);
     persistTimer = setTimeout(()=>{
       try{
+        snapshotCanvasLanguage(currentLanguage);
         const payload = {
           schemaVersion: SCHEMA_VERSION,
-          data: { view, nodes, edges, flowOn, connectMode, edgeCfg, canvasName }
+          data: {
+            view,
+            nodes,
+            edges,
+            flowOn,
+            connectMode,
+            edgeCfg,
+            canvasName,
+            currentLanguage,
+            canvasNameI18n
+          }
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       } catch {}
@@ -3660,10 +4440,17 @@
       if(data?.edgeCfg && typeof data.edgeCfg === "object"){
         edgeCfg = { ...edgeCfg, ...data.edgeCfg };
       }
+      if(typeof data?.currentLanguage === "string" && LANGUAGES.includes(data.currentLanguage)){
+        currentLanguage = data.currentLanguage;
+      }
       if(typeof data?.canvasName === "string" && data.canvasName.trim()){
         canvasName = data.canvasName.trim();
-        if(canvasNameEl) canvasNameEl.textContent = canvasName;
       }
+      if(data?.canvasNameI18n && typeof data.canvasNameI18n === "object"){
+        canvasNameI18n = JSON.parse(JSON.stringify(data.canvasNameI18n));
+      }
+      nodes.forEach((node)=> ensureNodeI18n(node));
+      ensureCanvasNameI18n();
       return true;
     } catch {
       return false;
@@ -3724,17 +4511,34 @@
   }
   function refreshTextBar(){
     const node = (selected.type === "node") ? getNodeById(selected.id) : null;
-    if(!node || node.variant !== "text"){
+    const isSticky = !!node && node.variant === "sticky";
+    const isTextLike = !!node && (node.variant === "text" || isSticky);
+    if(!isTextLike){
       textBar?.classList.remove("show");
+      textBar?.classList.remove("sticky-mode");
       textBar?.setAttribute("aria-hidden","true");
       return;
     }
     textBar?.classList.add("show");
+    textBar?.classList.toggle("sticky-mode", isSticky);
     textBar?.setAttribute("aria-hidden","false");
-    if(tbFont) tbFont.value = (node.fontFamily || "Georgia").toString();
-    if(tbColor) tbColor.value = node.color || "#1e293b";
-    if(tbAlign) tbAlign.value = node.align || "left";
-    if(tbText) tbText.value = node.text || "";
+    if(tbText){
+      tbText.disabled = isSticky;
+      tbText.placeholder = isSticky ? t("stickyToolbarPlaceholder") : t("freeTextPlaceholder");
+      tbText.value = isSticky ? "" : (node.text || "");
+    }
+    if(tbFont){
+      tbFont.disabled = isSticky;
+      tbFont.value = (node.fontFamily || "Georgia").toString();
+    }
+    if(tbColor){
+      tbColor.disabled = isSticky;
+      tbColor.value = node.color || "#1e293b";
+    }
+    if(tbAlign){
+      tbAlign.disabled = isSticky;
+      tbAlign.value = node.align || "left";
+    }
   }
   function refreshSettingsUI(){
     if(cfgLineType) cfgLineType.value = edgeCfg.lineType || "dashed";
@@ -3932,6 +4736,7 @@
       "reducao de custo e complexidade":TESSERACT_ITEM_ICON
     };
     const SEGMENTS_ICON_BY_LABEL = {
+      "rfm":"https://upload.wikimedia.org/wikipedia/commons/3/3f/Clock_icon.svg",
       "real-time":"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png",
       "real time":"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png",
       "preditiva":"https://cdn-icons-png.flaticon.com/512/5799/5799191.png",
@@ -3981,10 +4786,12 @@
         el.style.minHeight = "0";
         el.style.height = "auto";
       } else if(n.variant === "sticky"){
-        el.style.width = clamp(Number(n.w || 200), 160, 300) + "px";
-        el.style.minWidth = "160px";
-        el.style.minHeight = "80px";
-        el.style.height = "auto";
+        n.w = clamp(Number(n.w || 200), STICKY_MIN_W, STICKY_MAX_W);
+        n.h = clamp(Number(n.h || 110), STICKY_MIN_H, STICKY_MAX_H);
+        el.style.width = n.w + "px";
+        el.style.minWidth = `${STICKY_MIN_W}px`;
+        el.style.minHeight = `${STICKY_MIN_H}px`;
+        el.style.height = n.h + "px";
       } else {
         el.style.width = (n.w || 280) + "px";
       }
@@ -4039,19 +4846,23 @@
           </div>
         `;
       } else if(n.variant === "sticky"){
-        const stickyText = escapeHTML(n.text || "Clique para editar...");
+        const stickyText = escapeHTML(n.text || STICKY_DEFAULT_TEXT);
         const stickyColor = (n.stickyColor || "#fef08a").toString();
+        const stickyFontSize = clamp(Number(n.fontSize || STICKY_DEFAULT_FONT), 10, 42);
         const colorsHtml = STICKY_COLORS
           .map((c)=>`<button class="stickyColorBtn" type="button" data-sticky-color="${escapeHTML(c)}" style="background:${escapeHTML(c)};" title="Cor ${escapeHTML(c)}"></button>`)
           .join("");
         el.style.setProperty("--stickyColor", stickyColor);
         el.innerHTML = `
-          <div class="stickyBody" contenteditable="false">${stickyText}</div>
-          <div class="stickyColors">${colorsHtml}</div>
+          <div class="stickyBody" contenteditable="false" spellcheck="false" style="font-size:${stickyFontSize}px;">${stickyText}</div>
+          <div class="stickyFooter">
+            <div class="stickyColors">${colorsHtml}</div>
+          </div>
           <div class="nodeActions">
             <button class="nact dup" type="button" title="Duplicar bloco" aria-label="Duplicar bloco"><img src="${DUP_ICON_URL}" alt="Duplicar" /></button>
             <button class="nact del" type="button" title="Excluir bloco" aria-label="Excluir bloco">✕</button>
           </div>
+          <div class="nodeResize" title="Redimensionar bloco" aria-hidden="true"></div>
         `;
       } else if(n.variant === "solution"){
         let layout = n.solutionLayout || "pills";
@@ -4397,11 +5208,20 @@
         });
       } else if(n.variant === "sticky"){
         const stickyBody = el.querySelector(".stickyBody");
-        stickyBody?.addEventListener("mousedown", (e)=>{
-          e.stopPropagation();
-        });
         stickyBody?.addEventListener("click", (e)=>{
           e.stopPropagation();
+          if(e.shiftKey){
+            selectNode(n.id, true);
+            return;
+          }
+          if(selectedNodeIds.size === 1 && selectedNodeIds.has(n.id) && selected.type === "node" && selected.id === n.id){
+            return;
+          }
+          setSingleNodeSelection(n.id);
+          nodesLayer.querySelectorAll(".node").forEach((nodeEl)=>{
+            nodeEl.classList.toggle("selected", nodeEl.dataset.id === n.id);
+          });
+          refreshTextBar();
         });
         stickyBody?.addEventListener("dblclick", (e)=>{
           e.stopPropagation();
@@ -4415,15 +5235,22 @@
         });
         stickyBody?.addEventListener("blur", ()=>{
           stickyBody.setAttribute("contenteditable", "false");
-          n.text = (stickyBody.textContent || "").trim() || "Clique para editar...";
+          n.text = (stickyBody.textContent || "").trim() || STICKY_DEFAULT_TEXT;
           stickyBody.textContent = n.text;
+          ensureNodeI18n(n);
+          n.i18n.text[currentLanguage] = n.text;
           queuePersist();
+          refreshTextBar();
         });
         stickyBody?.addEventListener("keydown", (e)=>{
           if(e.key === "Escape"){
             e.preventDefault();
-            stickyBody.textContent = n.text || "Clique para editar...";
+            stickyBody.textContent = n.text || STICKY_DEFAULT_TEXT;
             stickyBody.blur();
+            return;
+          }
+          if(e.key === "Delete" || e.key === "Backspace"){
+            e.stopPropagation();
           }
         });
         el.querySelectorAll(".stickyColorBtn").forEach((btn)=>{
@@ -4444,11 +5271,14 @@
       const measuredNatural = Math.max(measuredBase, el.offsetHeight);
       const measuredH = (n.variant === "solution" || n.variant === "organizer" || n.variant === "ai")
         ? Math.max(measuredNatural, n.userMinH || 0)
-        : measuredNatural;
+        : (n.variant === "sticky" ? clamp(Number(n.h || measuredNatural), STICKY_MIN_H, STICKY_MAX_H) : measuredNatural);
       n.h = measuredH;
       if(n.variant === "solution" || n.variant === "organizer" || n.variant === "ai"){
         el.style.height = measuredH + "px";
         el.style.minHeight = "0px";
+      } else if(n.variant === "sticky"){
+        el.style.height = measuredH + "px";
+        el.style.minHeight = `${STICKY_MIN_H}px`;
       } else if(n.variant !== "text" && n.variant !== "sticky"){
         el.style.height = measuredH + "px";
         el.style.minHeight = measuredH + "px";
@@ -5070,16 +5900,19 @@
       x: src.x + 36,
       y: src.y + 36,
       title: src.title || "Bloco",
-      items: Array.isArray(src.items) ? [...src.items] : [],
+      items: Array.isArray(src.items) ? src.items.map(deepCopyItem) : [],
       stacks: Array.isArray(src.stacks) ? [...src.stacks] : [],
       text: src.text || "",
       stickyColor: src.stickyColor || "#fef08a",
-      fontSize: src.fontSize || 28,
+      fontSize: src.fontSize || defaultFontSizeForVariant(src.variant),
       fontFamily: src.fontFamily || "Georgia",
       color: src.color || "#1e293b",
       align: src.align || "left",
-      highlightPulse: !!src.highlightPulse
+      highlightPulse: !!src.highlightPulse,
+      i18n: src.i18n ? JSON.parse(JSON.stringify(src.i18n)) : undefined
     };
+    ensureNodeI18n(copy);
+    applyNodeLanguage(copy, currentLanguage);
     nodes.push(copy);
     setSingleNodeSelection(copy.id);
     render();
@@ -5092,7 +5925,6 @@
   function startDragNode(e, nodeId){
     if(e.button !== 0) return;
     if(e.target.closest(".port")) return;
-    if(e.target.closest(".stickyBody")) return;
     if(e.target.closest(".nact")) return;
     if(e.target.closest(".solTool")) return;
     if(e.target.closest(".solItemDel")) return;
@@ -5158,7 +5990,7 @@
   function startResizeNode(e, nodeId){
     if(e.button !== 0) return;
     const n = nodes.find(x=>x.id===nodeId);
-    if(!n || (n.variant !== "solution" && n.variant !== "organizer" && n.variant !== "ai")) return;
+    if(!n || (n.variant !== "solution" && n.variant !== "organizer" && n.variant !== "ai" && n.variant !== "sticky")) return;
     e.stopPropagation();
     e.preventDefault();
     rememberActionState();
@@ -5167,7 +5999,8 @@
     resizing = {
       id: nodeId,
       startWorld: p,
-      w: n.w || 360,
+      w: n.w || (n.variant === "sticky" ? 200 : 360),
+      h: Math.max(n.h || (n.variant === "sticky" ? 110 : 240), n.variant === "sticky" ? STICKY_MIN_H : 180),
       minH: Math.max(n.userMinH || 0, n.h || 240)
     };
     setSingleNodeSelection(nodeId);
@@ -5179,6 +6012,12 @@
       const wPos = worldFromClient(ev.clientX, ev.clientY);
       const dx = wPos.x - resizing.startWorld.x;
       const dy = wPos.y - resizing.startWorld.y;
+      if(node.variant === "sticky"){
+        node.w = clamp(resizing.w + dx, STICKY_MIN_W, STICKY_MAX_W);
+        node.h = clamp(resizing.h + dy, STICKY_MIN_H, STICKY_MAX_H);
+        render();
+        return;
+      }
       const isUnlimited = !!node.unboundedResize || node.variant === "organizer" || (node.title || "").toLowerCase().includes("tesseractdb");
       if(isUnlimited){
         node.w = Math.max(280, resizing.w + dx);
@@ -5403,8 +6242,18 @@
   btnPreviewClose?.addEventListener("click", closePreviewModal);
   btnProjectClose?.addEventListener("click", closeProjectModal);
   btnProjectCancel?.addEventListener("click", closeProjectModal);
+  btnImportClose?.addEventListener("click", closeImportModal);
+  btnImportCancel?.addEventListener("click", closeImportModal);
+  btnImportApply?.addEventListener("click", applyImportFromModal);
+  importJsonInput?.addEventListener("keydown", (e)=>{
+    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+      e.preventDefault();
+      applyImportFromModal();
+    }
+  });
   previewBack?.addEventListener("click", (e)=>{ if(e.target === previewBack) closePreviewModal(); });
   modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeEdit(); });
+  importBack?.addEventListener("click", (e)=>{ if(e.target===importBack) closeImportModal(); });
   projectBack?.addEventListener("click", (e)=>{ if(e.target===projectBack) closeProjectModal(); });
   btnProjectCreate?.addEventListener("click", async ()=>{
     if(!nodes.length){
@@ -5434,6 +6283,7 @@
     if(e.key==="Escape"){
       closeEdit();
       closePreviewModal();
+      closeImportModal();
       closeProjectModal();
       setPreviewPickMode(false);
       settingsPanel?.classList.remove("show");
@@ -5450,6 +6300,9 @@
     n.logoUrl = normalizeLogoUrl(fLogo.value);
     n.logoInvalid = false;
     n.type  = fType.value;
+    ensureNodeI18n(n);
+    n.i18n.title[currentLanguage] = n.title;
+    n.i18n.desc[currentLanguage] = n.desc;
     closeEdit();
     render();
   });
@@ -5466,6 +6319,7 @@
     "integration:api":     { icon:"API", kind:"Integration", type:"blue",  title:"API", desc:"Conector server-to-server para eventos, perfis e integracoes.", logoUrl:"https://icons.veryicon.com/png/o/internet--web/internet-simple-icon/api-management.png" },
     "integration:sdk":     { icon:"SDK", kind:"Integration", type:"blue",  title:"SDK", desc:"Instrumentacao App/Web para coleta e mensageria.", logoUrl:"https://icons.veryicon.com/png/o/miscellaneous/hekr/open-sdk-download.png" },
     "integration:native":  { icon:"N", kind:"Integration", type:"blue",  title:"Nativo", desc:"Capacidade nativa da plataforma (sem conector externo).", logoUrl:"https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png" },
+    "integration:manual":  { icon:"MAN", kind:"Integration", type:"blue",  title:"Manual", desc:"Operacao manual ou assistida, sem dependencia de API, SDK ou conector nativo.", logoUrl:"https://media.istockphoto.com/id/1187149723/pt/vetorial/touch-outline-vector-illustration-icon-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=h2Z3b3CzeZPm5oLu_m_g6dzhhCgWWwfO5CEHTuS1E-A=" },
 
     "core:central":        { icon:"C", kind:"Core",        type:"blue",  title:"Bloco Central", desc:"Edite o nome e descreva a funcionalidade (ex.: Segmentacao, Journeys, Analytics).", logoUrl:"https://cdn-icons-png.flaticon.com/512/30/30254.png" },
     "core:organizer":      {
@@ -5526,7 +6380,7 @@
       userMinH: 230,
       solutionLayout: "grid",
       items: [
-        { icon:"https://cdn-icons-png.freepik.com/512/5076/5076787.png", label:"RFM" },
+        { icon:"https://upload.wikimedia.org/wikipedia/commons/3/3f/Clock_icon.svg", label:"RFM" },
         { icon:"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png", label:"Real-time" },
         { icon:"https://cdn-icons-png.flaticon.com/512/5799/5799191.png", label:"Preditiva" },
         { icon:"https://cdn-icons-png.flaticon.com/512/12282/12282281.png", label:"Psicográfica", mono:true },
@@ -5619,10 +6473,11 @@
     "text:sticky": {
       icon:"📌", kind:"Nota", type:"gray", variant:"sticky",
       title:"Sticky Note",
-      text:"Clique para editar...",
+      text:STICKY_DEFAULT_TEXT,
       stickyColor:"#fef08a",
       w: 200,
-      fontSize: 14
+      h: 110,
+      fontSize: STICKY_DEFAULT_FONT
     },
   };
 
@@ -5633,12 +6488,12 @@
     rememberActionState();
     const p = worldFromClient(clientX, clientY);
     const newId = "n_" + uid();
-    nodes.push({
+    const newNode = {
       id: newId,
       x: Math.round(p.x - 140),
       y: Math.round(p.y - 60),
       w: t.w || 280,
-      h: 92,
+      h: t.h || 92,
       title: t.title,
       desc: t.desc,
       type: t.type,
@@ -5647,7 +6502,7 @@
       icon: t.icon,
       kind: t.kind,
       variant: t.variant || "default",
-      items: Array.isArray(t.items) ? [...t.items] : [],
+      items: Array.isArray(t.items) ? t.items.map(deepCopyItem) : [],
       stacks: Array.isArray(t.stacks) ? [...t.stacks] : [],
       stackCatalog: t.stackCatalog || "",
       userMinH: t.userMinH || 0,
@@ -5655,13 +6510,16 @@
       solutionLogo: t.solutionLogo || "",
       orgOptions: Array.isArray(t.orgOptions) ? [...t.orgOptions] : [],
       text: t.text || "",
-      fontSize: t.fontSize || 28,
+      fontSize: t.fontSize || defaultFontSizeForVariant(t.variant),
       fontFamily: t.fontFamily || "Georgia",
       color: t.color || "#1e293b",
       align: t.align || "left",
       stickyColor: t.stickyColor || "#fef08a",
       unboundedResize: !!t.unboundedResize
-    });
+    };
+    ensureNodeI18n(newNode);
+    applyNodeLanguage(newNode, currentLanguage);
+    nodes.push(newNode);
 
     setSingleNodeSelection(newId);
     render();
@@ -5669,7 +6527,7 @@
     newEl?.classList.add("is-new");
     setTimeout(()=> newEl?.classList.remove("is-new"), 250);
     if(isCompactViewport()) setSidebarCollapsed(true);
-    showToast("Bloco adicionado. Duplo clique para editar.");
+    showToast(t("blockAdded"));
   }
 
   function addFromTemplate(key){
@@ -5714,7 +6572,7 @@
     if(e.target === tplBack) closeTemplateModal();
   });
   btnTplPaste?.addEventListener("click", ()=>{
-    const txt = prompt("Cole aqui o JSON do template:");
+    const txt = prompt(t("templateJsonPrompt"));
     if(!txt) return;
     try{
       const parsed = JSON.parse(txt);
@@ -5723,15 +6581,15 @@
       const entry = {
         id: `custom-${uid()}`,
         name: parsed?.canvas?.name || parsed?.name || `Template ${customCanvasTemplates.length + 1}`,
-        description: parsed?.description || "Template importado via JSON.",
+        description: parsed?.description || t("templateImportedDesc"),
         data: parsed
       };
       customCanvasTemplates.unshift(entry);
       persistTemplateLibrary();
-      showToast("Template importado.");
+      showToast(t("templateImported"));
       openTemplateModal();
     } catch {
-      alert("JSON de template inválido.");
+      alert(t("templateInvalid"));
     }
   });
   btnConnect.addEventListener("click", ()=> setConnectMode(!connectMode));
@@ -5764,51 +6622,19 @@
   btnExport.addEventListener("click", ()=>{
     const data = JSON.stringify(buildPortableExportPayload(), null, 2);
     copyToClipboard(data);
-    showToast("JSON portavel copiado.");
+    showToast(t("exportCopied"));
   });
 
-  btnImport.addEventListener("click", ()=>{
-    const txt = prompt("Cole aqui o JSON exportado:");
-    if(!txt) return;
-    try{
-      const parsed = JSON.parse(txt);
-      const obj = extractImportState(parsed);
-      if(!obj) throw new Error("Formato invalido");
-      rememberActionState();
-      if(obj.view) view = obj.view;
-      if(Array.isArray(obj.nodes)) nodes = obj.nodes;
-      if(Array.isArray(obj.edges)) edges = obj.edges;
-      clearNodeSelection();
-      selected = { type:null, id:null };
-      if(typeof obj.flowOn === "boolean") flowOn = obj.flowOn;
-      if(obj.edgeCfg && typeof obj.edgeCfg === "object") edgeCfg = { ...edgeCfg, ...obj.edgeCfg };
-      if(typeof obj.connectMode === "boolean"){
-        setConnectMode(obj.connectMode, true);
-      } else {
-        btnConnect.classList.toggle("active", connectMode);
-      }
-      if(typeof obj.canvasName === "string" && obj.canvasName.trim()){
-        canvasName = obj.canvasName.trim();
-        if(canvasNameEl) canvasNameEl.textContent = canvasName;
-      }
-      btnFlow.classList.toggle("active", flowOn);
-      refreshSettingsUI();
-
-      setTransform();
-      render();
-      showToast("Layout importado.");
-    } catch(e){
-      alert("JSON inválido.");
-    }
-  });
+  btnImport.addEventListener("click", ()=> openImportModal());
 
   btnReset.addEventListener("click", ()=>{
-    if(!confirm("Resetar tudo?")) return;
+    if(!confirm(t("confirmReset"))) return;
     rememberActionState();
     view = { x: 0, y: 0, z: 1 };
     nodes = [];
     edges = [];
-    canvasName = "Diagrama CleverTap";
+    canvasNameI18n = buildLocalizedStringRecord("Diagrama CleverTap");
+    canvasName = canvasNameI18n[currentLanguage] || translateKnownPhrase("Diagrama CleverTap");
     if(canvasNameEl) canvasNameEl.textContent = canvasName;
     clearNodeSelection();
     selected = { type:null, id:null };
@@ -5861,8 +6687,10 @@
     });
     canvasNameEl.addEventListener("blur", ()=>{
       canvasNameEl.setAttribute("contenteditable", "false");
-      canvasName = (canvasNameEl.textContent || "").trim() || "Diagrama CleverTap";
+      canvasName = (canvasNameEl.textContent || "").trim() || translateKnownPhrase("Diagrama CleverTap");
       canvasNameEl.textContent = canvasName;
+      ensureCanvasNameI18n();
+      canvasNameI18n[currentLanguage] = canvasName;
       queuePersist();
     });
     canvasNameEl.addEventListener("keydown", (e)=>{
@@ -5888,14 +6716,18 @@
 
   tbDec?.addEventListener("click", ()=>{
     const n = (selected.type==="node") ? getNodeById(selected.id) : null;
-    if(!n || n.variant !== "text") return;
-    n.fontSize = clamp(Number(n.fontSize || 28) - 2, 12, 92);
+    if(!n || (n.variant !== "text" && n.variant !== "sticky")) return;
+    const min = n.variant === "sticky" ? 10 : 12;
+    const max = n.variant === "sticky" ? 42 : 92;
+    n.fontSize = clamp(Number(n.fontSize || defaultFontSizeForVariant(n.variant)) - 2, min, max);
     render();
   });
   tbInc?.addEventListener("click", ()=>{
     const n = (selected.type==="node") ? getNodeById(selected.id) : null;
-    if(!n || n.variant !== "text") return;
-    n.fontSize = clamp(Number(n.fontSize || 28) + 2, 12, 92);
+    if(!n || (n.variant !== "text" && n.variant !== "sticky")) return;
+    const min = n.variant === "sticky" ? 10 : 12;
+    const max = n.variant === "sticky" ? 42 : 92;
+    n.fontSize = clamp(Number(n.fontSize || defaultFontSizeForVariant(n.variant)) + 2, min, max);
     render();
   });
   tbFont?.addEventListener("change", ()=>{
@@ -5920,6 +6752,8 @@
     const n = (selected.type==="node") ? getNodeById(selected.id) : null;
     if(!n || n.variant !== "text") return;
     n.text = tbText.value;
+    ensureNodeI18n(n);
+    n.i18n.text[currentLanguage] = n.text;
     const textEl = nodesLayer.querySelector(`.node[data-id="${n.id}"] .textNodeBody`);
     if(textEl) textEl.textContent = n.text || "";
     queuePersist();
@@ -5928,6 +6762,8 @@
     const n = (selected.type==="node") ? getNodeById(selected.id) : null;
     if(!n || n.variant !== "text") return;
     n.text = tbText.value;
+    ensureNodeI18n(n);
+    n.i18n.text[currentLanguage] = n.text;
     render();
   });
   btnSettings?.addEventListener("click", (e)=>{
@@ -5963,6 +6799,9 @@
   cfgFlowColor?.addEventListener("change", ()=>{
     edgeCfg.flowColor = cfgFlowColor.value;
     render();
+  });
+  cfgLanguage?.addEventListener("change", ()=>{
+    setLanguage(cfgLanguage.value);
   });
   settingsPanel?.addEventListener("click", (e)=> e.stopPropagation());
   document.addEventListener("click", (e)=>{
@@ -6009,7 +6848,9 @@
       const n = getNodeById(ctxTargetNodeId);
       const ctxHighlight = document.getElementById("ctx-highlight");
       if(ctxHighlight){
-        ctxHighlight.textContent = n?.highlightPulse ? "Remover destaque de borda" : "Aplicar destaque de borda";
+        ctxHighlight.textContent = n?.highlightPulse
+          ? translateKnownPhrase("Remover destaque de borda")
+          : translateKnownPhrase("Aplicar destaque de borda");
       }
     }
     openCtxMenu(ctxMenu, e.clientX, e.clientY);
@@ -6079,8 +6920,14 @@
 
   // Delete selected (node/edge)
   window.addEventListener("keydown", (e)=>{
+    const active = document.activeElement?.tagName?.toLowerCase();
+    const isTypingContext = active === "input"
+      || active === "textarea"
+      || active === "select"
+      || !!document.activeElement?.isContentEditable;
     const cmd = e.ctrlKey || e.metaKey;
     if(cmd && !e.shiftKey && e.key.toLowerCase() === "z"){
+      if(isTypingContext) return;
       e.preventDefault();
       undoAction();
       return;
@@ -6091,13 +6938,13 @@
       closeProjectModal();
     }
     if(cmd && (e.key.toLowerCase() === "y" || (e.shiftKey && e.key.toLowerCase() === "z"))){
+      if(isTypingContext) return;
       e.preventDefault();
       redoAction();
       return;
     }
     if(!cmd && !e.altKey && !e.shiftKey && e.key.toLowerCase() === "t"){
-      const active = document.activeElement?.tagName?.toLowerCase();
-      if(active !== "input" && active !== "textarea" && active !== "select" && !document.activeElement?.isContentEditable){
+      if(!isTypingContext){
         const r = wrap.getBoundingClientRect();
         addFromTemplateAt("text:note", r.left + r.width/2, r.top + r.height/2);
         e.preventDefault();
@@ -6106,9 +6953,7 @@
     }
     if(e.key !== "Delete" && e.key !== "Backspace") return;
 
-    // don't delete while typing in modal
-    const active = document.activeElement?.tagName?.toLowerCase();
-    if(active === "input" || active === "textarea" || active === "select") return;
+    if(isTypingContext) return;
 
     if(selectedNodeIds.size){
       rememberActionState();
@@ -6537,7 +7382,9 @@
     }
     toggle.textContent = collapsed ? "+" : "−";
     toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
-    toggle.title = collapsed ? "Expandir seção" : "Recolher seção";
+    toggle.title = collapsed
+      ? translateKnownPhrase("Expandir seção")
+      : translateKnownPhrase("Recolher seção");
   };
   document.querySelectorAll(".section").forEach((section)=>{
     const toggle = section.querySelector(".secToggle");
@@ -6557,6 +7404,8 @@
       setSectionCollapsed(section, willCollapse);
     });
   });
+  nodes.forEach((node)=> ensureNodeI18n(node));
+  ensureCanvasNameI18n();
   setTransform();
   setSidebarCollapsed(isCompactViewport());
   window.addEventListener("resize", ()=>{
@@ -6569,6 +7418,7 @@
   btnGrid.classList.toggle("active", grid.style.display !== "none");
   btnFlow.classList.toggle("active", flowOn);
   refreshSettingsUI();
+  setLanguage(currentLanguage, { silent:true, skipSnapshot:true, render:false });
   positionToastBelowHeader();
   render();
 
