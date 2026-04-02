@@ -4095,6 +4095,7 @@
           type: n.type || "gray",
           icon: n.icon || "",
           logoUrl: n.logoUrl || "",
+          organizerPreset: n.organizerPreset || "",
           stickyColor: n.stickyColor || "",
           fontSize: Number(n.fontSize || defaultFontSizeForVariant(n.variant)),
           fontFamily: n.fontFamily || "Georgia",
@@ -4189,6 +4190,7 @@
         align: (n?.style?.align ?? n.align ?? "left").toString(),
         stickyColor: (n?.style?.stickyColor ?? n.stickyColor ?? "#fef08a").toString(),
         stackCatalog: (n?.style?.stackCatalog ?? n.stackCatalog ?? "").toString(),
+        organizerPreset: (n?.style?.organizerPreset ?? n.organizerPreset ?? "").toString(),
         i18n: (n?.i18n && typeof n.i18n === "object") ? JSON.parse(JSON.stringify(n.i18n)) : null
       };
       });
@@ -4581,6 +4583,7 @@
   ];
   const WHATSAPP_PROVIDER_OPTIONS = [
     { id:"direct", label:"Direct", logo:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" },
+    { id:"connect", label:"Connect", logo:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" },
     { id:"generic", label:"Generic", logo:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/960px-WhatsApp.svg.png" },
     { id:"8x8", label:"8x8", logo:"https://companieslogo.com/img/orig/EGHT-95dcecf5.png?t=1744724283" },
     { id:"aisensy", label:"AiSensy", logo:"https://waba.aisensy.com/static/media/logo.704a7a4bfa9c51deca0f.jpg" },
@@ -4715,7 +4718,8 @@
       "Orquestrador",
       "Canais de comunicação",
       "Data Layer",
-      "Clever.AI"
+      "Clever.AI",
+      "Remarketing"
     ];
     const TESSERACT_ITEM_ICON = "https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png";
     const TESSERACT_LOGO_URL = "https://clevertap.com/wp-content/uploads/2024/03/Hyper-personalization-image.png";
@@ -4736,7 +4740,7 @@
       "reducao de custo e complexidade":TESSERACT_ITEM_ICON
     };
     const SEGMENTS_ICON_BY_LABEL = {
-      "rfm":"https://upload.wikimedia.org/wikipedia/commons/3/3f/Clock_icon.svg",
+      "rfm":"https://cdn-icons-png.flaticon.com/512/570/570291.png",
       "real-time":"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png",
       "real time":"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png",
       "preditiva":"https://cdn-icons-png.flaticon.com/512/5799/5799191.png",
@@ -5005,14 +5009,17 @@
       } else if(n.variant === "organizer"){
         const extraOptions = (Array.isArray(n.orgOptions) && n.orgOptions.length) ? n.orgOptions : [];
         const orgOptions = [...new Set([...ORGANIZER_OPTIONS, ...extraOptions])];
-        const selectedOrg = orgOptions.includes(n.title) ? n.title : orgOptions[0];
-        n.title = selectedOrg;
+        if(!orgOptions.includes(n.organizerPreset || "")){
+          n.organizerPreset = orgOptions.includes(n.title) ? n.title : orgOptions[0];
+        }
+        const selectedOrg = n.organizerPreset || orgOptions[0];
+        const displayTitle = (n.title || selectedOrg || orgOptions[0]).toString().trim() || orgOptions[0];
         const isAiMode = selectedOrg === "Clever.AI";
         const optHtml = orgOptions.map((opt)=>`<button class="orgOpt" type="button" data-org="${escapeHTML(opt)}">${escapeHTML(opt)}</button>`).join("");
         el.innerHTML = `
           <div class="organizerCard ${isAiMode ? "aiMode" : ""}">
             <div class="organizerHead">
-              <button class="orgTitleBtn" type="button" title="Alterar categoria">${escapeHTML(selectedOrg)}</button>
+              <button class="orgTitleBtn" type="button" title="Alterar categoria">${escapeHTML(displayTitle)}</button>
               <div class="orgMenu ${n.orgMenuOpen ? "show" : ""}">
                 ${optHtml}
               </div>
@@ -5373,12 +5380,45 @@
       });
       const orgTitleBtn = el.querySelector(".orgTitleBtn");
       orgTitleBtn?.addEventListener("mousedown", (e)=> e.stopPropagation());
+      let orgClickTimer = null;
       orgTitleBtn?.addEventListener("click", (e)=>{
         e.stopPropagation();
-        for(const node of nodes){
-          if(node.variant === "organizer" && node.id !== n.id) node.orgMenuOpen = false;
+        if(orgClickTimer) clearTimeout(orgClickTimer);
+        orgClickTimer = setTimeout(()=>{
+          for(const node of nodes){
+            if(node.variant === "organizer" && node.id !== n.id) node.orgMenuOpen = false;
+          }
+          n.orgMenuOpen = !n.orgMenuOpen;
+          render();
+          orgClickTimer = null;
+        }, 180);
+      });
+      orgTitleBtn?.addEventListener("dblclick", (e)=>{
+        e.stopPropagation();
+        if(orgClickTimer){
+          clearTimeout(orgClickTimer);
+          orgClickTimer = null;
         }
-        n.orgMenuOpen = !n.orgMenuOpen;
+        const nextTitle = prompt("Nome do organizador:", (n.title || n.organizerPreset || "").toString());
+        if(nextTitle === null) return;
+        const trimmed = nextTitle.trim();
+        if(!trimmed) return;
+        rememberActionState();
+        n.title = trimmed;
+        const organizerOptions = [
+          "Fonte de dados",
+          "Mecanismo de integração",
+          "Orquestrador",
+          "Canais de comunicação",
+          "Data Layer",
+          "Clever.AI",
+          "Remarketing",
+          ...(Array.isArray(n.orgOptions) ? n.orgOptions : [])
+        ];
+        if(organizerOptions.includes(trimmed)) n.organizerPreset = trimmed;
+        ensureNodeI18n(n);
+        n.i18n.title[currentLanguage] = n.title;
+        n.orgMenuOpen = false;
         render();
       });
       el.querySelectorAll(".orgOpt").forEach(opt=>{
@@ -5388,8 +5428,11 @@
           const label = opt.dataset.org;
           if(!label) return;
           rememberActionState();
+          n.organizerPreset = label;
           n.title = label;
           n.orgMenuOpen = false;
+          ensureNodeI18n(n);
+          n.i18n.title[currentLanguage] = n.title;
           render();
         });
       });
@@ -6300,6 +6343,23 @@
     n.logoUrl = normalizeLogoUrl(fLogo.value);
     n.logoInvalid = false;
     n.type  = fType.value;
+    if(n.variant === "organizer"){
+      const organizerOptions = [
+        "Fonte de dados",
+        "Mecanismo de integração",
+        "Orquestrador",
+        "Canais de comunicação",
+        "Data Layer",
+        "Clever.AI",
+        "Remarketing",
+        ...(Array.isArray(n.orgOptions) ? n.orgOptions : [])
+      ];
+      if(organizerOptions.includes(n.title)){
+        n.organizerPreset = n.title;
+      } else if(!organizerOptions.includes(n.organizerPreset || "")){
+        n.organizerPreset = organizerOptions[0];
+      }
+    }
     ensureNodeI18n(n);
     n.i18n.title[currentLanguage] = n.title;
     n.i18n.desc[currentLanguage] = n.desc;
@@ -6325,6 +6385,7 @@
     "core:organizer":      {
       icon:"ORG", kind:"Core", type:"blue", variant:"organizer",
       title:"Fonte de dados", desc:"",
+      organizerPreset:"Fonte de dados",
       w: 360,
       userMinH: 220,
       orgOptions: [
@@ -6333,7 +6394,8 @@
         "Orquestrador",
         "Canais de comunicação",
         "Data Layer",
-        "Clever.AI"
+        "Clever.AI",
+        "Remarketing"
       ]
     },
 
@@ -6380,7 +6442,7 @@
       userMinH: 230,
       solutionLayout: "grid",
       items: [
-        { icon:"https://upload.wikimedia.org/wikipedia/commons/3/3f/Clock_icon.svg", label:"RFM" },
+        { icon:"https://cdn-icons-png.flaticon.com/512/570/570291.png", label:"RFM" },
         { icon:"https://marketplace.canva.com/XL6M0/MAEpMrXL6M0/1/tl/canva-clock-real-realtime-time-icon-icon-MAEpMrXL6M0.png", label:"Real-time" },
         { icon:"https://cdn-icons-png.flaticon.com/512/5799/5799191.png", label:"Preditiva" },
         { icon:"https://cdn-icons-png.flaticon.com/512/12282/12282281.png", label:"Psicográfica", mono:true },
@@ -6505,6 +6567,7 @@
       items: Array.isArray(t.items) ? t.items.map(deepCopyItem) : [],
       stacks: Array.isArray(t.stacks) ? [...t.stacks] : [],
       stackCatalog: t.stackCatalog || "",
+      organizerPreset: t.organizerPreset || "",
       userMinH: t.userMinH || 0,
       solutionLayout: t.solutionLayout || "pills",
       solutionLogo: t.solutionLogo || "",
