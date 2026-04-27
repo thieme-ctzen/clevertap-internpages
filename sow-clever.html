@@ -1,0 +1,2833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOW Clever - Project Intake</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #133B58;
+      --bg-page-deep: #0D2A40;
+      --card-bg: #fff;
+      --card-soft: #F8FAFC;
+      --text-on-bg: #fff;
+      --text-main: #133B58;
+      --text-soft: #64748B;
+      --accent: #F04444;
+      --accent-soft: rgba(240, 68, 68, 0.12);
+      --border-card: #D0D7DF;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.25);
+      --radius-card: 22px;
+      --focus-ring: 0 0 0 3px rgba(240, 68, 68, 0.35);
+      --transition-fast: 0.22s ease-out;
+      --transition-slow: 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg-page) 0%, var(--bg-page-deep) 100%);
+      color: var(--text-on-bg);
+      overflow-x: hidden;
+      font-size: 14px;
+    }
+    body.modal-open { overflow: hidden; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .site-header {
+      background: #102C45;
+      height: 60px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .logo img {
+      height: 40px;
+      max-height: 40px;
+      width: auto;
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+    }
+    .top-nav a {
+      color: #fff;
+      margin-left: 24px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .top-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--accent);
+      transition: width var(--transition-fast);
+    }
+    .top-nav a:hover::after { width: 100%; }
+    .lang-dd {
+      margin-left: 22px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255,255,255,0.14);
+      position: relative;
+    }
+    .lang-dd-btn {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lang-dd-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      min-width: 120px;
+      background: #0E263B;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      display: none;
+      z-index: 999;
+    }
+    .lang-dd.open .lang-dd-menu { display: block; }
+    .lang-dd-item {
+      width: 100%;
+      text-align: left;
+      padding: 10px;
+      border: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+    }
+    .lang-dd-item:hover { background: rgba(255,255,255,0.08); }
+    .page-shell {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+    .side-index {
+      position: sticky;
+      top: 96px;
+      padding: 18px 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 32px rgba(0,0,0,0.18);
+    }
+    .side-index-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.72;
+      margin-bottom: 14px;
+    }
+    .side-index-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .index-item {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 16px 1fr;
+      gap: 10px;
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: rgba(255,255,255,0.78);
+      text-align: left;
+      padding: 6px 4px;
+      border-radius: 12px;
+      transition: background var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
+    }
+    .index-item:hover {
+      background: rgba(255,255,255,0.06);
+      transform: translateX(2px);
+    }
+    .index-item.active {
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+    }
+    .index-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.34);
+      transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .index-item.active .index-dot {
+      background: var(--accent);
+      transform: scale(1.15);
+      box-shadow: 0 0 0 6px rgba(240, 68, 68, 0.14);
+    }
+    .index-text {
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .hero-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 24px 40px rgba(0,0,0,0.22);
+      border-radius: 24px;
+      padding: 28px;
+      margin-bottom: 22px;
+    }
+    .hero-kicker {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 650;
+      line-height: 1.06;
+      margin-bottom: 10px;
+      max-width: 760px;
+    }
+    .hero-subtitle {
+      max-width: 760px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.86);
+    }
+    .progress-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 18px;
+    }
+    .progress-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .progress-label {
+      font-size: 12px;
+      opacity: 0.82;
+    }
+    .progress-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .progress-line {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      overflow: hidden;
+      min-width: 120px;
+    }
+    .progress-line-fill {
+      height: 100%;
+      width: 12.5%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #F04444 0%, #FF7A7A 100%);
+      transition: width var(--transition-slow);
+    }
+    .section-viewport { overflow: hidden; width: 100%; }
+    .sections-track {
+      display: flex;
+      transition: transform var(--transition-slow);
+      will-change: transform;
+    }
+    .section-panel {
+      width: 100%;
+      flex: 0 0 100%;
+      padding-right: 2px;
+    }
+    .section-card {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+      min-height: 640px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .section-step {
+      display: inline-flex;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 9px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .section-title {
+      font-size: clamp(18px, 2.4vw, 22px);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      color: var(--text-soft);
+      font-size: 10px;
+      line-height: 1.6;
+      max-width: 720px;
+    }
+    .section-status {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid #E2E8F0;
+      background: #F8FAFC;
+      color: var(--text-soft);
+      font-size: 9px;
+      white-space: nowrap;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .field,
+    .list-builder,
+    .contract-table-wrap,
+    .placeholder-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 18px;
+      background: #fff;
+      padding: 16px;
+    }
+    .field.full,
+    .list-builder,
+    .contract-table-wrap,
+    .placeholder-card {
+      grid-column: 1 / -1;
+    }
+    .field label,
+    .builder-label,
+    .contract-title {
+      display: block;
+      font-size: 9px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+    .help-text {
+      font-size: 9px;
+      line-height: 1.55;
+      color: var(--text-soft);
+      margin-top: -2px;
+      margin-bottom: 10px;
+    }
+    .input,
+    .textarea,
+    .select {
+      width: 100%;
+      border: 1px solid #CBD5E1;
+      border-radius: 14px;
+      padding: 9px 10px;
+      background: #F8FAFC;
+      color: var(--text-main);
+      font-size: 11px;
+    }
+    .input::placeholder,
+    .textarea::placeholder {
+      color: #B8C3D1;
+      font-size: 9px;
+      opacity: 1;
+    }
+    .textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .input:focus,
+    .textarea:focus,
+    .select:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: var(--focus-ring);
+    }
+    .hint-line {
+      margin-top: 8px;
+      font-size: 9px;
+      color: var(--text-soft);
+    }
+    .dynamic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .dynamic-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .icon-btn,
+    .ghost-btn,
+    .primary-btn,
+    .secondary-btn,
+    .modal-btn {
+      border: 0;
+      border-radius: 999px;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
+    }
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      background: #FFF1F2;
+      color: var(--accent);
+      font-size: 18px;
+      line-height: 1;
+    }
+    .ghost-btn,
+    .secondary-btn {
+      background: #EEF2F7;
+      color: var(--text-main);
+      padding: 8px 12px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .primary-btn {
+      background: var(--accent);
+      color: #fff;
+      padding: 9px 14px;
+      font-size: 10px;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(240, 68, 68, 0.24);
+    }
+    .builder-actions,
+    .section-actions,
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .contract-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .contract-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .contract-table-wrap { background: var(--card-soft); }
+    .contract-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .contract-title { margin-bottom: 0; }
+    .contract-mini {
+      font-size: 9px;
+      color: var(--text-soft);
+    }
+    .addons-table {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .addon-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .addon-title {
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .check-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px;
+      font-size: 10px;
+    }
+    .check-option input { accent-color: var(--accent); }
+    .other-addons-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .other-addon-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .stack-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .stack-title {
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .conditional-block {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px dashed #CBD5E1;
+      background: #F8FAFC;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .integration-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .integration-row {
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      background: #fff;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      align-items: start;
+    }
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .live-status-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .live-status-row {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px 14px;
+    }
+    .live-status-name {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .matrix-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+    .matrix-card h4 {
+      font-size: 10px;
+      margin-bottom: 10px;
+    }
+    .check-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .check-item {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 10px;
+      padding: 8px 10px;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      background: #fff;
+    }
+    .check-item input { accent-color: var(--accent); }
+    .table-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .table-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr 0.8fr auto;
+      gap: 10px;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px;
+      align-items: start;
+    }
+    .row-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .inline-alert {
+      margin-top: 12px;
+      border: 1px solid #FCA5A5;
+      background: #FEF2F2;
+      color: #991B1B;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 10px;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .metric-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px 12px;
+    }
+    .metric-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748B;
+      margin-bottom: 4px;
+    }
+    .metric-value {
+      font-size: 11px;
+      color: var(--text-main);
+      font-weight: 600;
+      word-break: break-word;
+    }
+    .payload-preview {
+      margin-top: 10px;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      background: #0F172A;
+      color: #E2E8F0;
+      padding: 12px;
+      font-size: 10px;
+      line-height: 1.5;
+      max-height: 220px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+    .risk-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr auto;
+      gap: 10px;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px;
+      align-items: start;
+    }
+    .risk-source {
+      font-size: 10px;
+      color: #334155;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 999px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .risk-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid #E2E8F0;
+      font-size: 9px;
+      padding: 4px 8px;
+      color: #475569;
+      background: #F8FAFC;
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+    .stakeholder-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+      gap: 10px;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px;
+      align-items: center;
+    }
+    .placeholder-card {
+      background: linear-gradient(180deg, #F8FAFC 0%, #fff 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      min-height: 300px;
+    }
+    .placeholder-badge {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #E2E8F0;
+      color: #475569;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .section-actions {
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .summary-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .summary-text {
+      font-size: 10px;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.5;
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+      padding: 18px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      color: #0F172A;
+      border-radius: 22px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+      width: min(1320px, 96vw);
+      height: min(88vh, 920px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: width 0.35s ease, height 0.35s ease;
+    }
+    .modal.minimized {
+      width: min(900px, 88vw);
+      height: min(64vh, 560px);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .modal-title {
+      font-size: 20px;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+    .modal-subtitle {
+      font-size: 10px;
+      color: #64748B;
+    }
+    .modal-btn {
+      border: 1px solid #E2E8F0;
+      background: #F8FAFC;
+      color: #334155;
+      padding: 10px 14px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .modal-btn.close-btn {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      font-size: 22px;
+      line-height: 1;
+    }
+    .modal-body {
+      flex: 1;
+      overflow: auto;
+      padding: 20px;
+    }
+    .summary-pre {
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-size: 11px;
+      color: #0F172A;
+    }
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      background: #102C45;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      box-shadow: 0 18px 34px rgba(0,0,0,0.28);
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: opacity var(--transition-fast), transform var(--transition-fast);
+      z-index: 80;
+      font-size: 10px;
+    }
+    .usecase-actions {
+      margin-top: 16px;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (max-width: 1180px) {
+      .page-shell { grid-template-columns: 1fr; }
+      .side-index { position: static; order: 2; }
+    }
+    @media (max-width: 900px) {
+      .site-header { padding: 0 16px; min-height: 60px; height: auto; }
+      .top-nav a { display: none; }
+      .hero-card, .section-card { padding: 20px; }
+      .form-grid, .contract-grid, .addons-table, .check-grid, .stack-grid, .toggle-grid, .integration-row, .table-row, .risk-row, .matrix-grid, .metrics-grid, .stakeholder-row { grid-template-columns: 1fr; }
+      .section-header, .summary-row, .progress-card, .modal-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .page-shell { padding: 20px 12px 28px; }
+      .logo span:last-child { display: none; }
+      .dynamic-row, .other-addon-item, .live-status-row { grid-template-columns: 1fr; }
+      .section-actions { flex-direction: column-reverse; }
+      .section-actions .primary-btn,
+      .section-actions .secondary-btn,
+      .summary-row .primary-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">
+      <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
+      <span>CleverTap</span>
+    </div>
+    <div class="top-nav">
+      <div class="lang-dd" id="langDD">
+        <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
+          <span id="langDDLabel">PT</span>
+          <span>▾</span>
+        </button>
+        <div class="lang-dd-menu" id="langDDMenu" role="menu">
+          <button type="button" class="lang-dd-item" data-lang-select="pt" role="menuitem">PT</button>
+          <button type="button" class="lang-dd-item" data-lang-select="en" role="menuitem">ENG</button>
+          <button type="button" class="lang-dd-item" data-lang-select="es" role="menuitem">ESP</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <aside class="side-index">
+      <div class="side-index-title" data-i18n="index.title">Sections</div>
+      <div class="side-index-list" id="sectionIndex"></div>
+    </aside>
+
+    <section class="content-area">
+      <div class="hero-card">
+        <div class="hero-kicker" data-i18n="hero.kicker">Implementation discovery</div>
+        <h1 class="hero-title" data-i18n="hero.title">Project intake for the official implementation document</h1>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">Use this guided flow to gather the strategic, contractual and operational context required to build the official SOW and onboarding plan.</p>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-copy">
+          <div class="progress-label" data-i18n="progress.label">Current section</div>
+          <div class="progress-title" id="progressTitle"></div>
+        </div>
+        <div class="progress-line"><div class="progress-line-fill" id="progressFill"></div></div>
+      </div>
+
+      <div class="section-viewport">
+        <div class="sections-track" id="sectionsTrack">
+          <section class="section-panel">
+            <div class="section-card" data-section="overview">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.overview.step">Section 1</div>
+                  <h2 class="section-title" data-i18n="sections.overview.title">Project overview</h2>
+                  <p class="section-subtitle" data-i18n="sections.overview.subtitle">Capture the core project identity and a concise description of the client's business context.</p>
+                </div>
+                <div class="section-status" data-i18n="status.required">Required fields</div>
+              </div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="clientName" data-i18n="fields.clientName">Client name</label>
+                  <input class="input required-field" id="clientName" name="clientName" type="text">
+                </div>
+                <div class="field">
+                  <label for="projectName" data-i18n="fields.projectName">Project name</label>
+                  <input class="input required-field" id="projectName" name="projectName" type="text">
+                </div>
+                <div class="field">
+                  <label for="projectDate" data-i18n="fields.projectDate">Project date</label>
+                  <input class="input required-field" id="projectDate" name="projectDate" type="date">
+                </div>
+                <div class="field">
+                  <label for="projectVersion" data-i18n="fields.projectVersion">Project version</label>
+                  <input class="input required-field" id="projectVersion" name="projectVersion" type="text" placeholder="v1.0">
+                </div>
+                <div class="field">
+                  <label for="goLiveDate" data-i18n="fields.goLiveDate">Expected go-live date</label>
+                  <input class="input required-field" id="goLiveDate" name="goLiveDate" type="date">
+                </div>
+                <div class="field full">
+                  <label for="businessSummary" data-i18n="fields.businessSummary">Tell us about your company, what you do and who you serve</label>
+                  <textarea class="textarea required-field" id="businessSummary" name="businessSummary" data-i18n-placeholder="placeholders.businessSummary"></textarea>
+                </div>
+                <div class="field full hidden" id="goLiveFastTrackBlock">
+                  <label for="goLiveFastTrackReason" data-i18n="fields.goLiveFastTrackReason">Go-live is under 3 months. What are the main reasons?</label>
+                  <textarea class="textarea" id="goLiveFastTrackReason" data-i18n-placeholder="placeholders.goLiveFastTrackReason"></textarea>
+                </div>
+              </div>
+              <div class="section-actions">
+                <button type="button" class="secondary-btn" disabled data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn next-btn" data-next="1" data-i18n="buttons.continue">Continue</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel">
+            <div class="section-card" data-section="objectives">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.objectives.step">Section 2</div>
+                  <h2 class="section-title" data-i18n="sections.objectives.title">Project objectives</h2>
+                  <p class="section-subtitle" data-i18n="sections.objectives.subtitle">Map the reasons behind the initiative, how success will be measured and the critical outcomes that cannot fail.</p>
+                </div>
+                <div class="section-status" data-i18n="status.guided">Guided section</div>
+              </div>
+              <div class="form-grid">
+                <div class="field full">
+                  <label for="objectiveDescription" data-i18n="fields.objectiveDescription">What business problems, goals or opportunities are driving this project?</label>
+                  <div class="help-text" data-i18n="help.objectiveDescription">Share the pains to solve, the reason to start the project, the expected benefits, target outcomes and any alignment needed across teams.</div>
+                  <textarea class="textarea required-field" id="objectiveDescription" name="objectiveDescription" data-i18n-placeholder="placeholders.objectiveDescription"></textarea>
+                </div>
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.kpis">Project KPIs</div>
+                  <div class="help-text" data-i18n="help.kpis">List the key indicators that should be used to measure project success.</div>
+                  <div class="dynamic-list" id="kpiList"></div>
+                  <div class="builder-actions">
+                    <button type="button" class="ghost-btn" data-add-list="kpi" data-i18n="buttons.addKpi">Add KPI</button>
+                    <button type="button" class="ghost-btn" data-remove-list="kpi" data-i18n="buttons.removeLast">Remove last</button>
+                  </div>
+                </div>
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.criticalNeeds">Critical delivery requirements</div>
+                  <div class="help-text" data-i18n="help.criticalNeeds">List the must-have outcomes that would make the project unworkable if they are not achieved. This helps map risks early.</div>
+                  <div class="dynamic-list" id="criticalList"></div>
+                  <div class="builder-actions">
+                    <button type="button" class="ghost-btn" data-add-list="critical" data-i18n="buttons.addRequirement">Add requirement</button>
+                    <button type="button" class="ghost-btn" data-remove-list="critical" data-i18n="buttons.removeLast">Remove last</button>
+                  </div>
+                </div>
+              </div>
+              <div class="section-actions">
+                <button type="button" class="secondary-btn prev-btn" data-prev="0" data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn next-btn" data-next="2" data-i18n="buttons.continue">Continue</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel">
+            <div class="section-card" data-section="contract">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.contract.step">Section 3</div>
+                  <h2 class="section-title" data-i18n="sections.contract.title">Plan and contract details</h2>
+                  <p class="section-subtitle" data-i18n="sections.contract.subtitle">Record the commercial setup, MAUs, channel add-ons and onboarding language details.</p>
+                </div>
+                <div class="section-status" data-i18n="status.contract">Contract data</div>
+              </div>
+              <div class="contract-table-wrap">
+                <div class="contract-title-row">
+                  <div class="contract-title" data-i18n="contract.coreTitle">Core contract information</div>
+                  <div class="contract-mini" data-i18n="contract.coreMini">Structured for implementation handoff</div>
+                </div>
+                <div class="contract-grid">
+                  <div class="contract-row">
+                    <label for="ctPlan" data-i18n="fields.ctPlan">CT Plan</label>
+                    <select class="select required-field" id="ctPlan" name="ctPlan">
+                      <option value=""></option>
+                      <option>Essentials</option>
+                      <option>Advanced</option>
+                      <option>Cutting Edge</option>
+                    </select>
+                  </div>
+                  <div class="contract-row">
+                    <label for="exitClause" data-i18n="fields.exitClause">Exit Clause</label>
+                    <select class="select required-field" id="exitClause" name="exitClause">
+                      <option value=""></option>
+                      <option data-value="yes" data-i18n="yes">Yes</option>
+                      <option data-value="no" data-i18n="no">No</option>
+                    </select>
+                  </div>
+                  <div class="contract-row">
+                    <label for="freePeriod" data-i18n="fields.freePeriodMonths">Free period (months)</label>
+                    <input class="input required-field" id="freePeriod" name="freePeriod" type="text" inputmode="numeric">
+                  </div>
+                  <div class="contract-row">
+                    <label for="maus" data-i18n="fields.maus">MAUs</label>
+                    <input class="input required-field" id="maus" name="maus" type="text" inputmode="numeric" placeholder="100000">
+                    <div class="hint-line" id="mausWords">-</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="contract-table-wrap">
+                <div class="contract-title-row">
+                  <div class="contract-title" data-i18n="contract.addonsTitle">Add-ons and channels</div>
+                  <div class="contract-mini" data-i18n="contract.addonsMini">Volume plus provider model</div>
+                </div>
+                <div class="addons-table">
+                  <div class="addon-card">
+                    <div class="addon-title">Email</div>
+                    <input class="input" id="emailVolume" name="emailVolume" type="text" inputmode="numeric" data-i18n-placeholder="placeholders.volume">
+                    <select class="select" id="emailProvider" name="emailProvider">
+                      <option value=""></option>
+                      <option data-i18n="provider.cleverTap">CleverTap</option>
+                      <option data-i18n="provider.external">External Provider</option>
+                      <option data-i18n="provider.noneEmail">No email</option>
+                    </select>
+                  </div>
+                  <div class="addon-card">
+                    <div class="addon-title">WhatsApp</div>
+                    <input class="input" id="whatsappVolume" name="whatsappVolume" type="text" inputmode="numeric" data-i18n-placeholder="placeholders.volume">
+                    <select class="select" id="whatsappProvider" name="whatsappProvider">
+                      <option value=""></option>
+                      <option>Connect</option>
+                      <option>Direct</option>
+                      <option data-i18n="provider.noneWhatsApp">No WhatsApp</option>
+                    </select>
+                  </div>
+                  <div class="addon-card">
+                    <div class="addon-title">SMS</div>
+                    <input class="input" id="smsVolume" name="smsVolume" type="text" inputmode="numeric" data-i18n-placeholder="placeholders.volume">
+                    <select class="select" id="smsProvider" name="smsProvider">
+                      <option value=""></option>
+                      <option data-i18n="provider.cleverTap">CleverTap</option>
+                      <option data-i18n="provider.external">External Provider</option>
+                      <option data-i18n="provider.noneSms">No SMS</option>
+                    </select>
+                  </div>
+                  <div class="addon-card">
+                    <div class="addon-title">RCS</div>
+                    <input class="input" id="rcsVolume" name="rcsVolume" type="text" inputmode="numeric" data-i18n-placeholder="placeholders.volume">
+                    <select class="select" id="rcsProvider" name="rcsProvider">
+                      <option value=""></option>
+                      <option data-i18n="provider.cleverTap">CleverTap</option>
+                      <option data-i18n="provider.external">External Provider</option>
+                      <option data-i18n="provider.noneRcs">No RCS</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="builder-label" data-i18n="fields.otherAddons">Other add-ons</div>
+                <div class="check-grid">
+                  <label class="check-option"><input type="checkbox" value="Message Archiving" name="addonOption"><span data-i18n="addons.messageArchiving">Message Archiving</span></label>
+                  <label class="check-option"><input type="checkbox" value="Product Experiences" name="addonOption"><span data-i18n="addons.productExperiences">Product Experiences</span></label>
+                  <label class="check-option"><input type="checkbox" value="Signed Calls" name="addonOption"><span data-i18n="addons.signedCalls">Signed Calls</span></label>
+                  <label class="check-option"><input type="checkbox" value="Enhanced Performance" name="addonOption"><span data-i18n="addons.enhancedPerformance">Enhanced Performance</span></label>
+                  <label class="check-option"><input type="checkbox" value="Promotions" name="addonOption"><span data-i18n="addons.promotions">Promotions</span></label>
+                  <label class="check-option"><input type="checkbox" value="Bulletins" name="addonOption"><span data-i18n="addons.bulletins">Bulletins</span></label>
+                </div>
+                <div class="builder-actions">
+                  <button type="button" class="ghost-btn" id="addOtherAddonBtn" data-i18n="buttons.addOtherAddon">Add other add-on</button>
+                </div>
+                <div class="other-addons-list" id="otherAddonsList"></div>
+              </div>
+
+              <div class="contract-table-wrap">
+                <div class="contract-title-row">
+                  <div class="contract-title" data-i18n="contract.languageTitle">Language and onboarding</div>
+                  <div class="contract-mini" data-i18n="contract.languageMini">Communication preferences for delivery</div>
+                </div>
+                <div class="contract-grid">
+                  <div class="contract-row">
+                    <label for="mainLanguage" data-i18n="fields.mainLanguage">Main language</label>
+                    <select class="select required-field" id="mainLanguage" name="mainLanguage">
+                      <option value=""></option>
+                      <option data-i18n="lang.english">English</option>
+                      <option data-i18n="lang.spanish">Spanish</option>
+                      <option data-i18n="lang.portuguese">Portuguese</option>
+                    </select>
+                  </div>
+                  <div class="contract-row">
+                    <label for="onboardingEnglish" data-i18n="fields.onboardingEnglish">Can the onboarding be in English?</label>
+                    <select class="select required-field" id="onboardingEnglish" name="onboardingEnglish">
+                      <option value=""></option>
+                      <option data-i18n="yes">Yes</option>
+                      <option data-i18n="no">No</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-actions">
+                <button type="button" class="secondary-btn prev-btn" data-prev="1" data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn next-btn" data-next="3" data-i18n="buttons.continue">Continue</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel">
+            <div class="section-card">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.tech.step">Section 4</div>
+                  <h2 class="section-title" data-i18n="sections.tech.title">Tech stack</h2>
+                  <p class="section-subtitle" data-i18n="sections.tech.subtitle">Map the current stack, the number of touchpoints that will connect to CleverTap and who will lead the implementation.</p>
+                </div>
+                <div class="section-status" data-i18n="status.guided">Guided section</div>
+              </div>
+              <div class="form-grid">
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.integrationCount">How many apps or websites need to connect to CleverTap?</div>
+                  <div class="help-text" data-i18n="help.integrationCount">Choose the total number of integrations in scope. Each line captures type (App/Web), stack, name and domain when applicable.</div>
+                  <select class="select required-field" id="integrationCount" name="integrationCount">
+                    <option value=""></option>
+                    <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                  </select>
+                  <div class="integration-list" id="integrationList"></div>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.liveQuestion">Is the App/Web live?</div>
+                  <div class="toggle-grid">
+                    <div class="contract-row">
+                      <select class="select required-field" id="liveStatus" name="liveStatus">
+                        <option value=""></option>
+                        <option value="yes" data-i18n="yes">Yes</option>
+                        <option value="no" data-i18n="no">No</option>
+                        <option value="partial" data-i18n="partial">Partial</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="conditional-block hidden" id="liveStatusPartialBlock">
+                    <div class="help-text" data-i18n="help.livePartial">Define which specific app or web property is already live.</div>
+                    <div class="live-status-list" id="liveStatusList"></div>
+                  </div>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.implementer">Who will implement the project?</div>
+                  <select class="select required-field" id="implementer" name="implementer">
+                    <option value=""></option>
+                    <option value="ct_partner" data-i18n="implementer.ctPartner">CT Partner</option>
+                    <option value="internal_team" data-i18n="implementer.internalTeam">Internal Customer Team</option>
+                    <option value="customer_partner" data-i18n="implementer.customerPartner">Customer Partner</option>
+                    <option value="other" data-i18n="other">Other</option>
+                  </select>
+                  <div class="conditional-block hidden" id="partnerNameBlock">
+                    <label for="partnerName" data-i18n="fields.partnerName">Partner name</label>
+                    <input class="input" id="partnerName" name="partnerName" type="text" data-i18n-placeholder="placeholders.partnerName">
+                  </div>
+                  <div class="conditional-block hidden" id="implementerOtherBlock">
+                    <label for="implementerOther" data-i18n="fields.implementerOther">Who will implement the project?</label>
+                    <input class="input" id="implementerOther" name="implementerOther" type="text" data-i18n-placeholder="placeholders.implementerOther">
+                  </div>
+                </div>
+              </div>
+              <div class="section-actions">
+                <button type="button" class="secondary-btn prev-btn" data-prev="2" data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn next-btn" data-next="4" data-i18n="buttons.continue">Continue</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel">
+            <div class="section-card">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.useCases.step">Section 5</div>
+                  <h2 class="section-title" data-i18n="sections.useCases.title">Use cases</h2>
+                  <p class="section-subtitle" data-i18n="sections.useCases.subtitle">Define channels, integrations and at least two business use cases for implementation.</p>
+                </div>
+                <div class="section-status" data-i18n="status.guided">Guided section</div>
+              </div>
+              <div class="form-grid">
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.channelsMatrix">Channel matrix</div>
+                  <div class="matrix-grid">
+                    <div class="matrix-card">
+                      <h4 data-i18n="channels.appNative">App Native</h4>
+                      <div class="check-list">
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="app_native_push"><span>Push</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="app_native_inapp"><span>In-App</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="app_native_display"><span>Native Display</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="app_native_inbox"><span>Inbox</span></label>
+                      </div>
+                    </div>
+                    <div class="matrix-card">
+                      <h4 data-i18n="channels.webNative">Web Native</h4>
+                      <div class="check-list">
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="web_native_push"><span>Push</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="web_native_popup"><span>Pop-up</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="web_native_display"><span>Native Display</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="web_native_inbox"><span>Inbox</span></label>
+                      </div>
+                    </div>
+                    <div class="matrix-card">
+                      <h4 data-i18n="channels.additional">Additional channels</h4>
+                      <div class="check-list">
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="sms"><span>SMS</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="rcs"><span>RCS</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="whatsapp"><span>WhatsApp</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="google_ads"><span>Google Ads</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="facebook_ads"><span>Facebook Ads</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="tiktok_ads"><span>TikTok Ads</span></label>
+                        <label class="check-item"><input type="checkbox" name="channelOption" value="webhooks"><span>Webhooks</span></label>
+                      </div>
+                    </div>
+                    <div class="matrix-card">
+                      <h4 data-i18n="other">Other</h4>
+                      <input class="input" id="channelsOther" type="text" data-i18n-placeholder="placeholders.channelsOther">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.integrationsTable">Integration table</div>
+                  <div class="matrix-grid">
+                    <div class="matrix-card">
+                      <div class="check-list">
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Amplitude"><span>Amplitude</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Mixpanel"><span>Mixpanel</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Adjust"><span>Adjust</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Branch"><span>Branch</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Airbridge"><span>Airbridge</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="mParticle"><span>mParticle</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Segment"><span>Segment</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="RudderStack"><span>RudderStack</span></label>
+                      </div>
+                    </div>
+                    <div class="matrix-card">
+                      <div class="check-list">
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="AWS S3"><span>AWS S3</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Google Cloud Platform"><span>Google Cloud Platform</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="BigQuery"><span>BigQuery</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="Shopify"><span>Shopify</span></label>
+                        <label class="check-item"><input type="checkbox" name="integrationOption" value="VTEX"><span>VTEX</span></label>
+                      </div>
+                      <div class="builder-actions" style="margin-top: 12px;">
+                        <button type="button" class="ghost-btn" id="addIntegrationOtherBtn" data-i18n="buttons.addOtherIntegration">Add other integration</button>
+                      </div>
+                      <div class="table-list" id="integrationsOtherList"></div>
+                    </div>
+                  </div>
+                  <div class="builder-label" data-i18n="fields.integrationSpecificRequirements">Existe alguma particularidade de exigência para integração com a ferramenta?</div>
+                  <textarea class="textarea" id="integrationRequirements" data-i18n-placeholder="placeholders.integrationRequirements"></textarea>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.useCaseTable">Use case table</div>
+                  <div class="table-list" id="useCasesList"></div>
+                  <div class="builder-actions usecase-actions">
+                    <button type="button" class="ghost-btn" id="addUseCaseBtn" data-i18n="buttons.addUseCase">Add use case</button>
+                    <button type="button" class="ghost-btn" id="removeUseCaseBtn" data-i18n="buttons.removeLast">Remove last</button>
+                  </div>
+                  <div class="inline-alert hidden" id="useCaseAlert" data-i18n="alerts.minUseCases">Please provide at least 2 fully detailed use cases.</div>
+                </div>
+              </div>
+              <div class="section-actions">
+                <button type="button" class="secondary-btn prev-btn" data-prev="3" data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn next-btn" data-next="5" data-i18n="buttons.continue">Continue</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel">
+            <div class="section-card">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.architecture.step">Section 6</div>
+                  <h2 class="section-title" data-i18n="sections.architecture.title">Project architecture</h2>
+                  <p class="section-subtitle" data-i18n="sections.architecture.subtitle">Capture architecture, payload and platform-limit details before implementation starts.</p>
+                </div>
+                <div class="section-status" data-i18n="status.guided">Guided section</div>
+              </div>
+              <div class="form-grid">
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.projectsToImplement">How many projects need implementation?</div>
+                  <input class="input required-field" id="projectsToImplement" type="text" inputmode="numeric">
+                  <div class="hint-line" id="projectSuggestion" data-i18n="hints.projectsRange">Suggested range: 1 to 50 projects.</div>
+                  <div class="conditional-block hidden" id="projectsLimitBlock">
+                    <label for="projectsRequestedTotal" data-i18n="fields.projectsRequestedTotal">How many projects are needed?</label>
+                    <input class="input" id="projectsRequestedTotal" type="text" inputmode="numeric">
+                    <label for="projectsLimitReason" data-i18n="fields.limitReason">Reason</label>
+                    <textarea class="textarea" id="projectsLimitReason"></textarea>
+                  </div>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.payloadComplexity">Payload complexity for events/user properties</div>
+                  <select class="select required-field" id="payloadComplexity">
+                    <option value=""></option>
+                    <option value="simple" data-i18n="payload.simple">Simple</option>
+                    <option value="nested" data-i18n="payload.nested">Nested</option>
+                  </select>
+                  <div class="conditional-block hidden" id="nestedPayloadBlock">
+                    <textarea class="textarea" id="payloadInput" data-i18n-placeholder="placeholders.payloadJson"></textarea>
+                    <div class="builder-actions">
+                      <button type="button" class="ghost-btn" id="savePayloadBtn" data-i18n="buttons.savePayload">Save payload</button>
+                      <button type="button" class="ghost-btn" id="togglePayloadPreviewBtn" data-i18n="buttons.showPayload">Show payload</button>
+                    </div>
+                    <div class="payload-preview hidden" id="payloadPreview"></div>
+                    <div class="metrics-grid">
+                      <div class="metric-card"><div class="metric-label" data-i18n="payload.isValid">JSON valid</div><div class="metric-value" id="metricValid">-</div></div>
+                      <div class="metric-card"><div class="metric-label" data-i18n="payload.isNested">Nested valid</div><div class="metric-value" id="metricNested">-</div></div>
+                      <div class="metric-card"><div class="metric-label" data-i18n="payload.size">Payload size</div><div class="metric-value" id="metricSize">-</div></div>
+                      <div class="metric-card"><div class="metric-label" data-i18n="payload.depth">Nesting depth</div><div class="metric-value" id="metricDepth">-</div></div>
+                      <div class="metric-card"><div class="metric-label" data-i18n="payload.rootKeys">Root-level keys (obj/arr)</div><div class="metric-value" id="metricRootKeys">-</div></div>
+                      <div class="metric-card"><div class="metric-label" data-i18n="payload.nestedKeys">Nested keys inside objects</div><div class="metric-value" id="metricNestedKeys">-</div></div>
+                    </div>
+                    <div class="contract-row" style="margin-top:10px;">
+                      <label for="nestedMappedCount" data-i18n="fields.nestedMappedCount">How many nested events/properties need mapping?</label>
+                      <input class="input" id="nestedMappedCount" type="text" inputmode="numeric">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.totalEvents">How many total events will be mapped?</div>
+                  <select class="select required-field" id="totalEventsBand">
+                    <option value=""></option>
+                    <option value="up_to_512" data-i18n="limits.upTo512">Up to 512 events</option>
+                    <option value="above_512" data-i18n="limits.above512">Above 512 events</option>
+                  </select>
+                  <div class="conditional-block hidden" id="eventsOverLimitBlock">
+                    <label for="eventsRequestedTotal" data-i18n="fields.eventsRequestedTotal">How many events are needed in total?</label>
+                    <input class="input" id="eventsRequestedTotal" type="text" inputmode="numeric">
+                    <label for="eventsLimitReason" data-i18n="fields.limitReason">Reason</label>
+                    <textarea class="textarea" id="eventsLimitReason"></textarea>
+                  </div>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.activeJourneys">How many active journeys are needed?</div>
+                  <select class="select required-field" id="activeJourneysBand">
+                    <option value=""></option>
+                    <option value="up_to_100" data-i18n="limits.upTo100">Up to 100 journeys</option>
+                    <option value="above_100" data-i18n="limits.above100">Above 100 journeys</option>
+                  </select>
+                  <div class="conditional-block hidden" id="journeysLimitBlock">
+                    <label for="journeysRequestedTotal" data-i18n="fields.journeysRequestedTotal">How many journeys are required?</label>
+                    <input class="input" id="journeysRequestedTotal" type="text" inputmode="numeric">
+                    <label for="journeysLimitReason" data-i18n="fields.limitReason">Reason</label>
+                    <textarea class="textarea" id="journeysLimitReason"></textarea>
+                  </div>
+                </div>
+
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.totalSegments">How many segments are required?</div>
+                  <select class="select required-field" id="totalSegmentsBand">
+                    <option value=""></option>
+                    <option value="up_to_3000" data-i18n="limits.upTo3000">Up to 3000 segments</option>
+                    <option value="above_3000" data-i18n="limits.above3000">Above 3000 segments</option>
+                  </select>
+                  <div class="conditional-block hidden" id="segmentsLimitBlock">
+                    <label for="segmentsRequestedTotal" data-i18n="fields.segmentsRequestedTotal">How many segments are required in total?</label>
+                    <input class="input" id="segmentsRequestedTotal" type="text" inputmode="numeric">
+                    <label for="segmentsLimitReason" data-i18n="fields.limitReason">Reason</label>
+                    <textarea class="textarea" id="segmentsLimitReason"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="section-actions">
+                <button type="button" class="secondary-btn prev-btn" data-prev="4" data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn next-btn" data-next="6" data-i18n="buttons.continue">Continue</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel">
+            <div class="section-card">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.risks.step">Section 7</div>
+                  <h2 class="section-title" data-i18n="sections.risks.title">Mapped risks and limits</h2>
+                  <p class="section-subtitle" data-i18n="sections.risks.subtitle">Auto-generate risks from previous answers, then adjust manually when needed.</p>
+                </div>
+                <div class="section-status" data-i18n="status.guided">Guided section</div>
+              </div>
+              <div class="form-grid">
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.riskList">Risk register</div>
+                  <div class="table-list" id="risksList"></div>
+                  <div class="builder-actions">
+                    <button type="button" class="ghost-btn" id="addRiskBtn" data-i18n="buttons.addRisk">Add manual risk</button>
+                  </div>
+                </div>
+              </div>
+              <div class="section-actions">
+                <button type="button" class="secondary-btn prev-btn" data-prev="5" data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn next-btn" data-next="7" data-i18n="buttons.continue">Continue</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-panel">
+            <div class="section-card">
+              <div class="section-header">
+                <div>
+                  <div class="section-step" data-i18n="sections.stakeholders.step">Section 8</div>
+                  <h2 class="section-title" data-i18n="sections.stakeholders.title">Project stakeholders</h2>
+                  <p class="section-subtitle" data-i18n="sections.stakeholders.subtitle">Register stakeholders and contacts for execution and governance.</p>
+                </div>
+                <div class="section-status" data-i18n="status.guided">Guided section</div>
+              </div>
+              <div class="form-grid">
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.stakeholdersTable">Stakeholders table</div>
+                  <div class="table-list" id="stakeholdersList"></div>
+                  <div class="builder-actions">
+                    <button type="button" class="ghost-btn" id="addStakeholderBtn" data-i18n="buttons.addStakeholder">Add stakeholder</button>
+                    <button type="button" class="ghost-btn" id="removeStakeholderBtn" data-i18n="buttons.removeLast">Remove last</button>
+                  </div>
+                </div>
+              </div>
+              <div class="section-actions">
+                <button type="button" class="secondary-btn prev-btn" data-prev="6" data-i18n="buttons.previous">Previous section</button>
+                <button type="button" class="primary-btn" id="openSummaryBtn" data-i18n="buttons.viewSummary">View summary</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="summary-row">
+        <div>
+          <div class="summary-title" data-i18n="summary.bannerTitle">Need to review everything before sharing?</div>
+          <div class="summary-text" data-i18n="summary.bannerText">Open the full-screen summary popup, copy the collected text or export a `.doc` file.</div>
+        </div>
+        <button type="button" class="primary-btn" id="openSummaryBtnSecondary" data-i18n="buttons.viewSummary">View summary</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="summaryModalOverlay" aria-hidden="true">
+    <div class="modal" id="summaryModal" role="dialog" aria-modal="true" aria-labelledby="summaryModalTitle">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="summaryModalTitle" data-i18n="summary.modalTitle">Implementation intake summary</div>
+          <div class="modal-subtitle" data-i18n="summary.modalSubtitle">Review the generated text before copying or exporting it.</div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn" id="toggleModalSizeBtn" data-i18n="buttons.minimize">Minimize</button>
+          <button type="button" class="modal-btn" id="copySummaryBtn" data-i18n="buttons.copyText">Copy text</button>
+          <button type="button" class="modal-btn" id="exportDocBtn" data-i18n="buttons.exportDoc">Export .doc</button>
+          <button type="button" class="modal-btn close-btn" id="closeSummaryBtn" aria-label="Close">×</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <pre class="summary-pre" id="summaryOutput"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const translations = {
+      pt: {
+        "nav.home": "Home", "nav.plans": "Planos", "nav.intake": "Project Intake",
+        "index.title": "Seções",
+        "hero.kicker": "Descoberta de implementação",
+        "hero.title": "Coleta de informações para o documento oficial de implementação",
+        "hero.subtitle": "Use este fluxo guiado para reunir o contexto estratégico, contratual e operacional necessário para construir o SOW oficial e o plano de onboarding.",
+        "progress.label": "Seção atual",
+        "status.required": "Campos obrigatórios", "status.guided": "Seção guiada", "status.contract": "Dados contratuais", "status.next": "Próxima etapa",
+        "sections.overview.step": "Seção 1", "sections.overview.title": "Informações gerais do projeto", "sections.overview.subtitle": "Capture a identidade principal do projeto e um resumo claro do contexto de negócio do cliente.",
+        "sections.objectives.step": "Seção 2", "sections.objectives.title": "Objetivos do projeto", "sections.objectives.subtitle": "Mapeie os motivos da iniciativa, como o sucesso será medido e quais resultados críticos não podem falhar.",
+        "sections.contract.step": "Seção 3", "sections.contract.title": "Informações de plano e contrato", "sections.contract.subtitle": "Registre o setup comercial, MAUs, add-ons de canal e preferências de idioma no onboarding.",
+        "sections.tech.step": "Seção 4", "sections.tech.title": "Tech Stack", "sections.tech.subtitle": "Mapeie a stack atual, a quantidade de pontos de contato que vão se conectar à CleverTap e quem liderará a implementação.",
+        "sections.useCases.step": "Seção 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Defina canais, integrações e ao menos dois casos de uso para implementação.",
+        "sections.architecture.step": "Seção 6", "sections.architecture.title": "Arquitetura do projeto", "sections.architecture.subtitle": "Mapeie arquitetura, payload e limites da plataforma antes da implementação.",
+        "sections.risks.step": "Seção 7", "sections.risks.title": "Riscos e limites mapeados", "sections.risks.subtitle": "Gere riscos automaticamente com base nas respostas e ajuste manualmente se necessário.",
+        "sections.stakeholders.step": "Seção 8", "sections.stakeholders.title": "Stakeholders do projeto", "sections.stakeholders.subtitle": "Registre stakeholders e contatos para execução e governança.",
+        "fields.clientName": "Nome do cliente", "fields.projectName": "Nome do projeto", "fields.projectDate": "Data do projeto", "fields.projectVersion": "Versão do projeto", "fields.goLiveDate": "Data esperada de go-live", "fields.goLiveFastTrackReason": "Go-live em menos de 3 meses. Quais são os principais motivos?",
+        "fields.businessSummary": "Conte um pouco sobre sua empresa, o que ela faz e para quem ela entrega valor",
+        "fields.objectiveDescription": "Quais problemas, metas ou oportunidades de negócio motivam este projeto?",
+        "fields.kpis": "KPIs do projeto",
+        "fields.criticalNeeds": "Entregas críticas do projeto",
+        "fields.ctPlan": "CT Plan", "fields.exitClause": "Exit Clause", "fields.freePeriod": "Free Period", "fields.freePeriodMonths": "Período free (meses)", "fields.maus": "MAUs",
+        "fields.otherAddons": "Outros add-ons", "fields.mainLanguage": "Idioma principal", "fields.onboardingEnglish": "O onboarding pode ser em inglês?",
+        "fields.currentStack": "Stack atual", "fields.integrationCount": "Quantos apps ou websites precisam se conectar à CleverTap?", "fields.liveQuestion": "O App/Web está live?", "fields.implementer": "Quem irá implementar o projeto?", "fields.partnerName": "Nome do partner", "fields.implementerOther": "Quem irá implementar o projeto?",
+        "fields.channelsMatrix": "Tabela de canais", "fields.integrationsTable": "Tabela de integrações", "fields.integrationSpecificRequirements": "Existe alguma particularidade de exigência para integração com a ferramenta?", "fields.useCaseTable": "Tabela de use case",
+        "fields.projectsToImplement": "Quantos projetos precisam ser implementados?", "fields.projectsRequestedTotal": "Quantos projetos seriam necessários?", "fields.payloadComplexity": "Complexidade do payload para eventos/propriedades", "fields.nestedMappedCount": "Quantos eventos/propriedades nested precisam ser mapeados?",
+        "fields.totalEvents": "Quantos eventos serão mapeados?", "fields.eventsOverLimit": "Precisam de mais de 512 eventos?", "fields.eventsRequestedTotal": "Quantos eventos no total seriam necessários?",
+        "fields.activeJourneys": "Quantas jornadas ativas precisam no projeto?", "fields.journeysRequestedTotal": "Quantas jornadas seriam necessárias?", "fields.totalSegments": "Quantos segmentos serão necessários implementar?", "fields.segmentsRequestedTotal": "Quantos segmentos seriam necessários no total?",
+        "fields.limitReason": "Motivo", "fields.riskList": "Registro de riscos", "fields.stakeholdersTable": "Tabela de stakeholders",
+        "help.objectiveDescription": "Compartilhe as dores a resolver, o motivo para iniciar o projeto, os benefícios esperados, metas e alinhamentos importantes entre áreas.",
+        "help.kpis": "Liste os indicadores-chave que devem ser usados para medir o sucesso do projeto.",
+        "help.criticalNeeds": "Liste os resultados obrigatórios que tornariam o projeto inviável caso não sejam alcançados. Isso ajuda a mapear riscos desde o início.",
+        "help.currentStack": "Selecione as plataformas atualmente em escopo. Se necessário, adicione outra stack no campo dedicado.",
+        "help.integrationCount": "Escolha o total de integrações no escopo. Cada linha irá capturar nome, tipo, stack e domínio quando aplicável.",
+        "help.livePartial": "Defina quais apps ou websites específicos já estão em produção.",
+        "alerts.minUseCases": "É recomendado cadastrar pelo menos 2 use cases completos (não bloqueia avanço).",
+        "placeholders.businessSummary": "Exemplo: Somos uma empresa de varejo digital com operação em três países, atendemos clientes recorrentes via app e e-commerce e queremos estruturar melhor nossa comunicação de ciclo de vida.",
+        "placeholders.objectiveDescription": "Exemplo: Queremos reduzir dependência de campanhas manuais, melhorar retenção, criar jornadas multicanal e alinhar produto, CRM e analytics em torno de metas claras de conversão e recorrência.",
+        "placeholders.volume": "Volume contratado", "placeholders.otherStack": "Descreva outra tech stack", "placeholders.partnerName": "Nome da empresa parceira", "placeholders.implementerOther": "Descreva quem irá implementar",
+        "placeholders.channelsOther": "Descreva outro canal", "placeholders.integrationsOther": "Descreva outra integração", "placeholders.integrationRequirements": "Exemplo: dependência de janela de processamento, SLA de envio/recebimento, ordem de eventos, etc.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Exemplo: janela comercial crítica, campanha já contratada, prazo regulatório, dependências internas já prontas, etc.",
+        "hints.projectsRange": "Faixa sugerida: de 1 a 50 projetos.",
+        "contract.coreTitle": "Informações centrais do contrato", "contract.coreMini": "Estruturado para o handoff de implementação",
+        "contract.addonsTitle": "Add-ons e canais", "contract.addonsMini": "Volume contratado mais modelo de provedor",
+        "contract.languageTitle": "Idioma e onboarding", "contract.languageMini": "Preferências de comunicação para a entrega",
+        "buttons.previous": "Seção anterior", "buttons.continue": "Continuar", "buttons.addKpi": "Adicionar KPI", "buttons.addRequirement": "Adicionar entrega crítica", "buttons.removeLast": "Remover último", "buttons.addOtherAddon": "Adicionar outro add-on", "buttons.viewSummary": "Ver resumo", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
+        "buttons.addUseCase": "Adicionar use case", "buttons.savePayload": "Salvar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Adicionar risco manual", "buttons.addStakeholder": "Adicionar stakeholder", "buttons.addOtherIntegration": "Adicionar outra integração",
+        "summary.bannerTitle": "Quer revisar tudo antes de compartilhar?", "summary.bannerText": "Abra o popup de resumo em tela ampliada, copie o texto coletado ou exporte um arquivo `.doc`.",
+        "summary.modalTitle": "Resumo da coleta de implementação", "summary.modalSubtitle": "Revise o texto gerado antes de copiar ou exportar.",
+        "placeholder.badge": "Seção planejada", "placeholder.title": "Esta seção já está pronta para receber o próximo bloco de perguntas.", "placeholder.text": "O layout, a navegação e a lógica do resumo já suportam novas seções. Pode continuar enviando os próximos requisitos que eles entram sobre esta mesma estrutura.",
+        "addons.messageArchiving": "Message Archiving", "addons.productExperiences": "Product Experiences", "addons.signedCalls": "Signed Calls", "addons.enhancedPerformance": "Enhanced Performance", "addons.promotions": "Promotions", "addons.bulletins": "Bulletins",
+        "provider.cleverTap": "CleverTap", "provider.external": "Provedor externo", "provider.noneEmail": "Sem email", "provider.noneWhatsApp": "Sem WhatsApp", "provider.noneSms": "Sem SMS", "provider.noneRcs": "Sem RCS",
+        "lang.english": "Inglês", "lang.spanish": "Espanhol", "lang.portuguese": "Português", "yes": "Sim", "no": "Não", "partial": "Parcial", "other": "Outro",
+        "implementer.ctPartner": "CT Partner", "implementer.internalTeam": "Time interno do cliente", "implementer.customerPartner": "Partner do cliente",
+        "integration.type": "Tipo", "integration.name": "Nome do App/Web", "integration.stack": "Tech Stack", "integration.domain": "Domínio", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.exemplo.com",
+        "channels.appNative": "App Native", "channels.webNative": "Web Native", "channels.additional": "Canais adicionais",
+        "payload.simple": "Simples", "payload.nested": "Nested", "payload.isValid": "JSON válido", "payload.isNested": "Válido como nested", "payload.size": "Payload size", "payload.depth": "Nesting depth", "payload.rootKeys": "Root-level keys (obj/arr)", "payload.nestedKeys": "Nested keys inside objects",
+        "limits.upTo512": "Até 512 eventos", "limits.above512": "Acima de 512 eventos", "limits.upTo100": "Até 100 jornadas", "limits.above100": "Acima de 100 jornadas", "limits.upTo3000": "Até 3000 segmentos", "limits.above3000": "Acima de 3000 segmentos",
+        "risk.auto": "Automático", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.high": "High",
+        "stakeholder.name": "Nome", "stakeholder.contact": "Contato", "stakeholder.role": "Função no projeto", "stakeholder.company": "Empresa",
+        "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
+        "summary.warningUseCases": "Atenção: menos de 2 use cases completos foram cadastrados.",
+        "toast.copied": "Resumo copiado para a área de transferência.", "toast.exported": "Arquivo .doc exportado.", "toast.autoAdvanced": "Seção concluída. Avançando automaticamente.", "toast.copyFailed": "Não foi possível copiar automaticamente. Tente novamente."
+      },
+      en: {
+        "nav.home": "Home", "nav.plans": "Plans", "nav.intake": "Project Intake",
+        "index.title": "Sections",
+        "hero.kicker": "Implementation discovery",
+        "hero.title": "Project intake for the official implementation document",
+        "hero.subtitle": "Use this guided flow to gather the strategic, contractual and operational context required to build the official SOW and onboarding plan.",
+        "progress.label": "Current section",
+        "status.required": "Required fields", "status.guided": "Guided section", "status.contract": "Contract data", "status.next": "Next stage",
+        "sections.overview.step": "Section 1", "sections.overview.title": "Project overview", "sections.overview.subtitle": "Capture the core project identity and a concise description of the client's business context.",
+        "sections.objectives.step": "Section 2", "sections.objectives.title": "Project objectives", "sections.objectives.subtitle": "Map the reasons behind the initiative, how success will be measured and the critical outcomes that cannot fail.",
+        "sections.contract.step": "Section 3", "sections.contract.title": "Plan and contract details", "sections.contract.subtitle": "Record the commercial setup, MAUs, channel add-ons and onboarding language details.",
+        "sections.tech.step": "Section 4", "sections.tech.title": "Tech stack", "sections.tech.subtitle": "Map the current stack, the number of touchpoints that will connect to CleverTap and who will lead the implementation.",
+        "sections.useCases.step": "Section 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Define channels, integrations and at least two implementation use cases.",
+        "sections.architecture.step": "Section 6", "sections.architecture.title": "Project architecture", "sections.architecture.subtitle": "Capture architecture, payload and platform-limit details before implementation starts.",
+        "sections.risks.step": "Section 7", "sections.risks.title": "Mapped risks and limits", "sections.risks.subtitle": "Generate risks automatically from previous answers and adjust manually when needed.",
+        "sections.stakeholders.step": "Section 8", "sections.stakeholders.title": "Project stakeholders", "sections.stakeholders.subtitle": "Register stakeholders and contacts for delivery governance.",
+        "fields.clientName": "Client name", "fields.projectName": "Project name", "fields.projectDate": "Project date", "fields.projectVersion": "Project version", "fields.goLiveDate": "Expected go-live date", "fields.goLiveFastTrackReason": "Go-live is under 3 months. What are the main reasons?",
+        "fields.businessSummary": "Tell us about your company, what you do and who you serve",
+        "fields.objectiveDescription": "What business problems, goals or opportunities are driving this project?",
+        "fields.kpis": "Project KPIs", "fields.criticalNeeds": "Critical delivery requirements",
+        "fields.ctPlan": "CT Plan", "fields.exitClause": "Exit Clause", "fields.freePeriod": "Free Period", "fields.freePeriodMonths": "Free period (months)", "fields.maus": "MAUs",
+        "fields.otherAddons": "Other add-ons", "fields.mainLanguage": "Main language", "fields.onboardingEnglish": "Can the onboarding be in English?",
+        "fields.currentStack": "Current tech stack", "fields.integrationCount": "How many apps or websites need to connect to CleverTap?", "fields.liveQuestion": "Is the App/Web live?", "fields.implementer": "Who will implement the project?", "fields.partnerName": "Partner name", "fields.implementerOther": "Who will implement the project?",
+        "fields.channelsMatrix": "Channel matrix", "fields.integrationsTable": "Integration table", "fields.integrationSpecificRequirements": "Are there any specific requirements for this integration setup?", "fields.useCaseTable": "Use case table",
+        "fields.projectsToImplement": "How many projects need implementation?", "fields.projectsRequestedTotal": "How many projects are needed?", "fields.payloadComplexity": "Payload complexity for events/user properties", "fields.nestedMappedCount": "How many nested events/properties need mapping?",
+        "fields.totalEvents": "How many total events will be mapped?", "fields.eventsOverLimit": "Need more than 512 events?", "fields.eventsRequestedTotal": "How many events are needed in total?",
+        "fields.activeJourneys": "How many active journeys are needed?", "fields.journeysRequestedTotal": "How many journeys are required?", "fields.totalSegments": "How many segments are needed?", "fields.segmentsRequestedTotal": "How many segments are required in total?",
+        "fields.limitReason": "Reason", "fields.riskList": "Risk register", "fields.stakeholdersTable": "Stakeholders table",
+        "help.objectiveDescription": "Share the pains to solve, the reason to start the project, the expected benefits, target outcomes and any alignment needed across teams.",
+        "help.kpis": "List the key indicators that should be used to measure project success.",
+        "help.criticalNeeds": "List the must-have outcomes that would make the project unworkable if they are not achieved. This helps map risks early.",
+        "help.currentStack": "Select the platforms currently in scope. If needed, add another stack in the dedicated field.",
+        "help.integrationCount": "Choose the total number of integrations in scope. Each line will capture the name, type, stack and domain when applicable.",
+        "help.livePartial": "Define which specific app or web property is already live.",
+        "alerts.minUseCases": "At least 2 fully completed use cases are recommended (non-blocking).",
+        "placeholders.businessSummary": "Example: We are a digital retail company operating in three countries, serving repeat customers through app and e-commerce, and we want to better structure lifecycle communication.",
+        "placeholders.objectiveDescription": "Example: We want to reduce dependency on manual campaigns, improve retention, build multi-channel journeys and align product, CRM and analytics around clear conversion and repeat-purchase goals.",
+        "placeholders.volume": "Contracted volume", "placeholders.otherStack": "Describe another tech stack", "placeholders.partnerName": "Partner company name", "placeholders.implementerOther": "Describe who will implement",
+        "placeholders.channelsOther": "Describe another channel", "placeholders.integrationsOther": "Describe another integration", "placeholders.integrationRequirements": "Example: processing window, send/receive SLA, event ordering constraints, etc.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Example: hard campaign deadline, contractual launch window, regulatory requirement, or pre-ready internal dependencies.",
+        "hints.projectsRange": "Suggested range: 1 to 50 projects.",
+        "contract.coreTitle": "Core contract information", "contract.coreMini": "Structured for implementation handoff",
+        "contract.addonsTitle": "Add-ons and channels", "contract.addonsMini": "Volume plus provider model",
+        "contract.languageTitle": "Language and onboarding", "contract.languageMini": "Communication preferences for delivery",
+        "buttons.previous": "Previous section", "buttons.continue": "Continue", "buttons.addKpi": "Add KPI", "buttons.addRequirement": "Add critical requirement", "buttons.removeLast": "Remove last", "buttons.addOtherAddon": "Add other add-on", "buttons.viewSummary": "View summary", "buttons.minimize": "Minimize", "buttons.expand": "Expand", "buttons.copyText": "Copy text", "buttons.exportDoc": "Export .doc",
+        "buttons.addUseCase": "Add use case", "buttons.savePayload": "Save payload", "buttons.showPayload": "Show payload", "buttons.hidePayload": "Hide payload", "buttons.addRisk": "Add manual risk", "buttons.addStakeholder": "Add stakeholder", "buttons.addOtherIntegration": "Add other integration",
+        "summary.bannerTitle": "Need to review everything before sharing?", "summary.bannerText": "Open the large summary popup, copy the collected text or export a `.doc` file.",
+        "summary.modalTitle": "Implementation intake summary", "summary.modalSubtitle": "Review the generated text before copying or exporting it.",
+        "placeholder.badge": "Planned section", "placeholder.title": "This section is ready to receive the next set of questions.", "placeholder.text": "The layout, navigation and summary logic already support additional sections. Continue sending the remaining requirements and they can be added on top of this structure.",
+        "addons.messageArchiving": "Message Archiving", "addons.productExperiences": "Product Experiences", "addons.signedCalls": "Signed Calls", "addons.enhancedPerformance": "Enhanced Performance", "addons.promotions": "Promotions", "addons.bulletins": "Bulletins",
+        "provider.cleverTap": "CleverTap", "provider.external": "External Provider", "provider.noneEmail": "No email", "provider.noneWhatsApp": "No WhatsApp", "provider.noneSms": "No SMS", "provider.noneRcs": "No RCS",
+        "lang.english": "English", "lang.spanish": "Spanish", "lang.portuguese": "Portuguese", "yes": "Yes", "no": "No", "partial": "Partial", "other": "Other",
+        "implementer.ctPartner": "CT Partner", "implementer.internalTeam": "Internal Customer Team", "implementer.customerPartner": "Customer Partner",
+        "integration.type": "Type", "integration.name": "App/Web name", "integration.stack": "Tech stack", "integration.domain": "Domain", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.example.com",
+        "channels.appNative": "App Native", "channels.webNative": "Web Native", "channels.additional": "Additional channels",
+        "payload.simple": "Simple", "payload.nested": "Nested", "payload.isValid": "JSON valid", "payload.isNested": "Nested valid", "payload.size": "Payload size", "payload.depth": "Nesting depth", "payload.rootKeys": "Root-level keys (obj/arr)", "payload.nestedKeys": "Nested keys inside objects",
+        "limits.upTo512": "Up to 512 events", "limits.above512": "Above 512 events", "limits.upTo100": "Up to 100 journeys", "limits.above100": "Above 100 journeys", "limits.upTo3000": "Up to 3000 segments", "limits.above3000": "Above 3000 segments",
+        "risk.auto": "Auto", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.high": "High",
+        "stakeholder.name": "Name", "stakeholder.contact": "Contact", "stakeholder.role": "Role in project", "stakeholder.company": "Company",
+        "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
+        "summary.warningUseCases": "Warning: fewer than 2 complete use cases were provided.",
+        "toast.copied": "Summary copied to the clipboard.", "toast.exported": "The .doc file was exported.", "toast.autoAdvanced": "Section completed. Moving forward automatically.", "toast.copyFailed": "Automatic copy failed. Please try again."
+      },
+      es: {
+        "nav.home": "Home", "nav.plans": "Planes", "nav.intake": "Project Intake",
+        "index.title": "Secciones",
+        "hero.kicker": "Descubrimiento de implementación",
+        "hero.title": "Recolección de información para el documento oficial de implementación",
+        "hero.subtitle": "Use este flujo guiado para reunir el contexto estratégico, contractual y operativo necesario para construir el SOW oficial y el plan de onboarding.",
+        "progress.label": "Sección actual",
+        "status.required": "Campos obligatorios", "status.guided": "Sección guiada", "status.contract": "Datos contractuales", "status.next": "Próxima etapa",
+        "sections.overview.step": "Sección 1", "sections.overview.title": "Información general del proyecto", "sections.overview.subtitle": "Capture la identidad principal del proyecto y una descripción clara del contexto de negocio del cliente.",
+        "sections.objectives.step": "Sección 2", "sections.objectives.title": "Objetivos del proyecto", "sections.objectives.subtitle": "Mapee las razones de la iniciativa, cómo se medirá el éxito y cuáles resultados críticos no pueden fallar.",
+        "sections.contract.step": "Sección 3", "sections.contract.title": "Información de plan y contrato", "sections.contract.subtitle": "Registre la configuración comercial, MAUs, add-ons de canal y detalles de idioma para el onboarding.",
+        "sections.tech.step": "Sección 4", "sections.tech.title": "Tech Stack", "sections.tech.subtitle": "Mapee la stack actual, la cantidad de puntos de contacto que se conectarán a CleverTap y quién liderará la implementación.",
+        "sections.useCases.step": "Sección 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Defina canales, integraciones y al menos dos casos de uso para implementación.",
+        "sections.architecture.step": "Sección 6", "sections.architecture.title": "Arquitectura del proyecto", "sections.architecture.subtitle": "Mapee arquitectura, payload y límites de plataforma antes de implementar.",
+        "sections.risks.step": "Sección 7", "sections.risks.title": "Riesgos y límites mapeados", "sections.risks.subtitle": "Genere riesgos automáticos según respuestas previas y ajústelos manualmente si hace falta.",
+        "sections.stakeholders.step": "Sección 8", "sections.stakeholders.title": "Stakeholders del proyecto", "sections.stakeholders.subtitle": "Registre stakeholders y contactos para la gobernanza de la entrega.",
+        "fields.clientName": "Nombre del cliente", "fields.projectName": "Nombre del proyecto", "fields.projectDate": "Fecha del proyecto", "fields.projectVersion": "Versión del proyecto", "fields.goLiveDate": "Fecha esperada de go-live", "fields.goLiveFastTrackReason": "El go-live es menor a 3 meses. ¿Cuáles son los motivos principales?",
+        "fields.businessSummary": "Cuéntenos sobre su empresa, qué hace y a quién atiende",
+        "fields.objectiveDescription": "¿Qué problemas, metas u oportunidades de negocio impulsan este proyecto?",
+        "fields.kpis": "KPIs del proyecto", "fields.criticalNeeds": "Entregables críticos del proyecto",
+        "fields.ctPlan": "CT Plan", "fields.exitClause": "Exit Clause", "fields.freePeriod": "Free Period", "fields.freePeriodMonths": "Período free (meses)", "fields.maus": "MAUs",
+        "fields.otherAddons": "Otros add-ons", "fields.mainLanguage": "Idioma principal", "fields.onboardingEnglish": "¿El onboarding puede ser en inglés?",
+        "fields.currentStack": "Stack actual", "fields.integrationCount": "¿Cuántas apps o websites necesitan conectarse a CleverTap?", "fields.liveQuestion": "¿La App/Web está live?", "fields.implementer": "¿Quién implementará el proyecto?", "fields.partnerName": "Nombre del partner", "fields.implementerOther": "¿Quién implementará el proyecto?",
+        "fields.channelsMatrix": "Tabla de canales", "fields.integrationsTable": "Tabla de integraciones", "fields.integrationSpecificRequirements": "¿Existe alguna exigencia particular para la integración con la herramienta?", "fields.useCaseTable": "Tabla de use case",
+        "fields.projectsToImplement": "¿Cuántos proyectos necesitan implementación?", "fields.projectsRequestedTotal": "¿Cuántos proyectos serían necesarios?", "fields.payloadComplexity": "Complejidad del payload para eventos/propiedades", "fields.nestedMappedCount": "¿Cuántos eventos/propiedades nested necesitan mapeo?",
+        "fields.totalEvents": "¿Cuántos eventos totales serán mapeados?", "fields.eventsOverLimit": "¿Necesitan más de 512 eventos?", "fields.eventsRequestedTotal": "¿Cuántos eventos necesitarían en total?",
+        "fields.activeJourneys": "¿Cuántos journeys activos necesitan?", "fields.journeysRequestedTotal": "¿Cuántos journeys serían necesarios?", "fields.totalSegments": "¿Cuántos segmentos necesitan?", "fields.segmentsRequestedTotal": "¿Cuántos segmentos necesitarían en total?",
+        "fields.limitReason": "Motivo", "fields.riskList": "Registro de riesgos", "fields.stakeholdersTable": "Tabla de stakeholders",
+        "help.objectiveDescription": "Comparta los dolores a resolver, la razón para iniciar el proyecto, los beneficios esperados, metas y alineaciones importantes entre áreas.",
+        "help.kpis": "Liste los indicadores clave que deben usarse para medir el éxito del proyecto.",
+        "help.criticalNeeds": "Liste los resultados obligatorios que volverían inviable el proyecto si no se alcanzan. Esto ayuda a mapear riesgos desde el inicio.",
+        "help.currentStack": "Seleccione las plataformas actualmente en alcance. Si hace falta, agregue otra stack en el campo dedicado.",
+        "help.integrationCount": "Elija el total de integraciones en alcance. Cada línea capturará el nombre, tipo, stack y dominio cuando aplique.",
+        "help.livePartial": "Defina qué app o propiedad web específica ya está en producción.",
+        "alerts.minUseCases": "Se recomienda registrar al menos 2 use cases completos (no bloquea avance).",
+        "placeholders.businessSummary": "Ejemplo: Somos una empresa de retail digital con operación en tres países, atendemos clientes recurrentes por app y e-commerce y queremos estructurar mejor la comunicación del ciclo de vida.",
+        "placeholders.objectiveDescription": "Ejemplo: Queremos reducir la dependencia de campañas manuales, mejorar la retención, crear journeys multicanal y alinear producto, CRM y analytics alrededor de metas claras de conversión y recurrencia.",
+        "placeholders.volume": "Volumen contratado", "placeholders.otherStack": "Describa otra tech stack", "placeholders.partnerName": "Nombre de la empresa partner", "placeholders.implementerOther": "Describa quién implementará",
+        "placeholders.channelsOther": "Describa otro canal", "placeholders.integrationsOther": "Describa otra integración", "placeholders.integrationRequirements": "Ejemplo: ventana de procesamiento, SLA de envío/recepción, orden de eventos, etc.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Ejemplo: ventana comercial crítica, fecha contractual, exigencia regulatoria o dependencias internas ya listas.",
+        "hints.projectsRange": "Rango sugerido: de 1 a 50 proyectos.",
+        "contract.coreTitle": "Información central del contrato", "contract.coreMini": "Estructurado para el handoff de implementación",
+        "contract.addonsTitle": "Add-ons y canales", "contract.addonsMini": "Volumen contratado más modelo de proveedor",
+        "contract.languageTitle": "Idioma y onboarding", "contract.languageMini": "Preferencias de comunicación para la entrega",
+        "buttons.previous": "Sección anterior", "buttons.continue": "Continuar", "buttons.addKpi": "Agregar KPI", "buttons.addRequirement": "Agregar entregable crítico", "buttons.removeLast": "Eliminar último", "buttons.addOtherAddon": "Agregar otro add-on", "buttons.viewSummary": "Ver resumen", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
+        "buttons.addUseCase": "Agregar use case", "buttons.savePayload": "Guardar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Agregar riesgo manual", "buttons.addStakeholder": "Agregar stakeholder", "buttons.addOtherIntegration": "Agregar otra integración",
+        "summary.bannerTitle": "¿Necesita revisar todo antes de compartirlo?", "summary.bannerText": "Abra el popup de resumen ampliado, copie el texto recolectado o exporte un archivo `.doc`.",
+        "summary.modalTitle": "Resumen de la recolección de implementación", "summary.modalSubtitle": "Revise el texto generado antes de copiarlo o exportarlo.",
+        "placeholder.badge": "Sección planificada", "placeholder.title": "Esta sección ya está lista para recibir el próximo bloque de preguntas.", "placeholder.text": "El layout, la navegación y la lógica del resumen ya soportan nuevas secciones. Puede seguir enviando los próximos requisitos para agregarlos sobre esta misma estructura.",
+        "addons.messageArchiving": "Message Archiving", "addons.productExperiences": "Product Experiences", "addons.signedCalls": "Signed Calls", "addons.enhancedPerformance": "Enhanced Performance", "addons.promotions": "Promotions", "addons.bulletins": "Bulletins",
+        "provider.cleverTap": "CleverTap", "provider.external": "Proveedor externo", "provider.noneEmail": "Sin email", "provider.noneWhatsApp": "Sin WhatsApp", "provider.noneSms": "Sin SMS", "provider.noneRcs": "Sin RCS",
+        "lang.english": "Inglés", "lang.spanish": "Español", "lang.portuguese": "Portugués", "yes": "Sí", "no": "No", "partial": "Parcial", "other": "Otro",
+        "implementer.ctPartner": "CT Partner", "implementer.internalTeam": "Equipo interno del cliente", "implementer.customerPartner": "Partner del cliente",
+        "integration.type": "Tipo", "integration.name": "Nombre de la App/Web", "integration.stack": "Tech Stack", "integration.domain": "Dominio", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.ejemplo.com",
+        "channels.appNative": "App Native", "channels.webNative": "Web Native", "channels.additional": "Canales adicionales",
+        "payload.simple": "Simple", "payload.nested": "Nested", "payload.isValid": "JSON válido", "payload.isNested": "Válido como nested", "payload.size": "Payload size", "payload.depth": "Nesting depth", "payload.rootKeys": "Root-level keys (obj/arr)", "payload.nestedKeys": "Nested keys inside objects",
+        "limits.upTo512": "Hasta 512 eventos", "limits.above512": "Más de 512 eventos", "limits.upTo100": "Hasta 100 journeys", "limits.above100": "Más de 100 journeys", "limits.upTo3000": "Hasta 3000 segmentos", "limits.above3000": "Más de 3000 segmentos",
+        "risk.auto": "Automático", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.high": "High",
+        "stakeholder.name": "Nombre", "stakeholder.contact": "Contacto", "stakeholder.role": "Rol en el proyecto", "stakeholder.company": "Empresa",
+        "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
+        "summary.warningUseCases": "Aviso: se registraron menos de 2 use cases completos.",
+        "toast.copied": "Resumen copiado al portapapeles.", "toast.exported": "Archivo .doc exportado.", "toast.autoAdvanced": "Sección completada. Avanzando automáticamente.", "toast.copyFailed": "No fue posible copiar automáticamente. Inténtelo de nuevo."
+      }
+    };
+
+    const sectionKeys = ["sections.overview.title","sections.objectives.title","sections.contract.title","sections.tech.title","sections.useCases.title","sections.architecture.title","sections.risks.title","sections.stakeholders.title"];
+    const track = document.getElementById("sectionsTrack");
+    const progressTitle = document.getElementById("progressTitle");
+    const progressFill = document.getElementById("progressFill");
+    const sectionIndex = document.getElementById("sectionIndex");
+    const toast = document.getElementById("toast");
+    const modalOverlay = document.getElementById("summaryModalOverlay");
+    const modal = document.getElementById("summaryModal");
+    const summaryOutput = document.getElementById("summaryOutput");
+    const langDD = document.getElementById("langDD");
+    const langDDBtn = document.getElementById("langDDBtn");
+    const langDDLabel = document.getElementById("langDDLabel");
+    const webStackOptions = ["NA","React Native","React Native (Expo)","VTEX","Shopify","JavaScript","OTHER"];
+    const appStackOptions = ["NA","Native Android/iOS","React Native","React Native (Expo)","Flutter","Unity","Cordova","OTHER"];
+    const useCaseStageOptions = ["notify","onboard","engage","monetize","reengage","other"];
+    let payloadAnalysisState = null;
+    let currentLang = "pt";
+    let currentSection = 0;
+    const autoAdvancedSections = new Set();
+
+    function t(key) {
+      return translations[currentLang][key] || translations.en[key] || key;
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang === "pt" ? "pt-BR" : lang === "es" ? "es-ES" : "en";
+      langDDLabel.textContent = lang.toUpperCase();
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        el.textContent = t(el.dataset.i18n);
+      });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+      });
+      buildIndex();
+      renderProgress();
+      renderDynamicLabels();
+      renderIntegrationRows();
+      renderLiveStatusRows();
+      syncTechConditionalUI();
+      renderUseCaseRows();
+      renderStakeholderRows();
+      renderRisks();
+      updateArchitectureConditionalUI();
+      updateGoLiveFastTrackUI();
+      renderPayloadMetrics();
+      updateMausWords();
+      updateSummary();
+      document.getElementById("toggleModalSizeBtn").textContent = modal.classList.contains("minimized") ? t("buttons.expand") : t("buttons.minimize");
+      const payloadPreview = document.getElementById("payloadPreview");
+      document.getElementById("togglePayloadPreviewBtn").textContent = payloadPreview && payloadPreview.classList.contains("hidden") ? t("buttons.showPayload") : t("buttons.hidePayload");
+    }
+
+    function buildIndex() {
+      sectionIndex.innerHTML = "";
+      sectionKeys.forEach((key, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "index-item" + (index === currentSection ? " active" : "");
+        button.innerHTML = `<span class="index-dot"></span><span class="index-text">${t(key)}</span>`;
+        button.addEventListener("click", () => goToSection(index));
+        sectionIndex.appendChild(button);
+      });
+    }
+
+    function renderProgress() {
+      progressTitle.textContent = t(sectionKeys[currentSection]);
+      progressFill.style.width = `${((currentSection + 1) / sectionKeys.length) * 100}%`;
+      [...sectionIndex.children].forEach((item, index) => item.classList.toggle("active", index === currentSection));
+    }
+
+    function goToSection(index) {
+      currentSection = Math.max(0, Math.min(sectionKeys.length - 1, index));
+      track.style.transform = `translateX(-${currentSection * 100}%)`;
+      renderProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function addListRow(type, value = "") {
+      const list = document.getElementById(type === "kpi" ? "kpiList" : "criticalList");
+      const row = document.createElement("div");
+      row.className = "dynamic-row";
+      row.innerHTML = `<input class="input ${type === "kpi" || type === "critical" ? "required-field" : ""}" type="text" value="${value.replace(/"/g, "&quot;")}"><button type="button" class="icon-btn" aria-label="remove">−</button>`;
+      row.querySelector("button").addEventListener("click", () => {
+        row.remove();
+        updateSummary();
+      });
+      row.querySelector("input").addEventListener("input", handleFormChange);
+      list.appendChild(row);
+      renderDynamicLabels();
+    }
+
+    function addOtherAddon(value = "") {
+      const list = document.getElementById("otherAddonsList");
+      const row = document.createElement("div");
+      row.className = "other-addon-item";
+      row.innerHTML = `<input class="input" type="text" value="${value.replace(/"/g, "&quot;")}"><button type="button" class="icon-btn" aria-label="remove">−</button>`;
+      row.querySelector("button").addEventListener("click", () => {
+        row.remove();
+        updateSummary();
+      });
+      row.querySelector("input").addEventListener("input", handleFormChange);
+      list.appendChild(row);
+    }
+
+    function addIntegrationOther(value = "") {
+      const list = document.getElementById("integrationsOtherList");
+      const row = document.createElement("div");
+      row.className = "other-addon-item";
+      row.innerHTML = `<input class="input" type="text" value="${value.replace(/"/g, "&quot;")}"><button type="button" class="icon-btn" aria-label="remove">−</button>`;
+      row.querySelector("button").addEventListener("click", () => {
+        row.remove();
+        handleFormChange();
+      });
+      row.querySelector("input").addEventListener("input", handleFormChange);
+      list.appendChild(row);
+      renderDynamicLabels();
+    }
+
+    function renderDynamicLabels() {
+      document.querySelectorAll("#kpiList .dynamic-row input").forEach((input, index) => {
+        input.placeholder = `${t("fields.kpis")} ${index + 1}`;
+      });
+      document.querySelectorAll("#criticalList .dynamic-row input").forEach((input, index) => {
+        input.placeholder = `${t("fields.criticalNeeds")} ${index + 1}`;
+      });
+      document.querySelectorAll("#otherAddonsList .other-addon-item input").forEach((input, index) => {
+        input.placeholder = `Other ${index + 1}`;
+      });
+      document.querySelectorAll("#integrationsOtherList .other-addon-item input").forEach((input, index) => {
+        input.placeholder = `${t("placeholders.integrationsOther")} ${index + 1}`;
+      });
+    }
+
+    function getTechOptionLabel(option) {
+      return option === "OTHER" ? t("other") : option;
+    }
+
+    function buildSelectOptions(options, selected = "") {
+      const head = `<option value=""></option>`;
+      const body = options.map((option) => `<option value="${option}" ${selected === option ? "selected" : ""}>${getTechOptionLabel(option)}</option>`).join("");
+      return head + body;
+    }
+
+    function renderIntegrationRows() {
+      const count = Number(document.getElementById("integrationCount")?.value || 0);
+      const list = document.getElementById("integrationList");
+      if (!list) return;
+      const existing = [...list.querySelectorAll(".integration-row")].map((row) => ({
+        type: row.querySelector('[data-role="type"]')?.value || "",
+        name: row.querySelector('[data-role="name"]')?.value || "",
+        stack: row.querySelector('[data-role="stack"]')?.value || "",
+        domain: row.querySelector('[data-role="domain"]')?.value || ""
+      }));
+      list.innerHTML = "";
+      for (let i = 0; i < count; i += 1) {
+        const item = existing[i] || {};
+        const row = document.createElement("div");
+        row.className = "integration-row";
+        row.dataset.index = String(i);
+        row.innerHTML = `
+          <div class="contract-row">
+            <label>${t("integration.type")} ${i + 1}</label>
+            <select class="select" data-role="type">
+              <option value=""></option>
+              <option value="App" ${item.type === "App" ? "selected" : ""}>${t("integration.app")}</option>
+              <option value="Web" ${item.type === "Web" ? "selected" : ""}>${t("integration.web")}</option>
+            </select>
+          </div>
+          <div class="contract-row">
+            <label>${t("integration.name")}</label>
+            <input class="input" data-role="name" type="text" value="${(item.name || "").replace(/"/g, "&quot;")}">
+          </div>
+          <div class="contract-row">
+            <label>${t("integration.stack")}</label>
+            <select class="select" data-role="stack"></select>
+          </div>
+          <div class="contract-row integration-domain-wrap ${item.type === "Web" ? "" : "hidden"}">
+            <label>${t("integration.domain")}</label>
+            <input class="input" data-role="domain" type="text" value="${(item.domain || "").replace(/"/g, "&quot;")}" placeholder="${t("integration.domainPlaceholder")}">
+          </div>
+        `;
+        list.appendChild(row);
+        const typeSelect = row.querySelector('[data-role="type"]');
+        const stackSelect = row.querySelector('[data-role="stack"]');
+        const updateStackOptions = () => {
+          const opts = typeSelect.value === "Web" ? webStackOptions : appStackOptions;
+          stackSelect.innerHTML = buildSelectOptions(opts, item.stack || stackSelect.value || "");
+          row.querySelector(".integration-domain-wrap").classList.toggle("hidden", typeSelect.value !== "Web");
+        };
+        typeSelect.addEventListener("change", () => {
+          updateStackOptions();
+          renderLiveStatusRows();
+          handleFormChange();
+        });
+        row.querySelectorAll("input, select").forEach((el) => el.addEventListener("input", handleFormChange));
+        row.querySelectorAll("input, select").forEach((el) => el.addEventListener("change", handleFormChange));
+        updateStackOptions();
+      }
+      renderLiveStatusRows();
+    }
+
+    function syncTechConditionalUI() {
+      const liveStatus = document.getElementById("liveStatus")?.value;
+      document.getElementById("liveStatusPartialBlock")?.classList.toggle("hidden", liveStatus !== "partial");
+      const implementer = document.getElementById("implementer")?.value || "";
+      const showPartner = implementer === "ct_partner" || implementer === "customer_partner";
+      const showOther = implementer === "other";
+      document.getElementById("partnerNameBlock")?.classList.toggle("hidden", !showPartner);
+      document.getElementById("implementerOtherBlock")?.classList.toggle("hidden", !showOther);
+    }
+
+    function renderLiveStatusRows() {
+      const list = document.getElementById("liveStatusList");
+      if (!list) return;
+      const existing = [...list.querySelectorAll(".live-status-row")].map((row) => ({
+        name: row.querySelector(".live-status-name")?.textContent || "",
+        value: row.querySelector("select")?.value || ""
+      }));
+      const integrations = [...document.querySelectorAll(".integration-row")].map((row, index) => ({
+        name: row.querySelector('[data-role="name"]')?.value.trim() || `${t("integration.type")} ${index + 1}`
+      }));
+      list.innerHTML = "";
+      integrations.forEach((integration, index) => {
+        const saved = existing[index]?.value || "";
+        const row = document.createElement("div");
+        row.className = "live-status-row";
+        row.innerHTML = `
+          <div class="live-status-name">${integration.name}</div>
+          <select class="select">
+            <option value=""></option>
+            <option value="yes" ${saved === "yes" ? "selected" : ""}>${t("yes")}</option>
+            <option value="no" ${saved === "no" ? "selected" : ""}>${t("no")}</option>
+          </select>
+        `;
+        row.querySelector("select").addEventListener("change", handleFormChange);
+        list.appendChild(row);
+      });
+      syncTechConditionalUI();
+    }
+
+    function renderUseCaseRows(minRows = 0) {
+      const list = document.getElementById("useCasesList");
+      if (!list) return;
+      const existing = [...list.querySelectorAll(".table-row")].map((row) => ({
+        useCase: row.querySelector('[data-role="useCase"]')?.value || "",
+        detail: row.querySelector('[data-role="detail"]')?.value || "",
+        stage: row.querySelector('[data-role="stage"]')?.value || "",
+        stageOther: row.querySelector('[data-role="stageOther"]')?.value || ""
+      }));
+      const targetCount = Math.max(existing.length, minRows);
+      list.innerHTML = "";
+      for (let i = 0; i < targetCount; i += 1) {
+        const item = existing[i] || {};
+        const row = document.createElement("div");
+        row.className = "table-row";
+        row.innerHTML = `
+          <input class="input" data-role="useCase" type="text" placeholder="${t("usecase.label")}" value="${(item.useCase || "").replace(/"/g, "&quot;")}">
+          <textarea class="textarea" data-role="detail" placeholder="${t("usecase.detail")}">${item.detail || ""}</textarea>
+          <div class="row-stack">
+            <select class="select" data-role="stage"></select>
+            <input class="input ${item.stage === "other" ? "" : "hidden"}" data-role="stageOther" type="text" placeholder="${t("other")}" value="${(item.stageOther || "").replace(/"/g, "&quot;")}">
+          </div>
+          <button type="button" class="icon-btn" aria-label="remove">−</button>
+        `;
+        const stage = row.querySelector('[data-role="stage"]');
+        stage.innerHTML = `<option value=""></option>${useCaseStageOptions.map((opt) => `<option value="${opt}" ${item.stage === opt ? "selected" : ""}>${t(`usecase.stage.${opt}`)}</option>`).join("")}`;
+        const stageOtherInput = row.querySelector('[data-role="stageOther"]');
+        stage.addEventListener("change", () => {
+          stageOtherInput.classList.toggle("hidden", stage.value !== "other");
+          handleFormChange();
+        });
+        row.querySelector("button").addEventListener("click", () => {
+          row.remove();
+          handleFormChange();
+        });
+        row.querySelectorAll("input, textarea, select").forEach((el) => el.addEventListener("input", handleFormChange));
+        row.querySelectorAll("input, textarea, select").forEach((el) => el.addEventListener("change", handleFormChange));
+        list.appendChild(row);
+      }
+      updateUseCaseAlert();
+    }
+
+    function getValidUseCases() {
+      return [...document.querySelectorAll("#useCasesList .table-row")]
+        .map((row) => ({
+          useCase: row.querySelector('[data-role="useCase"]')?.value.trim() || "",
+          detail: row.querySelector('[data-role="detail"]')?.value.trim() || "",
+          stage: row.querySelector('[data-role="stage"]')?.value.trim() || "",
+          stageOther: row.querySelector('[data-role="stageOther"]')?.value.trim() || ""
+        }))
+        .filter((item) => item.useCase && item.detail && item.stage && (item.stage !== "other" || item.stageOther));
+    }
+
+    function updateUseCaseAlert() {
+      const alert = document.getElementById("useCaseAlert");
+      if (!alert) return;
+      alert.classList.toggle("hidden", getValidUseCases().length >= 2);
+    }
+
+    function renderStakeholderRows(minRows = 0) {
+      const list = document.getElementById("stakeholdersList");
+      if (!list) return;
+      const existing = [...list.querySelectorAll(".stakeholder-row")].map((row) => ({
+        name: row.querySelector('[data-role="name"]')?.value || "",
+        contact: row.querySelector('[data-role="contact"]')?.value || "",
+        role: row.querySelector('[data-role="role"]')?.value || "",
+        company: row.querySelector('[data-role="company"]')?.value || ""
+      }));
+      const targetCount = Math.max(existing.length, minRows);
+      list.innerHTML = "";
+      for (let i = 0; i < targetCount; i += 1) {
+        const item = existing[i] || {};
+        const row = document.createElement("div");
+        row.className = "stakeholder-row";
+        row.innerHTML = `
+          <input class="input" data-role="name" type="text" placeholder="${t("stakeholder.name")}" value="${(item.name || "").replace(/"/g, "&quot;")}">
+          <input class="input" data-role="contact" type="text" placeholder="${t("stakeholder.contact")}" value="${(item.contact || "").replace(/"/g, "&quot;")}">
+          <input class="input" data-role="role" type="text" placeholder="${t("stakeholder.role")}" value="${(item.role || "").replace(/"/g, "&quot;")}">
+          <input class="input" data-role="company" type="text" placeholder="${t("stakeholder.company")}" value="${(item.company || "").replace(/"/g, "&quot;")}">
+          <button type="button" class="icon-btn" aria-label="remove">−</button>
+        `;
+        row.querySelector("button").addEventListener("click", () => {
+          row.remove();
+          handleFormChange();
+        });
+        row.querySelectorAll("input").forEach((el) => el.addEventListener("input", handleFormChange));
+        list.appendChild(row);
+      }
+    }
+
+    function analyzePayload(jsonText) {
+      const text = (jsonText || "").trim();
+      if (!text) return { valid: false, nested: false, size: 0, depth: 0, rootObjectsOrArrays: 0, nestedKeys: 0, error: "empty" };
+      let parsed;
+      try {
+        parsed = JSON.parse(text);
+      } catch {
+        return { valid: false, nested: false, size: new TextEncoder().encode(text).length, depth: 0, rootObjectsOrArrays: 0, nestedKeys: 0, error: "invalid_json" };
+      }
+      const size = new TextEncoder().encode(text).length;
+      const isObject = (v) => v !== null && typeof v === "object";
+      const getDepth = (value) => {
+        if (!isObject(value)) return 1;
+        if (Array.isArray(value) && value.length === 0) return 2;
+        const children = Array.isArray(value) ? value : Object.values(value);
+        if (!children.length) return 2;
+        return 1 + Math.max(...children.map((child) => getDepth(child)));
+      };
+      const countNestedKeys = (value, level = 0) => {
+        if (!isObject(value)) return 0;
+        let count = 0;
+        if (!Array.isArray(value)) {
+          const keys = Object.keys(value);
+          if (level > 0) count += keys.length;
+          keys.forEach((key) => { count += countNestedKeys(value[key], level + 1); });
+        } else {
+          value.forEach((item) => { count += countNestedKeys(item, level + 1); });
+        }
+        return count;
+      };
+      const rootObjectsOrArrays = isObject(parsed) && !Array.isArray(parsed)
+        ? Object.values(parsed).filter((value) => isObject(value)).length
+        : 0;
+      const depth = getDepth(parsed);
+      const nested = depth > 2 || rootObjectsOrArrays > 0;
+      return {
+        valid: true,
+        nested,
+        size,
+        depth: Math.max(0, depth - 1),
+        rootObjectsOrArrays,
+        nestedKeys: countNestedKeys(parsed)
+      };
+    }
+
+    function renderPayloadMetrics() {
+      const metrics = payloadAnalysisState || { valid: false, nested: false, size: 0, depth: 0, rootObjectsOrArrays: 0, nestedKeys: 0 };
+      document.getElementById("metricValid").textContent = metrics.valid ? t("yes") : t("no");
+      document.getElementById("metricNested").textContent = metrics.valid ? (metrics.nested ? t("yes") : t("no")) : "-";
+      document.getElementById("metricSize").textContent = metrics.valid ? `${formatNumber(metrics.size)} bytes` : "-";
+      document.getElementById("metricDepth").textContent = metrics.valid ? String(metrics.depth) : "-";
+      document.getElementById("metricRootKeys").textContent = metrics.valid ? String(metrics.rootObjectsOrArrays) : "-";
+      document.getElementById("metricNestedKeys").textContent = metrics.valid ? String(metrics.nestedKeys) : "-";
+    }
+
+    function updateArchitectureConditionalUI() {
+      const payloadComplexity = document.getElementById("payloadComplexity")?.value;
+      document.getElementById("nestedPayloadBlock")?.classList.toggle("hidden", payloadComplexity !== "nested");
+      document.getElementById("eventsOverLimitBlock")?.classList.toggle("hidden", document.getElementById("totalEventsBand")?.value !== "above_512");
+      document.getElementById("journeysLimitBlock")?.classList.toggle("hidden", document.getElementById("activeJourneysBand")?.value !== "above_100");
+      document.getElementById("segmentsLimitBlock")?.classList.toggle("hidden", document.getElementById("totalSegmentsBand")?.value !== "above_3000");
+      const projects = Number((document.getElementById("projectsToImplement")?.value || "0").replace(/[^\d]/g, "") || 0);
+      document.getElementById("projectsLimitBlock")?.classList.toggle("hidden", projects <= 50);
+      document.getElementById("projectSuggestion").textContent = t("hints.projectsRange");
+    }
+
+    function updateGoLiveFastTrackUI() {
+      const goLive = document.getElementById("goLiveDate")?.value;
+      const block = document.getElementById("goLiveFastTrackBlock");
+      if (!block) return;
+      if (!goLive) {
+        block.classList.add("hidden");
+        return;
+      }
+      const now = new Date();
+      const goLiveDate = new Date(`${goLive}T00:00:00`);
+      const diffDays = Math.ceil((goLiveDate - now) / (1000 * 60 * 60 * 24));
+      block.classList.toggle("hidden", !(diffDays >= 0 && diffDays < 90));
+    }
+
+    function getRiskRowsData() {
+      return [...document.querySelectorAll("#risksList .risk-row")].map((row) => ({
+        key: row.dataset.key || "",
+        autoGenerated: row.dataset.auto === "true",
+        source: row.querySelector('[data-role="source"]')?.value.trim() || "",
+        severity: row.querySelector('[data-role="severity"]')?.value.trim() || "",
+        description: row.querySelector('[data-role="description"]')?.value.trim() || "",
+        mitigation: row.querySelector('[data-role="mitigation"]')?.value.trim() || ""
+      }));
+    }
+
+    function generateAutoRisks(data, existingMap = new Map()) {
+      const risks = [];
+      const pushRisk = (key, source, severity, description, mitigation) => {
+        const saved = existingMap.get(key);
+        risks.push({
+          key,
+          source,
+          severity: saved?.severity || severity,
+          description: saved?.description || description,
+          mitigation: saved?.mitigation || mitigation,
+          autoGenerated: true
+        });
+      };
+      if (data.channelsSelected.includes("whatsapp")) {
+        pushRisk("whatsapp_chatbot", "WhatsApp", "medium", "Validate whether an existing chatbot flow and webhook orchestration are already in place.", "Map provider/webhook dependencies and define ownership before onboarding.");
+      }
+      const appCount = data.integrations.filter((item) => item.type === "App").length;
+      const webCount = data.integrations.filter((item) => item.type === "Web").length;
+      if (appCount > 1 && webCount > 1) {
+        pushRisk("multi_assets", "Architecture", "high", "More than one app and one web property were mapped. Project split strategy may affect identity and analytics setup.", "Confirm if all assets must share one project or be split before implementation.");
+      }
+      if (data.integrations.some((item) => item.stack === "OTHER")) {
+        pushRisk("unlisted_stack", "Tech Stack", "medium", "An unlisted stack was selected and may require non-standard implementation patterns.", "Validate SDK feasibility, known limitations and mitigation strategy with engineering.");
+      }
+      if (data.implementer === "customer_partner" || data.implementer === "other") {
+        pushRisk("external_partner", "Delivery", "medium", "Implementation is led by a non-CleverTap partner, which can impact timeline and scope accountability.", "Confirm partner expertise and define explicit responsibility boundaries.");
+      }
+      if (data.integrationsSelected.length && !data.integrationRequirements) {
+        pushRisk("integration_sla", "Integration", "medium", "Integration requirements/SLA were not defined.", "Document expected data exchange latency and operating windows between systems.");
+      }
+      if (data.totalEventsBand === "above_512") {
+        pushRisk("events_limit", "Platform Limit", "high", "Event volume indicates potential over-limit scenario (>512).", "Review event taxonomy and evaluate plan/architecture alternatives.");
+      }
+      if (data.activeJourneysBand === "above_100") {
+        pushRisk("journey_limit", "Platform Limit", "high", "Active journeys requested exceed the default hard limit of 100.", "Prioritize journeys or propose phased activation and governance.");
+      }
+      if (data.totalSegmentsBand === "above_3000") {
+        pushRisk("segment_limit", "Platform Limit", "high", "Segments requested exceed the recommended threshold (>3000).", "Refactor segmentation strategy and validate performance expectations.");
+      }
+      if (Number(data.projectsToImplement || 0) > 50) {
+        pushRisk("projects_limit", "Architecture", "high", "The requested number of projects is above 50.", "Validate project partition strategy and operational ownership before implementation.");
+      }
+      if (data.goLiveDate) {
+        const now = new Date();
+        const goLiveDate = new Date(`${data.goLiveDate}T00:00:00`);
+        const diffDays = Math.ceil((goLiveDate - now) / (1000 * 60 * 60 * 24));
+        if (diffDays >= 0 && diffDays < 90) {
+          const reason = data.goLiveFastTrackReason ? ` ${data.goLiveFastTrackReason}` : "";
+          pushRisk("golive_fasttrack", "Timeline", "high", "Expected go-live is under 3 months and may increase delivery risk.", "Document fast-track dependencies, scope constraints and mitigation owners.");
+          if (reason) {
+            const last = risks[risks.length - 1];
+            last.mitigation = `${last.mitigation} ${reason}`.trim();
+          }
+        }
+      }
+      return risks;
+    }
+
+    function renderRisks() {
+      const list = document.getElementById("risksList");
+      if (!list) return;
+      const existing = getRiskRowsData();
+      const existingAuto = new Map(existing.filter((r) => r.autoGenerated).map((r) => [r.key, r]));
+      const manual = existing.filter((r) => !r.autoGenerated);
+      const data = collectData();
+      const auto = generateAutoRisks(data, existingAuto);
+      const merged = [...auto, ...manual];
+      list.innerHTML = "";
+      merged.forEach((risk, index) => {
+        const row = document.createElement("div");
+        row.className = "risk-row";
+        row.dataset.auto = String(risk.autoGenerated);
+        row.dataset.key = risk.key || `manual_${index}`;
+        row.innerHTML = `
+          <div class="row-stack">
+            <input class="input" data-role="source" type="text" value="${(risk.source || "").replace(/"/g, "&quot;")}">
+            <div class="risk-badge">${risk.autoGenerated ? t("risk.auto") : t("risk.manual")}</div>
+          </div>
+          <select class="select" data-role="severity">
+            <option value=""></option>
+            <option value="low" ${risk.severity === "low" ? "selected" : ""}>${t("risk.low")}</option>
+            <option value="medium" ${risk.severity === "medium" ? "selected" : ""}>${t("risk.medium")}</option>
+            <option value="high" ${risk.severity === "high" ? "selected" : ""}>${t("risk.high")}</option>
+          </select>
+          <textarea class="textarea" data-role="description" placeholder="Description">${risk.description || ""}</textarea>
+          <div class="row-stack">
+            <textarea class="textarea" data-role="mitigation" placeholder="Mitigation">${risk.mitigation || ""}</textarea>
+            <button type="button" class="icon-btn" aria-label="remove">−</button>
+          </div>
+        `;
+        row.querySelector("button").addEventListener("click", () => {
+          row.remove();
+          handleFormChange();
+        });
+        row.querySelectorAll("input, select, textarea").forEach((el) => el.addEventListener("input", handleFormChange));
+        row.querySelectorAll("input, select, textarea").forEach((el) => el.addEventListener("change", handleFormChange));
+        list.appendChild(row);
+      });
+    }
+
+    function sanitizeNumericInput(input) {
+      input.value = input.value.replace(/[^\d]/g, "");
+    }
+
+    function formatNumber(num) {
+      if (!num) return "";
+      return new Intl.NumberFormat(currentLang === "pt" ? "pt-BR" : currentLang === "es" ? "es-ES" : "en-US").format(num);
+    }
+
+    function numberToWords(num) {
+      if (!num) return "-";
+      const dict = {
+        en: {
+          ones: ["zero","one","two","three","four","five","six","seven","eight","nine"],
+          teens: ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"],
+          tens: ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"],
+          hundreds: "hundred",
+          join: "and",
+          scales: ["","thousand","million","billion"]
+        },
+        pt: {
+          ones: ["zero","um","dois","tres","quatro","cinco","seis","sete","oito","nove"],
+          teens: ["dez","onze","doze","treze","quatorze","quinze","dezesseis","dezessete","dezoito","dezenove"],
+          tens: ["","","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"],
+          hundredsMap: ["","cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"],
+          hundredExact: "cem",
+          join: "e",
+          scales: ["","mil","milhao","bilhao"],
+          scalesPlural: ["","mil","milhoes","bilhoes"]
+        },
+        es: {
+          ones: ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve"],
+          teens: ["diez","once","doce","trece","catorce","quince","dieciseis","diecisiete","dieciocho","diecinueve"],
+          tens: ["","","veinte","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"],
+          hundredsMap: ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"],
+          hundredExact: "cien",
+          join: "y",
+          scales: ["","mil","millon","billon"],
+          scalesPlural: ["","mil","millones","billones"]
+        }
+      };
+
+      const lang = currentLang === "pt" ? "pt" : currentLang === "es" ? "es" : "en";
+      const d = dict[lang];
+
+      function underHundred(n) {
+        if (n < 10) return d.ones[n];
+        if (n < 20) return d.teens[n - 10];
+        const ten = Math.floor(n / 10);
+        const one = n % 10;
+        if (!one) return d.tens[ten];
+        return lang === "en" ? `${d.tens[ten]}-${d.ones[one]}` : `${d.tens[ten]} ${d.join} ${d.ones[one]}`;
+      }
+
+      function underThousand(n) {
+        if (n < 100) return underHundred(n);
+        const hundred = Math.floor(n / 100);
+        const rest = n % 100;
+        if (lang === "en") {
+          return rest ? `${d.ones[hundred]} ${d.hundreds} ${d.join} ${underHundred(rest)}` : `${d.ones[hundred]} ${d.hundreds}`;
+        }
+        const hundredWord = rest === 0 ? d.hundredExact && hundred === 1 ? d.hundredExact : d.hundredsMap[hundred] : d.hundredsMap[hundred];
+        return rest ? `${hundredWord} ${d.join} ${underHundred(rest)}` : hundredWord;
+      }
+
+      const groups = [];
+      let value = num;
+      while (value > 0) {
+        groups.push(value % 1000);
+        value = Math.floor(value / 1000);
+      }
+
+      const parts = [];
+      for (let i = groups.length - 1; i >= 0; i -= 1) {
+        const group = groups[i];
+        if (!group) continue;
+        let groupText = "";
+        if (i === 0) {
+          groupText = underThousand(group);
+        } else if (lang === "en") {
+          groupText = `${underThousand(group)} ${d.scales[i]}`;
+        } else if (i === 1 && group === 1) {
+          groupText = d.scales[i];
+        } else {
+          const scale = group === 1 ? d.scales[i] : d.scalesPlural[i];
+          groupText = `${underThousand(group)} ${scale}`.trim();
+        }
+        parts.push(groupText);
+      }
+
+      return parts.join(lang === "en" ? ", " : " ");
+    }
+
+    function updateMausWords() {
+      const raw = document.getElementById("maus").value.replace(/[^\d]/g, "");
+      const value = Number(raw || 0);
+      const label = raw ? `${formatNumber(value)} MAUs` : "-";
+      document.getElementById("mausWords").textContent = raw ? `${label} · ${numberToWords(value)}` : "-";
+    }
+
+    function getDynamicValues(selector) {
+      return [...document.querySelectorAll(selector)].map((input) => input.value.trim()).filter(Boolean);
+    }
+
+    function getCheckedAddons() {
+      return [...document.querySelectorAll('input[name="addonOption"]:checked')].map((input) => input.value);
+    }
+
+    function collectData() {
+      return {
+        clientName: document.getElementById("clientName").value.trim(),
+        projectName: document.getElementById("projectName").value.trim(),
+        projectDate: document.getElementById("projectDate").value.trim(),
+        projectVersion: document.getElementById("projectVersion").value.trim(),
+        goLiveDate: document.getElementById("goLiveDate").value.trim(),
+        goLiveFastTrackReason: document.getElementById("goLiveFastTrackReason")?.value.trim() || "",
+        businessSummary: document.getElementById("businessSummary").value.trim(),
+        objectiveDescription: document.getElementById("objectiveDescription").value.trim(),
+        kpis: getDynamicValues("#kpiList input"),
+        criticalNeeds: getDynamicValues("#criticalList input"),
+        ctPlan: document.getElementById("ctPlan").value.trim(),
+        exitClause: document.getElementById("exitClause").value.trim(),
+        freePeriod: document.getElementById("freePeriod").value.trim(),
+        maus: document.getElementById("maus").value.trim(),
+        emailVolume: document.getElementById("emailVolume").value.trim(),
+        emailProvider: document.getElementById("emailProvider").value.trim(),
+        whatsappVolume: document.getElementById("whatsappVolume").value.trim(),
+        whatsappProvider: document.getElementById("whatsappProvider").value.trim(),
+        smsVolume: document.getElementById("smsVolume").value.trim(),
+        smsProvider: document.getElementById("smsProvider").value.trim(),
+        rcsVolume: document.getElementById("rcsVolume").value.trim(),
+        rcsProvider: document.getElementById("rcsProvider").value.trim(),
+        checkedAddons: getCheckedAddons(),
+        otherAddons: getDynamicValues("#otherAddonsList input"),
+        mainLanguage: document.getElementById("mainLanguage").value.trim(),
+        onboardingEnglish: document.getElementById("onboardingEnglish").value.trim(),
+        integrationCount: document.getElementById("integrationCount")?.value.trim() || "",
+        integrations: [...document.querySelectorAll(".integration-row")].map((row) => ({
+          type: row.querySelector('[data-role="type"]')?.value.trim() || "",
+          name: row.querySelector('[data-role="name"]')?.value.trim() || "",
+          stack: row.querySelector('[data-role="stack"]')?.value.trim() || "",
+          domain: row.querySelector('[data-role="domain"]')?.value.trim() || ""
+        })),
+        liveStatus: document.getElementById("liveStatus")?.value.trim() || "",
+        liveStatusDetails: [...document.querySelectorAll(".live-status-row")].map((row) => ({
+          name: row.querySelector(".live-status-name")?.textContent.trim() || "",
+          status: row.querySelector("select")?.value.trim() || ""
+        })),
+        implementer: document.getElementById("implementer")?.value.trim() || "",
+        partnerName: document.getElementById("partnerName")?.value.trim() || "",
+        implementerOther: document.getElementById("implementerOther")?.value.trim() || "",
+        channelsSelected: [...document.querySelectorAll('input[name="channelOption"]:checked')].map((input) => input.value),
+        channelsOther: document.getElementById("channelsOther")?.value.trim() || "",
+        integrationsSelected: [...document.querySelectorAll('input[name="integrationOption"]:checked')].map((input) => input.value),
+        integrationsOther: getDynamicValues("#integrationsOtherList input"),
+        integrationRequirements: document.getElementById("integrationRequirements")?.value.trim() || "",
+        useCases: [...document.querySelectorAll("#useCasesList .table-row")].map((row) => ({
+          useCase: row.querySelector('[data-role="useCase"]')?.value.trim() || "",
+          detail: row.querySelector('[data-role="detail"]')?.value.trim() || "",
+          stage: row.querySelector('[data-role="stage"]')?.value.trim() || "",
+          stageOther: row.querySelector('[data-role="stageOther"]')?.value.trim() || ""
+        })),
+        projectsToImplement: (document.getElementById("projectsToImplement")?.value || "").replace(/[^\d]/g, ""),
+        projectsRequestedTotal: (document.getElementById("projectsRequestedTotal")?.value || "").replace(/[^\d]/g, ""),
+        projectsLimitReason: document.getElementById("projectsLimitReason")?.value.trim() || "",
+        payloadComplexity: document.getElementById("payloadComplexity")?.value.trim() || "",
+        payloadInput: document.getElementById("payloadInput")?.value || "",
+        payloadAnalysis: payloadAnalysisState,
+        nestedMappedCount: (document.getElementById("nestedMappedCount")?.value || "").replace(/[^\d]/g, ""),
+        totalEventsBand: document.getElementById("totalEventsBand")?.value || "",
+        eventsOverLimit: document.getElementById("totalEventsBand")?.value === "above_512" ? "yes" : "no",
+        eventsRequestedTotal: (document.getElementById("eventsRequestedTotal")?.value || "").replace(/[^\d]/g, ""),
+        eventsLimitReason: document.getElementById("eventsLimitReason")?.value.trim() || "",
+        activeJourneysBand: document.getElementById("activeJourneysBand")?.value || "",
+        activeJourneys: document.getElementById("activeJourneysBand")?.value === "above_100" ? (document.getElementById("journeysRequestedTotal")?.value || "").replace(/[^\d]/g, "") : "100_or_less",
+        journeysRequestedTotal: (document.getElementById("journeysRequestedTotal")?.value || "").replace(/[^\d]/g, ""),
+        journeysLimitReason: document.getElementById("journeysLimitReason")?.value.trim() || "",
+        totalSegmentsBand: document.getElementById("totalSegmentsBand")?.value || "",
+        totalSegments: document.getElementById("totalSegmentsBand")?.value === "above_3000" ? (document.getElementById("segmentsRequestedTotal")?.value || "").replace(/[^\d]/g, "") : "3000_or_less",
+        segmentsRequestedTotal: (document.getElementById("segmentsRequestedTotal")?.value || "").replace(/[^\d]/g, ""),
+        segmentsLimitReason: document.getElementById("segmentsLimitReason")?.value.trim() || "",
+        risks: getRiskRowsData(),
+        stakeholders: [...document.querySelectorAll("#stakeholdersList .stakeholder-row")].map((row) => ({
+          name: row.querySelector('[data-role="name"]')?.value.trim() || "",
+          contact: row.querySelector('[data-role="contact"]')?.value.trim() || "",
+          role: row.querySelector('[data-role="role"]')?.value.trim() || "",
+          company: row.querySelector('[data-role="company"]')?.value.trim() || ""
+        }))
+      };
+    }
+
+    function sectionIsComplete(index) {
+      if (index === 0) {
+        const base = ["clientName","projectName","projectDate","projectVersion","goLiveDate","businessSummary"].every((id) => document.getElementById(id).value.trim());
+        if (!base) return false;
+        const goLive = document.getElementById("goLiveDate")?.value;
+        if (goLive) {
+          const now = new Date();
+          const goLiveDate = new Date(`${goLive}T00:00:00`);
+          const diffDays = Math.ceil((goLiveDate - now) / (1000 * 60 * 60 * 24));
+          if (diffDays >= 0 && diffDays < 90 && !(document.getElementById("goLiveFastTrackReason")?.value || "").trim()) return false;
+        }
+        return true;
+      }
+      if (index === 1) {
+        return document.getElementById("objectiveDescription").value.trim() && getDynamicValues("#kpiList input").length && getDynamicValues("#criticalList input").length;
+      }
+      if (index === 2) {
+        return ["ctPlan","exitClause","freePeriod","maus","mainLanguage","onboardingEnglish"].every((id) => document.getElementById(id).value.trim());
+      }
+      if (index === 3) {
+        const integrationCount = document.getElementById("integrationCount")?.value.trim();
+        const liveStatus = document.getElementById("liveStatus")?.value.trim();
+        const implementer = document.getElementById("implementer")?.value.trim();
+        if (!integrationCount || !liveStatus || !implementer) return false;
+        const rowsOk = [...document.querySelectorAll(".integration-row")].every((row) => {
+          const type = row.querySelector('[data-role="type"]')?.value.trim();
+          const name = row.querySelector('[data-role="name"]')?.value.trim();
+          const stack = row.querySelector('[data-role="stack"]')?.value.trim();
+          const domain = row.querySelector('[data-role="domain"]')?.value.trim();
+          if (!type || !name || !stack) return false;
+          if (type === "Web" && !domain) return false;
+          return true;
+        });
+        if (!rowsOk) return false;
+        if ((implementer === "ct_partner" || implementer === "customer_partner") && !document.getElementById("partnerName")?.value.trim()) return false;
+        if (implementer === "other" && !document.getElementById("implementerOther")?.value.trim()) return false;
+        if (liveStatus === "partial" && ![...document.querySelectorAll(".live-status-row select")].every((select) => select.value.trim())) return false;
+        return true;
+      }
+      if (index === 4) {
+        return true;
+      }
+      if (index === 5) {
+        const baseOk = ["projectsToImplement","payloadComplexity","totalEventsBand","activeJourneysBand","totalSegmentsBand"]
+          .every((id) => (document.getElementById(id)?.value || "").trim());
+        if (!baseOk) return false;
+        const projects = Number((document.getElementById("projectsToImplement")?.value || "0").replace(/[^\d]/g, "") || 0);
+        if (projects > 50 && (!(document.getElementById("projectsRequestedTotal")?.value || "").trim() || !(document.getElementById("projectsLimitReason")?.value || "").trim())) return false;
+        const payloadComplexity = document.getElementById("payloadComplexity")?.value;
+        if (payloadComplexity === "nested") {
+          if (!payloadAnalysisState || !payloadAnalysisState.valid || !payloadAnalysisState.nested) return false;
+          if (!(document.getElementById("nestedMappedCount")?.value || "").trim()) return false;
+        }
+        if (document.getElementById("totalEventsBand")?.value === "above_512" && (!(document.getElementById("eventsRequestedTotal")?.value || "").trim() || !(document.getElementById("eventsLimitReason")?.value || "").trim())) return false;
+        if (document.getElementById("activeJourneysBand")?.value === "above_100" && (!(document.getElementById("journeysRequestedTotal")?.value || "").trim() || !(document.getElementById("journeysLimitReason")?.value || "").trim())) return false;
+        if (document.getElementById("totalSegmentsBand")?.value === "above_3000" && (!(document.getElementById("segmentsRequestedTotal")?.value || "").trim() || !(document.getElementById("segmentsLimitReason")?.value || "").trim())) return false;
+        return true;
+      }
+      if (index === 6) {
+        return getRiskRowsData().some((risk) => risk.description || risk.mitigation || risk.source);
+      }
+      if (index === 7) {
+        return [...document.querySelectorAll("#stakeholdersList .stakeholder-row")].some((row) => {
+          return [...row.querySelectorAll("input")].some((input) => input.value.trim());
+        });
+      }
+      return false;
+    }
+
+    function maybeAutoAdvance() {
+      if (currentSection > 3 || autoAdvancedSections.has(currentSection)) return;
+      if (!sectionIsComplete(currentSection)) return;
+      autoAdvancedSections.add(currentSection);
+      showToast(t("toast.autoAdvanced"));
+      setTimeout(() => {
+        if (currentSection < 7) goToSection(currentSection + 1);
+      }, 500);
+    }
+
+    function updateSummary() {
+      const data = collectData();
+      const labels = {
+        client: t("fields.clientName"),
+        project: t("fields.projectName"),
+        date: t("fields.projectDate"),
+        version: t("fields.projectVersion"),
+        goLiveDate: t("fields.goLiveDate"),
+        goLiveFastTrackReason: t("fields.goLiveFastTrackReason"),
+        summary: t("fields.businessSummary"),
+        objective: t("fields.objectiveDescription"),
+        kpis: t("fields.kpis"),
+        critical: t("fields.criticalNeeds"),
+        ctPlan: t("fields.ctPlan"),
+        exitClause: t("fields.exitClause"),
+        freePeriod: t("fields.freePeriodMonths"),
+        maus: t("fields.maus"),
+        otherAddons: t("fields.otherAddons"),
+        mainLanguage: t("fields.mainLanguage"),
+        onboardingEnglish: t("fields.onboardingEnglish"),
+        currentStack: t("fields.currentStack"),
+        integrationCount: t("fields.integrationCount"),
+        liveQuestion: t("fields.liveQuestion"),
+        implementer: t("fields.implementer"),
+        partnerName: t("fields.partnerName"),
+        channelsMatrix: t("fields.channelsMatrix"),
+        integrationsTable: t("fields.integrationsTable"),
+        integrationSpecificRequirements: t("fields.integrationSpecificRequirements"),
+        useCaseTable: t("fields.useCaseTable"),
+        projectsToImplement: t("fields.projectsToImplement"),
+        projectsRequestedTotal: t("fields.projectsRequestedTotal"),
+        payloadComplexity: t("fields.payloadComplexity"),
+        nestedMappedCount: t("fields.nestedMappedCount"),
+        totalEvents: t("fields.totalEvents"),
+        eventsRequestedTotal: t("fields.eventsRequestedTotal"),
+        activeJourneys: t("fields.activeJourneys"),
+        journeysRequestedTotal: t("fields.journeysRequestedTotal"),
+        totalSegments: t("fields.totalSegments"),
+        segmentsRequestedTotal: t("fields.segmentsRequestedTotal"),
+        limitReason: t("fields.limitReason"),
+        riskList: t("fields.riskList"),
+        stakeholdersTable: t("fields.stakeholdersTable")
+      };
+      const lines = [
+        `${t("hero.title")}`,
+        ``,
+        `${t("sections.overview.title")}`,
+        `${labels.client}: ${data.clientName || "-"}`,
+        `${labels.project}: ${data.projectName || "-"}`,
+        `${labels.date}: ${data.projectDate || "-"}`,
+        `${labels.version}: ${data.projectVersion || "-"}`,
+        `${labels.goLiveDate}: ${data.goLiveDate || "-"}`,
+        ...(data.goLiveFastTrackReason ? [`${labels.goLiveFastTrackReason}: ${data.goLiveFastTrackReason}`] : []),
+        `${labels.summary}: ${data.businessSummary || "-"}`,
+        ``,
+        `${t("sections.objectives.title")}`,
+        `${labels.objective}: ${data.objectiveDescription || "-"}`,
+        `${labels.kpis}: ${data.kpis.length ? data.kpis.join(" | ") : "-"}`,
+        `${labels.critical}: ${data.criticalNeeds.length ? data.criticalNeeds.join(" | ") : "-"}`,
+        ``,
+        `${t("sections.contract.title")}`,
+        `${labels.ctPlan}: ${data.ctPlan || "-"}`,
+        `${labels.exitClause}: ${data.exitClause || "-"}`,
+        `${labels.freePeriod}: ${data.freePeriod ? `${data.freePeriod} ${currentLang === "en" ? "month(s)" : currentLang === "es" ? "mes(es)" : "mês(es)"}` : "-"}`,
+        `${labels.maus}: ${data.maus ? `${formatNumber(Number(data.maus.replace(/[^\d]/g, "")))} MAUs` : "-"}`,
+        `Email: ${data.emailVolume || "-"} / ${data.emailProvider || "-"}`,
+        `WhatsApp: ${data.whatsappVolume || "-"} / ${data.whatsappProvider || "-"}`,
+        `SMS: ${data.smsVolume || "-"} / ${data.smsProvider || "-"}`,
+        `RCS: ${data.rcsVolume || "-"} / ${data.rcsProvider || "-"}`,
+        `${labels.otherAddons}: ${[...data.checkedAddons, ...data.otherAddons].filter(Boolean).join(" | ") || "-"}`,
+        `${labels.mainLanguage}: ${data.mainLanguage || "-"}`,
+        `${labels.onboardingEnglish}: ${data.onboardingEnglish || "-"}`,
+        ``,
+        `${t("sections.tech.title")}`,
+        `${labels.currentStack}: ${data.integrations.length ? data.integrations.map((item) => `${item.type || "-"}:${item.stack || "-"}`).join(" | ") : "-"}`,
+        `${labels.integrationCount}: ${data.integrationCount || "-"}`,
+        ...data.integrations.map((item, index) => `Integration ${index + 1}: ${item.type || "-"} | ${item.name || "-"} | ${item.stack || "-"}${item.type === "Web" ? ` | ${t("integration.domain")}: ${item.domain || "-"}` : ""}`),
+        `${labels.liveQuestion}: ${data.liveStatus === "yes" ? t("yes") : data.liveStatus === "no" ? t("no") : data.liveStatus === "partial" ? t("partial") : "-"}`,
+        ...(data.liveStatus === "partial"
+          ? data.liveStatusDetails.map((item) => `${item.name}: ${item.status === "yes" ? t("yes") : item.status === "no" ? t("no") : "-"}`)
+          : []),
+        `${labels.implementer}: ${data.implementer === "ct_partner" ? t("implementer.ctPartner") : data.implementer === "internal_team" ? t("implementer.internalTeam") : data.implementer === "customer_partner" ? t("implementer.customerPartner") : data.implementer === "other" ? (data.implementerOther || t("other")) : "-"}`,
+        `${labels.partnerName}: ${data.partnerName || "-"}`,
+        ``,
+        `${t("sections.useCases.title")}`,
+        `${labels.channelsMatrix}: ${[...data.channelsSelected, data.channelsOther].filter(Boolean).join(" | ") || "-"}`,
+        `${labels.integrationsTable}: ${[...data.integrationsSelected, ...data.integrationsOther].filter(Boolean).join(" | ") || "-"}`,
+        `${labels.integrationSpecificRequirements}: ${data.integrationRequirements || "-"}`,
+        `${labels.useCaseTable}: ${getValidUseCases().length}`,
+        ...(getValidUseCases().length < 2 ? [t("summary.warningUseCases")] : []),
+        ...data.useCases
+          .filter((item) => item.useCase || item.detail || item.stage || item.stageOther)
+          .map((item, index) => `Use case ${index + 1}: ${item.useCase || "-"} | ${item.detail || "-"} | ${item.stage ? t(`usecase.stage.${item.stage}`) : "-"}${item.stage === "other" ? ` (${item.stageOther || "-"})` : ""}`),
+        ``,
+        `${t("sections.architecture.title")}`,
+        `${labels.projectsToImplement}: ${data.projectsToImplement || "-"}`,
+        ...(Number(data.projectsToImplement || 0) > 50 ? [
+          `${labels.projectsRequestedTotal}: ${data.projectsRequestedTotal || "-"}`,
+          `${labels.limitReason}: ${data.projectsLimitReason || "-"}`
+        ] : []),
+        `${labels.payloadComplexity}: ${data.payloadComplexity ? t(`payload.${data.payloadComplexity}`) : "-"}`,
+        `${labels.nestedMappedCount}: ${data.nestedMappedCount || "-"}`,
+        `${labels.totalEvents}: ${data.totalEventsBand ? t(`limits.${data.totalEventsBand === "up_to_512" ? "upTo512" : "above512"}`) : "-"}`,
+        ...(data.totalEventsBand === "above_512" ? [
+          `${labels.eventsRequestedTotal}: ${data.eventsRequestedTotal || "-"}`,
+          `${labels.limitReason}: ${data.eventsLimitReason || "-"}`
+        ] : []),
+        `${labels.activeJourneys}: ${data.activeJourneysBand ? t(`limits.${data.activeJourneysBand === "up_to_100" ? "upTo100" : "above100"}`) : "-"}`,
+        ...(data.activeJourneysBand === "above_100" ? [
+          `${labels.journeysRequestedTotal}: ${data.journeysRequestedTotal || "-"}`,
+          `${labels.limitReason}: ${data.journeysLimitReason || "-"}`
+        ] : []),
+        `${labels.totalSegments}: ${data.totalSegmentsBand ? t(`limits.${data.totalSegmentsBand === "up_to_3000" ? "upTo3000" : "above3000"}`) : "-"}`,
+        ...(data.totalSegmentsBand === "above_3000" ? [
+          `${labels.segmentsRequestedTotal}: ${data.segmentsRequestedTotal || "-"}`,
+          `${labels.limitReason}: ${data.segmentsLimitReason || "-"}`
+        ] : []),
+        `Payload: ${data.payloadAnalysis?.valid ? `${t("payload.isNested")}: ${data.payloadAnalysis.nested ? t("yes") : t("no")} | ${t("payload.size")}: ${data.payloadAnalysis.size} bytes | ${t("payload.depth")}: ${data.payloadAnalysis.depth} | ${t("payload.rootKeys")}: ${data.payloadAnalysis.rootObjectsOrArrays} | ${t("payload.nestedKeys")}: ${data.payloadAnalysis.nestedKeys}` : "-"}`,
+        ``,
+        `${t("sections.risks.title")}`,
+        `${labels.riskList}: ${data.risks.length}`,
+        ...data.risks
+          .filter((risk) => risk.description || risk.mitigation || risk.source)
+          .map((risk, index) => `Risk ${index + 1}: [${risk.severity || "-"}] ${risk.description || "-"} | ${risk.mitigation || "-"} (${risk.autoGenerated ? t("risk.auto") : t("risk.manual")})`),
+        ``,
+        `${t("sections.stakeholders.title")}`,
+        `${labels.stakeholdersTable}: ${data.stakeholders.filter((item) => item.name || item.contact || item.role || item.company).length}`,
+        ...data.stakeholders
+          .filter((item) => item.name || item.contact || item.role || item.company)
+          .map((item, index) => `#${index + 1}: ${item.name || "-"} | ${item.contact || "-"} | ${item.role || "-"} | ${item.company || "-"}`)
+      ];
+      summaryOutput.textContent = lines.join("\n");
+    }
+
+    function openSummary() {
+      updateSummary();
+      modalOverlay.classList.add("open");
+      document.body.classList.add("modal-open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSummary() {
+      modalOverlay.classList.remove("open");
+      document.body.classList.remove("modal-open");
+      modalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function handleFormChange(event) {
+      const target = event?.target || null;
+      const isRiskField = target ? Boolean(target.closest("#risksList")) : false;
+      if (event && event.target && event.target.id === "maus") sanitizeNumericInput(event.target);
+      if (event && event.target && event.target.id === "freePeriod") sanitizeNumericInput(event.target);
+      if (event && event.target && ["emailVolume","whatsappVolume","smsVolume","rcsVolume"].includes(event.target.id)) sanitizeNumericInput(event.target);
+      if (event && event.target && ["projectsToImplement","projectsRequestedTotal","nestedMappedCount","eventsRequestedTotal","journeysRequestedTotal","segmentsRequestedTotal","integrationCount"].includes(event.target.id)) sanitizeNumericInput(event.target);
+      if (event && event.target && event.target.id === "integrationCount") renderIntegrationRows();
+      if (event && event.target && event.target.id === "liveStatus") syncTechConditionalUI();
+      if (event && event.target && event.target.id === "implementer") syncTechConditionalUI();
+      if (event && event.target && event.target.id === "payloadComplexity" && event.target.value !== "nested") payloadAnalysisState = null;
+      updateArchitectureConditionalUI();
+      updateGoLiveFastTrackUI();
+      updateUseCaseAlert();
+      if (!isRiskField) renderRisks();
+      updateMausWords();
+      updateSummary();
+      maybeAutoAdvance();
+    }
+
+    document.querySelectorAll(".next-btn").forEach((btn) => btn.addEventListener("click", () => goToSection(Number(btn.dataset.next))));
+    document.querySelectorAll(".prev-btn").forEach((btn) => btn.addEventListener("click", () => goToSection(Number(btn.dataset.prev))));
+    document.querySelectorAll("input, textarea, select").forEach((el) => el.addEventListener("input", handleFormChange));
+    document.querySelectorAll("input, textarea, select").forEach((el) => el.addEventListener("change", handleFormChange));
+    document.querySelectorAll("[data-add-list]").forEach((btn) => btn.addEventListener("click", () => addListRow(btn.dataset.addList)));
+    document.querySelectorAll("[data-remove-list]").forEach((btn) => btn.addEventListener("click", () => {
+      const list = document.getElementById(btn.dataset.removeList === "kpi" ? "kpiList" : "criticalList");
+      if (list.lastElementChild) list.lastElementChild.remove();
+      updateSummary();
+    }));
+    document.getElementById("addOtherAddonBtn").addEventListener("click", () => addOtherAddon());
+    document.getElementById("addIntegrationOtherBtn").addEventListener("click", () => {
+      addIntegrationOther();
+      handleFormChange();
+    });
+    document.getElementById("addUseCaseBtn").addEventListener("click", () => {
+      renderUseCaseRows(document.querySelectorAll("#useCasesList .table-row").length + 1);
+      handleFormChange();
+    });
+    document.getElementById("removeUseCaseBtn").addEventListener("click", () => {
+      const rows = document.querySelectorAll("#useCasesList .table-row");
+      if (rows.length) rows[rows.length - 1].remove();
+      handleFormChange();
+    });
+    document.getElementById("addStakeholderBtn").addEventListener("click", () => {
+      renderStakeholderRows(document.querySelectorAll("#stakeholdersList .stakeholder-row").length + 1);
+      handleFormChange();
+    });
+    document.getElementById("removeStakeholderBtn").addEventListener("click", () => {
+      const rows = document.querySelectorAll("#stakeholdersList .stakeholder-row");
+      if (rows.length) rows[rows.length - 1].remove();
+      handleFormChange();
+    });
+    document.getElementById("addRiskBtn").addEventListener("click", () => {
+      const list = document.getElementById("risksList");
+      const row = document.createElement("div");
+      row.className = "risk-row";
+      row.dataset.auto = "false";
+      row.dataset.key = `manual_${Date.now()}`;
+      row.innerHTML = `
+        <div class="row-stack">
+          <input class="input" data-role="source" type="text" value="Manual">
+          <div class="risk-badge">${t("risk.manual")}</div>
+        </div>
+        <select class="select" data-role="severity">
+          <option value=""></option>
+          <option value="low">${t("risk.low")}</option>
+          <option value="medium">${t("risk.medium")}</option>
+          <option value="high">${t("risk.high")}</option>
+        </select>
+        <textarea class="textarea" data-role="description" placeholder="Description"></textarea>
+        <div class="row-stack">
+          <textarea class="textarea" data-role="mitigation" placeholder="Mitigation"></textarea>
+          <button type="button" class="icon-btn" aria-label="remove">−</button>
+        </div>
+      `;
+      row.querySelector("button").addEventListener("click", () => {
+        row.remove();
+        handleFormChange();
+      });
+      row.querySelectorAll("input, select, textarea").forEach((el) => el.addEventListener("input", handleFormChange));
+      list.appendChild(row);
+      handleFormChange();
+    });
+    document.getElementById("savePayloadBtn").addEventListener("click", () => {
+      payloadAnalysisState = analyzePayload(document.getElementById("payloadInput").value);
+      renderPayloadMetrics();
+      const preview = document.getElementById("payloadPreview");
+      preview.textContent = document.getElementById("payloadInput").value.trim() || "-";
+      handleFormChange();
+    });
+    document.getElementById("togglePayloadPreviewBtn").addEventListener("click", () => {
+      const preview = document.getElementById("payloadPreview");
+      const hidden = preview.classList.toggle("hidden");
+      document.getElementById("togglePayloadPreviewBtn").textContent = hidden ? t("buttons.showPayload") : t("buttons.hidePayload");
+      if (!hidden) preview.textContent = document.getElementById("payloadInput").value.trim() || "-";
+    });
+    document.getElementById("openSummaryBtn").addEventListener("click", openSummary);
+    document.getElementById("openSummaryBtnSecondary").addEventListener("click", openSummary);
+    document.getElementById("closeSummaryBtn").addEventListener("click", closeSummary);
+    modalOverlay.addEventListener("click", (event) => { if (event.target === modalOverlay) closeSummary(); });
+    document.getElementById("copySummaryBtn").addEventListener("click", async () => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(summaryOutput.textContent);
+        } else {
+          const helper = document.createElement("textarea");
+          helper.value = summaryOutput.textContent;
+          document.body.appendChild(helper);
+          helper.select();
+          document.execCommand("copy");
+          helper.remove();
+        }
+        showToast(t("toast.copied"));
+      } catch (error) {
+        showToast(t("toast.copyFailed"));
+      }
+    });
+    document.getElementById("exportDocBtn").addEventListener("click", () => {
+      const blob = new Blob([summaryOutput.textContent], { type: "application/msword;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "sow-clever-summary.doc";
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showToast(t("toast.exported"));
+    });
+    document.getElementById("toggleModalSizeBtn").addEventListener("click", () => {
+      modal.classList.toggle("minimized");
+      document.getElementById("toggleModalSizeBtn").textContent = modal.classList.contains("minimized") ? t("buttons.expand") : t("buttons.minimize");
+    });
+    langDDBtn.addEventListener("click", () => {
+      langDD.classList.toggle("open");
+      langDDBtn.setAttribute("aria-expanded", String(langDD.classList.contains("open")));
+    });
+    document.addEventListener("click", (event) => {
+      if (!langDD.contains(event.target)) {
+        langDD.classList.remove("open");
+        langDDBtn.setAttribute("aria-expanded", "false");
+      }
+      if (event.target.matches("[data-lang-select]")) {
+        setLanguage(event.target.dataset.langSelect);
+        langDD.classList.remove("open");
+        langDDBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    addListRow("kpi");
+    addListRow("critical");
+    addOtherAddon();
+    addIntegrationOther();
+    renderUseCaseRows(2);
+    renderStakeholderRows(3);
+    renderRisks();
+    updateArchitectureConditionalUI();
+    renderPayloadMetrics();
+    buildIndex();
+    setLanguage("pt");
+    goToSection(0);
+    updateSummary();
+  </script>
+</body>
+</html>
