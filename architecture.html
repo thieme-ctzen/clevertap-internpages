@@ -193,6 +193,101 @@
     }
     .btn:hover{ transform: translateY(-1px); border-color:#cbd7ea; }
     .btn:active{ transform: translateY(0px); }
+    .nativeLaunchWrap{
+      position:relative;
+      margin-top:5px;
+    }
+    .nativeLaunchWrap .btn{
+      margin-top:0;
+      padding-right:34px;
+    }
+    .nativeFlyoutArrow{
+      position:absolute;
+      right:6px;
+      top:50%;
+      transform:translateY(-50%);
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:1px solid #c7d2e1;
+      background:#fff;
+      color:#475569;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow: 0 4px 12px rgba(15,23,42,.08);
+      transition: transform .18s ease, border-color .18s ease, color .18s ease, background .18s ease;
+      z-index:2;
+    }
+    .nativeFlyoutArrow:hover{
+      border-color:#94a3b8;
+      color:#0f172a;
+      background:#f8fafc;
+    }
+    .nativeFlyoutArrow span{
+      display:block;
+      font-size:13px;
+      font-weight:900;
+      line-height:1;
+      transform: translateX(1px);
+      transition: transform .22s ease;
+    }
+    .nativeFlyoutArrow[aria-expanded="true"] span{
+      transform: rotate(90deg);
+    }
+    .nativeFlyout{
+      position:fixed;
+      width:min(260px, calc(100vw - 24px));
+      z-index:70;
+      opacity:0;
+      pointer-events:none;
+      transform: translateX(-14px) scale(.98);
+      transition: opacity .26s ease, transform .28s cubic-bezier(.2,.8,.2,1);
+    }
+    .nativeFlyout.open{
+      opacity:1;
+      pointer-events:auto;
+      transform: translateX(0) scale(1);
+    }
+    .nativeFlyoutCard{
+      padding:8px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.42);
+      background:
+        linear-gradient(155deg, rgba(255,255,255,.68), rgba(255,255,255,.28)) padding-box,
+        linear-gradient(130deg, rgba(255,255,255,.86), rgba(148,163,184,.28), rgba(255,255,255,.7)) border-box;
+      box-shadow: 0 22px 44px rgba(15,23,42,.15), inset 0 1px 0 rgba(255,255,255,.58);
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      max-height: calc(100vh - 88px);
+      overflow:auto;
+      scrollbar-width:none;
+    }
+    .nativeFlyoutCard::-webkit-scrollbar{
+      display:none;
+    }
+    .nativeFlyoutHead{
+      padding:6px 8px 8px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:-.01em;
+      color:#1f2a44;
+    }
+    .nativeFlyoutCard .btn{
+      margin-top:4px;
+      padding-left:8px;
+    }
+    .nativeFlyoutCard .btn:first-of-type{
+      margin-top:0;
+    }
+    .btnMenuGroup{
+      margin:8px 4px 2px;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      color:#64748b;
+    }
 
     .btn .left{
       display:flex;
@@ -759,17 +854,33 @@
       border-bottom:1px solid #d2dce8;
       background: #ffffff;
       display:flex;
-      flex-direction:row;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:10px;
       padding:8px 10px;
     }
-    .solutionTools{
+    .solutionBrand{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+    }
+    .solutionMeta{
       margin-left:auto;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:6px;
+      flex:0 0 auto;
+    }
+    .solutionTools{
       display:flex;
       gap:6px;
       align-items:center;
+    }
+    .solutionMeta .solutionTools{
+      margin-left:0;
+      justify-content:flex-end;
     }
     .solTool{
       width:22px;
@@ -808,10 +919,21 @@
       color:#243447;
       font-weight:800;
       white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
     .solutionContent{
       min-width:0;
       height:100%;
+    }
+    .solutionDescription{
+      padding:10px 12px 0;
+      font-size:12px;
+      color:#64748b;
+      line-height:1.4;
+    }
+    .solutionDescription.isSolo{
+      padding-bottom:12px;
     }
     .solutionList{
       padding:8px 8px 10px;
@@ -870,6 +992,9 @@
     }
     .solutionGridIcon img.mono{
       filter: grayscale(1) brightness(0.1);
+    }
+    .solutionGridIcon img.tone-brand{
+      filter: brightness(0) saturate(100%) invert(27%) sepia(18%) saturate(1264%) hue-rotate(176deg) brightness(91%) contrast(92%);
     }
     .solutionGridLabel{
       font-size:10.5px;
@@ -2204,13 +2329,17 @@
             <div class="arrow">→</div>
           </button>
 
-          <button class="btn" data-add="integration:native">
-            <div class="left">
-              <div class="ico"><img src="https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png" alt="Nativo" /></div>
-              <div class="txt"><div>Nativo</div><span>Integração interna</span></div>
-            </div>
-            <div class="arrow">→</div>
-          </button>
+          <div class="nativeLaunchWrap" id="nativeLaunchWrap">
+            <button class="btn" data-add="integration:native" id="nativePrimaryBtn">
+              <div class="left">
+                <div class="ico"><img src="https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png" alt="Nativo" /></div>
+                <div class="txt"><div>Nativo</div><span>Integração interna</span></div>
+              </div>
+            </button>
+            <button class="nativeFlyoutArrow" id="nativeFlyoutArrow" type="button" aria-label="Abrir conexões nativas" aria-expanded="false" aria-controls="nativeFlyout">
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
 
           <button class="btn" data-add="integration:manual">
             <div class="left">
@@ -2326,6 +2455,20 @@
             </div>
             <div class="arrow">→</div>
           </button>
+          <button class="btn" data-add="solution:productexperiences">
+            <div class="left">
+              <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+              <div class="txt"><div>Product Experiences</div><span>Addon CleverTap</span></div>
+            </div>
+            <div class="arrow">→</div>
+          </button>
+          <button class="btn" data-add="solution:promotions">
+            <div class="left">
+              <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+              <div class="txt"><div>Promotions</div><span>Addon CleverTap</span></div>
+            </div>
+            <div class="arrow">→</div>
+          </button>
           <button class="btn" data-add="solution:tesseractdbtm">
             <div class="left">
               <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
@@ -2391,6 +2534,148 @@
         <b>Atalhos:</b> apagar seleção <span class="kbd">Del</span> • editar bloco: <b>duplo clique</b> • multi seleção: <span class="kbd">Shift</span> + clique ou arraste no fundo • pan: arrastar fundo • zoom: <span class="kbd">Ctrl</span> + scroll
       </div>
     </aside>
+    <div class="nativeFlyout" id="nativeFlyout" aria-hidden="true">
+      <div class="nativeFlyoutCard">
+        <div class="nativeFlyoutHead" id="nativeFlyoutHead">Conexões Nativas</div>
+        <button class="btn" data-add="native:connector">
+          <div class="left">
+            <div class="ico"><img src="https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png" alt="Conector nativo" /></div>
+            <div class="txt"><div>Conector nativo</div><span>Integração interna</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <div class="btnMenuGroup" data-native-group="Analytics">Analytics</div>
+        <button class="btn" data-add="native:amplitude">
+          <div class="left">
+            <div class="ico"><img src="https://companieslogo.com/img/orig/AMPL-501a52ff.png?t=1720244490" alt="Amplitude" /></div>
+            <div class="txt"><div>Amplitude</div><span>Analytics</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:mixpanel">
+          <div class="left">
+            <div class="ico"><img src="https://cdn.appsflyer.com/marketplace/static/logo/mixpanel.png" alt="Mixpanel" /></div>
+            <div class="txt"><div>Mixpanel</div><span>Analytics</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:posthog">
+          <div class="left">
+            <div class="ico"><img src="https://posthog.com/brand/posthog-logo-stacked@2x.png" alt="PostHog" /></div>
+            <div class="txt"><div>PostHog</div><span>Analytics</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <div class="btnMenuGroup" data-native-group="Attribution">Attribution</div>
+        <button class="btn" data-add="native:adjust">
+          <div class="left">
+            <div class="ico"><img src="https://avatars.githubusercontent.com/u/1327203?s=280&v=4" alt="Adjust" /></div>
+            <div class="txt"><div>Adjust</div><span>Attribution</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:airbridge">
+          <div class="left">
+            <div class="ico"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Airbridge_logo_CL.png" alt="Airbridge" /></div>
+            <div class="txt"><div>Airbridge</div><span>Attribution</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:appsflyer">
+          <div class="left">
+            <div class="ico"><img src="https://cdn.prod.website-files.com/5ecbeb8d7557e7f636691721/65837c5f480644e2de769eb5_AppsFlyer_logo.png" alt="AppsFlyer" /></div>
+            <div class="txt"><div>AppsFlyer</div><span>Attribution</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:apptrove">
+          <div class="left">
+            <div class="ico"><img src="https://files.readme.io/1d84909a84cbc1303083f451b01b6345f8329ac4a8bc8a0bf675153453cea99c-Apptrove.webp" alt="AppTrove" /></div>
+            <div class="txt"><div>AppTrove</div><span>Attribution</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:branch">
+          <div class="left">
+            <div class="ico"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv6Ow_N_fGWVLscgtELG4K7j1_3LyThe-Ulg&s" alt="Branch" /></div>
+            <div class="txt"><div>Branch</div><span>Attribution</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:singular">
+          <div class="left">
+            <div class="ico"><img src="https://www.businessofapps.com/wp-content/uploads/2019/05/singular_logo_2019.png" alt="Singular" /></div>
+            <div class="txt"><div>Singular</div><span>Attribution</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <div class="btnMenuGroup" data-native-group="E-commerce">E-commerce</div>
+        <button class="btn" data-add="native:shopify">
+          <div class="left">
+            <div class="ico"><img src="https://www.pngall.com/wp-content/uploads/13/Shopify-Logo-PNG.png" alt="Shopify" /></div>
+            <div class="txt"><div>Shopify</div><span>E-commerce</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:vtex">
+          <div class="left">
+            <div class="ico"><img src="https://companieslogo.com/img/orig/VTEX-64045aa2.png?t=1720244494" alt="VTEX" /></div>
+            <div class="txt"><div>VTEX</div><span>E-commerce</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <div class="btnMenuGroup" data-native-group="CDP">CDP</div>
+        <button class="btn" data-add="native:hightouch">
+          <div class="left">
+            <div class="ico"><img src="https://static.amplitude.com/data-connections/icons/HIGHTOUCH.png" alt="High Touch" /></div>
+            <div class="txt"><div>High Touch</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:segment">
+          <div class="left">
+            <div class="ico"><img src="https://logo.svgcdn.com/logos/segment.png" alt="Segment" /></div>
+            <div class="txt"><div>Segment</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:rudderstack">
+          <div class="left">
+            <div class="ico"><img src="https://cdn.prod.website-files.com/685d3f27e667cdf05fe197f8/685d3f27e667cdf05fe1aa8b_64d3ddaa31ad7172011fd9b5_rudderstack-1.svg" alt="RudderStack" /></div>
+            <div class="txt"><div>RudderStack</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:census">
+          <div class="left">
+            <div class="ico"><img src="https://f.hubspotusercontent10.net/hubfs/7162616/__hs-marketplace__/Census%20logo%2032x32-3-1.png" alt="Census" /></div>
+            <div class="txt"><div>Census</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:boltic">
+          <div class="left">
+            <div class="ico"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1AWj_TRcan-rLeTFdVzDdfe98wQL5pQb-ew&s" alt="Boltic" /></div>
+            <div class="txt"><div>Boltic</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:mparticle">
+          <div class="left">
+            <div class="ico"><img src="https://www.svgrepo.com/show/354098/mparticle-icon.svg" alt="mParticle" /></div>
+            <div class="txt"><div>mParticle</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="native:treasuredata">
+          <div class="left">
+            <div class="ico"><img src="https://www.svgrepo.com/show/354460/treasuredata-icon.svg" alt="Treasure Data" /></div>
+            <div class="txt"><div>Treasure Data</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+      </div>
+    </div>
 
     <!-- Main -->
     <main class="main">
@@ -2656,6 +2941,7 @@
 <script>
 (() => {
   const appEl = document.querySelector(".app");
+  const sidebarEl = document.querySelector(".sidebar");
   const mainEl = document.querySelector(".main");
   const wrap = document.getElementById("wrap");
   const grid = document.getElementById("grid");
@@ -2689,6 +2975,10 @@
   const tbAlign = document.getElementById("tbAlign");
   const btnSettings = document.getElementById("btnSettings");
   const btnSidebar = document.getElementById("btnSidebar");
+  const nativeLaunchWrap = document.getElementById("nativeLaunchWrap");
+  const nativePrimaryBtn = document.getElementById("nativePrimaryBtn");
+  const nativeFlyout = document.getElementById("nativeFlyout");
+  const nativeFlyoutArrow = document.getElementById("nativeFlyoutArrow");
   const settingsPanel = document.getElementById("settingsPanel");
   const cfgLineType = document.getElementById("cfgLineType");
   const cfgConnectorType = document.getElementById("cfgConnectorType");
@@ -2759,6 +3049,9 @@
   let itemHistory = { undo: [], redo: [] };
   let actionHistory = { undo: [], redo: [] };
   let restoringHistory = false;
+  let nativeFlyoutHoverTimer = null;
+  let nativeFlyoutHideTimer = null;
+  let nativeFlyoutPinned = false;
   const STORAGE_KEY = "clevertap_canvas_state_v3";
   const PROJECT_OVERALL_KEY = "clevertap_canvas_project_overall_v1";
   const SCHEMA_VERSION = 4;
@@ -3229,7 +3522,15 @@
     { pt:"SDK", es:"SDK", en:"SDK" },
     { pt:"App / Web", es:"App / Web", en:"App / Web" },
     { pt:"Nativo", es:"Nativo", en:"Native" },
+    { pt:"Conector nativo", es:"Conector nativo", en:"Native connector" },
+    { pt:"Conexões Nativas", es:"Conexiones Nativas", en:"Native Connections" },
+    { pt:"Abrir conexões nativas", es:"Abrir conexiones nativas", en:"Open native connections" },
     { pt:"Integração interna", es:"Integración interna", en:"Internal integration" },
+    { pt:"Conexão Nativa", es:"Conexión Nativa", en:"Native Connection" },
+    { pt:"Analytics", es:"Analytics", en:"Analytics" },
+    { pt:"Attribution", es:"Attribution", en:"Attribution" },
+    { pt:"E-commerce", es:"E-commerce", en:"E-commerce" },
+    { pt:"CDP", es:"CDP", en:"CDP" },
     { pt:"Manual", es:"Manual", en:"Manual" },
     { pt:"Operação assistida", es:"Operación asistida", en:"Assisted operation" },
     { pt:"Nome editável", es:"Nombre editable", en:"Editable name" },
@@ -3260,15 +3561,22 @@
     { pt:"Martech", es:"Martech", en:"Martech" },
     { pt:"Segments", es:"Segments", en:"Segments" },
     { pt:"Analytics", es:"Analytics", en:"Analytics" },
+    { pt:"Product Experiences", es:"Product Experiences", en:"Product Experiences" },
+    { pt:"Promotions", es:"Promotions", en:"Promotions" },
     { pt:"TesseractDB™", es:"TesseractDB™", en:"TesseractDB™" },
     { pt:"ScribeAI", es:"ScribeAI", en:"ScribeAI" },
     { pt:"AskAI", es:"AskAI", en:"AskAI" },
     { pt:"AI Agent", es:"Agente de IA", en:"AI Agent" },
+    { pt:"Addon CleverTap", es:"Addon CleverTap", en:"CleverTap Add-on" },
     { pt:"Bloco completo editável", es:"Bloque completamente editable", en:"Fully editable block" },
     { pt:"Bloco AI especial", es:"Bloque especial de IA", en:"Special AI block" },
     { pt:"Conector server-to-server para eventos, perfis e integracoes.", es:"Conector servidor a servidor para eventos, perfiles e integraciones.", en:"Server-to-server connector for events, profiles, and integrations." },
     { pt:"Instrumentacao App/Web para coleta e mensageria.", es:"Instrumentación App/Web para captura y mensajería.", en:"App/Web instrumentation for data capture and messaging." },
     { pt:"Capacidade nativa da plataforma (sem conector externo).", es:"Capacidad nativa de la plataforma (sin conector externo).", en:"Native platform capability (no external connector)." },
+    { pt:"Plataforma de analytics com conexão nativa.", es:"Plataforma de analítica con conexión nativa.", en:"Analytics platform with native connection." },
+    { pt:"Plataforma de atribuição com conexão nativa.", es:"Plataforma de atribución con conexión nativa.", en:"Attribution platform with native connection." },
+    { pt:"Plataforma de e-commerce com conexão nativa.", es:"Plataforma de e-commerce con conexión nativa.", en:"E-commerce platform with native connection." },
+    { pt:"CDP com conexão nativa.", es:"CDP con conexión nativa.", en:"CDP with native connection." },
     { pt:"Operacao manual ou assistida, sem dependencia de API, SDK ou conector nativo.", es:"Operación manual o asistida, sin dependencia de API, SDK o conector nativo.", en:"Manual or assisted operation without API, SDK, or native connector dependency." },
     { pt:"Edite o nome e descreva a funcionalidade (ex.: Segmentacao, Journeys, Analytics).", es:"Edita el nombre y describe la funcionalidad (ej.: Segmentación, Journeys, Analytics).", en:"Edit the name and describe the functionality (e.g. Segmentation, Journeys, Analytics)." },
     { pt:"Fonte de dados", es:"Fuente de datos", en:"Data source" },
@@ -3290,6 +3598,7 @@
     { pt:"Assistente de conteúdo com AI generativa.", es:"Asistente de contenido con IA generativa.", en:"Generative AI content assistant." },
     { pt:"Camada de decisão e recomendação da jornada com AI.", es:"Capa de decisión y recomendación del journey con IA.", en:"Journey decision and recommendation layer with AI." },
     { pt:"Agentes inteligentes para estratégia, decisão e ação.", es:"Agentes inteligentes para estrategia, decisión y acción.", en:"Intelligent agents for strategy, decision, and action." },
+    { pt:"Personalização remota e testes A/B.", es:"Personalización remota y pruebas A/B.", en:"Remote personalization and A/B testing." },
     { pt:"Experimentação", es:"Experimentación", en:"Experimentation" },
     { pt:"Campanhas batch", es:"Campañas batch", en:"Batch campaigns" },
     { pt:"Native Display", es:"Native Display", en:"Native Display" },
@@ -3322,6 +3631,11 @@
     { pt:"Action Agents", es:"Agentes de acción", en:"Action Agents" },
     { pt:"IntelliNODE", es:"IntelliNODE", en:"IntelliNODE" },
     { pt:"Product Recommendations", es:"Recomendaciones de producto", en:"Product Recommendations" },
+    { pt:"Promo Campaigns", es:"Promo Campaigns", en:"Promo Campaigns" },
+    { pt:"Carteira de fidelidade", es:"Billetera de fidelidad", en:"Loyalty Wallet" },
+    { pt:"Cupons", es:"Cupones", en:"Coupons" },
+    { pt:"Vouchers de parceiros", es:"Vouchers de socios", en:"Partner Vouchers" },
+    { pt:"Custom Rewards", es:"Custom Rewards", en:"Custom Rewards" },
     { pt:"Retenção entre 3~10 anos", es:"Retención entre 3~10 años", en:"3-10 year retention" },
     { pt:"Escala e Performance", es:"Escala y rendimiento", en:"Scale and performance" },
     { pt:"Dados em tempo real", es:"Datos en tiempo real", en:"Real-time data" },
@@ -3482,7 +3796,13 @@
     if(sectionTitles[4]) sectionTitles[4].textContent = translateKnownPhrase("Soluções CleverTap");
     if(sectionTitles[5]) sectionTitles[5].textContent = translateKnownPhrase("Anotações");
     const brandTitle = document.querySelector(".brand h1");
+    const nativeFlyoutHead = document.getElementById("nativeFlyoutHead");
     if(brandTitle) brandTitle.textContent = translateKnownPhrase("Arquitetura CleverTap");
+    if(nativeFlyoutHead) nativeFlyoutHead.textContent = translateKnownPhrase("Conexões Nativas");
+    document.querySelectorAll("[data-native-group]").forEach((groupEl)=>{
+      const label = groupEl.getAttribute("data-native-group") || "";
+      if(label) groupEl.textContent = translateKnownPhrase(label);
+    });
     document.querySelectorAll(".secToggle").forEach((toggle)=>{
       const expanded = toggle.getAttribute("aria-expanded") !== "false";
       toggle.title = expanded ? translateKnownPhrase("Recolher seção") : translateKnownPhrase("Expandir seção");
@@ -3490,6 +3810,25 @@
     setButtonCopy("integration:api", translateKnownPhrase("API"), translateKnownPhrase("Server-to-server"));
     setButtonCopy("integration:sdk", translateKnownPhrase("SDK"), translateKnownPhrase("App / Web"));
     setButtonCopy("integration:native", translateKnownPhrase("Nativo"), translateKnownPhrase("Integração interna"));
+    setButtonCopy("native:connector", translateKnownPhrase("Conector nativo"), translateKnownPhrase("Integração interna"));
+    setButtonCopy("native:amplitude", translateKnownPhrase("Amplitude"), translateKnownPhrase("Analytics"));
+    setButtonCopy("native:mixpanel", translateKnownPhrase("Mixpanel"), translateKnownPhrase("Analytics"));
+    setButtonCopy("native:posthog", translateKnownPhrase("PostHog"), translateKnownPhrase("Analytics"));
+    setButtonCopy("native:adjust", translateKnownPhrase("Adjust"), translateKnownPhrase("Attribution"));
+    setButtonCopy("native:airbridge", translateKnownPhrase("Airbridge"), translateKnownPhrase("Attribution"));
+    setButtonCopy("native:appsflyer", translateKnownPhrase("AppsFlyer"), translateKnownPhrase("Attribution"));
+    setButtonCopy("native:apptrove", translateKnownPhrase("AppTrove"), translateKnownPhrase("Attribution"));
+    setButtonCopy("native:branch", translateKnownPhrase("Branch"), translateKnownPhrase("Attribution"));
+    setButtonCopy("native:singular", translateKnownPhrase("Singular"), translateKnownPhrase("Attribution"));
+    setButtonCopy("native:shopify", translateKnownPhrase("Shopify"), translateKnownPhrase("E-commerce"));
+    setButtonCopy("native:vtex", translateKnownPhrase("VTEX"), translateKnownPhrase("E-commerce"));
+    setButtonCopy("native:hightouch", translateKnownPhrase("High Touch"), translateKnownPhrase("CDP"));
+    setButtonCopy("native:segment", translateKnownPhrase("Segment"), translateKnownPhrase("CDP"));
+    setButtonCopy("native:rudderstack", translateKnownPhrase("RudderStack"), translateKnownPhrase("CDP"));
+    setButtonCopy("native:census", translateKnownPhrase("Census"), translateKnownPhrase("CDP"));
+    setButtonCopy("native:boltic", translateKnownPhrase("Boltic"), translateKnownPhrase("CDP"));
+    setButtonCopy("native:mparticle", translateKnownPhrase("mParticle"), translateKnownPhrase("CDP"));
+    setButtonCopy("native:treasuredata", translateKnownPhrase("Treasure Data"), translateKnownPhrase("CDP"));
     setButtonCopy("integration:manual", translateKnownPhrase("Manual"), translateKnownPhrase("Operação assistida"));
     setButtonCopy("core:central", translateKnownPhrase("Bloco Central"), translateKnownPhrase("Nome editável"));
     setButtonCopy("core:organizer", translateKnownPhrase("Organizador"), translateKnownPhrase("Container por categoria"));
@@ -3508,12 +3847,15 @@
     setButtonCopy("solution:martech", translateKnownPhrase("Martech"), translateKnownPhrase("Bloco completo editável"));
     setButtonCopy("solution:segments", translateKnownPhrase("Segments"), translateKnownPhrase("Bloco completo editável"));
     setButtonCopy("solution:analytics", translateKnownPhrase("Analytics"), translateKnownPhrase("Bloco completo editável"));
+    setButtonCopy("solution:productexperiences", translateKnownPhrase("Product Experiences"), translateKnownPhrase("Addon CleverTap"));
+    setButtonCopy("solution:promotions", translateKnownPhrase("Promotions"), translateKnownPhrase("Addon CleverTap"));
     setButtonCopy("solution:tesseractdbtm", translateKnownPhrase("TesseractDB™"), translateKnownPhrase("Bloco completo editável"));
     setButtonCopy("solution:scribeai", translateKnownPhrase("ScribeAI"), translateKnownPhrase("Bloco AI especial"));
     setButtonCopy("solution:askai", translateKnownPhrase("AskAI"), translateKnownPhrase("Bloco AI especial"));
     setButtonCopy("solution:agentai", translateKnownPhrase("AI Agent"), translateKnownPhrase("Bloco AI especial"));
     setButtonCopy("text:note", translateKnownPhrase("Texto Livre"), translateKnownPhrase("Nota flutuante no canvas"));
     setButtonCopy("text:sticky", translateKnownPhrase("Sticky Note"), translateKnownPhrase("Post-it colorido"));
+    if(nativeFlyoutArrow) nativeFlyoutArrow.setAttribute("aria-label", translateKnownPhrase("Abrir conexões nativas"));
     if(btnTemplate) btnTemplate.textContent = translateKnownPhrase("Templates");
     if(btnExport) btnExport.textContent = translateKnownPhrase("Export JSON");
     if(btnImport) btnImport.textContent = translateKnownPhrase("Import JSON");
@@ -3860,7 +4202,68 @@
     const top = Math.max(14, Math.round(topbarRect.bottom - wrapRect.top + 8));
     toast.style.top = `${top}px`;
   }
+  function clearNativeFlyoutTimers(){
+    if(nativeFlyoutHoverTimer){
+      clearTimeout(nativeFlyoutHoverTimer);
+      nativeFlyoutHoverTimer = null;
+    }
+    if(nativeFlyoutHideTimer){
+      clearTimeout(nativeFlyoutHideTimer);
+      nativeFlyoutHideTimer = null;
+    }
+  }
+  function positionNativeFlyout(){
+    if(!nativeFlyout || !sidebarEl || !nativeLaunchWrap) return;
+    const sidebarRect = sidebarEl.getBoundingClientRect();
+    const anchorRect = nativeLaunchWrap.getBoundingClientRect();
+    const panelRect = nativeFlyout.getBoundingClientRect();
+    let nextLeft = sidebarRect.right + 10;
+    let nextTop = anchorRect.top - 2;
+    if(nextLeft + panelRect.width > window.innerWidth - 12){
+      nextLeft = Math.max(12, window.innerWidth - panelRect.width - 12);
+    }
+    if(nextTop + panelRect.height > window.innerHeight - 12){
+      nextTop = Math.max(68, window.innerHeight - panelRect.height - 12);
+    }
+    nativeFlyout.style.left = `${Math.round(nextLeft)}px`;
+    nativeFlyout.style.top = `${Math.round(nextTop)}px`;
+  }
+  function openNativeFlyout({ pinned = false } = {}){
+    if(!nativeFlyout || !nativeFlyoutArrow) return;
+    if(pinned) nativeFlyoutPinned = true;
+    nativeFlyout.classList.add("open");
+    nativeFlyout.setAttribute("aria-hidden", "false");
+    nativeFlyoutArrow.setAttribute("aria-expanded", "true");
+    requestAnimationFrame(positionNativeFlyout);
+  }
+  function closeNativeFlyout({ force = false } = {}){
+    if(!nativeFlyout || !nativeFlyoutArrow) return;
+    if(!force && nativeFlyoutPinned) return;
+    nativeFlyoutPinned = false;
+    clearNativeFlyoutTimers();
+    nativeFlyout.classList.remove("open");
+    nativeFlyout.setAttribute("aria-hidden", "true");
+    nativeFlyoutArrow.setAttribute("aria-expanded", "false");
+  }
+  function scheduleNativeFlyoutHoverOpen(){
+    if(!nativeFlyout || appEl?.classList.contains("sidebar-collapsed")) return;
+    if(nativeFlyout.classList.contains("open")) return;
+    if(nativeFlyoutHoverTimer) clearTimeout(nativeFlyoutHoverTimer);
+    nativeFlyoutHoverTimer = setTimeout(()=>{
+      nativeFlyoutPinned = false;
+      openNativeFlyout();
+      nativeFlyoutHoverTimer = null;
+    }, 1000);
+  }
+  function scheduleNativeFlyoutClose(){
+    if(nativeFlyoutHideTimer) clearTimeout(nativeFlyoutHideTimer);
+    nativeFlyoutHideTimer = setTimeout(()=>{
+      closeNativeFlyout({ force: !nativeFlyoutPinned });
+      nativeFlyoutHideTimer = null;
+    }, 220);
+  }
   function setSidebarCollapsed(collapsed){
+    if(collapsed) closeNativeFlyout({ force:true });
     appEl?.classList.toggle("sidebar-collapsed", collapsed);
     if(btnSidebar){
       btnSidebar.setAttribute("aria-expanded", collapsed ? "false" : "true");
@@ -4920,11 +5323,13 @@
           const isIconUrl = !!normalizeLogoUrl(icon);
           const iconUrl = isIconUrl ? (captureSafeUrl(icon) || icon) : "";
           const mono = typeof item === "object" && !!item?.mono;
+          const tone = typeof item === "object" ? (item?.tone || "") : "";
+          const iconClasses = [mono ? "mono" : "", tone === "brand" ? "tone-brand" : ""].filter(Boolean).join(" ");
           if(layout === "grid"){
             return `
               <div class="solutionGridItem" draggable="true" data-item-index="${idx}" data-node-id="${n.id}">
                 <button class="solItemDel" type="button" data-node="${n.id}" data-index="${idx}" title="Remover item" aria-label="Remover item">✕</button>
-                <div class="solutionGridIcon">${isIconUrl ? `<img src="${escapeHTML(iconUrl)}" alt="${escapeHTML(label || "icon")}" ${mono ? 'class="mono"' : ""} />` : escapeHTML(icon || "•")}</div>
+                <div class="solutionGridIcon">${isIconUrl ? `<img src="${escapeHTML(iconUrl)}" alt="${escapeHTML(label || "icon")}" ${iconClasses ? `class="${escapeHTML(iconClasses)}"` : ""} />` : escapeHTML(icon || "•")}</div>
                 <div class="solutionGridLabel">${escapeHTML(label)}</div>
               </div>
             `;
@@ -4936,9 +5341,21 @@
             </div>
           `;
         }).join("");
+        const hasSolutionItems = Array.isArray(n.items) && n.items.length > 0;
+        const solutionDesc = (n.desc || "").trim();
+        const solutionDescHtml = solutionDesc
+          ? `<div class="solutionDescription${hasSolutionItems ? "" : " isSolo"}">${escapeHTML(solutionDesc)}</div>`
+          : "";
+        const kindNormalized = normalizeI18nText(n.kind || "");
+        const showSolutionBadge = !!kindNormalized && kindNormalized !== "solucao" && kindNormalized !== "solucion";
+        const solutionBadgeHtml = showSolutionBadge
+          ? `<div class="nodeType ${typeClass(n.type)}">${escapeHTML(n.kind || "")}</div>`
+          : "";
 
-        const solutionBody = layout === "grid"
-          ? `<div class="solutionGrid">${solutionItems}</div>`
+        const solutionBody = !hasSolutionItems
+          ? ``
+          : (layout === "grid"
+            ? `<div class="solutionGrid">${solutionItems}</div>`
           : (layout === "tesseract"
             ? `
               <div class="tesseractLayout">
@@ -4979,23 +5396,29 @@
                 }).join("")}
               </div>
             `
-            : `<div class="solutionList">${solutionItems}</div>`));
+            : `<div class="solutionList">${solutionItems}</div>`)));
 
         el.innerHTML = `
           <div class="solutionCard">
             <div class="solutionShell">
               ${layout === "tesseract" ? "" : `
               <div class="solutionRail">
-                <img class="solutionBrandLogo" src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" />
-                <div class="solutionBrandTitle">${escapeHTML(n.title || "Martech")}</div>
-                <div class="solutionTools">
-                  <button class="solTool solAdd" type="button" title="Adicionar item">+</button>
-                  <button class="solTool solUndo" type="button" title="Desfazer">↶</button>
-                  <button class="solTool solRedo" type="button" title="Refazer">↷</button>
+                <div class="solutionBrand">
+                  <img class="solutionBrandLogo" src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" />
+                  <div class="solutionBrandTitle">${escapeHTML(n.title || "Martech")}</div>
+                </div>
+                <div class="solutionMeta">
+                  ${solutionBadgeHtml}
+                  <div class="solutionTools">
+                    <button class="solTool solAdd" type="button" title="Adicionar item">+</button>
+                    <button class="solTool solUndo" type="button" title="Desfazer">↶</button>
+                    <button class="solTool solRedo" type="button" title="Refazer">↷</button>
+                  </div>
                 </div>
               </div>
               `}
               <div class="solutionContent">
+                ${solutionDescHtml}
                 ${solutionBody}
               </div>
             </div>
@@ -6324,6 +6747,7 @@
   });
   window.addEventListener("keydown", (e)=>{
     if(e.key==="Escape"){
+      closeNativeFlyout({ force:true });
       closeEdit();
       closePreviewModal();
       closeImportModal();
@@ -6379,6 +6803,25 @@
     "integration:api":     { icon:"API", kind:"Integration", type:"blue",  title:"API", desc:"Conector server-to-server para eventos, perfis e integracoes.", logoUrl:"https://icons.veryicon.com/png/o/internet--web/internet-simple-icon/api-management.png" },
     "integration:sdk":     { icon:"SDK", kind:"Integration", type:"blue",  title:"SDK", desc:"Instrumentacao App/Web para coleta e mensageria.", logoUrl:"https://icons.veryicon.com/png/o/miscellaneous/hekr/open-sdk-download.png" },
     "integration:native":  { icon:"N", kind:"Integration", type:"blue",  title:"Nativo", desc:"Capacidade nativa da plataforma (sem conector externo).", logoUrl:"https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png" },
+    "native:connector":    { icon:"N", kind:"Integration", type:"blue",  title:"Nativo", desc:"Capacidade nativa da plataforma (sem conector externo).", logoUrl:"https://images.icon-icons.com/3251/PNG/512/plug_connected_regular_icon_202791.png" },
+    "native:amplitude":    { icon:"AM", kind:"Analytics", type:"blue", title:"Amplitude", desc:"Plataforma de analytics com conexão nativa.", logoUrl:"https://companieslogo.com/img/orig/AMPL-501a52ff.png?t=1720244490" },
+    "native:mixpanel":     { icon:"MX", kind:"Analytics", type:"blue", title:"Mixpanel", desc:"Plataforma de analytics com conexão nativa.", logoUrl:"https://cdn.appsflyer.com/marketplace/static/logo/mixpanel.png" },
+    "native:posthog":      { icon:"PH", kind:"Analytics", type:"blue", title:"PostHog", desc:"Plataforma de analytics com conexão nativa.", logoUrl:"https://posthog.com/brand/posthog-logo-stacked@2x.png" },
+    "native:adjust":       { icon:"AD", kind:"Attribution", type:"blue", title:"Adjust", desc:"Plataforma de atribuição com conexão nativa.", logoUrl:"https://avatars.githubusercontent.com/u/1327203?s=280&v=4" },
+    "native:airbridge":    { icon:"AB", kind:"Attribution", type:"blue", title:"Airbridge", desc:"Plataforma de atribuição com conexão nativa.", logoUrl:"https://upload.wikimedia.org/wikipedia/commons/d/d3/Airbridge_logo_CL.png" },
+    "native:appsflyer":    { icon:"AF", kind:"Attribution", type:"blue", title:"AppsFlyer", desc:"Plataforma de atribuição com conexão nativa.", logoUrl:"https://cdn.prod.website-files.com/5ecbeb8d7557e7f636691721/65837c5f480644e2de769eb5_AppsFlyer_logo.png" },
+    "native:apptrove":     { icon:"AT", kind:"Attribution", type:"blue", title:"AppTrove", desc:"Plataforma de atribuição com conexão nativa.", logoUrl:"https://files.readme.io/1d84909a84cbc1303083f451b01b6345f8329ac4a8bc8a0bf675153453cea99c-Apptrove.webp" },
+    "native:branch":       { icon:"BR", kind:"Attribution", type:"blue", title:"Branch", desc:"Plataforma de atribuição com conexão nativa.", logoUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv6Ow_N_fGWVLscgtELG4K7j1_3LyThe-Ulg&s" },
+    "native:singular":     { icon:"SG", kind:"Attribution", type:"blue", title:"Singular", desc:"Plataforma de atribuição com conexão nativa.", logoUrl:"https://www.businessofapps.com/wp-content/uploads/2019/05/singular_logo_2019.png" },
+    "native:shopify":      { icon:"SH", kind:"E-commerce", type:"blue", title:"Shopify", desc:"Plataforma de e-commerce com conexão nativa.", logoUrl:"https://www.pngall.com/wp-content/uploads/13/Shopify-Logo-PNG.png" },
+    "native:vtex":         { icon:"VT", kind:"E-commerce", type:"blue", title:"VTEX", desc:"Plataforma de e-commerce com conexão nativa.", logoUrl:"https://companieslogo.com/img/orig/VTEX-64045aa2.png?t=1720244494" },
+    "native:hightouch":    { icon:"HT", kind:"CDP", type:"blue", title:"High Touch", desc:"CDP com conexão nativa.", logoUrl:"https://static.amplitude.com/data-connections/icons/HIGHTOUCH.png" },
+    "native:segment":      { icon:"SE", kind:"CDP", type:"blue", title:"Segment", desc:"CDP com conexão nativa.", logoUrl:"https://logo.svgcdn.com/logos/segment.png" },
+    "native:rudderstack":  { icon:"RS", kind:"CDP", type:"blue", title:"RudderStack", desc:"CDP com conexão nativa.", logoUrl:"https://cdn.prod.website-files.com/685d3f27e667cdf05fe197f8/685d3f27e667cdf05fe1aa8b_64d3ddaa31ad7172011fd9b5_rudderstack-1.svg" },
+    "native:census":       { icon:"CE", kind:"CDP", type:"blue", title:"Census", desc:"CDP com conexão nativa.", logoUrl:"https://f.hubspotusercontent10.net/hubfs/7162616/__hs-marketplace__/Census%20logo%2032x32-3-1.png" },
+    "native:boltic":       { icon:"BO", kind:"CDP", type:"blue", title:"Boltic", desc:"CDP com conexão nativa.", logoUrl:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1AWj_TRcan-rLeTFdVzDdfe98wQL5pQb-ew&s" },
+    "native:mparticle":    { icon:"MP", kind:"CDP", type:"blue", title:"mParticle", desc:"CDP com conexão nativa.", logoUrl:"https://www.svgrepo.com/show/354098/mparticle-icon.svg" },
+    "native:treasuredata": { icon:"TD", kind:"CDP", type:"blue", title:"Treasure Data", desc:"CDP com conexão nativa.", logoUrl:"https://www.svgrepo.com/show/354460/treasuredata-icon.svg" },
     "integration:manual":  { icon:"MAN", kind:"Integration", type:"blue",  title:"Manual", desc:"Operacao manual ou assistida, sem dependencia de API, SDK ou conector nativo.", logoUrl:"https://media.istockphoto.com/id/1187149723/pt/vetorial/touch-outline-vector-illustration-icon-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=h2Z3b3CzeZPm5oLu_m_g6dzhhCgWWwfO5CEHTuS1E-A=" },
 
     "core:central":        { icon:"C", kind:"Core",        type:"blue",  title:"Bloco Central", desc:"Edite o nome e descreva a funcionalidade (ex.: Segmentacao, Journeys, Analytics).", logoUrl:"https://cdn-icons-png.flaticon.com/512/30/30254.png" },
@@ -6462,6 +6905,27 @@
         "Comportamental",
         "Tendências",
         "Impacto Real"
+      ]
+    },
+    "solution:productexperiences": {
+      icon:"PX", kind:"Addon", type:"red", variant:"default",
+      title:"Product Experiences",
+      desc:"Personalização remota e testes A/B.",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
+    "solution:promotions": {
+      icon:"PR", kind:"Addon", type:"red", variant:"solution",
+      title:"Promotions", desc:"",
+      w: 320,
+      userMinH: 248,
+      solutionLayout: "grid",
+      items: [
+        { icon:"https://png.pngtree.com/png-vector/20230315/ourmid/pngtree-campaign-line-icon-vector-png-image_6649613.png", label:"Promo Campaigns" },
+        { icon:"https://icons.iconarchive.com/icons/icons8/ios7/512/Finance-Wallet-icon.png", label:"Carteira de fidelidade" },
+        { icon:"https://cdn-icons-png.flaticon.com/512/6713/6713658.png", label:"Cupons", tone:"brand" },
+        { icon:"https://cdn-icons-png.freepik.com/512/7162/7162364.png", label:"Vouchers de parceiros", tone:"brand" },
+        { icon:"https://cdn-icons-png.flaticon.com/512/2666/2666513.png", label:"Custom Rewards" }
       ]
     },
     "solution:tesseractdbtm": {
@@ -6598,6 +7062,50 @@
     addFromTemplateAt(key, r.left + r.width/2, r.top + r.height/2);
   }
 
+  nativeLaunchWrap?.addEventListener("mouseenter", ()=>{
+    if(nativeFlyoutHideTimer){
+      clearTimeout(nativeFlyoutHideTimer);
+      nativeFlyoutHideTimer = null;
+    }
+    scheduleNativeFlyoutHoverOpen();
+  });
+  nativeLaunchWrap?.addEventListener("mouseleave", ()=>{
+    if(nativeFlyoutHoverTimer){
+      clearTimeout(nativeFlyoutHoverTimer);
+      nativeFlyoutHoverTimer = null;
+    }
+    if(!nativeFlyoutPinned) scheduleNativeFlyoutClose();
+  });
+  nativeFlyout?.addEventListener("mouseenter", ()=>{
+    if(nativeFlyoutHideTimer){
+      clearTimeout(nativeFlyoutHideTimer);
+      nativeFlyoutHideTimer = null;
+    }
+  });
+  nativeFlyout?.addEventListener("mouseleave", ()=>{
+    if(!nativeFlyoutPinned) scheduleNativeFlyoutClose();
+  });
+  nativeFlyoutArrow?.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    if(nativeFlyout.classList.contains("open") && nativeFlyoutPinned){
+      closeNativeFlyout({ force:true });
+      return;
+    }
+    if(nativeFlyoutHoverTimer){
+      clearTimeout(nativeFlyoutHoverTimer);
+      nativeFlyoutHoverTimer = null;
+    }
+    if(nativeFlyoutHideTimer){
+      clearTimeout(nativeFlyoutHideTimer);
+      nativeFlyoutHideTimer = null;
+    }
+    nativeFlyoutPinned = true;
+    openNativeFlyout({ pinned:true });
+  });
+  sidebarEl?.addEventListener("scroll", ()=>{
+    if(nativeFlyout?.classList.contains("open")) positionNativeFlyout();
+  });
+
   document.querySelectorAll("[data-add]").forEach(btn=>{
     btn.setAttribute("draggable", "true");
     btn.addEventListener("dragstart", (e)=>{
@@ -6606,7 +7114,10 @@
       e.dataTransfer?.setData("text/plain", key);
       if(e.dataTransfer) e.dataTransfer.effectAllowed = "copy";
     });
-    btn.addEventListener("click", ()=> addFromTemplate(btn.dataset.add));
+    btn.addEventListener("click", ()=>{
+      closeNativeFlyout({ force:true });
+      addFromTemplate(btn.dataset.add);
+    });
   });
 
   wrap.addEventListener("dragover", (e)=>{
@@ -6867,11 +7378,17 @@
     setLanguage(cfgLanguage.value);
   });
   settingsPanel?.addEventListener("click", (e)=> e.stopPropagation());
+  nativeFlyout?.addEventListener("click", (e)=> e.stopPropagation());
   document.addEventListener("click", (e)=>{
     const target = e.target;
     if(target === btnSettings || settingsPanel?.contains(target)) return;
     settingsPanel?.classList.remove("show");
     settingsPanel?.setAttribute("aria-hidden","true");
+  });
+  document.addEventListener("click", (e)=>{
+    const target = e.target;
+    if(nativeLaunchWrap?.contains(target) || nativeFlyout?.contains(target)) return;
+    closeNativeFlyout({ force:true });
   });
   ctxMenu?.addEventListener("click", (e)=> e.stopPropagation());
   ctxCanvasMenu?.addEventListener("click", (e)=> e.stopPropagation());
@@ -7475,6 +7992,7 @@
     if(isCompactViewport()){
       setSidebarCollapsed(true);
     }
+    if(nativeFlyout?.classList.contains("open")) positionNativeFlyout();
     positionToastBelowHeader();
   });
   setConnectMode(connectMode, true);
