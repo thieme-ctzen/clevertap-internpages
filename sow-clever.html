@@ -575,6 +575,24 @@
       gap: 12px;
       align-items: start;
     }
+    .external-integration-row {
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      background: #fff;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1.4fr auto;
+      gap: 12px;
+      align-items: start;
+    }
+    .external-integration-row label {
+      font-size: 9px;
+    }
+    .external-integration-row .input,
+    .external-integration-row .textarea,
+    .external-integration-row .select {
+      font-size: 10px;
+    }
     .toggle-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -611,6 +629,55 @@
       border-radius: 16px;
       padding: 14px;
       background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .feature-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .feature-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .feature-main input { accent-color: var(--accent); }
+    .feature-subgrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .feature-subgrid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .feature-subgrid .check-item {
+      font-size: 9px;
+      padding: 8px;
+    }
+    .feature-custom-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .feature-custom-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
     }
     .matrix-card h4 {
       font-size: 10px;
@@ -886,7 +953,7 @@
       .site-header { padding: 0 16px; min-height: 60px; height: auto; }
       .top-nav a { display: none; }
       .hero-card, .section-card { padding: 20px; }
-      .form-grid, .contract-grid, .addons-table, .check-grid, .stack-grid, .toggle-grid, .integration-row, .table-row, .risk-row, .matrix-grid, .metrics-grid, .stakeholder-row { grid-template-columns: 1fr; }
+      .form-grid, .contract-grid, .addons-table, .check-grid, .stack-grid, .toggle-grid, .integration-row, .external-integration-row, .table-row, .risk-row, .matrix-grid, .feature-grid, .feature-subgrid, .metrics-grid, .stakeholder-row { grid-template-columns: 1fr; }
       .section-header, .summary-row, .progress-card, .modal-header { flex-direction: column; align-items: flex-start; }
     }
     @media (max-width: 640px) {
@@ -907,6 +974,9 @@
       <span>CleverTap</span>
     </div>
     <div class="top-nav">
+      <a href="main.html" data-i18n="nav.home">Home</a>
+      <a href="clever-plans.html" data-i18n="nav.plans">Plans</a>
+      <a href="sow-clever.html" data-i18n="nav.intake">Project Intake</a>
       <div class="lang-dd" id="langDD">
         <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
           <span id="langDDLabel">PT</span>
@@ -978,6 +1048,30 @@
                 <div class="field full">
                   <label for="businessSummary" data-i18n="fields.businessSummary">Tell us about your company, what you do and who you serve</label>
                   <textarea class="textarea required-field" id="businessSummary" name="businessSummary" data-i18n-placeholder="placeholders.businessSummary"></textarea>
+                </div>
+                <div class="field full">
+                  <label for="martechMigration" data-i18n="fields.martechMigration">Is the client migrating from a Martech platform?</label>
+                  <select class="select required-field" id="martechMigration">
+                    <option value=""></option>
+                    <option value="yes" data-i18n="yes">Sim</option>
+                    <option value="no" data-i18n="no">Não</option>
+                  </select>
+                  <div class="conditional-block hidden" id="martechMigrationBlock">
+                    <div class="form-grid">
+                      <div class="contract-row">
+                        <label for="martechProvider" data-i18n="fields.martechProvider">Which provider are they migrating from?</label>
+                        <input class="input" id="martechProvider" type="text" data-i18n-placeholder="placeholders.martechProvider">
+                      </div>
+                      <div class="contract-row">
+                        <label for="martechReason" data-i18n="fields.martechReason">What is the main reason for the migration?</label>
+                        <textarea class="textarea" id="martechReason" data-i18n-placeholder="placeholders.martechReason"></textarea>
+                      </div>
+                      <div class="contract-row">
+                        <label for="martechFeature" data-i18n="fields.martechFeature">Which feature from the current provider would they like in CleverTap?</label>
+                        <textarea class="textarea" id="martechFeature" data-i18n-placeholder="placeholders.martechFeature"></textarea>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="field full hidden" id="goLiveFastTrackBlock">
                   <label for="goLiveFastTrackReason" data-i18n="fields.goLiveFastTrackReason">Go-live is under 3 months. What are the main reasons?</label>
@@ -1245,11 +1339,96 @@
                 <div>
                   <div class="section-step" data-i18n="sections.useCases.step">Section 5</div>
                   <h2 class="section-title" data-i18n="sections.useCases.title">Use cases</h2>
-                  <p class="section-subtitle" data-i18n="sections.useCases.subtitle">Define channels, integrations and at least two business use cases for implementation.</p>
+                  <p class="section-subtitle" data-i18n="sections.useCases.subtitle">Define channels, external system integrations and at least two business use cases for implementation.</p>
                 </div>
                 <div class="section-status" data-i18n="status.guided">Guided section</div>
               </div>
               <div class="form-grid">
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.featuresTable">Tabela de features CleverTap</div>
+                  <div class="help-text" data-i18n="help.featuresTable">Selecione as soluções relevantes e complete as subcategorias quando aplicável.</div>
+                  <div class="feature-grid">
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" id="featureUserProfile" value="user_profile"><span data-i18n="features.userProfile">User profile</span></label>
+                      <div class="feature-subgrid three">
+                        <label class="check-item"><input type="checkbox" name="featureUserProfileSub" value="email"><span data-i18n="features.userProfile.email">Email</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureUserProfileSub" value="cellphone"><span data-i18n="features.userProfile.cellphone">Cellphone</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureUserProfileSub" id="featureCustomIdToggle" value="custom_id"><span data-i18n="features.userProfile.customId">Custom ID</span></label>
+                      </div>
+                      <div class="conditional-block hidden" id="customIdBlock">
+                        <div class="builder-label" data-i18n="fields.customIdTable">Custom ID types</div>
+                        <div class="help-text" data-i18n="help.customIdTable">Add each Custom ID type that must be supported.</div>
+                        <div class="feature-custom-list" id="customIdList"></div>
+                        <div class="builder-actions">
+                          <button type="button" class="ghost-btn" id="addCustomIdBtn" data-i18n="buttons.addCustomId">Add custom ID</button>
+                          <button type="button" class="ghost-btn" id="removeCustomIdBtn" data-i18n="buttons.removeLast">Remove last</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="access_management"><span data-i18n="features.accessManagement">Access Management</span></label>
+                      <div class="feature-subgrid">
+                        <label class="check-item"><input type="checkbox" name="featureAccessManagementSub" value="rbac"><span>RBAC</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureAccessManagementSub" value="pii_encryption"><span>PII Encryption</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureAccessManagementSub" value="sensitive_information"><span data-i18n="features.accessManagement.sensitive">Sensitive information</span></label>
+                      </div>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="cleverai"><span data-i18n="features.cleverai">CleverAI</span></label>
+                      <div class="feature-subgrid three">
+                        <label class="check-item"><input type="checkbox" name="featureCleverAiSub" value="ask_ai"><span>Ask AI</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureCleverAiSub" value="predictions"><span>Predictions</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureCleverAiSub" value="scribe_ai"><span>Scribe AI</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureCleverAiSub" value="intellinode"><span>IntelliNODE</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureCleverAiSub" value="recommendations"><span>Recommendations</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureCleverAiSub" value="preferred_channel"><span data-i18n="features.cleverai.preferredChannel">Preferred Channel</span></label>
+                      </div>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="segmentation"><span data-i18n="features.segmentation">Segmentation</span></label>
+                      <div class="feature-subgrid">
+                        <label class="check-item"><input type="checkbox" name="featureSegmentationSub" value="past_behavior"><span data-i18n="features.segmentation.pastBehavior">Past Behavior</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureSegmentationSub" value="live_use_segment"><span data-i18n="features.segmentation.liveUseSegment">Live use Segment</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureSegmentationSub" value="custom_list"><span data-i18n="features.segmentation.customList">Custom List</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureSegmentationSub" value="rfm_analysis"><span data-i18n="features.segmentation.rfm">RFM Analysis</span></label>
+                      </div>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="behavioral_analytics"><span data-i18n="features.behavioralAnalytics">Behavioral Analytics</span></label>
+                      <div class="feature-subgrid three">
+                        <label class="check-item"><input type="checkbox" name="featureBehavioralAnalyticsSub" value="analyze_events"><span data-i18n="features.behavioralAnalytics.analyzeEvents">Analyze Events</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureBehavioralAnalyticsSub" value="cohorts"><span>Cohorts</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureBehavioralAnalyticsSub" value="funnels"><span>Funnels</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureBehavioralAnalyticsSub" value="trends"><span>Trends</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureBehavioralAnalyticsSub" value="pivots"><span>Pivots</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureBehavioralAnalyticsSub" value="flows"><span>Flows</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureBehavioralAnalyticsSub" value="real_impact"><span>Real Impact</span></label>
+                      </div>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="campaigns"><span data-i18n="features.campaigns">Campaigns</span></label>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="journeys"><span data-i18n="features.journeys">Journeys</span></label>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="life_cycle_optimizer"><span data-i18n="features.lifeCycleOptimizer">Life Cycle Optmizer</span></label>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" value="hyper_personalization"><span data-i18n="features.hyperPersonalization">Hyper Personalization</span></label>
+                      <div class="feature-subgrid three">
+                        <label class="check-item"><input type="checkbox" name="featureHyperPersonalizationSub" value="linked_content"><span data-i18n="features.hyperPersonalization.linkedContent">Linked Content</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureHyperPersonalizationSub" value="liquid_tags"><span>Liquid Tags</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureHyperPersonalizationSub" value="catalog_send_time_personalization"><span data-i18n="features.hyperPersonalization.sendTime">Catalog Send-time Personalization</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureHyperPersonalizationSub" value="recommendations"><span>Recommendations</span></label>
+                        <label class="check-item"><input type="checkbox" name="featureHyperPersonalizationSub" value="catalogs"><span data-i18n="features.hyperPersonalization.catalogs">Catalogs</span></label>
+                      </div>
+                    </div>
+                    <div class="feature-card">
+                      <label class="feature-main"><input type="checkbox" name="featureOption" id="featureNestedObjects" value="nested_objects"><span data-i18n="features.nestedObjects">Nested Objects</span></label>
+                    </div>
+                  </div>
+                </div>
                 <div class="list-builder">
                   <div class="builder-label" data-i18n="fields.channelsMatrix">Channel matrix</div>
                   <div class="matrix-grid">
@@ -1289,7 +1468,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="list-builder">
                   <div class="builder-label" data-i18n="fields.integrationsTable">Integration table</div>
                   <div class="matrix-grid">
@@ -1321,6 +1499,15 @@
                   </div>
                   <div class="builder-label" data-i18n="fields.integrationSpecificRequirements">Existe alguma particularidade de exigência para integração com a ferramenta?</div>
                   <textarea class="textarea" id="integrationRequirements" data-i18n-placeholder="placeholders.integrationRequirements"></textarea>
+                </div>
+                <div class="list-builder">
+                  <div class="builder-label" data-i18n="fields.externalIntegrationsTable">Integrações com sistemas externos</div>
+                  <div class="help-text" data-i18n="help.externalIntegrations">Registre cada sistema externo, o tipo de conexão e a descrição da integração. Adicione quantas linhas forem necessárias.</div>
+                  <div class="table-list" id="externalIntegrationsList"></div>
+                  <div class="builder-actions usecase-actions">
+                    <button type="button" class="ghost-btn" id="addExternalIntegrationBtn" data-i18n="buttons.addExternalIntegration">Add external integration</button>
+                    <button type="button" class="ghost-btn" id="removeExternalIntegrationBtn" data-i18n="buttons.removeLast">Remove last</button>
+                  </div>
                 </div>
 
                 <div class="list-builder">
@@ -1545,19 +1732,23 @@
         "sections.objectives.step": "Seção 2", "sections.objectives.title": "Objetivos do projeto", "sections.objectives.subtitle": "Mapeie os motivos da iniciativa, como o sucesso será medido e quais resultados críticos não podem falhar.",
         "sections.contract.step": "Seção 3", "sections.contract.title": "Informações de plano e contrato", "sections.contract.subtitle": "Registre o setup comercial, MAUs, add-ons de canal e preferências de idioma no onboarding.",
         "sections.tech.step": "Seção 4", "sections.tech.title": "Tech Stack", "sections.tech.subtitle": "Mapeie a stack atual, a quantidade de pontos de contato que vão se conectar à CleverTap e quem liderará a implementação.",
-        "sections.useCases.step": "Seção 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Defina canais, integrações e ao menos dois casos de uso para implementação.",
+        "sections.useCases.step": "Seção 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Defina canais, integrações com sistemas externos e ao menos dois casos de uso para implementação.",
         "sections.architecture.step": "Seção 6", "sections.architecture.title": "Arquitetura do projeto", "sections.architecture.subtitle": "Mapeie arquitetura, payload e limites da plataforma antes da implementação.",
         "sections.risks.step": "Seção 7", "sections.risks.title": "Riscos e limites mapeados", "sections.risks.subtitle": "Gere riscos automaticamente com base nas respostas e ajuste manualmente se necessário.",
         "sections.stakeholders.step": "Seção 8", "sections.stakeholders.title": "Stakeholders do projeto", "sections.stakeholders.subtitle": "Registre stakeholders e contatos para execução e governança.",
         "fields.clientName": "Nome do cliente", "fields.projectName": "Nome do projeto", "fields.projectDate": "Data do projeto", "fields.projectVersion": "Versão do projeto", "fields.goLiveDate": "Data esperada de go-live", "fields.goLiveFastTrackReason": "Go-live em menos de 3 meses. Quais são os principais motivos?",
         "fields.businessSummary": "Conte um pouco sobre sua empresa, o que ela faz e para quem ela entrega valor",
+        "fields.martechMigration": "O cliente está migrando de uma plataforma de Martech?",
+        "fields.martechProvider": "De qual provedor está migrando?",
+        "fields.martechReason": "Qual o principal motivo da migração?",
+        "fields.martechFeature": "Qual funcionalidade do provedor atual gostariam de ter na CleverTap?",
         "fields.objectiveDescription": "Quais problemas, metas ou oportunidades de negócio motivam este projeto?",
         "fields.kpis": "KPIs do projeto",
         "fields.criticalNeeds": "Entregas críticas do projeto",
         "fields.ctPlan": "CT Plan", "fields.exitClause": "Exit Clause", "fields.freePeriod": "Free Period", "fields.freePeriodMonths": "Período free (meses)", "fields.maus": "MAUs",
         "fields.otherAddons": "Outros add-ons", "fields.mainLanguage": "Idioma principal", "fields.onboardingEnglish": "O onboarding pode ser em inglês?",
         "fields.currentStack": "Stack atual", "fields.integrationCount": "Quantos apps ou websites precisam se conectar à CleverTap?", "fields.liveQuestion": "O App/Web está live?", "fields.implementer": "Quem irá implementar o projeto?", "fields.partnerName": "Nome do partner", "fields.implementerOther": "Quem irá implementar o projeto?",
-        "fields.channelsMatrix": "Tabela de canais", "fields.integrationsTable": "Tabela de integrações", "fields.integrationSpecificRequirements": "Existe alguma particularidade de exigência para integração com a ferramenta?", "fields.useCaseTable": "Tabela de use case",
+        "fields.channelsMatrix": "Tabela de canais", "fields.integrationsTable": "Tabela de integrações", "fields.integrationSpecificRequirements": "Existe alguma particularidade de exigência para integração com a ferramenta?", "fields.featuresTable": "Tabela de features CleverTap", "fields.customIdTable": "Tipos de Custom ID", "fields.customIdType": "Tipo de Custom ID", "fields.nestedObjectsPayloadComplexity": "Como é a complexidade do payload?", "fields.externalIntegrationsTable": "Integrações com sistemas externos", "fields.useCaseTable": "Tabela de use case",
         "fields.projectsToImplement": "Quantos projetos precisam ser implementados?", "fields.projectsRequestedTotal": "Quantos projetos seriam necessários?", "fields.payloadComplexity": "Complexidade do payload para eventos/propriedades", "fields.nestedMappedCount": "Quantos eventos/propriedades nested precisam ser mapeados?",
         "fields.totalEvents": "Quantos eventos serão mapeados?", "fields.eventsOverLimit": "Precisam de mais de 512 eventos?", "fields.eventsRequestedTotal": "Quantos eventos no total seriam necessários?",
         "fields.activeJourneys": "Quantas jornadas ativas precisam no projeto?", "fields.journeysRequestedTotal": "Quantas jornadas seriam necessárias?", "fields.totalSegments": "Quantos segmentos serão necessários implementar?", "fields.segmentsRequestedTotal": "Quantos segmentos seriam necessários no total?",
@@ -1567,18 +1758,21 @@
         "help.criticalNeeds": "Liste os resultados obrigatórios que tornariam o projeto inviável caso não sejam alcançados. Isso ajuda a mapear riscos desde o início.",
         "help.currentStack": "Selecione as plataformas atualmente em escopo. Se necessário, adicione outra stack no campo dedicado.",
         "help.integrationCount": "Escolha o total de integrações no escopo. Cada linha irá capturar nome, tipo, stack e domínio quando aplicável.",
+        "help.featuresTable": "Selecione as soluções relevantes e complete as subcategorias quando aplicável.",
+        "help.customIdTable": "Adicione cada tipo de Custom ID que precisa ser suportado.",
+        "help.externalIntegrations": "Registre cada sistema externo, o tipo de conexão e a descrição da integração. Adicione quantas linhas forem necessárias.",
         "help.livePartial": "Defina quais apps ou websites específicos já estão em produção.",
         "alerts.minUseCases": "É recomendado cadastrar pelo menos 2 use cases completos (não bloqueia avanço).",
         "placeholders.businessSummary": "Exemplo: Somos uma empresa de varejo digital com operação em três países, atendemos clientes recorrentes via app e e-commerce e queremos estruturar melhor nossa comunicação de ciclo de vida.",
         "placeholders.objectiveDescription": "Exemplo: Queremos reduzir dependência de campanhas manuais, melhorar retenção, criar jornadas multicanal e alinhar produto, CRM e analytics em torno de metas claras de conversão e recorrência.",
         "placeholders.volume": "Volume contratado", "placeholders.otherStack": "Descreva outra tech stack", "placeholders.partnerName": "Nome da empresa parceira", "placeholders.implementerOther": "Descreva quem irá implementar",
-        "placeholders.channelsOther": "Descreva outro canal", "placeholders.integrationsOther": "Descreva outra integração", "placeholders.integrationRequirements": "Exemplo: dependência de janela de processamento, SLA de envio/recebimento, ordem de eventos, etc.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Exemplo: janela comercial crítica, campanha já contratada, prazo regulatório, dependências internas já prontas, etc.",
+        "placeholders.channelsOther": "Descreva outro canal", "placeholders.integrationsOther": "Descreva outra integração", "placeholders.customIdType": "Ex.: Loyalty ID, CRM ID", "placeholders.integrationRequirements": "Exemplo: dependência de janela de processamento, SLA de envio/recebimento, ordem de eventos, etc.", "placeholders.martechProvider": "Ex.: Adobe, Salesforce, Braze", "placeholders.martechReason": "Exemplo: redução de custo, consolidação de stack, melhora de performance, unificação de dados, etc.", "placeholders.martechFeature": "Exemplo: journeys, segmentação, personalização, trigger, etc.", "placeholders.nestedObjectsPayloadComplexity": "Exemplo: o payload possui múltiplos níveis, objetos aninhados e mapeamento adicional.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Exemplo: janela comercial crítica, campanha já contratada, prazo regulatório, dependências internas já prontas, etc.",
         "hints.projectsRange": "Faixa sugerida: de 1 a 50 projetos.",
         "contract.coreTitle": "Informações centrais do contrato", "contract.coreMini": "Estruturado para o handoff de implementação",
         "contract.addonsTitle": "Add-ons e canais", "contract.addonsMini": "Volume contratado mais modelo de provedor",
         "contract.languageTitle": "Idioma e onboarding", "contract.languageMini": "Preferências de comunicação para a entrega",
         "buttons.previous": "Seção anterior", "buttons.continue": "Continuar", "buttons.addKpi": "Adicionar KPI", "buttons.addRequirement": "Adicionar entrega crítica", "buttons.removeLast": "Remover último", "buttons.addOtherAddon": "Adicionar outro add-on", "buttons.viewSummary": "Ver resumo", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
-        "buttons.addUseCase": "Adicionar use case", "buttons.savePayload": "Salvar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Adicionar risco manual", "buttons.addStakeholder": "Adicionar stakeholder", "buttons.addOtherIntegration": "Adicionar outra integração",
+        "buttons.addUseCase": "Adicionar use case", "buttons.savePayload": "Salvar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Adicionar risco manual", "buttons.addStakeholder": "Adicionar stakeholder", "buttons.addOtherIntegration": "Adicionar outra integração", "buttons.addExternalIntegration": "Adicionar integração externa", "buttons.addCustomId": "Adicionar Custom ID",
         "summary.bannerTitle": "Quer revisar tudo antes de compartilhar?", "summary.bannerText": "Abra o popup de resumo em tela ampliada, copie o texto coletado ou exporte um arquivo `.doc`.",
         "summary.modalTitle": "Resumo da coleta de implementação", "summary.modalSubtitle": "Revise o texto gerado antes de copiar ou exportar.",
         "placeholder.badge": "Seção planejada", "placeholder.title": "Esta seção já está pronta para receber o próximo bloco de perguntas.", "placeholder.text": "O layout, a navegação e a lógica do resumo já suportam novas seções. Pode continuar enviando os próximos requisitos que eles entram sobre esta mesma estrutura.",
@@ -1586,11 +1780,19 @@
         "provider.cleverTap": "CleverTap", "provider.external": "Provedor externo", "provider.noneEmail": "Sem email", "provider.noneWhatsApp": "Sem WhatsApp", "provider.noneSms": "Sem SMS", "provider.noneRcs": "Sem RCS",
         "lang.english": "Inglês", "lang.spanish": "Espanhol", "lang.portuguese": "Português", "yes": "Sim", "no": "Não", "partial": "Parcial", "other": "Outro",
         "implementer.ctPartner": "CT Partner", "implementer.internalTeam": "Time interno do cliente", "implementer.customerPartner": "Partner do cliente",
-        "integration.type": "Tipo", "integration.name": "Nome do App/Web", "integration.stack": "Tech Stack", "integration.domain": "Domínio", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.exemplo.com",
+        "integration.type": "Tipo", "integration.name": "Nome do App/Web", "integration.stack": "Tech Stack", "integration.domain": "Domínio", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.exemplo.com", "integration.systemName": "Sistema", "integration.connectionType": "Tipo de conexão", "integration.description": "Descrição da integração", "integration.connectionOther": "Descreva o tipo de conexão", "integration.api": "API", "integration.sdk": "SDK", "integration.manual": "Manual", "integration.otherConnection": "Outro",
+        "features.userProfile": "User profile", "features.userProfile.email": "Email", "features.userProfile.cellphone": "Cellphone", "features.userProfile.customId": "Custom ID",
+        "features.nestedObjects": "Nested Objects", "features.accessManagement": "Access Management", "features.accessManagement.sensitive": "Sensitive information",
+        "features.cleverai": "CleverAI", "features.cleverai.preferredChannel": "Preferred Channel",
+        "features.segmentation": "Segmentation", "features.segmentation.pastBehavior": "Past Behavior", "features.segmentation.liveUseSegment": "Live use Segment", "features.segmentation.customList": "Custom List", "features.segmentation.rfm": "RFM Analysis",
+        "features.behavioralAnalytics": "Behavioral Analytics", "features.behavioralAnalytics.analyzeEvents": "Analyze Events",
+        "features.remarketing": "Remarketing",
+        "features.hyperPersonalization": "Hyper Personalization", "features.hyperPersonalization.linkedContent": "Linked Content", "features.hyperPersonalization.sendTime": "Catalog Send-time Personalization", "features.hyperPersonalization.catalogs": "Catalogs",
+        "features.campaigns": "Campaigns", "features.journeys": "Journeys", "features.lifeCycleOptimizer": "Life Cycle Optmizer",
         "channels.appNative": "App Native", "channels.webNative": "Web Native", "channels.additional": "Canais adicionais",
         "payload.simple": "Simples", "payload.nested": "Nested", "payload.isValid": "JSON válido", "payload.isNested": "Válido como nested", "payload.size": "Payload size", "payload.depth": "Nesting depth", "payload.rootKeys": "Root-level keys (obj/arr)", "payload.nestedKeys": "Nested keys inside objects",
         "limits.upTo512": "Até 512 eventos", "limits.above512": "Acima de 512 eventos", "limits.upTo100": "Até 100 jornadas", "limits.above100": "Acima de 100 jornadas", "limits.upTo3000": "Até 3000 segmentos", "limits.above3000": "Acima de 3000 segmentos",
-        "risk.auto": "Automático", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.high": "High",
+        "risk.auto": "Automático", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.yellow": "Yellow flag", "risk.high": "High",
         "stakeholder.name": "Nome", "stakeholder.contact": "Contato", "stakeholder.role": "Função no projeto", "stakeholder.company": "Empresa",
         "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
         "summary.warningUseCases": "Atenção: menos de 2 use cases completos foram cadastrados.",
@@ -1608,18 +1810,22 @@
         "sections.objectives.step": "Section 2", "sections.objectives.title": "Project objectives", "sections.objectives.subtitle": "Map the reasons behind the initiative, how success will be measured and the critical outcomes that cannot fail.",
         "sections.contract.step": "Section 3", "sections.contract.title": "Plan and contract details", "sections.contract.subtitle": "Record the commercial setup, MAUs, channel add-ons and onboarding language details.",
         "sections.tech.step": "Section 4", "sections.tech.title": "Tech stack", "sections.tech.subtitle": "Map the current stack, the number of touchpoints that will connect to CleverTap and who will lead the implementation.",
-        "sections.useCases.step": "Section 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Define channels, integrations and at least two implementation use cases.",
+        "sections.useCases.step": "Section 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Define channels, external system integrations and at least two implementation use cases.",
         "sections.architecture.step": "Section 6", "sections.architecture.title": "Project architecture", "sections.architecture.subtitle": "Capture architecture, payload and platform-limit details before implementation starts.",
         "sections.risks.step": "Section 7", "sections.risks.title": "Mapped risks and limits", "sections.risks.subtitle": "Generate risks automatically from previous answers and adjust manually when needed.",
         "sections.stakeholders.step": "Section 8", "sections.stakeholders.title": "Project stakeholders", "sections.stakeholders.subtitle": "Register stakeholders and contacts for delivery governance.",
         "fields.clientName": "Client name", "fields.projectName": "Project name", "fields.projectDate": "Project date", "fields.projectVersion": "Project version", "fields.goLiveDate": "Expected go-live date", "fields.goLiveFastTrackReason": "Go-live is under 3 months. What are the main reasons?",
         "fields.businessSummary": "Tell us about your company, what you do and who you serve",
+        "fields.martechMigration": "Is the client migrating from a Martech platform?",
+        "fields.martechProvider": "Which provider are they migrating from?",
+        "fields.martechReason": "What is the main reason for the migration?",
+        "fields.martechFeature": "Which feature from the current provider would they like in CleverTap?",
         "fields.objectiveDescription": "What business problems, goals or opportunities are driving this project?",
         "fields.kpis": "Project KPIs", "fields.criticalNeeds": "Critical delivery requirements",
         "fields.ctPlan": "CT Plan", "fields.exitClause": "Exit Clause", "fields.freePeriod": "Free Period", "fields.freePeriodMonths": "Free period (months)", "fields.maus": "MAUs",
         "fields.otherAddons": "Other add-ons", "fields.mainLanguage": "Main language", "fields.onboardingEnglish": "Can the onboarding be in English?",
         "fields.currentStack": "Current tech stack", "fields.integrationCount": "How many apps or websites need to connect to CleverTap?", "fields.liveQuestion": "Is the App/Web live?", "fields.implementer": "Who will implement the project?", "fields.partnerName": "Partner name", "fields.implementerOther": "Who will implement the project?",
-        "fields.channelsMatrix": "Channel matrix", "fields.integrationsTable": "Integration table", "fields.integrationSpecificRequirements": "Are there any specific requirements for this integration setup?", "fields.useCaseTable": "Use case table",
+        "fields.channelsMatrix": "Channel matrix", "fields.integrationsTable": "Integration table", "fields.integrationSpecificRequirements": "Are there any specific requirements for this integration setup?", "fields.featuresTable": "CleverTap feature table", "fields.customIdTable": "Custom ID types", "fields.customIdType": "Custom ID type", "fields.nestedObjectsPayloadComplexity": "How complex is the payload?", "fields.externalIntegrationsTable": "External system integrations", "fields.useCaseTable": "Use case table",
         "fields.projectsToImplement": "How many projects need implementation?", "fields.projectsRequestedTotal": "How many projects are needed?", "fields.payloadComplexity": "Payload complexity for events/user properties", "fields.nestedMappedCount": "How many nested events/properties need mapping?",
         "fields.totalEvents": "How many total events will be mapped?", "fields.eventsOverLimit": "Need more than 512 events?", "fields.eventsRequestedTotal": "How many events are needed in total?",
         "fields.activeJourneys": "How many active journeys are needed?", "fields.journeysRequestedTotal": "How many journeys are required?", "fields.totalSegments": "How many segments are needed?", "fields.segmentsRequestedTotal": "How many segments are required in total?",
@@ -1629,18 +1835,21 @@
         "help.criticalNeeds": "List the must-have outcomes that would make the project unworkable if they are not achieved. This helps map risks early.",
         "help.currentStack": "Select the platforms currently in scope. If needed, add another stack in the dedicated field.",
         "help.integrationCount": "Choose the total number of integrations in scope. Each line will capture the name, type, stack and domain when applicable.",
+        "help.featuresTable": "Select the relevant solutions and complete subcategories when applicable.",
+        "help.customIdTable": "Add each Custom ID type that must be supported.",
+        "help.externalIntegrations": "Register each external system, the connection type and the integration description. Add as many rows as needed.",
         "help.livePartial": "Define which specific app or web property is already live.",
         "alerts.minUseCases": "At least 2 fully completed use cases are recommended (non-blocking).",
         "placeholders.businessSummary": "Example: We are a digital retail company operating in three countries, serving repeat customers through app and e-commerce, and we want to better structure lifecycle communication.",
         "placeholders.objectiveDescription": "Example: We want to reduce dependency on manual campaigns, improve retention, build multi-channel journeys and align product, CRM and analytics around clear conversion and repeat-purchase goals.",
         "placeholders.volume": "Contracted volume", "placeholders.otherStack": "Describe another tech stack", "placeholders.partnerName": "Partner company name", "placeholders.implementerOther": "Describe who will implement",
-        "placeholders.channelsOther": "Describe another channel", "placeholders.integrationsOther": "Describe another integration", "placeholders.integrationRequirements": "Example: processing window, send/receive SLA, event ordering constraints, etc.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Example: hard campaign deadline, contractual launch window, regulatory requirement, or pre-ready internal dependencies.",
+        "placeholders.channelsOther": "Describe another channel", "placeholders.integrationsOther": "Describe another integration", "placeholders.customIdType": "Ex.: Loyalty ID, CRM ID", "placeholders.integrationRequirements": "Example: processing window, send/receive SLA, event ordering constraints, etc.", "placeholders.martechProvider": "Ex.: Adobe, Salesforce, Braze", "placeholders.martechReason": "Example: cost reduction, stack consolidation, performance improvement, data unification, etc.", "placeholders.martechFeature": "Example: journeys, segmentation, personalization, triggers, etc.", "placeholders.nestedObjectsPayloadComplexity": "Example: the payload has multiple levels, nested objects and extra mapping effort.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Example: hard campaign deadline, contractual launch window, regulatory requirement, or pre-ready internal dependencies.",
         "hints.projectsRange": "Suggested range: 1 to 50 projects.",
         "contract.coreTitle": "Core contract information", "contract.coreMini": "Structured for implementation handoff",
         "contract.addonsTitle": "Add-ons and channels", "contract.addonsMini": "Volume plus provider model",
         "contract.languageTitle": "Language and onboarding", "contract.languageMini": "Communication preferences for delivery",
         "buttons.previous": "Previous section", "buttons.continue": "Continue", "buttons.addKpi": "Add KPI", "buttons.addRequirement": "Add critical requirement", "buttons.removeLast": "Remove last", "buttons.addOtherAddon": "Add other add-on", "buttons.viewSummary": "View summary", "buttons.minimize": "Minimize", "buttons.expand": "Expand", "buttons.copyText": "Copy text", "buttons.exportDoc": "Export .doc",
-        "buttons.addUseCase": "Add use case", "buttons.savePayload": "Save payload", "buttons.showPayload": "Show payload", "buttons.hidePayload": "Hide payload", "buttons.addRisk": "Add manual risk", "buttons.addStakeholder": "Add stakeholder", "buttons.addOtherIntegration": "Add other integration",
+        "buttons.addUseCase": "Add use case", "buttons.savePayload": "Save payload", "buttons.showPayload": "Show payload", "buttons.hidePayload": "Hide payload", "buttons.addRisk": "Add manual risk", "buttons.addStakeholder": "Add stakeholder", "buttons.addOtherIntegration": "Add other integration", "buttons.addExternalIntegration": "Add external integration", "buttons.addCustomId": "Add Custom ID",
         "summary.bannerTitle": "Need to review everything before sharing?", "summary.bannerText": "Open the large summary popup, copy the collected text or export a `.doc` file.",
         "summary.modalTitle": "Implementation intake summary", "summary.modalSubtitle": "Review the generated text before copying or exporting it.",
         "placeholder.badge": "Planned section", "placeholder.title": "This section is ready to receive the next set of questions.", "placeholder.text": "The layout, navigation and summary logic already support additional sections. Continue sending the remaining requirements and they can be added on top of this structure.",
@@ -1648,11 +1857,19 @@
         "provider.cleverTap": "CleverTap", "provider.external": "External Provider", "provider.noneEmail": "No email", "provider.noneWhatsApp": "No WhatsApp", "provider.noneSms": "No SMS", "provider.noneRcs": "No RCS",
         "lang.english": "English", "lang.spanish": "Spanish", "lang.portuguese": "Portuguese", "yes": "Yes", "no": "No", "partial": "Partial", "other": "Other",
         "implementer.ctPartner": "CT Partner", "implementer.internalTeam": "Internal Customer Team", "implementer.customerPartner": "Customer Partner",
-        "integration.type": "Type", "integration.name": "App/Web name", "integration.stack": "Tech stack", "integration.domain": "Domain", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.example.com",
+        "integration.type": "Type", "integration.name": "App/Web name", "integration.stack": "Tech stack", "integration.domain": "Domain", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.example.com", "integration.systemName": "System", "integration.connectionType": "Connection type", "integration.description": "Integration description", "integration.connectionOther": "Describe the connection type", "integration.api": "API", "integration.sdk": "SDK", "integration.manual": "Manual", "integration.otherConnection": "Other",
+        "features.userProfile": "User profile", "features.userProfile.email": "Email", "features.userProfile.cellphone": "Cellphone", "features.userProfile.customId": "Custom ID",
+        "features.nestedObjects": "Nested Objects", "features.accessManagement": "Access Management", "features.accessManagement.sensitive": "Sensitive information",
+        "features.cleverai": "CleverAI", "features.cleverai.preferredChannel": "Preferred Channel",
+        "features.segmentation": "Segmentation", "features.segmentation.pastBehavior": "Past Behavior", "features.segmentation.liveUseSegment": "Live use Segment", "features.segmentation.customList": "Custom List", "features.segmentation.rfm": "RFM Analysis",
+        "features.behavioralAnalytics": "Behavioral Analytics", "features.behavioralAnalytics.analyzeEvents": "Analyze Events",
+        "features.remarketing": "Remarketing",
+        "features.hyperPersonalization": "Hyper Personalization", "features.hyperPersonalization.linkedContent": "Linked Content", "features.hyperPersonalization.sendTime": "Catalog Send-time Personalization", "features.hyperPersonalization.catalogs": "Catalogs",
+        "features.campaigns": "Campaigns", "features.journeys": "Journeys", "features.lifeCycleOptimizer": "Life Cycle Optmizer",
         "channels.appNative": "App Native", "channels.webNative": "Web Native", "channels.additional": "Additional channels",
         "payload.simple": "Simple", "payload.nested": "Nested", "payload.isValid": "JSON valid", "payload.isNested": "Nested valid", "payload.size": "Payload size", "payload.depth": "Nesting depth", "payload.rootKeys": "Root-level keys (obj/arr)", "payload.nestedKeys": "Nested keys inside objects",
         "limits.upTo512": "Up to 512 events", "limits.above512": "Above 512 events", "limits.upTo100": "Up to 100 journeys", "limits.above100": "Above 100 journeys", "limits.upTo3000": "Up to 3000 segments", "limits.above3000": "Above 3000 segments",
-        "risk.auto": "Auto", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.high": "High",
+        "risk.auto": "Auto", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.yellow": "Yellow flag", "risk.high": "High",
         "stakeholder.name": "Name", "stakeholder.contact": "Contact", "stakeholder.role": "Role in project", "stakeholder.company": "Company",
         "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
         "summary.warningUseCases": "Warning: fewer than 2 complete use cases were provided.",
@@ -1670,18 +1887,22 @@
         "sections.objectives.step": "Sección 2", "sections.objectives.title": "Objetivos del proyecto", "sections.objectives.subtitle": "Mapee las razones de la iniciativa, cómo se medirá el éxito y cuáles resultados críticos no pueden fallar.",
         "sections.contract.step": "Sección 3", "sections.contract.title": "Información de plan y contrato", "sections.contract.subtitle": "Registre la configuración comercial, MAUs, add-ons de canal y detalles de idioma para el onboarding.",
         "sections.tech.step": "Sección 4", "sections.tech.title": "Tech Stack", "sections.tech.subtitle": "Mapee la stack actual, la cantidad de puntos de contacto que se conectarán a CleverTap y quién liderará la implementación.",
-        "sections.useCases.step": "Sección 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Defina canales, integraciones y al menos dos casos de uso para implementación.",
+        "sections.useCases.step": "Sección 5", "sections.useCases.title": "Use cases", "sections.useCases.subtitle": "Defina canales, integraciones con sistemas externos y al menos dos casos de uso para implementación.",
         "sections.architecture.step": "Sección 6", "sections.architecture.title": "Arquitectura del proyecto", "sections.architecture.subtitle": "Mapee arquitectura, payload y límites de plataforma antes de implementar.",
         "sections.risks.step": "Sección 7", "sections.risks.title": "Riesgos y límites mapeados", "sections.risks.subtitle": "Genere riesgos automáticos según respuestas previas y ajústelos manualmente si hace falta.",
         "sections.stakeholders.step": "Sección 8", "sections.stakeholders.title": "Stakeholders del proyecto", "sections.stakeholders.subtitle": "Registre stakeholders y contactos para la gobernanza de la entrega.",
         "fields.clientName": "Nombre del cliente", "fields.projectName": "Nombre del proyecto", "fields.projectDate": "Fecha del proyecto", "fields.projectVersion": "Versión del proyecto", "fields.goLiveDate": "Fecha esperada de go-live", "fields.goLiveFastTrackReason": "El go-live es menor a 3 meses. ¿Cuáles son los motivos principales?",
         "fields.businessSummary": "Cuéntenos sobre su empresa, qué hace y a quién atiende",
+        "fields.martechMigration": "¿El cliente está migrando desde una plataforma de Martech?",
+        "fields.martechProvider": "¿Desde qué proveedor está migrando?",
+        "fields.martechReason": "¿Cuál es el principal motivo de la migración?",
+        "fields.martechFeature": "¿Qué funcionalidad del proveedor actual les gustaría tener en CleverTap?",
         "fields.objectiveDescription": "¿Qué problemas, metas u oportunidades de negocio impulsan este proyecto?",
         "fields.kpis": "KPIs del proyecto", "fields.criticalNeeds": "Entregables críticos del proyecto",
         "fields.ctPlan": "CT Plan", "fields.exitClause": "Exit Clause", "fields.freePeriod": "Free Period", "fields.freePeriodMonths": "Período free (meses)", "fields.maus": "MAUs",
         "fields.otherAddons": "Otros add-ons", "fields.mainLanguage": "Idioma principal", "fields.onboardingEnglish": "¿El onboarding puede ser en inglés?",
         "fields.currentStack": "Stack actual", "fields.integrationCount": "¿Cuántas apps o websites necesitan conectarse a CleverTap?", "fields.liveQuestion": "¿La App/Web está live?", "fields.implementer": "¿Quién implementará el proyecto?", "fields.partnerName": "Nombre del partner", "fields.implementerOther": "¿Quién implementará el proyecto?",
-        "fields.channelsMatrix": "Tabla de canales", "fields.integrationsTable": "Tabla de integraciones", "fields.integrationSpecificRequirements": "¿Existe alguna exigencia particular para la integración con la herramienta?", "fields.useCaseTable": "Tabla de use case",
+        "fields.channelsMatrix": "Tabla de canales", "fields.integrationsTable": "Tabla de integraciones", "fields.integrationSpecificRequirements": "¿Existe alguna exigencia particular para la integración con la herramienta?", "fields.featuresTable": "Tabla de features de CleverTap", "fields.customIdTable": "Tipos de Custom ID", "fields.customIdType": "Tipo de Custom ID", "fields.nestedObjectsPayloadComplexity": "¿Qué tan complejo es el payload?", "fields.externalIntegrationsTable": "Integraciones con sistemas externos", "fields.useCaseTable": "Tabla de use case",
         "fields.projectsToImplement": "¿Cuántos proyectos necesitan implementación?", "fields.projectsRequestedTotal": "¿Cuántos proyectos serían necesarios?", "fields.payloadComplexity": "Complejidad del payload para eventos/propiedades", "fields.nestedMappedCount": "¿Cuántos eventos/propiedades nested necesitan mapeo?",
         "fields.totalEvents": "¿Cuántos eventos totales serán mapeados?", "fields.eventsOverLimit": "¿Necesitan más de 512 eventos?", "fields.eventsRequestedTotal": "¿Cuántos eventos necesitarían en total?",
         "fields.activeJourneys": "¿Cuántos journeys activos necesitan?", "fields.journeysRequestedTotal": "¿Cuántos journeys serían necesarios?", "fields.totalSegments": "¿Cuántos segmentos necesitan?", "fields.segmentsRequestedTotal": "¿Cuántos segmentos necesitarían en total?",
@@ -1691,18 +1912,21 @@
         "help.criticalNeeds": "Liste los resultados obligatorios que volverían inviable el proyecto si no se alcanzan. Esto ayuda a mapear riesgos desde el inicio.",
         "help.currentStack": "Seleccione las plataformas actualmente en alcance. Si hace falta, agregue otra stack en el campo dedicado.",
         "help.integrationCount": "Elija el total de integraciones en alcance. Cada línea capturará el nombre, tipo, stack y dominio cuando aplique.",
+        "help.featuresTable": "Seleccione las soluciones relevantes y complete las subcategorías cuando aplique.",
+        "help.customIdTable": "Agregue cada tipo de Custom ID que debe ser soportado.",
+        "help.externalIntegrations": "Registre cada sistema externo, el tipo de conexión y la descripción de la integración. Agregue tantas líneas como necesite.",
         "help.livePartial": "Defina qué app o propiedad web específica ya está en producción.",
         "alerts.minUseCases": "Se recomienda registrar al menos 2 use cases completos (no bloquea avance).",
         "placeholders.businessSummary": "Ejemplo: Somos una empresa de retail digital con operación en tres países, atendemos clientes recurrentes por app y e-commerce y queremos estructurar mejor la comunicación del ciclo de vida.",
         "placeholders.objectiveDescription": "Ejemplo: Queremos reducir la dependencia de campañas manuales, mejorar la retención, crear journeys multicanal y alinear producto, CRM y analytics alrededor de metas claras de conversión y recurrencia.",
         "placeholders.volume": "Volumen contratado", "placeholders.otherStack": "Describa otra tech stack", "placeholders.partnerName": "Nombre de la empresa partner", "placeholders.implementerOther": "Describa quién implementará",
-        "placeholders.channelsOther": "Describa otro canal", "placeholders.integrationsOther": "Describa otra integración", "placeholders.integrationRequirements": "Ejemplo: ventana de procesamiento, SLA de envío/recepción, orden de eventos, etc.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Ejemplo: ventana comercial crítica, fecha contractual, exigencia regulatoria o dependencias internas ya listas.",
+        "placeholders.channelsOther": "Describa otro canal", "placeholders.integrationsOther": "Describa otra integración", "placeholders.customIdType": "Ej.: Loyalty ID, CRM ID", "placeholders.integrationRequirements": "Ejemplo: ventana de procesamiento, SLA de envío/recepción, orden de eventos, etc.", "placeholders.martechProvider": "Ej.: Adobe, Salesforce, Braze", "placeholders.martechReason": "Ejemplo: reducción de costo, consolidación de stack, mejora de rendimiento, unificación de datos, etc.", "placeholders.martechFeature": "Ejemplo: journeys, segmentación, personalización, triggers, etc.", "placeholders.nestedObjectsPayloadComplexity": "Ejemplo: el payload tiene múltiples niveles, objetos anidados y mapeo adicional.", "placeholders.payloadJson": "{\"event\":\"purchase\",\"props\":{\"items\":[{\"sku\":\"123\"}]}}", "placeholders.goLiveFastTrackReason": "Ejemplo: ventana comercial crítica, fecha contractual, exigencia regulatoria o dependencias internas ya listas.",
         "hints.projectsRange": "Rango sugerido: de 1 a 50 proyectos.",
         "contract.coreTitle": "Información central del contrato", "contract.coreMini": "Estructurado para el handoff de implementación",
         "contract.addonsTitle": "Add-ons y canales", "contract.addonsMini": "Volumen contratado más modelo de proveedor",
         "contract.languageTitle": "Idioma y onboarding", "contract.languageMini": "Preferencias de comunicación para la entrega",
         "buttons.previous": "Sección anterior", "buttons.continue": "Continuar", "buttons.addKpi": "Agregar KPI", "buttons.addRequirement": "Agregar entregable crítico", "buttons.removeLast": "Eliminar último", "buttons.addOtherAddon": "Agregar otro add-on", "buttons.viewSummary": "Ver resumen", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
-        "buttons.addUseCase": "Agregar use case", "buttons.savePayload": "Guardar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Agregar riesgo manual", "buttons.addStakeholder": "Agregar stakeholder", "buttons.addOtherIntegration": "Agregar otra integración",
+        "buttons.addUseCase": "Agregar use case", "buttons.savePayload": "Guardar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Agregar riesgo manual", "buttons.addStakeholder": "Agregar stakeholder", "buttons.addOtherIntegration": "Agregar otra integración", "buttons.addExternalIntegration": "Agregar integración externa", "buttons.addCustomId": "Agregar Custom ID",
         "summary.bannerTitle": "¿Necesita revisar todo antes de compartirlo?", "summary.bannerText": "Abra el popup de resumen ampliado, copie el texto recolectado o exporte un archivo `.doc`.",
         "summary.modalTitle": "Resumen de la recolección de implementación", "summary.modalSubtitle": "Revise el texto generado antes de copiarlo o exportarlo.",
         "placeholder.badge": "Sección planificada", "placeholder.title": "Esta sección ya está lista para recibir el próximo bloque de preguntas.", "placeholder.text": "El layout, la navegación y la lógica del resumen ya soportan nuevas secciones. Puede seguir enviando los próximos requisitos para agregarlos sobre esta misma estructura.",
@@ -1710,11 +1934,19 @@
         "provider.cleverTap": "CleverTap", "provider.external": "Proveedor externo", "provider.noneEmail": "Sin email", "provider.noneWhatsApp": "Sin WhatsApp", "provider.noneSms": "Sin SMS", "provider.noneRcs": "Sin RCS",
         "lang.english": "Inglés", "lang.spanish": "Español", "lang.portuguese": "Portugués", "yes": "Sí", "no": "No", "partial": "Parcial", "other": "Otro",
         "implementer.ctPartner": "CT Partner", "implementer.internalTeam": "Equipo interno del cliente", "implementer.customerPartner": "Partner del cliente",
-        "integration.type": "Tipo", "integration.name": "Nombre de la App/Web", "integration.stack": "Tech Stack", "integration.domain": "Dominio", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.ejemplo.com",
+        "integration.type": "Tipo", "integration.name": "Nombre de la App/Web", "integration.stack": "Tech Stack", "integration.domain": "Dominio", "integration.app": "App", "integration.web": "Web", "integration.domainPlaceholder": "www.ejemplo.com", "integration.systemName": "Sistema", "integration.connectionType": "Tipo de conexión", "integration.description": "Descripción de la integración", "integration.connectionOther": "Describa el tipo de conexión", "integration.api": "API", "integration.sdk": "SDK", "integration.manual": "Manual", "integration.otherConnection": "Otro",
+        "features.userProfile": "User profile", "features.userProfile.email": "Email", "features.userProfile.cellphone": "Cellphone", "features.userProfile.customId": "Custom ID",
+        "features.nestedObjects": "Nested Objects", "features.accessManagement": "Access Management", "features.accessManagement.sensitive": "Sensitive information",
+        "features.cleverai": "CleverAI", "features.cleverai.preferredChannel": "Preferred Channel",
+        "features.segmentation": "Segmentation", "features.segmentation.pastBehavior": "Past Behavior", "features.segmentation.liveUseSegment": "Live use Segment", "features.segmentation.customList": "Custom List", "features.segmentation.rfm": "RFM Analysis",
+        "features.behavioralAnalytics": "Behavioral Analytics", "features.behavioralAnalytics.analyzeEvents": "Analyze Events",
+        "features.remarketing": "Remarketing",
+        "features.hyperPersonalization": "Hyper Personalization", "features.hyperPersonalization.linkedContent": "Linked Content", "features.hyperPersonalization.sendTime": "Catalog Send-time Personalization", "features.hyperPersonalization.catalogs": "Catalogs",
+        "features.campaigns": "Campaigns", "features.journeys": "Journeys", "features.lifeCycleOptimizer": "Life Cycle Optmizer",
         "channels.appNative": "App Native", "channels.webNative": "Web Native", "channels.additional": "Canales adicionales",
         "payload.simple": "Simple", "payload.nested": "Nested", "payload.isValid": "JSON válido", "payload.isNested": "Válido como nested", "payload.size": "Payload size", "payload.depth": "Nesting depth", "payload.rootKeys": "Root-level keys (obj/arr)", "payload.nestedKeys": "Nested keys inside objects",
         "limits.upTo512": "Hasta 512 eventos", "limits.above512": "Más de 512 eventos", "limits.upTo100": "Hasta 100 journeys", "limits.above100": "Más de 100 journeys", "limits.upTo3000": "Hasta 3000 segmentos", "limits.above3000": "Más de 3000 segmentos",
-        "risk.auto": "Automático", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.high": "High",
+        "risk.auto": "Automático", "risk.manual": "Manual", "risk.low": "Low", "risk.medium": "Medium", "risk.yellow": "Bandera amarilla", "risk.high": "High",
         "stakeholder.name": "Nombre", "stakeholder.contact": "Contacto", "stakeholder.role": "Rol en el proyecto", "stakeholder.company": "Empresa",
         "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
         "summary.warningUseCases": "Aviso: se registraron menos de 2 use cases completos.",
@@ -1759,8 +1991,11 @@
       buildIndex();
       renderProgress();
       renderDynamicLabels();
+      renderExternalIntegrationRows();
       renderIntegrationRows();
       renderLiveStatusRows();
+      updateOverviewConditionalUI();
+      updateFeaturesConditionalUI();
       syncTechConditionalUI();
       renderUseCaseRows();
       renderStakeholderRows();
@@ -1861,6 +2096,125 @@
       document.querySelectorAll("#integrationsOtherList .other-addon-item input").forEach((input, index) => {
         input.placeholder = `${t("placeholders.integrationsOther")} ${index + 1}`;
       });
+      document.querySelectorAll("#customIdList .feature-custom-row input").forEach((input, index) => {
+        input.placeholder = `${t("placeholders.customIdType")} ${index + 1}`;
+      });
+    }
+
+    function renderExternalIntegrationRows(minRows = 0) {
+      const list = document.getElementById("externalIntegrationsList");
+      if (!list) return;
+      const existing = [...list.querySelectorAll(".external-integration-row")].map((row) => ({
+        systemName: row.querySelector('[data-role="systemName"]')?.value || "",
+        connectionType: row.querySelector('[data-role="connectionType"]')?.value || "",
+        connectionOther: row.querySelector('[data-role="connectionOther"]')?.value || "",
+        description: row.querySelector('[data-role="description"]')?.value || ""
+      }));
+      const targetCount = Math.max(existing.length, minRows);
+      list.innerHTML = "";
+      for (let i = 0; i < targetCount; i += 1) {
+        const item = existing[i] || {};
+        const row = document.createElement("div");
+        row.className = "external-integration-row";
+        row.innerHTML = `
+          <div class="contract-row">
+            <label>${t("integration.systemName")} ${i + 1}</label>
+            <input class="input" data-role="systemName" type="text" value="${(item.systemName || "").replace(/"/g, "&quot;")}">
+          </div>
+          <div class="contract-row">
+            <label>${t("integration.connectionType")}</label>
+            <select class="select" data-role="connectionType">
+              <option value=""></option>
+              <option value="api" ${item.connectionType === "api" ? "selected" : ""}>${t("integration.api")}</option>
+              <option value="sdk" ${item.connectionType === "sdk" ? "selected" : ""}>${t("integration.sdk")}</option>
+              <option value="manual" ${item.connectionType === "manual" ? "selected" : ""}>${t("integration.manual")}</option>
+              <option value="other" ${item.connectionType === "other" ? "selected" : ""}>${t("integration.otherConnection")}</option>
+            </select>
+            <input class="input ${item.connectionType === "other" ? "" : "hidden"}" data-role="connectionOther" type="text" value="${(item.connectionOther || "").replace(/"/g, "&quot;")}" placeholder="${t("integration.connectionOther")}">
+          </div>
+          <div class="contract-row">
+            <label>${t("integration.description")}</label>
+            <textarea class="textarea" data-role="description">${item.description || ""}</textarea>
+          </div>
+          <button type="button" class="icon-btn" aria-label="remove">−</button>
+        `;
+        const typeSelect = row.querySelector('[data-role="connectionType"]');
+        const otherInput = row.querySelector('[data-role="connectionOther"]');
+        typeSelect.addEventListener("change", () => {
+          otherInput.classList.toggle("hidden", typeSelect.value !== "other");
+          handleFormChange();
+        });
+        row.querySelector("button").addEventListener("click", () => {
+          row.remove();
+          handleFormChange();
+        });
+        row.querySelectorAll("input, textarea, select").forEach((el) => el.addEventListener("input", handleFormChange));
+        row.querySelectorAll("input, textarea, select").forEach((el) => el.addEventListener("change", handleFormChange));
+        list.appendChild(row);
+      }
+    }
+
+    function renderCustomIdRows(minRows = 0) {
+      const list = document.getElementById("customIdList");
+      if (!list) return;
+      const existing = [...list.querySelectorAll(".feature-custom-row")].map((row) => ({
+        value: row.querySelector("input")?.value || ""
+      }));
+      const targetCount = Math.max(existing.length, minRows);
+      list.innerHTML = "";
+      for (let i = 0; i < targetCount; i += 1) {
+        const item = existing[i] || {};
+        const row = document.createElement("div");
+        row.className = "feature-custom-row";
+        row.innerHTML = `
+          <input class="input" type="text" value="${(item.value || "").replace(/"/g, "&quot;")}" placeholder="${t("placeholders.customIdType")}">
+          <button type="button" class="icon-btn" aria-label="remove">−</button>
+        `;
+        row.querySelector("button").addEventListener("click", () => {
+          row.remove();
+          handleFormChange();
+        });
+        row.querySelector("input").addEventListener("input", handleFormChange);
+        list.appendChild(row);
+      }
+    }
+
+    function updateFeaturesConditionalUI() {
+      const customChecked = document.getElementById("featureCustomIdToggle")?.checked;
+      document.getElementById("customIdBlock")?.classList.toggle("hidden", !customChecked);
+      if (customChecked && !document.querySelector("#customIdList .feature-custom-row")) {
+        renderCustomIdRows(1);
+      }
+    }
+
+    function getFeatureSelections() {
+      const selectedSub = (name) => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
+      const hasAny = (name) => selectedSub(name).length > 0;
+      return {
+        top: [
+          document.getElementById("featureUserProfile")?.checked || hasAny("featureUserProfileSub") ? "user_profile" : null,
+          document.querySelector('input[name="featureOption"][value="access_management"]')?.checked || hasAny("featureAccessManagementSub") ? "access_management" : null,
+          document.querySelector('input[name="featureOption"][value="cleverai"]')?.checked || hasAny("featureCleverAiSub") ? "cleverai" : null,
+          document.querySelector('input[name="featureOption"][value="segmentation"]')?.checked || hasAny("featureSegmentationSub") ? "segmentation" : null,
+          document.querySelector('input[name="featureOption"][value="behavioral_analytics"]')?.checked || hasAny("featureBehavioralAnalyticsSub") ? "behavioral_analytics" : null,
+          document.querySelector('input[name="featureOption"][value="hyper_personalization"]')?.checked || hasAny("featureHyperPersonalizationSub") ? "hyper_personalization" : null,
+          document.querySelector('input[name="featureOption"][value="campaigns"]')?.checked ? "campaigns" : null,
+          document.querySelector('input[name="featureOption"][value="journeys"]')?.checked ? "journeys" : null,
+          document.querySelector('input[name="featureOption"][value="life_cycle_optimizer"]')?.checked ? "life_cycle_optimizer" : null,
+          document.getElementById("featureNestedObjects")?.checked ? "nested_objects" : null
+        ].filter(Boolean),
+        userProfile: {
+          email: selectedSub("featureUserProfileSub").includes("email"),
+          cellphone: selectedSub("featureUserProfileSub").includes("cellphone"),
+          customIdSelected: selectedSub("featureUserProfileSub").includes("custom_id"),
+          customIds: [...document.querySelectorAll("#customIdList input")].map((input) => input.value.trim()).filter(Boolean)
+        },
+        accessManagement: selectedSub("featureAccessManagementSub"),
+        cleverAi: selectedSub("featureCleverAiSub"),
+        segmentation: selectedSub("featureSegmentationSub"),
+        behavioralAnalytics: selectedSub("featureBehavioralAnalyticsSub"),
+        hyperPersonalization: selectedSub("featureHyperPersonalizationSub")
+      };
     }
 
     function getTechOptionLabel(option) {
@@ -1939,6 +2293,11 @@
       const showOther = implementer === "other";
       document.getElementById("partnerNameBlock")?.classList.toggle("hidden", !showPartner);
       document.getElementById("implementerOtherBlock")?.classList.toggle("hidden", !showOther);
+    }
+
+    function updateOverviewConditionalUI() {
+      const migration = document.getElementById("martechMigration")?.value;
+      document.getElementById("martechMigrationBlock")?.classList.toggle("hidden", migration !== "yes");
     }
 
     function renderLiveStatusRows() {
@@ -2181,6 +2540,19 @@
       if (data.integrationsSelected.length && !data.integrationRequirements) {
         pushRisk("integration_sla", "Integration", "medium", "Integration requirements/SLA were not defined.", "Document expected data exchange latency and operating windows between systems.");
       }
+      const externalIntegrations = data.externalIntegrations.filter((item) => item.systemName || item.connectionType || item.connectionOther || item.description);
+      if (externalIntegrations.length) {
+        const systems = externalIntegrations.map((item) => item.systemName).filter(Boolean).join(" | ");
+        pushRisk(
+          "external_system_integration",
+          "External integrations",
+          "yellow",
+          systems
+            ? `External system integrations were mapped (${systems}). This is treated as a yellow flag because technical documentation and integration details are required.`
+            : "External system integrations were mapped. This is treated as a yellow flag because technical documentation and integration details are required.",
+          "Collect the technical documentation, owners, API details and data contracts before implementation."
+        );
+      }
       if (data.totalEventsBand === "above_512") {
         pushRisk("events_limit", "Platform Limit", "high", "Event volume indicates potential over-limit scenario (>512).", "Review event taxonomy and evaluate plan/architecture alternatives.");
       }
@@ -2230,11 +2602,12 @@
             <div class="risk-badge">${risk.autoGenerated ? t("risk.auto") : t("risk.manual")}</div>
           </div>
           <select class="select" data-role="severity">
-            <option value=""></option>
-            <option value="low" ${risk.severity === "low" ? "selected" : ""}>${t("risk.low")}</option>
-            <option value="medium" ${risk.severity === "medium" ? "selected" : ""}>${t("risk.medium")}</option>
-            <option value="high" ${risk.severity === "high" ? "selected" : ""}>${t("risk.high")}</option>
-          </select>
+          <option value=""></option>
+          <option value="low" ${risk.severity === "low" ? "selected" : ""}>${t("risk.low")}</option>
+          <option value="yellow" ${risk.severity === "yellow" ? "selected" : ""}>${t("risk.yellow")}</option>
+          <option value="medium" ${risk.severity === "medium" ? "selected" : ""}>${t("risk.medium")}</option>
+          <option value="high" ${risk.severity === "high" ? "selected" : ""}>${t("risk.high")}</option>
+        </select>
           <textarea class="textarea" data-role="description" placeholder="Description">${risk.description || ""}</textarea>
           <div class="row-stack">
             <textarea class="textarea" data-role="mitigation" placeholder="Mitigation">${risk.mitigation || ""}</textarea>
@@ -2359,6 +2732,26 @@
       return [...document.querySelectorAll('input[name="addonOption"]:checked')].map((input) => input.value);
     }
 
+    function getExternalIntegrationRowsData() {
+      return [...document.querySelectorAll("#externalIntegrationsList .external-integration-row")].map((row) => ({
+        systemName: row.querySelector('[data-role="systemName"]')?.value.trim() || "",
+        connectionType: row.querySelector('[data-role="connectionType"]')?.value.trim() || "",
+        connectionOther: row.querySelector('[data-role="connectionOther"]')?.value.trim() || "",
+        description: row.querySelector('[data-role="description"]')?.value.trim() || ""
+      }));
+    }
+
+    function formatExternalIntegrationsSummary(items = []) {
+      const filled = items.filter((item) => item.systemName || item.connectionType || item.connectionOther || item.description);
+      if (!filled.length) return "-";
+      return filled.map((item, index) => {
+        const name = item.systemName || `System ${index + 1}`;
+        const connection = item.connectionType ? t(`integration.${item.connectionType}`) : "-";
+        const extra = item.connectionType === "other" ? ` (${item.connectionOther || "-"})` : "";
+        return `${name} | ${connection}${extra} | ${item.description || "-"}`;
+      }).join(" || ");
+    }
+
     function collectData() {
       return {
         clientName: document.getElementById("clientName").value.trim(),
@@ -2368,6 +2761,10 @@
         goLiveDate: document.getElementById("goLiveDate").value.trim(),
         goLiveFastTrackReason: document.getElementById("goLiveFastTrackReason")?.value.trim() || "",
         businessSummary: document.getElementById("businessSummary").value.trim(),
+        martechMigration: document.getElementById("martechMigration")?.value.trim() || "",
+        martechProvider: document.getElementById("martechProvider")?.value.trim() || "",
+        martechReason: document.getElementById("martechReason")?.value.trim() || "",
+        martechFeature: document.getElementById("martechFeature")?.value.trim() || "",
         objectiveDescription: document.getElementById("objectiveDescription").value.trim(),
         kpis: getDynamicValues("#kpiList input"),
         criticalNeeds: getDynamicValues("#criticalList input"),
@@ -2407,6 +2804,8 @@
         integrationsSelected: [...document.querySelectorAll('input[name="integrationOption"]:checked')].map((input) => input.value),
         integrationsOther: getDynamicValues("#integrationsOtherList input"),
         integrationRequirements: document.getElementById("integrationRequirements")?.value.trim() || "",
+        features: getFeatureSelections(),
+        externalIntegrations: getExternalIntegrationRowsData(),
         useCases: [...document.querySelectorAll("#useCasesList .table-row")].map((row) => ({
           useCase: row.querySelector('[data-role="useCase"]')?.value.trim() || "",
           detail: row.querySelector('[data-role="detail"]')?.value.trim() || "",
@@ -2446,6 +2845,9 @@
       if (index === 0) {
         const base = ["clientName","projectName","projectDate","projectVersion","goLiveDate","businessSummary"].every((id) => document.getElementById(id).value.trim());
         if (!base) return false;
+        const migration = document.getElementById("martechMigration")?.value.trim();
+        if (!migration) return false;
+        if (migration === "yes" && (!document.getElementById("martechProvider")?.value.trim() || !document.getElementById("martechReason")?.value.trim() || !document.getElementById("martechFeature")?.value.trim())) return false;
         const goLive = document.getElementById("goLiveDate")?.value;
         if (goLive) {
           const now = new Date();
@@ -2482,6 +2884,8 @@
         return true;
       }
       if (index === 4) {
+        const customIdChecked = document.getElementById("featureCustomIdToggle")?.checked;
+        if (customIdChecked && ![...document.querySelectorAll("#customIdList input")].some((input) => input.value.trim())) return false;
         return true;
       }
       if (index === 5) {
@@ -2523,6 +2927,52 @@
 
     function updateSummary() {
       const data = collectData();
+      const featureLabels = {
+        user_profile: t("features.userProfile"),
+        nested_objects: t("features.nestedObjects"),
+        access_management: t("features.accessManagement"),
+        cleverai: t("features.cleverai"),
+        segmentation: t("features.segmentation"),
+        behavioral_analytics: t("features.behavioralAnalytics"),
+        hyper_personalization: t("features.hyperPersonalization"),
+        campaigns: t("features.campaigns"),
+        journeys: t("features.journeys"),
+        life_cycle_optimizer: t("features.lifeCycleOptimizer")
+      };
+      const mapLabels = (items = []) => items.map((item) => featureLabels[item] || item);
+      const featureItemLabels = {
+        email: t("features.userProfile.email"),
+        cellphone: t("features.userProfile.cellphone"),
+        custom_id: t("features.userProfile.customId"),
+        rbac: "RBAC",
+        pii_encryption: "PII Encryption",
+        sensitive_information: t("features.accessManagement.sensitive"),
+        ask_ai: "Ask AI",
+        predictions: "Predictions",
+        scribe_ai: "Scribe AI",
+        intellinode: "IntelliNODE",
+        recommendations: "Recommendations",
+        preferred_channel: t("features.cleverai.preferredChannel"),
+        past_behavior: t("features.segmentation.pastBehavior"),
+        live_use_segment: t("features.segmentation.liveUseSegment"),
+        custom_list: t("features.segmentation.customList"),
+        rfm_analysis: t("features.segmentation.rfm"),
+        analyze_events: t("features.behavioralAnalytics.analyzeEvents"),
+        cohorts: "Cohorts",
+        funnels: "Funnels",
+        trends: "Trends",
+        pivots: "Pivots",
+        flows: "Flows",
+        real_impact: "Real Impact",
+        google_ads: "Google Ads",
+        meta_ads: "Meta Ads",
+        tiktok_ads: "TikTok Ads",
+        linked_content: t("features.hyperPersonalization.linkedContent"),
+        liquid_tags: "Liquid Tags",
+        catalog_send_time_personalization: t("features.hyperPersonalization.sendTime"),
+        catalogs: t("features.hyperPersonalization.catalogs")
+      };
+      const mapFeatureItems = (items = []) => items.map((item) => featureItemLabels[item] || item);
       const labels = {
         client: t("fields.clientName"),
         project: t("fields.projectName"),
@@ -2531,6 +2981,10 @@
         goLiveDate: t("fields.goLiveDate"),
         goLiveFastTrackReason: t("fields.goLiveFastTrackReason"),
         summary: t("fields.businessSummary"),
+        martechMigration: t("fields.martechMigration"),
+        martechProvider: t("fields.martechProvider"),
+        martechReason: t("fields.martechReason"),
+        martechFeature: t("fields.martechFeature"),
         objective: t("fields.objectiveDescription"),
         kpis: t("fields.kpis"),
         critical: t("fields.criticalNeeds"),
@@ -2549,7 +3003,10 @@
         channelsMatrix: t("fields.channelsMatrix"),
         integrationsTable: t("fields.integrationsTable"),
         integrationSpecificRequirements: t("fields.integrationSpecificRequirements"),
+        externalIntegrationsTable: t("fields.externalIntegrationsTable"),
+        featuresTable: t("fields.featuresTable"),
         useCaseTable: t("fields.useCaseTable"),
+        customIdTable: t("fields.customIdTable"),
         projectsToImplement: t("fields.projectsToImplement"),
         projectsRequestedTotal: t("fields.projectsRequestedTotal"),
         payloadComplexity: t("fields.payloadComplexity"),
@@ -2573,6 +3030,12 @@
         `${labels.date}: ${data.projectDate || "-"}`,
         `${labels.version}: ${data.projectVersion || "-"}`,
         `${labels.goLiveDate}: ${data.goLiveDate || "-"}`,
+        `${labels.martechMigration}: ${data.martechMigration === "yes" ? t("yes") : data.martechMigration === "no" ? t("no") : "-"}`,
+        ...(data.martechMigration === "yes" ? [
+          `${labels.martechProvider}: ${data.martechProvider || "-"}`,
+          `${labels.martechReason}: ${data.martechReason || "-"}`,
+          `${labels.martechFeature}: ${data.martechFeature || "-"}`
+        ] : []),
         ...(data.goLiveFastTrackReason ? [`${labels.goLiveFastTrackReason}: ${data.goLiveFastTrackReason}`] : []),
         `${labels.summary}: ${data.businessSummary || "-"}`,
         ``,
@@ -2609,6 +3072,16 @@
         `${labels.channelsMatrix}: ${[...data.channelsSelected, data.channelsOther].filter(Boolean).join(" | ") || "-"}`,
         `${labels.integrationsTable}: ${[...data.integrationsSelected, ...data.integrationsOther].filter(Boolean).join(" | ") || "-"}`,
         `${labels.integrationSpecificRequirements}: ${data.integrationRequirements || "-"}`,
+        `${labels.featuresTable}: ${data.features.top.length ? mapLabels(data.features.top).join(" | ") : "-"}`,
+        ...(data.features.userProfile.email || data.features.userProfile.cellphone || data.features.userProfile.customIds.length ? [
+          `${t("features.userProfile")}: ${[data.features.userProfile.email ? t("features.userProfile.email") : "", data.features.userProfile.cellphone ? t("features.userProfile.cellphone") : "", data.features.userProfile.customIds.length ? `${t("features.userProfile.customId")} (${data.features.userProfile.customIds.join(" | ")})` : ""].filter(Boolean).join(" | ")}`
+        ] : []),
+        ...(data.features.accessManagement.length ? [`${t("features.accessManagement")}: ${mapFeatureItems(data.features.accessManagement).join(" | ")}`] : []),
+        ...(data.features.cleverAi.length ? [`${t("features.cleverai")}: ${mapFeatureItems(data.features.cleverAi).join(" | ")}`] : []),
+        ...(data.features.segmentation.length ? [`${t("features.segmentation")}: ${mapFeatureItems(data.features.segmentation).join(" | ")}`] : []),
+        ...(data.features.behavioralAnalytics.length ? [`${t("features.behavioralAnalytics")}: ${mapFeatureItems(data.features.behavioralAnalytics).join(" | ")}`] : []),
+        ...(data.features.hyperPersonalization.length ? [`${t("features.hyperPersonalization")}: ${mapFeatureItems(data.features.hyperPersonalization).join(" | ")}`] : []),
+        `${labels.externalIntegrationsTable}: ${formatExternalIntegrationsSummary(data.externalIntegrations)}`,
         `${labels.useCaseTable}: ${getValidUseCases().length}`,
         ...(getValidUseCases().length < 2 ? [t("summary.warningUseCases")] : []),
         ...data.useCases
@@ -2676,6 +3149,8 @@
       if (event && event.target && ["emailVolume","whatsappVolume","smsVolume","rcsVolume"].includes(event.target.id)) sanitizeNumericInput(event.target);
       if (event && event.target && ["projectsToImplement","projectsRequestedTotal","nestedMappedCount","eventsRequestedTotal","journeysRequestedTotal","segmentsRequestedTotal","integrationCount"].includes(event.target.id)) sanitizeNumericInput(event.target);
       if (event && event.target && event.target.id === "integrationCount") renderIntegrationRows();
+      if (event && event.target && event.target.id === "martechMigration") updateOverviewConditionalUI();
+      if (event && event.target && (event.target.id === "featureCustomIdToggle" || event.target.id === "featureNestedObjects" || event.target.name === "featureOption")) updateFeaturesConditionalUI();
       if (event && event.target && event.target.id === "liveStatus") syncTechConditionalUI();
       if (event && event.target && event.target.id === "implementer") syncTechConditionalUI();
       if (event && event.target && event.target.id === "payloadComplexity" && event.target.value !== "nested") payloadAnalysisState = null;
@@ -2701,6 +3176,24 @@
     document.getElementById("addOtherAddonBtn").addEventListener("click", () => addOtherAddon());
     document.getElementById("addIntegrationOtherBtn").addEventListener("click", () => {
       addIntegrationOther();
+      handleFormChange();
+    });
+    document.getElementById("addExternalIntegrationBtn").addEventListener("click", () => {
+      renderExternalIntegrationRows(document.querySelectorAll("#externalIntegrationsList .external-integration-row").length + 1);
+      handleFormChange();
+    });
+    document.getElementById("removeExternalIntegrationBtn").addEventListener("click", () => {
+      const rows = document.querySelectorAll("#externalIntegrationsList .external-integration-row");
+      if (rows.length) rows[rows.length - 1].remove();
+      handleFormChange();
+    });
+    document.getElementById("addCustomIdBtn").addEventListener("click", () => {
+      renderCustomIdRows(document.querySelectorAll("#customIdList .feature-custom-row").length + 1);
+      handleFormChange();
+    });
+    document.getElementById("removeCustomIdBtn").addEventListener("click", () => {
+      const rows = document.querySelectorAll("#customIdList .feature-custom-row");
+      if (rows.length) rows[rows.length - 1].remove();
       handleFormChange();
     });
     document.getElementById("addUseCaseBtn").addEventListener("click", () => {
@@ -2735,6 +3228,7 @@
         <select class="select" data-role="severity">
           <option value=""></option>
           <option value="low">${t("risk.low")}</option>
+          <option value="yellow">${t("risk.yellow")}</option>
           <option value="medium">${t("risk.medium")}</option>
           <option value="high">${t("risk.high")}</option>
         </select>
@@ -2819,10 +3313,12 @@
     addListRow("critical");
     addOtherAddon();
     addIntegrationOther();
+    renderExternalIntegrationRows(1);
     renderUseCaseRows(2);
     renderStakeholderRows(3);
     renderRisks();
     updateArchitectureConditionalUI();
+    updateFeaturesConditionalUI();
     renderPayloadMetrics();
     buildIndex();
     setLanguage("pt");
