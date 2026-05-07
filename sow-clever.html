@@ -67,31 +67,6 @@
       max-height: 40px;
       width: auto;
     }
-    .top-nav {
-      display: flex;
-      align-items: center;
-    }
-    .top-nav a {
-      color: #fff;
-      margin-left: 24px;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      position: relative;
-      padding-bottom: 4px;
-    }
-    .top-nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: var(--accent);
-      transition: width var(--transition-fast);
-    }
-    .top-nav a:hover::after { width: 100%; }
     .lang-dd {
       margin-left: 22px;
       padding-left: 18px;
@@ -452,12 +427,25 @@
       font-weight: 700;
       box-shadow: 0 10px 24px rgba(240, 68, 68, 0.24);
     }
+    .next-btn {
+      animation: continuePulse 2.2s ease-in-out infinite;
+    }
+    .reset-btn {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(240, 68, 68, 0.24);
+    }
     .builder-actions,
     .section-actions,
     .modal-actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+    }
+    .section-reset {
+      display: flex;
+      justify-content: flex-end;
+      margin: 22px 0 28px;
     }
     .contract-grid {
       display: grid;
@@ -945,13 +933,25 @@
       opacity: 1;
       transform: translateY(0);
     }
+    @keyframes continuePulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 24px rgba(240, 68, 68, 0.24);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 14px 30px rgba(240, 68, 68, 0.34);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .next-btn { animation: none; }
+    }
     @media (max-width: 1180px) {
       .page-shell { grid-template-columns: 1fr; }
       .side-index { position: static; order: 2; }
     }
     @media (max-width: 900px) {
       .site-header { padding: 0 16px; min-height: 60px; height: auto; }
-      .top-nav a { display: none; }
       .hero-card, .section-card { padding: 20px; }
       .form-grid, .contract-grid, .addons-table, .check-grid, .stack-grid, .toggle-grid, .integration-row, .external-integration-row, .table-row, .risk-row, .matrix-grid, .feature-grid, .feature-subgrid, .metrics-grid, .stakeholder-row { grid-template-columns: 1fr; }
       .section-header, .summary-row, .progress-card, .modal-header { flex-direction: column; align-items: flex-start; }
@@ -960,6 +960,8 @@
       .page-shell { padding: 20px 12px 28px; }
       .logo span:last-child { display: none; }
       .dynamic-row, .other-addon-item, .live-status-row { grid-template-columns: 1fr; }
+      .section-reset { justify-content: stretch; }
+      .section-reset .reset-btn { width: 100%; }
       .section-actions { flex-direction: column-reverse; }
       .section-actions .primary-btn,
       .section-actions .secondary-btn,
@@ -973,17 +975,15 @@
       <img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap logo">
       <span>CleverTap</span>
     </div>
-    <div class="top-nav">
-      <div class="lang-dd" id="langDD">
-        <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
-          <span id="langDDLabel">PT</span>
-          <span>▾</span>
-        </button>
-        <div class="lang-dd-menu" id="langDDMenu" role="menu">
-          <button type="button" class="lang-dd-item" data-lang-select="pt" role="menuitem">PT</button>
-          <button type="button" class="lang-dd-item" data-lang-select="en" role="menuitem">ENG</button>
-          <button type="button" class="lang-dd-item" data-lang-select="es" role="menuitem">ESP</button>
-        </div>
+    <div class="lang-dd" id="langDD">
+      <button type="button" class="lang-dd-btn" id="langDDBtn" aria-haspopup="true" aria-expanded="false">
+        <span id="langDDLabel">PT</span>
+        <span>▾</span>
+      </button>
+      <div class="lang-dd-menu" id="langDDMenu" role="menu">
+        <button type="button" class="lang-dd-item" data-lang-select="pt" role="menuitem">PT</button>
+        <button type="button" class="lang-dd-item" data-lang-select="en" role="menuitem">ENG</button>
+        <button type="button" class="lang-dd-item" data-lang-select="es" role="menuitem">ESP</button>
       </div>
     </div>
   </header>
@@ -1683,6 +1683,10 @@
         </div>
       </div>
 
+      <div class="section-reset">
+        <button type="button" class="primary-btn reset-btn" id="resetBtn" data-i18n="buttons.reset">Reset</button>
+      </div>
+
       <div class="summary-row">
         <div>
           <div class="summary-title" data-i18n="summary.bannerTitle">Need to review everything before sharing?</div>
@@ -1718,7 +1722,6 @@
   <script>
     const translations = {
       pt: {
-        "nav.home": "Home", "nav.plans": "Planos", "nav.intake": "Project Intake",
         "index.title": "Seções",
         "hero.kicker": "Descoberta de implementação",
         "hero.title": "Coleta de informações para o documento oficial de implementação",
@@ -1768,7 +1771,7 @@
         "contract.coreTitle": "Informações centrais do contrato", "contract.coreMini": "Estruturado para o handoff de implementação",
         "contract.addonsTitle": "Add-ons e canais", "contract.addonsMini": "Volume contratado mais modelo de provedor",
         "contract.languageTitle": "Idioma e onboarding", "contract.languageMini": "Preferências de comunicação para a entrega",
-        "buttons.previous": "Seção anterior", "buttons.continue": "Continuar", "buttons.addKpi": "Adicionar KPI", "buttons.addRequirement": "Adicionar entrega crítica", "buttons.removeLast": "Remover último", "buttons.addOtherAddon": "Adicionar outro add-on", "buttons.viewSummary": "Ver resumo", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
+        "buttons.previous": "Seção anterior", "buttons.continue": "Continuar", "buttons.reset": "Resetar", "buttons.addKpi": "Adicionar KPI", "buttons.addRequirement": "Adicionar entrega crítica", "buttons.removeLast": "Remover último", "buttons.addOtherAddon": "Adicionar outro add-on", "buttons.viewSummary": "Ver resumo", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
         "buttons.addUseCase": "Adicionar use case", "buttons.savePayload": "Salvar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Adicionar risco manual", "buttons.addStakeholder": "Adicionar stakeholder", "buttons.addOtherIntegration": "Adicionar outra integração", "buttons.addExternalIntegration": "Adicionar integração externa", "buttons.addCustomId": "Adicionar Custom ID",
         "summary.bannerTitle": "Quer revisar tudo antes de compartilhar?", "summary.bannerText": "Abra o popup de resumo em tela ampliada, copie o texto coletado ou exporte um arquivo `.doc`.",
         "summary.modalTitle": "Resumo da coleta de implementação", "summary.modalSubtitle": "Revise o texto gerado antes de copiar ou exportar.",
@@ -1793,10 +1796,9 @@
         "stakeholder.name": "Nome", "stakeholder.contact": "Contato", "stakeholder.role": "Função no projeto", "stakeholder.company": "Empresa",
         "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
         "summary.warningUseCases": "Atenção: menos de 2 use cases completos foram cadastrados.",
-        "toast.copied": "Resumo copiado para a área de transferência.", "toast.exported": "Arquivo .doc exportado.", "toast.autoAdvanced": "Seção concluída. Avançando automaticamente.", "toast.copyFailed": "Não foi possível copiar automaticamente. Tente novamente."
+        "toast.copied": "Resumo copiado para a área de transferência.", "toast.exported": "Arquivo .doc exportado.", "toast.reset": "Formulário redefinido.", "toast.copyFailed": "Não foi possível copiar automaticamente. Tente novamente."
       },
       en: {
-        "nav.home": "Home", "nav.plans": "Plans", "nav.intake": "Project Intake",
         "index.title": "Sections",
         "hero.kicker": "Implementation discovery",
         "hero.title": "Project intake for the official implementation document",
@@ -1845,7 +1847,7 @@
         "contract.coreTitle": "Core contract information", "contract.coreMini": "Structured for implementation handoff",
         "contract.addonsTitle": "Add-ons and channels", "contract.addonsMini": "Volume plus provider model",
         "contract.languageTitle": "Language and onboarding", "contract.languageMini": "Communication preferences for delivery",
-        "buttons.previous": "Previous section", "buttons.continue": "Continue", "buttons.addKpi": "Add KPI", "buttons.addRequirement": "Add critical requirement", "buttons.removeLast": "Remove last", "buttons.addOtherAddon": "Add other add-on", "buttons.viewSummary": "View summary", "buttons.minimize": "Minimize", "buttons.expand": "Expand", "buttons.copyText": "Copy text", "buttons.exportDoc": "Export .doc",
+        "buttons.previous": "Previous section", "buttons.continue": "Continue", "buttons.reset": "Reset", "buttons.addKpi": "Add KPI", "buttons.addRequirement": "Add critical requirement", "buttons.removeLast": "Remove last", "buttons.addOtherAddon": "Add other add-on", "buttons.viewSummary": "View summary", "buttons.minimize": "Minimize", "buttons.expand": "Expand", "buttons.copyText": "Copy text", "buttons.exportDoc": "Export .doc",
         "buttons.addUseCase": "Add use case", "buttons.savePayload": "Save payload", "buttons.showPayload": "Show payload", "buttons.hidePayload": "Hide payload", "buttons.addRisk": "Add manual risk", "buttons.addStakeholder": "Add stakeholder", "buttons.addOtherIntegration": "Add other integration", "buttons.addExternalIntegration": "Add external integration", "buttons.addCustomId": "Add Custom ID",
         "summary.bannerTitle": "Need to review everything before sharing?", "summary.bannerText": "Open the large summary popup, copy the collected text or export a `.doc` file.",
         "summary.modalTitle": "Implementation intake summary", "summary.modalSubtitle": "Review the generated text before copying or exporting it.",
@@ -1870,10 +1872,9 @@
         "stakeholder.name": "Name", "stakeholder.contact": "Contact", "stakeholder.role": "Role in project", "stakeholder.company": "Company",
         "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
         "summary.warningUseCases": "Warning: fewer than 2 complete use cases were provided.",
-        "toast.copied": "Summary copied to the clipboard.", "toast.exported": "The .doc file was exported.", "toast.autoAdvanced": "Section completed. Moving forward automatically.", "toast.copyFailed": "Automatic copy failed. Please try again."
+        "toast.copied": "Summary copied to the clipboard.", "toast.exported": "The .doc file was exported.", "toast.reset": "Form reset.", "toast.copyFailed": "Automatic copy failed. Please try again."
       },
       es: {
-        "nav.home": "Home", "nav.plans": "Planes", "nav.intake": "Project Intake",
         "index.title": "Secciones",
         "hero.kicker": "Descubrimiento de implementación",
         "hero.title": "Recolección de información para el documento oficial de implementación",
@@ -1922,7 +1923,7 @@
         "contract.coreTitle": "Información central del contrato", "contract.coreMini": "Estructurado para el handoff de implementación",
         "contract.addonsTitle": "Add-ons y canales", "contract.addonsMini": "Volumen contratado más modelo de proveedor",
         "contract.languageTitle": "Idioma y onboarding", "contract.languageMini": "Preferencias de comunicación para la entrega",
-        "buttons.previous": "Sección anterior", "buttons.continue": "Continuar", "buttons.addKpi": "Agregar KPI", "buttons.addRequirement": "Agregar entregable crítico", "buttons.removeLast": "Eliminar último", "buttons.addOtherAddon": "Agregar otro add-on", "buttons.viewSummary": "Ver resumen", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
+        "buttons.previous": "Sección anterior", "buttons.continue": "Continuar", "buttons.reset": "Reiniciar", "buttons.addKpi": "Agregar KPI", "buttons.addRequirement": "Agregar entregable crítico", "buttons.removeLast": "Eliminar último", "buttons.addOtherAddon": "Agregar otro add-on", "buttons.viewSummary": "Ver resumen", "buttons.minimize": "Minimizar", "buttons.expand": "Expandir", "buttons.copyText": "Copiar texto", "buttons.exportDoc": "Exportar .doc",
         "buttons.addUseCase": "Agregar use case", "buttons.savePayload": "Guardar payload", "buttons.showPayload": "Mostrar payload", "buttons.hidePayload": "Ocultar payload", "buttons.addRisk": "Agregar riesgo manual", "buttons.addStakeholder": "Agregar stakeholder", "buttons.addOtherIntegration": "Agregar otra integración", "buttons.addExternalIntegration": "Agregar integración externa", "buttons.addCustomId": "Agregar Custom ID",
         "summary.bannerTitle": "¿Necesita revisar todo antes de compartirlo?", "summary.bannerText": "Abra el popup de resumen ampliado, copie el texto recolectado o exporte un archivo `.doc`.",
         "summary.modalTitle": "Resumen de la recolección de implementación", "summary.modalSubtitle": "Revise el texto generado antes de copiarlo o exportarlo.",
@@ -1947,7 +1948,7 @@
         "stakeholder.name": "Nombre", "stakeholder.contact": "Contacto", "stakeholder.role": "Rol en el proyecto", "stakeholder.company": "Empresa",
         "usecase.label": "Use Case", "usecase.detail": "Detail", "usecase.stage": "Type/Stage", "usecase.stage.notify": "Notify", "usecase.stage.onboard": "Onboard", "usecase.stage.engage": "Engage", "usecase.stage.monetize": "Monetize", "usecase.stage.reengage": "Re-Engage", "usecase.stage.other": "Other",
         "summary.warningUseCases": "Aviso: se registraron menos de 2 use cases completos.",
-        "toast.copied": "Resumen copiado al portapapeles.", "toast.exported": "Archivo .doc exportado.", "toast.autoAdvanced": "Sección completada. Avanzando automáticamente.", "toast.copyFailed": "No fue posible copiar automáticamente. Inténtelo de nuevo."
+        "toast.copied": "Resumen copiado al portapapeles.", "toast.exported": "Archivo .doc exportado.", "toast.reset": "Formulario reiniciado.", "toast.copyFailed": "No fue posible copiar automáticamente. Inténtelo de nuevo."
       }
     };
 
@@ -1969,7 +1970,6 @@
     let payloadAnalysisState = null;
     let currentLang = "pt";
     let currentSection = 0;
-    const autoAdvancedSections = new Set();
 
     function t(key) {
       return translations[currentLang][key] || translations.en[key] || key;
@@ -2912,16 +2912,6 @@
       return false;
     }
 
-    function maybeAutoAdvance() {
-      if (currentSection > 3 || autoAdvancedSections.has(currentSection)) return;
-      if (!sectionIsComplete(currentSection)) return;
-      autoAdvancedSections.add(currentSection);
-      showToast(t("toast.autoAdvanced"));
-      setTimeout(() => {
-        if (currentSection < 7) goToSection(currentSection + 1);
-      }, 500);
-    }
-
     function updateSummary() {
       const data = collectData();
       const featureLabels = {
@@ -3157,7 +3147,6 @@
       if (!isRiskField) renderRisks();
       updateMausWords();
       updateSummary();
-      maybeAutoAdvance();
     }
 
     document.querySelectorAll(".next-btn").forEach((btn) => btn.addEventListener("click", () => goToSection(Number(btn.dataset.next))));
@@ -3289,6 +3278,57 @@
     document.getElementById("toggleModalSizeBtn").addEventListener("click", () => {
       modal.classList.toggle("minimized");
       document.getElementById("toggleModalSizeBtn").textContent = modal.classList.contains("minimized") ? t("buttons.expand") : t("buttons.minimize");
+    });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      document.querySelectorAll("input, textarea, select").forEach((el) => {
+        if (el.type === "checkbox" || el.type === "radio") {
+          el.checked = false;
+          return;
+        }
+        if (el.tagName === "SELECT") {
+          el.selectedIndex = 0;
+          return;
+        }
+        el.value = "";
+      });
+      payloadAnalysisState = null;
+      const payloadPreview = document.getElementById("payloadPreview");
+      if (payloadPreview) {
+        payloadPreview.textContent = "-";
+        payloadPreview.classList.add("hidden");
+      }
+      const togglePayloadPreviewBtn = document.getElementById("togglePayloadPreviewBtn");
+      if (togglePayloadPreviewBtn) togglePayloadPreviewBtn.textContent = t("buttons.showPayload");
+      document.getElementById("kpiList").innerHTML = "";
+      document.getElementById("criticalList").innerHTML = "";
+      document.getElementById("otherAddonsList").innerHTML = "";
+      document.getElementById("integrationsOtherList").innerHTML = "";
+      document.getElementById("externalIntegrationsList").innerHTML = "";
+      document.getElementById("useCasesList").innerHTML = "";
+      document.getElementById("stakeholdersList").innerHTML = "";
+      document.getElementById("risksList").innerHTML = "";
+      addListRow("kpi");
+      addListRow("critical");
+      addOtherAddon();
+      addIntegrationOther();
+      renderExternalIntegrationRows(1);
+      renderUseCaseRows(2);
+      renderStakeholderRows(3);
+      renderRisks();
+      updateOverviewConditionalUI();
+      updateFeaturesConditionalUI();
+      syncTechConditionalUI();
+      updateArchitectureConditionalUI();
+      updateGoLiveFastTrackUI();
+      renderPayloadMetrics();
+      updateMausWords();
+      updateUseCaseAlert();
+      currentSection = 0;
+      goToSection(0);
+      updateSummary();
+      langDD.classList.remove("open");
+      langDDBtn.setAttribute("aria-expanded", "false");
+      showToast(t("toast.reset"));
     });
     langDDBtn.addEventListener("click", () => {
       langDD.classList.toggle("open");
