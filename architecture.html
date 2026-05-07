@@ -193,15 +193,18 @@
     }
     .btn:hover{ transform: translateY(-1px); border-color:#cbd7ea; }
     .btn:active{ transform: translateY(0px); }
-    .nativeLaunchWrap{
+    .nativeLaunchWrap,
+    .featuresLaunchWrap{
       position:relative;
       margin-top:5px;
     }
-    .nativeLaunchWrap .btn{
+    .nativeLaunchWrap .btn,
+    .featuresLaunchWrap .btn{
       margin-top:0;
       padding-right:34px;
     }
-    .nativeFlyoutArrow{
+    .nativeFlyoutArrow,
+    .featuresFlyoutArrow{
       position:absolute;
       right:6px;
       top:50%;
@@ -219,12 +222,14 @@
       transition: transform .18s ease, border-color .18s ease, color .18s ease, background .18s ease;
       z-index:2;
     }
-    .nativeFlyoutArrow:hover{
+    .nativeFlyoutArrow:hover,
+    .featuresFlyoutArrow:hover{
       border-color:#94a3b8;
       color:#0f172a;
       background:#f8fafc;
     }
-    .nativeFlyoutArrow span{
+    .nativeFlyoutArrow span,
+    .featuresFlyoutArrow span{
       display:block;
       font-size:13px;
       font-weight:900;
@@ -232,10 +237,12 @@
       transform: translateX(1px);
       transition: transform .22s ease;
     }
-    .nativeFlyoutArrow[aria-expanded="true"] span{
+    .nativeFlyoutArrow[aria-expanded="true"] span,
+    .featuresFlyoutArrow[aria-expanded="true"] span{
       transform: rotate(90deg);
     }
-    .nativeFlyout{
+    .nativeFlyout,
+    .featuresFlyout{
       position:fixed;
       width:min(260px, calc(100vw - 24px));
       z-index:70;
@@ -244,12 +251,14 @@
       transform: translateX(-14px) scale(.98);
       transition: opacity .26s ease, transform .28s cubic-bezier(.2,.8,.2,1);
     }
-    .nativeFlyout.open{
+    .nativeFlyout.open,
+    .featuresFlyout.open{
       opacity:1;
       pointer-events:auto;
       transform: translateX(0) scale(1);
     }
-    .nativeFlyoutCard{
+    .nativeFlyoutCard,
+    .featuresFlyoutCard{
       padding:8px;
       border-radius:22px;
       border:1px solid rgba(255,255,255,.42);
@@ -263,21 +272,25 @@
       overflow:auto;
       scrollbar-width:none;
     }
-    .nativeFlyoutCard::-webkit-scrollbar{
+    .nativeFlyoutCard::-webkit-scrollbar,
+    .featuresFlyoutCard::-webkit-scrollbar{
       display:none;
     }
-    .nativeFlyoutHead{
+    .nativeFlyoutHead,
+    .featuresFlyoutHead{
       padding:6px 8px 8px;
       font-size:11px;
       font-weight:800;
       letter-spacing:-.01em;
       color:#1f2a44;
     }
-    .nativeFlyoutCard .btn{
+    .nativeFlyoutCard .btn,
+    .featuresFlyoutCard .btn{
       margin-top:4px;
       padding-left:8px;
     }
-    .nativeFlyoutCard .btn:first-of-type{
+    .nativeFlyoutCard .btn:first-of-type,
+    .featuresFlyoutCard .btn:first-of-type{
       margin-top:0;
     }
     .btnMenuGroup{
@@ -2455,6 +2468,17 @@
             </div>
             <div class="arrow">→</div>
           </button>
+          <div class="featuresLaunchWrap" id="featuresLaunchWrap">
+            <button class="btn" data-add="solution:features" id="featuresPrimaryBtn">
+              <div class="left">
+                <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+                <div class="txt"><div>Features</div><span>Bloco completo editável</span></div>
+              </div>
+            </button>
+            <button class="featuresFlyoutArrow" id="featuresFlyoutArrow" type="button" aria-label="Abrir features" aria-expanded="false" aria-controls="featuresFlyout">
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
           <button class="btn" data-add="solution:productexperiences">
             <div class="left">
               <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
@@ -2471,7 +2495,7 @@
           </button>
           <button class="btn" data-add="solution:tesseractdbtm">
             <div class="left">
-              <div class="ico"><img src="https://clevertap.com/wp-content/uploads/2024/03/Hyper-personalization-image.png" alt="CleverTap" /></div>
+              <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
               <div class="txt"><div>TesseractDB™</div><span>Bloco completo editável</span></div>
             </div>
             <div class="arrow">→</div>
@@ -2671,6 +2695,53 @@
           <div class="left">
             <div class="ico"><img src="https://www.svgrepo.com/show/354460/treasuredata-icon.svg" alt="Treasure Data" /></div>
             <div class="txt"><div>Treasure Data</div><span>CDP</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+      </div>
+    </div>
+    <div class="featuresFlyout" id="featuresFlyout" aria-hidden="true">
+      <div class="featuresFlyoutCard">
+        <div class="featuresFlyoutHead" id="featuresFlyoutHead">Features</div>
+        <button class="btn" data-add="solution:events">
+          <div class="left">
+            <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+            <div class="txt"><div>Events</div><span>Features</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="solution:userproperties">
+          <div class="left">
+            <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+            <div class="txt"><div>User Properties</div><span>Features</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="solution:piiencryption">
+          <div class="left">
+            <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+            <div class="txt"><div>PII Encryption</div><span>Features</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="solution:productcatalog">
+          <div class="left">
+            <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+            <div class="txt"><div>Product Catalog</div><span>Features</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="solution:recommendations">
+          <div class="left">
+            <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+            <div class="txt"><div>Recommendations</div><span>Features</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
+        <button class="btn" data-add="solution:hyperpersonalization">
+          <div class="left">
+            <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+            <div class="txt"><div>Hyper Personalization</div><span>Features</span></div>
           </div>
           <div class="arrow">→</div>
         </button>
@@ -2979,6 +3050,10 @@
   const nativePrimaryBtn = document.getElementById("nativePrimaryBtn");
   const nativeFlyout = document.getElementById("nativeFlyout");
   const nativeFlyoutArrow = document.getElementById("nativeFlyoutArrow");
+  const featuresLaunchWrap = document.getElementById("featuresLaunchWrap");
+  const featuresPrimaryBtn = document.getElementById("featuresPrimaryBtn");
+  const featuresFlyout = document.getElementById("featuresFlyout");
+  const featuresFlyoutArrow = document.getElementById("featuresFlyoutArrow");
   const settingsPanel = document.getElementById("settingsPanel");
   const cfgLineType = document.getElementById("cfgLineType");
   const cfgConnectorType = document.getElementById("cfgConnectorType");
@@ -3052,6 +3127,9 @@
   let nativeFlyoutHoverTimer = null;
   let nativeFlyoutHideTimer = null;
   let nativeFlyoutPinned = false;
+  let featuresFlyoutHoverTimer = null;
+  let featuresFlyoutHideTimer = null;
+  let featuresFlyoutPinned = false;
   const STORAGE_KEY = "clevertap_canvas_state_v3";
   const PROJECT_OVERALL_KEY = "clevertap_canvas_project_overall_v1";
   const SCHEMA_VERSION = 4;
@@ -3525,6 +3603,7 @@
     { pt:"Conector nativo", es:"Conector nativo", en:"Native connector" },
     { pt:"Conexões Nativas", es:"Conexiones Nativas", en:"Native Connections" },
     { pt:"Abrir conexões nativas", es:"Abrir conexiones nativas", en:"Open native connections" },
+    { pt:"Abrir features", es:"Abrir features", en:"Open features" },
     { pt:"Integração interna", es:"Integración interna", en:"Internal integration" },
     { pt:"Conexão Nativa", es:"Conexión Nativa", en:"Native Connection" },
     { pt:"Analytics", es:"Analytics", en:"Analytics" },
@@ -3561,6 +3640,13 @@
     { pt:"Martech", es:"Martech", en:"Martech" },
     { pt:"Segments", es:"Segments", en:"Segments" },
     { pt:"Analytics", es:"Analytics", en:"Analytics" },
+    { pt:"Features", es:"Features", en:"Features" },
+    { pt:"Events", es:"Events", en:"Events" },
+    { pt:"User Properties", es:"User Properties", en:"User Properties" },
+    { pt:"PII Encryption", es:"PII Encryption", en:"PII Encryption" },
+    { pt:"Product Catalog", es:"Product Catalog", en:"Product Catalog" },
+    { pt:"Recommendations", es:"Recommendations", en:"Recommendations" },
+    { pt:"Hyper Personalization", es:"Hyper Personalization", en:"Hyper Personalization" },
     { pt:"Product Experiences", es:"Product Experiences", en:"Product Experiences" },
     { pt:"Promotions", es:"Promotions", en:"Promotions" },
     { pt:"TesseractDB™", es:"TesseractDB™", en:"TesseractDB™" },
@@ -3797,8 +3883,10 @@
     if(sectionTitles[5]) sectionTitles[5].textContent = translateKnownPhrase("Anotações");
     const brandTitle = document.querySelector(".brand h1");
     const nativeFlyoutHead = document.getElementById("nativeFlyoutHead");
+    const featuresFlyoutHead = document.getElementById("featuresFlyoutHead");
     if(brandTitle) brandTitle.textContent = translateKnownPhrase("Arquitetura CleverTap");
     if(nativeFlyoutHead) nativeFlyoutHead.textContent = translateKnownPhrase("Conexões Nativas");
+    if(featuresFlyoutHead) featuresFlyoutHead.textContent = translateKnownPhrase("Features");
     document.querySelectorAll("[data-native-group]").forEach((groupEl)=>{
       const label = groupEl.getAttribute("data-native-group") || "";
       if(label) groupEl.textContent = translateKnownPhrase(label);
@@ -3847,6 +3935,13 @@
     setButtonCopy("solution:martech", translateKnownPhrase("Martech"), translateKnownPhrase("Bloco completo editável"));
     setButtonCopy("solution:segments", translateKnownPhrase("Segments"), translateKnownPhrase("Bloco completo editável"));
     setButtonCopy("solution:analytics", translateKnownPhrase("Analytics"), translateKnownPhrase("Bloco completo editável"));
+    setButtonCopy("solution:features", translateKnownPhrase("Features"), translateKnownPhrase("Bloco completo editável"));
+    setButtonCopy("solution:events", translateKnownPhrase("Events"), translateKnownPhrase("Features"));
+    setButtonCopy("solution:userproperties", translateKnownPhrase("User Properties"), translateKnownPhrase("Features"));
+    setButtonCopy("solution:piiencryption", translateKnownPhrase("PII Encryption"), translateKnownPhrase("Features"));
+    setButtonCopy("solution:productcatalog", translateKnownPhrase("Product Catalog"), translateKnownPhrase("Features"));
+    setButtonCopy("solution:recommendations", translateKnownPhrase("Recommendations"), translateKnownPhrase("Features"));
+    setButtonCopy("solution:hyperpersonalization", translateKnownPhrase("Hyper Personalization"), translateKnownPhrase("Features"));
     setButtonCopy("solution:productexperiences", translateKnownPhrase("Product Experiences"), translateKnownPhrase("Addon CleverTap"));
     setButtonCopy("solution:promotions", translateKnownPhrase("Promotions"), translateKnownPhrase("Addon CleverTap"));
     setButtonCopy("solution:tesseractdbtm", translateKnownPhrase("TesseractDB™"), translateKnownPhrase("Bloco completo editável"));
@@ -3856,6 +3951,7 @@
     setButtonCopy("text:note", translateKnownPhrase("Texto Livre"), translateKnownPhrase("Nota flutuante no canvas"));
     setButtonCopy("text:sticky", translateKnownPhrase("Sticky Note"), translateKnownPhrase("Post-it colorido"));
     if(nativeFlyoutArrow) nativeFlyoutArrow.setAttribute("aria-label", translateKnownPhrase("Abrir conexões nativas"));
+    if(featuresFlyoutArrow) featuresFlyoutArrow.setAttribute("aria-label", translateKnownPhrase("Abrir features"));
     if(btnTemplate) btnTemplate.textContent = translateKnownPhrase("Templates");
     if(btnExport) btnExport.textContent = translateKnownPhrase("Export JSON");
     if(btnImport) btnImport.textContent = translateKnownPhrase("Import JSON");
@@ -4212,6 +4308,16 @@
       nativeFlyoutHideTimer = null;
     }
   }
+  function clearFeaturesFlyoutTimers(){
+    if(featuresFlyoutHoverTimer){
+      clearTimeout(featuresFlyoutHoverTimer);
+      featuresFlyoutHoverTimer = null;
+    }
+    if(featuresFlyoutHideTimer){
+      clearTimeout(featuresFlyoutHideTimer);
+      featuresFlyoutHideTimer = null;
+    }
+  }
   function positionNativeFlyout(){
     if(!nativeFlyout || !sidebarEl || !nativeLaunchWrap) return;
     const sidebarRect = sidebarEl.getBoundingClientRect();
@@ -4228,8 +4334,25 @@
     nativeFlyout.style.left = `${Math.round(nextLeft)}px`;
     nativeFlyout.style.top = `${Math.round(nextTop)}px`;
   }
+  function positionFeaturesFlyout(){
+    if(!featuresFlyout || !sidebarEl || !featuresLaunchWrap) return;
+    const sidebarRect = sidebarEl.getBoundingClientRect();
+    const anchorRect = featuresLaunchWrap.getBoundingClientRect();
+    const panelRect = featuresFlyout.getBoundingClientRect();
+    let nextLeft = sidebarRect.right + 10;
+    let nextTop = anchorRect.top - 2;
+    if(nextLeft + panelRect.width > window.innerWidth - 12){
+      nextLeft = Math.max(12, window.innerWidth - panelRect.width - 12);
+    }
+    if(nextTop + panelRect.height > window.innerHeight - 12){
+      nextTop = Math.max(68, window.innerHeight - panelRect.height - 12);
+    }
+    featuresFlyout.style.left = `${Math.round(nextLeft)}px`;
+    featuresFlyout.style.top = `${Math.round(nextTop)}px`;
+  }
   function openNativeFlyout({ pinned = false } = {}){
     if(!nativeFlyout || !nativeFlyoutArrow) return;
+    closeFeaturesFlyout({ force:true });
     if(pinned) nativeFlyoutPinned = true;
     nativeFlyout.classList.add("open");
     nativeFlyout.setAttribute("aria-hidden", "false");
@@ -4244,6 +4367,24 @@
     nativeFlyout.classList.remove("open");
     nativeFlyout.setAttribute("aria-hidden", "true");
     nativeFlyoutArrow.setAttribute("aria-expanded", "false");
+  }
+  function openFeaturesFlyout({ pinned = false } = {}){
+    if(!featuresFlyout || !featuresFlyoutArrow) return;
+    closeNativeFlyout({ force:true });
+    if(pinned) featuresFlyoutPinned = true;
+    featuresFlyout.classList.add("open");
+    featuresFlyout.setAttribute("aria-hidden", "false");
+    featuresFlyoutArrow.setAttribute("aria-expanded", "true");
+    requestAnimationFrame(positionFeaturesFlyout);
+  }
+  function closeFeaturesFlyout({ force = false } = {}){
+    if(!featuresFlyout || !featuresFlyoutArrow) return;
+    if(!force && featuresFlyoutPinned) return;
+    featuresFlyoutPinned = false;
+    clearFeaturesFlyoutTimers();
+    featuresFlyout.classList.remove("open");
+    featuresFlyout.setAttribute("aria-hidden", "true");
+    featuresFlyoutArrow.setAttribute("aria-expanded", "false");
   }
   function scheduleNativeFlyoutHoverOpen(){
     if(!nativeFlyout || appEl?.classList.contains("sidebar-collapsed")) return;
@@ -4262,8 +4403,28 @@
       nativeFlyoutHideTimer = null;
     }, 220);
   }
+  function scheduleFeaturesFlyoutHoverOpen(){
+    if(!featuresFlyout || appEl?.classList.contains("sidebar-collapsed")) return;
+    if(featuresFlyout.classList.contains("open")) return;
+    if(featuresFlyoutHoverTimer) clearTimeout(featuresFlyoutHoverTimer);
+    featuresFlyoutHoverTimer = setTimeout(()=>{
+      featuresFlyoutPinned = false;
+      openFeaturesFlyout();
+      featuresFlyoutHoverTimer = null;
+    }, 1000);
+  }
+  function scheduleFeaturesFlyoutClose(){
+    if(featuresFlyoutHideTimer) clearTimeout(featuresFlyoutHideTimer);
+    featuresFlyoutHideTimer = setTimeout(()=>{
+      closeFeaturesFlyout({ force: !featuresFlyoutPinned });
+      featuresFlyoutHideTimer = null;
+    }, 220);
+  }
   function setSidebarCollapsed(collapsed){
-    if(collapsed) closeNativeFlyout({ force:true });
+    if(collapsed){
+      closeNativeFlyout({ force:true });
+      closeFeaturesFlyout({ force:true });
+    }
     appEl?.classList.toggle("sidebar-collapsed", collapsed);
     if(btnSidebar){
       btnSidebar.setAttribute("aria-expanded", collapsed ? "false" : "true");
@@ -6878,6 +7039,57 @@
         "Hiperpersonalização"
       ]
     },
+    "solution:features":    {
+      icon:"F", kind:"Solução", type:"red", variant:"solution",
+      title:"Features", desc:"",
+      w: 320,
+      userMinH: 220,
+      solutionLayout: "pills",
+      items: [
+        "Events",
+        "User Properties",
+        "PII Encryption",
+        "Product Catalog",
+        "Recommendations",
+        "Hyper Personalization"
+      ]
+    },
+    "solution:events": {
+      icon:"EV", kind:"Solução", type:"red", variant:"default",
+      title:"Events", desc:"",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
+    "solution:userproperties": {
+      icon:"UP", kind:"Solução", type:"red", variant:"default",
+      title:"User Properties", desc:"",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
+    "solution:piiencryption": {
+      icon:"PII", kind:"Solução", type:"red", variant:"default",
+      title:"PII Encryption", desc:"",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
+    "solution:productcatalog": {
+      icon:"CAT", kind:"Solução", type:"red", variant:"default",
+      title:"Product Catalog", desc:"",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
+    "solution:recommendations": {
+      icon:"REC", kind:"Solução", type:"red", variant:"default",
+      title:"Recommendations", desc:"",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
+    "solution:hyperpersonalization": {
+      icon:"HP", kind:"Solução", type:"red", variant:"default",
+      title:"Hyper Personalization", desc:"",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
     "solution:segments":   {
       icon:"S", kind:"Solução", type:"red", variant:"solution",
       title:"Segments", desc:"",
@@ -7102,8 +7314,49 @@
     nativeFlyoutPinned = true;
     openNativeFlyout({ pinned:true });
   });
+  featuresLaunchWrap?.addEventListener("mouseenter", ()=>{
+    if(featuresFlyoutHideTimer){
+      clearTimeout(featuresFlyoutHideTimer);
+      featuresFlyoutHideTimer = null;
+    }
+    scheduleFeaturesFlyoutHoverOpen();
+  });
+  featuresLaunchWrap?.addEventListener("mouseleave", ()=>{
+    if(featuresFlyoutHoverTimer){
+      clearTimeout(featuresFlyoutHoverTimer);
+      featuresFlyoutHoverTimer = null;
+    }
+    if(!featuresFlyoutPinned) scheduleFeaturesFlyoutClose();
+  });
+  featuresFlyout?.addEventListener("mouseenter", ()=>{
+    if(featuresFlyoutHideTimer){
+      clearTimeout(featuresFlyoutHideTimer);
+      featuresFlyoutHideTimer = null;
+    }
+  });
+  featuresFlyout?.addEventListener("mouseleave", ()=>{
+    if(!featuresFlyoutPinned) scheduleFeaturesFlyoutClose();
+  });
+  featuresFlyoutArrow?.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    if(featuresFlyout.classList.contains("open") && featuresFlyoutPinned){
+      closeFeaturesFlyout({ force:true });
+      return;
+    }
+    if(featuresFlyoutHoverTimer){
+      clearTimeout(featuresFlyoutHoverTimer);
+      featuresFlyoutHoverTimer = null;
+    }
+    if(featuresFlyoutHideTimer){
+      clearTimeout(featuresFlyoutHideTimer);
+      featuresFlyoutHideTimer = null;
+    }
+    featuresFlyoutPinned = true;
+    openFeaturesFlyout({ pinned:true });
+  });
   sidebarEl?.addEventListener("scroll", ()=>{
     if(nativeFlyout?.classList.contains("open")) positionNativeFlyout();
+    if(featuresFlyout?.classList.contains("open")) positionFeaturesFlyout();
   });
 
   document.querySelectorAll("[data-add]").forEach(btn=>{
@@ -7379,6 +7632,7 @@
   });
   settingsPanel?.addEventListener("click", (e)=> e.stopPropagation());
   nativeFlyout?.addEventListener("click", (e)=> e.stopPropagation());
+  featuresFlyout?.addEventListener("click", (e)=> e.stopPropagation());
   document.addEventListener("click", (e)=>{
     const target = e.target;
     if(target === btnSettings || settingsPanel?.contains(target)) return;
@@ -7389,6 +7643,11 @@
     const target = e.target;
     if(nativeLaunchWrap?.contains(target) || nativeFlyout?.contains(target)) return;
     closeNativeFlyout({ force:true });
+  });
+  document.addEventListener("click", (e)=>{
+    const target = e.target;
+    if(featuresLaunchWrap?.contains(target) || featuresFlyout?.contains(target)) return;
+    closeFeaturesFlyout({ force:true });
   });
   ctxMenu?.addEventListener("click", (e)=> e.stopPropagation());
   ctxCanvasMenu?.addEventListener("click", (e)=> e.stopPropagation());
