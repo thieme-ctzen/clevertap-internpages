@@ -2132,6 +2132,77 @@
       line-height:1.45;
       color:#0f172a;
     }
+    .importPicker{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .importFileInput{
+      display:none;
+    }
+    .importDropzone{
+      width:100%;
+      min-height:160px;
+      border:1px dashed #cbd5e1;
+      border-radius:16px;
+      background:
+        linear-gradient(135deg, rgba(37,99,235,.05), rgba(239,68,68,.05)),
+        #fff;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:14px;
+      cursor:pointer;
+      text-align:left;
+      transition: border-color .16s ease, background .16s ease, transform .16s ease, box-shadow .16s ease;
+    }
+    .importDropzone:hover{
+      border-color:#94a3b8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(15,23,42,.06);
+    }
+    .importDropzone.is-dragover{
+      border-color:var(--accent);
+      background:
+        linear-gradient(135deg, rgba(239,68,68,.10), rgba(37,99,235,.08)),
+        #fff;
+      box-shadow: 0 14px 24px rgba(239,68,68,.12);
+    }
+    .importDropzoneIcon{
+      width:54px;
+      height:54px;
+      border-radius:16px;
+      background: linear-gradient(135deg, rgba(37,99,235,.14), rgba(239,68,68,.14));
+      display:grid;
+      place-items:center;
+      color:#0f172a;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.08em;
+      flex:0 0 auto;
+    }
+    .importDropzoneText{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .importDropzoneText strong{
+      font-size:13px;
+      line-height:1.3;
+      color:#1f2937;
+    }
+    .importDropzoneText span{
+      font-size:11px;
+      line-height:1.35;
+      color:var(--muted);
+    }
+    .importSelectedFile{
+      font-size:11px;
+      color:#475569;
+      padding-left:4px;
+    }
     .modal .actions{
       display:flex;
       justify-content:flex-end;
@@ -2717,6 +2788,13 @@
           </div>
           <div class="arrow">→</div>
         </button>
+        <button class="btn" data-add="solution:useridentity">
+          <div class="left">
+            <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
+            <div class="txt"><div>User Identity</div><span>Identity do usuário por Email, Telefone ou Custom ID.</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </button>
         <button class="btn" data-add="solution:piiencryption">
           <div class="left">
             <div class="ico"><img src="https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png" alt="CleverTap" /></div>
@@ -2939,19 +3017,29 @@
     </div>
   </div>
   <div class="modalBack" id="importBack" aria-hidden="true">
-    <div class="modal" style="max-width:760px;">
+      <div class="modal" style="max-width:760px;">
       <div class="mh">
-        <h3>Importar JSON</h3>
+        <h3>Import JSON</h3>
         <button class="close" id="btnImportClose" type="button">Fechar</button>
       </div>
       <div class="mb">
         <div class="row full">
-          <label for="importJsonInput">Cole o JSON exportado</label>
-          <textarea id="importJsonInput" class="jsonPasteArea" placeholder="Cole o JSON exportado aqui..."></textarea>
+          <label>Arquivo JSON</label>
+          <div class="importPicker">
+            <input id="importFileInput" class="importFileInput" type="file" accept=".json,.JSON,application/json,text/json" />
+            <label class="importDropzone" id="importDropzone" for="importFileInput" tabindex="0" role="button">
+              <div class="importDropzoneIcon">JSON</div>
+              <div class="importDropzoneText">
+                <strong id="importDropTitle">Arraste seu arquivo JSON aqui</strong>
+                <span id="importDropSubtitle">ou clique para selecionar no computador</span>
+              </div>
+            </label>
+            <div class="importSelectedFile" id="importSelectedFile">Nenhum arquivo selecionado</div>
+          </div>
         </div>
         <div class="actions">
           <button class="btn2" id="btnImportCancel" type="button">Cancelar</button>
-          <button class="btn2 primary" id="btnImportApply" type="button">Importar</button>
+          <button class="btn2 primary" id="btnImportApply" type="button" disabled>Import JSON</button>
         </div>
       </div>
     </div>
@@ -3079,7 +3167,11 @@
   const btnProjectCreate = document.getElementById("btnProjectCreate");
   const btnTplPaste = document.getElementById("btnTplPaste");
   const tplList = document.getElementById("tplList");
-  const importJsonInput = document.getElementById("importJsonInput");
+  const importFileInput = document.getElementById("importFileInput");
+  const importDropzone = document.getElementById("importDropzone");
+  const importDropTitle = document.getElementById("importDropTitle");
+  const importDropSubtitle = document.getElementById("importDropSubtitle");
+  const importSelectedFile = document.getElementById("importSelectedFile");
   const btnDownloadPng = document.getElementById("btnDownloadPng");
   const btnDownloadPdf = document.getElementById("btnDownloadPdf");
   const previewImg = document.getElementById("previewImg");
@@ -3098,6 +3190,7 @@
   const ctxMenu = document.getElementById("ctxMenu");
   const ctxCanvasMenu = document.getElementById("ctxCanvasMenu");
   const edgeTypeBar = document.getElementById("edgeTypeBar");
+  if(btnImportApply) btnImportApply.disabled = true;
 
   // viewport pan+zoom
   let view = { x: 0, y: 0, z: 1 };
@@ -3153,6 +3246,7 @@
   let previewImageSize = { w:0, h:0 };
   let previewPickMode = false;
   let previewPickDrag = null;
+  let selectedImportFile = null;
   let html2canvasLoader = null;
   let jsPdfLoader = null;
   const DUP_ICON_URL = "https://www.pngall.com/wp-content/uploads/16/Black-Copy-Icon-PNG-Photos.png";
@@ -3444,6 +3538,12 @@
       searchPlaceholder: "Buscar blocos...",
       freeTextPlaceholder: "Digite aqui sua anotação...",
       stickyToolbarPlaceholder: "Duplo clique no sticky para editar o texto",
+      importSelectFile: "Selecionar arquivo JSON",
+      importDropTitle: "Arraste seu arquivo JSON aqui",
+      importDropSubtitle: "ou clique para selecionar no computador",
+      importSelectedFile: "Nenhum arquivo selecionado",
+      importNoFile: "Selecione um arquivo JSON.",
+      importFileSelected: "Arquivo selecionado: {name}",
       importJsonPlaceholder: "Cole o JSON exportado aqui...",
       templateJsonPrompt: "Cole aqui o JSON do template:",
       templateInvalid: "JSON de template inválido.",
@@ -3458,7 +3558,7 @@
       languageChanged: "Idioma alterado para Português.",
       apply: "Aplicar",
       confirmReset: "Resetar tudo?",
-      exportCopied: "JSON portável copiado.",
+      exportDownloaded: "Arquivo JSON exportado.",
       blockAdded: "Bloco adicionado. Duplo clique para editar."
     },
     es: {
@@ -3466,6 +3566,12 @@
       searchPlaceholder: "Buscar bloques...",
       freeTextPlaceholder: "Escribe tu anotación aquí...",
       stickyToolbarPlaceholder: "Haz doble clic en la nota para editar el texto",
+      importSelectFile: "Seleccionar archivo JSON",
+      importDropTitle: "Arrastra tu archivo JSON aquí",
+      importDropSubtitle: "o haz clic para elegirlo en tu ordenador",
+      importSelectedFile: "Ningún archivo seleccionado",
+      importNoFile: "Selecciona un archivo JSON.",
+      importFileSelected: "Archivo seleccionado: {name}",
       importJsonPlaceholder: "Pega aquí el JSON exportado...",
       templateJsonPrompt: "Pega aquí el JSON de la plantilla:",
       templateInvalid: "JSON de plantilla inválido.",
@@ -3480,7 +3586,7 @@
       languageChanged: "Idioma cambiado a Español.",
       apply: "Aplicar",
       confirmReset: "¿Restablecer todo?",
-      exportCopied: "JSON portable copiado.",
+      exportDownloaded: "Archivo JSON exportado.",
       blockAdded: "Bloque añadido. Haz doble clic para editar."
     },
     en: {
@@ -3488,6 +3594,12 @@
       searchPlaceholder: "Search blocks...",
       freeTextPlaceholder: "Type your note here...",
       stickyToolbarPlaceholder: "Double-click the sticky note to edit the text",
+      importSelectFile: "Select JSON file",
+      importDropTitle: "Drop your JSON file here",
+      importDropSubtitle: "or click to browse your computer",
+      importSelectedFile: "No file selected",
+      importNoFile: "Select a JSON file.",
+      importFileSelected: "Selected file: {name}",
       importJsonPlaceholder: "Paste the exported JSON here...",
       templateJsonPrompt: "Paste the template JSON here:",
       templateInvalid: "Invalid template JSON.",
@@ -3502,7 +3614,7 @@
       languageChanged: "Language changed to English.",
       apply: "Apply",
       confirmReset: "Reset everything?",
-      exportCopied: "Portable JSON copied.",
+      exportDownloaded: "JSON file exported.",
       blockAdded: "Block added. Double-click to edit."
     }
   };
@@ -3522,6 +3634,10 @@
     { pt:"Templates", es:"Plantillas", en:"Templates" },
     { pt:"Export JSON", es:"Exportar JSON", en:"Export JSON" },
     { pt:"Import JSON", es:"Importar JSON", en:"Import JSON" },
+    { pt:"Arquivo JSON", es:"Archivo JSON", en:"JSON file" },
+    { pt:"Arraste seu arquivo JSON aqui", es:"Arrastra tu archivo JSON aquí", en:"Drop your JSON file here" },
+    { pt:"ou clique para selecionar no computador", es:"o haz clic para elegirlo en tu ordenador", en:"or click to browse your computer" },
+    { pt:"Nenhum arquivo selecionado", es:"Ningún archivo seleccionado", en:"No file selected" },
     { pt:"Reset", es:"Reiniciar", en:"Reset" },
     { pt:"Selecionar área", es:"Seleccionar área", en:"Select area" },
     { pt:"Centralizar", es:"Centrar", en:"Center" },
@@ -3568,7 +3684,6 @@
     { pt:"Download PNG", es:"Descargar PNG", en:"Download PNG" },
     { pt:"Download PDF", es:"Descargar PDF", en:"Download PDF" },
     { pt:"Colar JSON Template", es:"Pegar JSON de plantilla", en:"Paste Template JSON" },
-    { pt:"Importar JSON", es:"Importar JSON", en:"Import JSON" },
     { pt:"Cole o JSON exportado", es:"Pega el JSON exportado", en:"Paste the exported JSON" },
     { pt:"Diminuir fonte", es:"Disminuir fuente", en:"Decrease font" },
     { pt:"Aumentar fonte", es:"Aumentar fuente", en:"Increase font" },
@@ -3643,6 +3758,8 @@
     { pt:"Features", es:"Features", en:"Features" },
     { pt:"Events", es:"Events", en:"Events" },
     { pt:"User Properties", es:"User Properties", en:"User Properties" },
+    { pt:"User Identity", es:"Identidad del usuario", en:"User Identity" },
+    { pt:"Identity do usuário por Email, Telefone ou Custom ID.", es:"Identidad del usuario por Email, teléfono o Custom ID.", en:"User identity by Email, Phone or Custom ID." },
     { pt:"PII Encryption", es:"PII Encryption", en:"PII Encryption" },
     { pt:"Product Catalog", es:"Product Catalog", en:"Product Catalog" },
     { pt:"Recommendations", es:"Recommendations", en:"Recommendations" },
@@ -3938,6 +4055,7 @@
     setButtonCopy("solution:features", translateKnownPhrase("Features"), translateKnownPhrase("Bloco completo editável"));
     setButtonCopy("solution:events", translateKnownPhrase("Events"), translateKnownPhrase("Features"));
     setButtonCopy("solution:userproperties", translateKnownPhrase("User Properties"), translateKnownPhrase("Features"));
+    setButtonCopy("solution:useridentity", translateKnownPhrase("User Identity"), translateKnownPhrase("Identity do usuário por Email, Telefone ou Custom ID."));
     setButtonCopy("solution:piiencryption", translateKnownPhrase("PII Encryption"), translateKnownPhrase("Features"));
     setButtonCopy("solution:productcatalog", translateKnownPhrase("Product Catalog"), translateKnownPhrase("Features"));
     setButtonCopy("solution:recommendations", translateKnownPhrase("Recommendations"), translateKnownPhrase("Features"));
@@ -4070,13 +4188,19 @@
     if(btnTplClose) btnTplClose.textContent = translateKnownPhrase("Fechar");
     if(btnTplPaste) btnTplPaste.textContent = translateKnownPhrase("Colar JSON Template");
     const importTitle = importBack?.querySelector(".mh h3");
-    if(importTitle) importTitle.textContent = translateKnownPhrase("Importar JSON");
+    if(importTitle) importTitle.textContent = translateKnownPhrase("Import JSON");
     if(btnImportClose) btnImportClose.textContent = translateKnownPhrase("Fechar");
-    const importLabel = importJsonInput?.closest(".row")?.querySelector("label");
-    if(importLabel) importLabel.textContent = translateKnownPhrase("Cole o JSON exportado");
-    if(importJsonInput) importJsonInput.placeholder = t("importJsonPlaceholder");
+    const importLabel = importDropzone?.closest(".row")?.querySelector("label");
+    if(importLabel) importLabel.textContent = translateKnownPhrase("Arquivo JSON");
+    if(importDropTitle) importDropTitle.textContent = translateKnownPhrase("Arraste seu arquivo JSON aqui");
+    if(importDropSubtitle) importDropSubtitle.textContent = translateKnownPhrase("ou clique para selecionar no computador");
+    if(importSelectedFile){
+      importSelectedFile.textContent = selectedImportFile
+        ? t("importFileSelected", { name: selectedImportFile.name || "arquivo.json" })
+        : translateKnownPhrase("Nenhum arquivo selecionado");
+    }
     if(btnImportCancel) btnImportCancel.textContent = translateKnownPhrase("Cancelar");
-    if(btnImportApply) btnImportApply.textContent = translateKnownPhrase("Importar JSON");
+    if(btnImportApply) btnImportApply.textContent = translateKnownPhrase("Import JSON");
     const projectTitle = projectBack?.querySelector(".mh h3");
     if(projectTitle) projectTitle.textContent = translateKnownPhrase("Overall Information");
     if(btnProjectClose) btnProjectClose.textContent = translateKnownPhrase("Fechar");
@@ -4869,28 +4993,55 @@
     tplBack.style.display = "none";
     tplBack.setAttribute("aria-hidden", "true");
   }
+  function setSelectedImportFile(file){
+    selectedImportFile = file || null;
+    if(!selectedImportFile && importFileInput) importFileInput.value = "";
+    if(importSelectedFile){
+      importSelectedFile.textContent = file
+        ? t("importFileSelected", { name: file.name || "arquivo.json" })
+        : translateKnownPhrase("Nenhum arquivo selecionado");
+    }
+    if(btnImportApply) btnImportApply.disabled = !selectedImportFile;
+  }
+  function handleImportFile(file){
+    if(!file) return;
+    setSelectedImportFile(file);
+  }
+  function openImportFilePicker(){
+    importFileInput?.click();
+  }
+  function readFileText(file){
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = ()=>resolve(String(reader.result || ""));
+      reader.onerror = ()=>reject(reader.error || new Error("Falha ao ler arquivo"));
+      reader.readAsText(file);
+    });
+  }
   function openImportModal(){
     if(!importBack) return;
     importBack.style.display = "flex";
     importBack.setAttribute("aria-hidden", "false");
-    if(importJsonInput){
-      importJsonInput.value = "";
-      setTimeout(()=>importJsonInput.focus(), 0);
-    }
+    importDropzone?.classList.remove("is-dragover");
+    setSelectedImportFile(null);
+    setTimeout(()=>importDropzone?.focus(), 0);
   }
   function closeImportModal(){
     if(!importBack) return;
     importBack.style.display = "none";
     importBack.setAttribute("aria-hidden", "true");
+    importDropzone?.classList.remove("is-dragover");
+    setSelectedImportFile(null);
   }
-  function applyImportFromModal(){
-    const txt = (importJsonInput?.value || "").trim();
-    if(!txt){
-      showToast(t("importJsonEmpty"));
-      importJsonInput?.focus();
+  async function applyImportFromModal(){
+    const file = selectedImportFile;
+    if(!file){
+      showToast(t("importNoFile"));
+      openImportFilePicker();
       return;
     }
     try{
+      const txt = await readFileText(file);
       const parsed = JSON.parse(txt);
       const obj = extractImportState(parsed);
       if(!obj) throw new Error("Formato invalido");
@@ -4898,6 +5049,7 @@
       closeImportModal();
       showToast(t("layoutImported"));
     } catch(e){
+      setSelectedImportFile(null);
       alert(t("invalidJson"));
     }
   }
@@ -6872,11 +7024,49 @@
   btnImportClose?.addEventListener("click", closeImportModal);
   btnImportCancel?.addEventListener("click", closeImportModal);
   btnImportApply?.addEventListener("click", applyImportFromModal);
-  importJsonInput?.addEventListener("keydown", (e)=>{
-    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+  importFileInput?.addEventListener("change", (e)=>{
+    const file = e.target?.files?.[0] || null;
+    handleImportFile(file);
+  });
+  importDropzone?.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter" || e.key === " "){
       e.preventDefault();
-      applyImportFromModal();
+      openImportFilePicker();
     }
+  });
+  importDropzone?.addEventListener("dragenter", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    importDropzone.classList.add("is-dragover");
+  });
+  importDropzone?.addEventListener("dragover", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    importDropzone.classList.add("is-dragover");
+  });
+  importDropzone?.addEventListener("dragleave", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    if(!importDropzone.contains(e.relatedTarget)){
+      importDropzone.classList.remove("is-dragover");
+    }
+  });
+  importDropzone?.addEventListener("drop", (e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    importDropzone.classList.remove("is-dragover");
+    const file = e.dataTransfer?.files?.[0] || null;
+    handleImportFile(file);
+  });
+  importBack?.addEventListener("dragenter", (e)=>e.preventDefault());
+  importBack?.addEventListener("dragover", (e)=>{
+    e.preventDefault();
+    if(e.dataTransfer) e.dataTransfer.dropEffect = "copy";
+  });
+  importBack?.addEventListener("drop", (e)=>{
+    e.preventDefault();
+    const file = e.dataTransfer?.files?.[0] || null;
+    handleImportFile(file);
   });
   previewBack?.addEventListener("click", (e)=>{ if(e.target === previewBack) closePreviewModal(); });
   modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeEdit(); });
@@ -7048,6 +7238,7 @@
       items: [
         "Events",
         "User Properties",
+        "User Identity",
         "PII Encryption",
         "Product Catalog",
         "Recommendations",
@@ -7063,6 +7254,12 @@
     "solution:userproperties": {
       icon:"UP", kind:"Solução", type:"red", variant:"default",
       title:"User Properties", desc:"",
+      w: 280,
+      logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
+    },
+    "solution:useridentity": {
+      icon:"UID", kind:"Solução", type:"red", variant:"default",
+      title:"User Identity", desc:"Identity do usuário por Email, Telefone ou Custom ID.",
       w: 280,
       logoUrl:"https://cdn-public.softwarereviews.com/production/favicons/offerings/8910/original/CleverTap_fav.png"
     },
@@ -7448,8 +7645,9 @@
 
   btnExport.addEventListener("click", ()=>{
     const data = JSON.stringify(buildPortableExportPayload(), null, 2);
-    copyToClipboard(data);
-    showToast(t("exportCopied"));
+    const filename = `${(canvasName || "clevertap-canvas").replace(/[\\/:*?"<>|]+/g, "-").trim() || "clevertap-canvas"}.json`;
+    downloadTextFile(data, filename);
+    showToast(t("exportDownloaded"));
   });
 
   btnImport.addEventListener("click", ()=> openImportModal());
@@ -8182,6 +8380,17 @@
     document.body.appendChild(a);
     a.click();
     a.remove();
+  }
+  function downloadTextFile(text, filename, mimeType = "application/json;charset=utf-8"){
+    const blob = new Blob([text], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 0);
   }
   async function downloadPreviewPdf(){
     if(!previewDataUrl) return;
