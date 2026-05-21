@@ -2540,6 +2540,9 @@
           <button class="btn" data-add="channel:sms">
             <div class="left"><div class="ico"><img src="https://cdn-icons-png.flaticon.com/512/733/733533.png" alt="SMS" /></div><div class="txt"><div>SMS</div><span>Transactional / promo</span></div></div><div class="arrow">→</div>
           </button>
+          <button class="btn" data-add="channel:webhook">
+            <div class="left"><div class="ico"><img src="https://www.svix.com/resources/assets/images/color-webhook-240-1deccb0e365ff4ea493396ad28638fb7.png" alt="Webhook" /></div><div class="txt"><div>Webhook</div><span>HTTP callbacks / automations</span></div></div><div class="arrow">→</div>
+          </button>
           <button class="btn" data-add="channel:fbads">
             <div class="left"><div class="ico"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2023_Facebook_icon.svg/960px-2023_Facebook_icon.svg.png" alt="Facebook Ads" /></div><div class="txt"><div>Facebook Ads</div><span>Remarketing</span></div></div><div class="arrow">→</div>
           </button>
@@ -3074,6 +3077,27 @@
       </div>
     </div>
   </div>
+  <div class="modalBack" id="exportBack" aria-hidden="true">
+    <div class="modal" style="max-width:560px;">
+      <div class="mh">
+        <h3>Export JSON</h3>
+        <button class="close" id="btnExportClose" type="button">Fechar</button>
+      </div>
+      <div class="mb">
+        <div class="row full">
+          <label for="exportFileNameInput">Nome do arquivo</label>
+          <input id="exportFileNameInput" type="text" placeholder="clevertap-canvas" />
+        </div>
+        <div class="row full" style="margin-top:-2px;">
+          <span class="importSelectedFile">Digite o nome do arquivo e siga para baixar o JSON.</span>
+        </div>
+        <div class="actions">
+          <button class="btn2" id="btnExportCancel" type="button">Cancelar</button>
+          <button class="btn2 primary" id="btnExportApply" type="button">Seguir</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="modalBack" id="importBack" aria-hidden="true">
       <div class="modal" style="max-width:760px;">
       <div class="mh">
@@ -3227,11 +3251,16 @@
   const modalBack = document.getElementById("modalBack");
   const previewBack = document.getElementById("previewBack");
   const tplBack = document.getElementById("tplBack");
+  const exportBack = document.getElementById("exportBack");
   const importBack = document.getElementById("importBack");
   const projectBack = document.getElementById("projectBack");
   const btnClose = document.getElementById("btnClose");
   const btnPreviewClose = document.getElementById("btnPreviewClose");
   const btnTplClose = document.getElementById("btnTplClose");
+  const btnExportClose = document.getElementById("btnExportClose");
+  const btnExportCancel = document.getElementById("btnExportCancel");
+  const btnExportApply = document.getElementById("btnExportApply");
+  const exportFileNameInput = document.getElementById("exportFileNameInput");
   const btnImportClose = document.getElementById("btnImportClose");
   const btnImportCancel = document.getElementById("btnImportCancel");
   const btnImportApply = document.getElementById("btnImportApply");
@@ -3640,6 +3669,7 @@
       languageChanged: "Idioma alterado para Português.",
       apply: "Aplicar",
       confirmReset: "Resetar tudo?",
+      exportFileNameRequired: "Informe um nome de arquivo.",
       exportDownloaded: "Arquivo JSON exportado.",
       blockAdded: "Bloco adicionado. Duplo clique para editar."
     },
@@ -3670,6 +3700,7 @@
       languageChanged: "Idioma cambiado a Español.",
       apply: "Aplicar",
       confirmReset: "¿Restablecer todo?",
+      exportFileNameRequired: "Ingresa un nombre de archivo.",
       exportDownloaded: "Archivo JSON exportado.",
       blockAdded: "Bloque añadido. Haz doble clic para editar."
     },
@@ -3700,6 +3731,7 @@
       languageChanged: "Language changed to English.",
       apply: "Apply",
       confirmReset: "Reset everything?",
+      exportFileNameRequired: "Enter a file name.",
       exportDownloaded: "JSON file exported.",
       blockAdded: "Block added. Double-click to edit."
     }
@@ -3719,6 +3751,10 @@
     { pt:"Diagrama CleverTap", es:"Diagrama CleverTap", en:"CleverTap Diagram" },
     { pt:"Templates", es:"Plantillas", en:"Templates" },
     { pt:"Export JSON", es:"Exportar JSON", en:"Export JSON" },
+    { pt:"Nome do arquivo", es:"Nombre del archivo", en:"File name" },
+    { pt:"Digite o nome do arquivo e siga para baixar o JSON.", es:"Escribe el nombre del archivo y sigue para descargar el JSON.", en:"Enter the file name and continue to download the JSON." },
+    { pt:"Seguir", es:"Seguir", en:"Continue" },
+    { pt:"Informe um nome de arquivo.", es:"Ingresa un nombre de archivo.", en:"Enter a file name." },
     { pt:"Import JSON", es:"Importar JSON", en:"Import JSON" },
     { pt:"Modo de importação", es:"Modo de importación", en:"Import mode" },
     { pt:"Colar JSON", es:"Pegar JSON", en:"Paste JSON" },
@@ -3831,6 +3867,8 @@
     { pt:"HTML / templates", es:"HTML / plantillas", en:"HTML / templates" },
     { pt:"SMS", es:"SMS", en:"SMS" },
     { pt:"Transactional / promo", es:"Transaccional / promo", en:"Transactional / promo" },
+    { pt:"Webhook", es:"Webhook", en:"Webhook" },
+    { pt:"HTTP callbacks / automations", es:"Callbacks HTTP / automatizaciones", en:"HTTP callbacks / automations" },
     { pt:"Facebook Ads", es:"Facebook Ads", en:"Facebook Ads" },
     { pt:"TikTok Ads", es:"TikTok Ads", en:"TikTok Ads" },
     { pt:"Google Ads", es:"Google Ads", en:"Google Ads" },
@@ -4132,6 +4170,7 @@
     setButtonCopy("channel:web", translateKnownPhrase("Web"), translateKnownPhrase("Web push / overlays"));
     setButtonCopy("channel:email", translateKnownPhrase("Email"), translateKnownPhrase("HTML / templates"));
     setButtonCopy("channel:sms", translateKnownPhrase("SMS"), translateKnownPhrase("Transactional / promo"));
+    setButtonCopy("channel:webhook", translateKnownPhrase("Webhook"), translateKnownPhrase("HTTP callbacks / automations"));
     setButtonCopy("channel:fbads", translateKnownPhrase("Facebook Ads"), translateKnownPhrase("Remarketing"));
     setButtonCopy("channel:tiktok", translateKnownPhrase("TikTok Ads"), translateKnownPhrase("Remarketing"));
     setButtonCopy("channel:gads", translateKnownPhrase("Google Ads"), translateKnownPhrase("Remarketing"));
@@ -4276,6 +4315,16 @@
     if(templateTitle) templateTitle.textContent = translateKnownPhrase("Templates");
     if(btnTplClose) btnTplClose.textContent = translateKnownPhrase("Fechar");
     if(btnTplPaste) btnTplPaste.textContent = translateKnownPhrase("Colar JSON Template");
+    const exportTitle = exportBack?.querySelector(".mh h3");
+    if(exportTitle) exportTitle.textContent = translateKnownPhrase("Export JSON");
+    if(btnExportClose) btnExportClose.textContent = translateKnownPhrase("Fechar");
+    const exportLabel = exportFileNameInput?.closest(".row")?.querySelector("label");
+    if(exportLabel) exportLabel.textContent = translateKnownPhrase("Nome do arquivo");
+    if(exportFileNameInput) exportFileNameInput.placeholder = "clevertap-canvas";
+    const exportHint = exportBack?.querySelector(".importSelectedFile");
+    if(exportHint) exportHint.textContent = translateKnownPhrase("Digite o nome do arquivo e siga para baixar o JSON.");
+    if(btnExportCancel) btnExportCancel.textContent = translateKnownPhrase("Cancelar");
+    if(btnExportApply) btnExportApply.textContent = translateKnownPhrase("Seguir");
     const importTitle = importBack?.querySelector(".mh h3");
     if(importTitle) importTitle.textContent = translateKnownPhrase("Import JSON");
     if(btnImportClose) btnImportClose.textContent = translateKnownPhrase("Fechar");
@@ -7202,6 +7251,7 @@
   });
   previewBack?.addEventListener("click", (e)=>{ if(e.target === previewBack) closePreviewModal(); });
   modalBack.addEventListener("click", (e)=>{ if(e.target===modalBack) closeEdit(); });
+  exportBack?.addEventListener("click", (e)=>{ if(e.target===exportBack) closeExportModal(); });
   importBack?.addEventListener("click", (e)=>{ if(e.target===importBack) closeImportModal(); });
   projectBack?.addEventListener("click", (e)=>{ if(e.target===projectBack) closeProjectModal(); });
   btnProjectCreate?.addEventListener("click", async ()=>{
@@ -7338,6 +7388,7 @@
     "channel:web":         { icon:"WEB", kind:"Channel",     type:"red",   title:"Web", desc:"Web Push, Pop-ups, Exit intent, Native Display.", logoUrl:"https://cdn-icons-png.flaticon.com/512/5339/5339181.png", variant:"stack", stacks:["web-sdk"] },
     "channel:email":       { icon:"EM", kind:"Channel",     type:"red",   title:"Email", desc:"Campanhas e mensagens com HTML rico.", logoUrl:"https://static.vecteezy.com/system/resources/thumbnails/014/440/980/small/email-message-icon-design-in-blue-circle-png.png" },
     "channel:sms":         { icon:"SMS", kind:"Channel",     type:"red",   title:"SMS", desc:"Mensagens transacionais e promocionais.", logoUrl:"https://cdn-icons-png.flaticon.com/512/733/733533.png" },
+    "channel:webhook":     { icon:"WH", kind:"Channel",     type:"red",   title:"Webhook", desc:"Recebe eventos em tempo real via callbacks HTTP para automações e integrações.", logoUrl:"https://www.svix.com/resources/assets/images/color-webhook-240-1deccb0e365ff4ea493396ad28638fb7.png" },
     "channel:fbads":       { icon:"FB", kind:"Ads",         type:"red",   title:"Facebook Ads", desc:"Export de audiencia para remarketing.", logoUrl:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2023_Facebook_icon.svg/960px-2023_Facebook_icon.svg.png" },
     "channel:tiktok":      { icon:"TT", kind:"Ads",         type:"red",   title:"TikTok Ads", desc:"Export de audiencia para remarketing.", logoUrl:"https://www.oviond.com/wp-content/uploads/2023/06/tiktok-ads-icon.png" },
     "channel:gads":        { icon:"GA", kind:"Ads",         type:"red",   title:"Google Ads", desc:"Export de audiencia para remarketing.", logoUrl:"https://static.vecteezy.com/system/resources/previews/042/712/671/non_2x/google-ads-icon-logo-symbol-free-png.png" },
@@ -7775,11 +7826,16 @@
     alert("Não foi possível gerar o PDF.");
   }));
 
-  btnExport.addEventListener("click", ()=>{
-    const data = JSON.stringify(buildPortableExportPayload(), null, 2);
-    const filename = `${(canvasName || "clevertap-canvas").replace(/[\\/:*?"<>|]+/g, "-").trim() || "clevertap-canvas"}.json`;
-    downloadTextFile(data, filename);
-    showToast(t("exportDownloaded"));
+  btnExport.addEventListener("click", ()=> openExportModal());
+  btnExportClose?.addEventListener("click", closeExportModal);
+  btnExportCancel?.addEventListener("click", closeExportModal);
+  btnExportApply?.addEventListener("click", confirmExportFromModal);
+  exportFileNameInput?.addEventListener("input", refreshExportActionState);
+  exportFileNameInput?.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter"){
+      e.preventDefault();
+      confirmExportFromModal();
+    }
   });
 
   btnImport.addEventListener("click", ()=> openImportModal());
@@ -8523,6 +8579,53 @@
     a.click();
     a.remove();
     setTimeout(()=>URL.revokeObjectURL(url), 0);
+  }
+  function getDefaultExportFilename(){
+    const base = (canvasName || "clevertap-canvas")
+      .replace(/[\\/:*?"<>|]+/g, "-")
+      .replace(/\s+/g, " ")
+      .trim() || "clevertap-canvas";
+    return `${base}.json`;
+  }
+  function normalizeExportFilename(value){
+    const base = String(value || "")
+      .replace(/[\\/:*?"<>|]+/g, "-")
+      .replace(/\.json$/i, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    return base ? `${base}.json` : "";
+  }
+  function refreshExportActionState(){
+    if(!btnExportApply) return;
+    btnExportApply.disabled = !normalizeExportFilename(exportFileNameInput?.value);
+  }
+  function openExportModal(){
+    if(!exportBack) return;
+    if(exportFileNameInput){
+      exportFileNameInput.value = getDefaultExportFilename().replace(/\.json$/i, "");
+    }
+    exportBack.style.display = "flex";
+    exportBack.setAttribute("aria-hidden", "false");
+    refreshExportActionState();
+    setTimeout(()=>exportFileNameInput?.focus(), 0);
+    setTimeout(()=>exportFileNameInput?.select?.(), 0);
+  }
+  function closeExportModal(){
+    if(!exportBack) return;
+    exportBack.style.display = "none";
+    exportBack.setAttribute("aria-hidden", "true");
+  }
+  function confirmExportFromModal(){
+    const filename = normalizeExportFilename(exportFileNameInput?.value);
+    if(!filename){
+      showToast(t("exportFileNameRequired"));
+      exportFileNameInput?.focus();
+      return;
+    }
+    const data = JSON.stringify(buildPortableExportPayload(), null, 2);
+    downloadTextFile(data, filename);
+    closeExportModal();
+    showToast(t("exportDownloaded"));
   }
   async function downloadPreviewPdf(){
     if(!previewDataUrl) return;
